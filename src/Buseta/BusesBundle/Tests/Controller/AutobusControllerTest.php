@@ -2,34 +2,8 @@
 
 namespace Buseta\BusesBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-
-class AutobusControllerTest extends WebTestCase
+class AutobusControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var \Symfony\Bundle\FrameworkBundle\Client
-     */
-    private $client;
-
-    public function setUp()
-    {
-        $this->client = static::createClient();
-        $this->logIn();
-    }
-
-    private function logIn()
-    {
-        $session = $this->client->getContainer()->get('session');
-        $firewall = 'main';
-        $token = new UsernamePasswordToken('admin', null, $firewall, array('ROLE_ADMIN'));
-        $session->set('_security_'.$firewall, serialize($token));
-        $session->save();
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->client->getCookieJar()->set($cookie);
-    }
-
     public function testIndex()
     {
         // Test search/list Autobus
