@@ -2,54 +2,64 @@
 
 namespace Buseta\TallerBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Buseta\BusesBundle\Tests\Controller\AbstractWebTestCase;
 
-class MantenimientoPreventivoControllerTest extends WebTestCase
+class ManteniminetoPreventivoControllerTest extends AbstractWebTestCase
 {
-    /*
-    public function testCompleteScenario()
+    public function testIndex()
     {
-        // Create a new client to browse the application
-        $client = static::createClient();
+        // Test search/list ManteniminetoPreventivo
+        $crawler = $this->client->request('GET', '/mpreventivo/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /mpreventivo/");
 
-        // Create a new entry in the database
-        $crawler = $client->request('GET', '/mantenimientopreventivo/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /mantenimientopreventivo/");
-        $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
-
-        // Fill in the form and submit it
-        $form = $crawler->selectButton('Create')->form(array(
-            'buseta_tallerbundle_mantenimientopreventivo[field_name]'  => 'Test',
-            // ... other fields to fill
-        ));
-
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check data in the show view
-        $this->assertGreaterThan(0, $crawler->filter('td:contains("Test")')->count(), 'Missing element td:contains("Test")');
-
-        // Edit the entity
-        $crawler = $client->click($crawler->selectLink('Edit')->link());
-
-        $form = $crawler->selectButton('Update')->form(array(
-            'buseta_tallerbundle_mantenimientopreventivo[field_name]'  => 'Foo',
-            // ... other fields to fill
-        ));
-
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check the element contains an attribute with value equals "Foo"
-        $this->assertGreaterThan(0, $crawler->filter('[value="Foo"]')->count(), 'Missing element [value="Foo"]');
-
-        // Delete the entity
-        $client->submit($crawler->selectButton('Delete')->form());
-        $crawler = $client->followRedirect();
-
-        // Check the entity has been delete on the list
-        $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
+        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'new\']')->count(), 'Missing add new button');
     }
 
-    */
+    public function testShow()
+    {
+        // Test search/list ManteniminetoPreventivo
+        $crawler = $this->client->request('GET', '/mpreventivo/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /mpreventivo/");
+
+
+        // Check data in the index view
+        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'1\']')->count(), 'Missing elements/test cases');
+        $crawler = $this->client->click($crawler->filter('a[href$=\'1\']')->eq(0)->link());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /mpreventivo/\\d+");
+
+
+        // Check buttons in show view
+        //$this->checkFunctionalityButtons($crawler, array('Editar', 'Volver', 'Eliminar'), 'Edit');
+    }
+
+    public function testEdit()
+    {
+        // Test search/list ManteniminetoPreventivo
+        $crawler = $this->client->request('GET', '/mpreventivo/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /mpreventivo/");
+
+        // Check data in the index view
+        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'edit\']')->count(), 'Missing elements/test cases');
+        $crawler = $this->client->click($crawler->filter('a[href$=\'edit\']')->eq(0)->link());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /mpreventivo/\\d+/edit");
+
+        // Check buttons in edit view
+        //$this->checkFunctionalityButtons($crawler, array('Salvar', 'Volver'), 'Edit');
+    }
+
+    public function testNew()
+    {
+        // Test create ManteniminetoPreventivo
+        $crawler = $this->client->request('GET', '/mpreventivo/new');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /mpreventivo/new");
+
+        //$this->checkFunctionalityButtons($crawler, array('Salvar', 'Volver'), 'New');
+    }
+
+    private function checkFunctionalityButtons(\Symfony\Component\DomCrawler\Crawler $crawler, array $links, $view)
+    {
+        foreach ($links as $link) {
+            $this->assertEquals(1, $crawler->selectLink($link)->count(), sprintf('Missing "%s" link on %s view', $link, $view));
+        }
+    }
 }
