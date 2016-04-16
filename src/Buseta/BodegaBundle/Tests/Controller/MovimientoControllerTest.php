@@ -4,27 +4,27 @@ namespace Buseta\BodegaBundle\Tests\Controller;
 
 use Buseta\BusesBundle\Tests\Controller\AbstractWebTestCase;
 
-class AlbaranControllerTest extends AbstractWebTestCase
+class MovimientoControllerTest extends AbstractWebTestCase
 {
     public function testIndex()
     {
-        // Test search/list Albaran
-        $crawler = $this->client->request('GET', '/albaran/');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /albaran/");
+        // Test search/list Movimiento
+        $crawler = $this->client->request('GET', '/bodega/movimiento/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /bodega/movimiento/");
 
         $this->assertGreaterThan(0, $crawler->filter('a[href$=\'new\']')->count(), 'Missing add new button');
     }
 
     public function testShow()
     {
-        // Test search/list bodega
-        $crawler = $this->client->request('GET', '/albaran/');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /albaran/");
+        // Test search/list Movimiento
+        $crawler = $this->client->request('GET', '/bodega/movimiento/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /bodega/movimiento/");
 
         // Check data in the index view
         $this->assertGreaterThan(0, $crawler->filter('a[href$=\'show\']')->count(), 'Missing elements/test cases');
         $crawler = $this->client->click($crawler->filter('a[href$=\'show\']')->eq(0)->link());
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /albaran/\\d+/show");
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /bodega/movimiento/\\d+/show");
 
         // Check buttons in show view
         //$this->checkFunctionalityButtons($crawler, array('Editar', 'Volver', 'Eliminar'), 'Edit');
@@ -32,14 +32,14 @@ class AlbaranControllerTest extends AbstractWebTestCase
 
     public function testEdit()
     {
-        // Test search/list bodega
-        $crawler = $this->client->request('GET', '/albaran/');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /albaran/");
+        // Test search/list Movimiento
+        $crawler = $this->client->request('GET', '/bodega/movimiento/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /bodega/movimiento/");
 
         // Check data in the index view
         $this->assertGreaterThan(0, $crawler->filter('a[href$=\'edit\']')->count(), 'Missing elements/test cases');
         $crawler = $this->client->click($crawler->filter('a[href$=\'edit\']')->eq(0)->link());
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /albaran/\\d+/edit");
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /bodega/movimiento/\\d+/edit");
 
         // Check buttons in edit view
         //$this->checkFunctionalityButtons($crawler, array('Salvar', 'Volver'), 'Edit');
@@ -47,9 +47,9 @@ class AlbaranControllerTest extends AbstractWebTestCase
 
     public function testNew()
     {
-        // Test create bodega
-        $crawler = $this->client->request('GET', '/albaran/new');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /albaran/new");
+        // Test create Movimiento
+        $crawler = $this->client->request('GET', '/bodega/movimiento/new');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /bodega/movimiento/new");
 
         //$this->checkFunctionalityButtons($crawler, array('Salvar', 'Volver'), 'New');
     }
