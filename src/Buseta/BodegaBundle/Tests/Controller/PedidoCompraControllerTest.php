@@ -4,27 +4,27 @@ namespace Buseta\BodegaBundle\Tests\Controller;
 
 use Buseta\BusesBundle\Tests\Controller\AbstractWebTestCase;
 
-class NecesidadMaterialControllerTest extends AbstractWebTestCase
+class PedidoCompraControllerTest extends AbstractWebTestCase
 {
     public function testIndex()
     {
-        // Test search/list NecesidadMaterial
-        $crawler = $this->client->request('GET', '/necesidadmaterial/');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /necesidadmaterial/");
+        // Test search/list PedidoCompra
+        $crawler = $this->client->request('GET', '/pedidocompra/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /pedidocompra/");
 
         $this->assertGreaterThan(0, $crawler->filter('a[href$=\'new\']')->count(), 'Missing add new button');
     }
 
     public function testShow()
     {
-        // Test search/list NecesidadMaterial
-        $crawler = $this->client->request('GET', '/necesidadmaterial/');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /necesidadmaterial/");
+        // Test search/list PedidoCompra
+        $crawler = $this->client->request('GET', '/pedidocompra/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /pedidocompra/");
 
         // Check data in the index view
         $this->assertGreaterThan(0, $crawler->filter('a[href$=\'show\']')->count(), 'Missing elements/test cases');
         $crawler = $this->client->click($crawler->filter('a[href$=\'show\']')->eq(0)->link());
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /necesidadmaterial/\\d+/show");
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /pedidocompra/\\d+/show");
 
         // Check buttons in show view
         //$this->checkFunctionalityButtons($crawler, array('Editar', 'Volver', 'Eliminar'), 'Edit');
@@ -32,14 +32,14 @@ class NecesidadMaterialControllerTest extends AbstractWebTestCase
 
     public function testEdit()
     {
-        // Test search/list NecesidadMaterial
-        $crawler = $this->client->request('GET', '/necesidadmaterial/');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /necesidadmaterial/");
+        // Test search/list PedidoCompra
+        $crawler = $this->client->request('GET', '/pedidocompra/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /pedidocompra/");
 
         // Check data in the index view
         $this->assertGreaterThan(0, $crawler->filter('a[href$=\'edit\']')->count(), 'Missing elements/test cases');
         $crawler = $this->client->click($crawler->filter('a[href$=\'edit\']')->eq(0)->link());
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /necesidadmaterial/\\d+/edit");
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /pedidocompra/\\d+/edit");
 
         // Check buttons in edit view
         //$this->checkFunctionalityButtons($crawler, array('Salvar', 'Volver'), 'Edit');
@@ -47,9 +47,9 @@ class NecesidadMaterialControllerTest extends AbstractWebTestCase
 
     public function testNew()
     {
-        // Test create NecesidadMaterial
-        $crawler = $this->client->request('GET', '/necesidadmaterial/new');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /necesidadmaterial/new");
+        // Test create PedidoCompra
+        $crawler = $this->client->request('GET', '/pedidocompra/new');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /pedidocompra/new");
 
         //$this->checkFunctionalityButtons($crawler, array('Salvar', 'Volver'), 'New');
     }
