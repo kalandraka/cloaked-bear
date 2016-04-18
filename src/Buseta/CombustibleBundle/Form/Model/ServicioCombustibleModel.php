@@ -87,6 +87,7 @@ class ServicioCombustibleModel
     {
         $servicioCombustible = new ServicioCombustible();
         $servicioCombustible->setOdometro($this->getOdometro());
+        $servicioCombustible->setEstado($this->getEstado());
         $servicioCombustible->setCantidadLibros($this->getCantidadLibros());
         $servicioCombustible->setBoleta($this->getBoleta());
         $servicioCombustible->setMarchamo1($this->getMarchamo1());

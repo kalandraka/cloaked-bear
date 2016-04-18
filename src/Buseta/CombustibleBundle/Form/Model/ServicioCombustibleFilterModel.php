@@ -22,6 +22,11 @@ class ServicioCombustibleFilterModel
     private $combustible;
 
     /**
+     * @var string
+     */
+    private $estado = 'SV';
+
+    /**
      * @var \Buseta\BusesBundle\Entity\Vehiculo
      */
     private $vehiculo;
@@ -57,6 +62,8 @@ class ServicioCombustibleFilterModel
     public function getEntityData()
     {
         $servicioCombustible = new ServicioCombustible();
+
+        $servicioCombustible->setEstado($this->getEstado());
 
         if ($this->getVehiculo() !== null) {
             $servicioCombustible->setVehiculo($this->getVehiculo());
@@ -135,6 +142,19 @@ class ServicioCombustibleFilterModel
         $this->chofer = $chofer;
     }
 
+    /**
+     * @return string
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
 
-
+    /**
+     * @param string $estado
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+    }
 }

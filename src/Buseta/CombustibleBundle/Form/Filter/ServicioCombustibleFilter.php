@@ -38,6 +38,15 @@ class ServicioCombustibleFilter extends AbstractType
                     'class' => 'form-control',
                 )
             ))
+            ->add('estado', 'choice', array(
+                'required' => false,
+                'placeholder' => '---Seleccione---',
+                'translation_domain' => 'BusetaCombustibleBundle',
+                'choices' => array(
+                    'CO' => 'estado.SV',
+                    'BO' => 'estado.RV',
+                )
+            ))
         ;
     }
 

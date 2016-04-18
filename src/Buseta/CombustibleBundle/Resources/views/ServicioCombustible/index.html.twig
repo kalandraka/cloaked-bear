@@ -12,6 +12,7 @@
     {% if (filter_form.vars.value.combustible is null or filter_form.vars.value.combustible is empty)
     and (filter_form.vars.value.chofer is null or filter_form.vars.value.chofer is empty)
     and (filter_form.vars.value.vehiculo is null or filter_form.vars.value.vehiculo is empty)
+    and (filter_form.vars.value.estado is null or filter_form.vars.value.estado is empty)
     %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
@@ -29,6 +30,7 @@
                 <div class="col-lg-4">{{ form_row(filter_form.combustible) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.chofer) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.vehiculo) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.estado) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
