@@ -37,3 +37,7 @@ actions:
   delete: Eliminar
   cancel: Cancelar
   list: Listar
+
+estado:
+  SV: Serviciado
+  RV: Revisado
