@@ -40,6 +40,19 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
     private $odometro;
 
     /**
+     * The allowed values for this list are:
+     * RV (Revisado)
+     * SV (Serviciado)
+     *
+     * @var string
+     *
+     * @ORM\Column(name="estado", type="string", nullable=false)
+     * @Assert\Choice(choices={"SV","RV"})
+     *
+     */
+    private $estado = 'SV';
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="cantidad_libros", type="integer")
@@ -485,5 +498,21 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
     public function getFecha()
     {
         return $this->fecha;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
+     * @param string $estado
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
     }
 }
