@@ -49,6 +49,10 @@ class ServicioCombustibleType extends AbstractType
                 'label' => 'Nomenclador de Combustible',
                 'required' => true,
             ))
+            ->add('odometro', 'integer', array(
+                'required' => true,
+                'label' => 'Odometro',
+            ))
             ->add('cantidadLibros', 'integer', array(
                 'required' => true,
                 'label' => 'Cantidad de Libros',
