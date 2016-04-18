@@ -35,6 +35,12 @@ class ServicioCombustibleModel
     private $odometro;
 
     /**
+     * @var string
+     * @Assert\NotBlank()
+     */
+    private $estado = 'SV';
+
+    /**
      * @var integer
      *
      * @Assert\NotBlank()
@@ -231,6 +237,22 @@ class ServicioCombustibleModel
     public function setOdometro($odometro)
     {
         $this->odometro = $odometro;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
+     * @param string $estado
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
     }
 
     /**
