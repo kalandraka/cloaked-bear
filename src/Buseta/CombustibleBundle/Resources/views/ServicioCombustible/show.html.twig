@@ -3,6 +3,13 @@
 {% block title block('header') %}
 
 {% block header 'Ver Datos de Servicio de Combustible' %}
+{% block header_right %}
+    {% from '@BusetaTemplate/Macros/macros.html.twig' import documentState %}
+
+    <h4 class="pull-right">
+        {{ documentState(entity.estado, 'BusetaCombustibleBundle') }}
+    </h4>
+{% endblock %}
 
 {% block area_trabajo %}
     <table class="table table-striped" style="font-size: 16px;">
