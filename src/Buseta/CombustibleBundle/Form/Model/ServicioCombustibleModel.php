@@ -31,6 +31,11 @@ class ServicioCombustibleModel
 
     /**
      * @var integer
+     */
+    private $odometro;
+
+    /**
+     * @var integer
      *
      * @Assert\NotBlank()
      */
@@ -75,6 +80,7 @@ class ServicioCombustibleModel
     public function getEntityData()
     {
         $servicioCombustible = new ServicioCombustible();
+        $servicioCombustible->setOdometro($this->getOdometro());
         $servicioCombustible->setCantidadLibros($this->getCantidadLibros());
         $servicioCombustible->setBoleta($this->getBoleta());
         $servicioCombustible->setMarchamo1($this->getMarchamo1());
@@ -209,6 +215,22 @@ class ServicioCombustibleModel
     public function setMarchamo2($marchamo2)
     {
         $this->marchamo2 = $marchamo2;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOdometro()
+    {
+        return $this->odometro;
+    }
+
+    /**
+     * @param mixed $odometro
+     */
+    public function setOdometro($odometro)
+    {
+        $this->odometro = $odometro;
     }
 
     /**
