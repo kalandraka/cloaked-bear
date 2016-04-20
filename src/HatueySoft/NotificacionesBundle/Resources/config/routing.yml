@@ -1,0 +1,16 @@
+notificaciones_list:
+    path: /list
+    defaults: { _controller: HatueySoftNotificacionesBundle:Notificaciones:list }
+
+notificaciones_show:
+    path: /{id}/show
+    defaults: { _controller: HatueySoftNotificacionesBundle:Notificaciones:show }
+
+notificaciones_delete:
+    path: /delete
+    defaults: { _controller: HatueySoftNotificacionesBundle:Notificaciones:delete }
+    requirements: { methods: post}
+
+HatueySoftNotificacionesBundle_config:
+    resource: "@HatueySoftNotificacionesBundle/Resources/config/config/config.yml"
+    prefix:   /config

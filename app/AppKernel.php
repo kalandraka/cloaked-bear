@@ -29,8 +29,8 @@ class AppKernel extends Kernel
             new HatueySoft\UploadBundle\HatueySoftUploadBundle(),
             new HatueySoft\SequenceBundle\HatueySoftSequenceBundle(),
             new HatueySoft\MenuBundle\HatueySoftMenuBundle(),
+            new HatueySoft\NotificacionesBundle\HatueySoftNotificacionesBundle(),
             new HatueySoft\DateTimeBundle\HatueySoftDateTimeBundle(),
-            new Buseta\NotificacionesBundle\BusetaNotificacionesBundle(),
 
             // extra bundles
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
@@ -40,7 +40,6 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
             new APY\BreadcrumbTrailBundle\APYBreadcrumbTrailBundle(),
-
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

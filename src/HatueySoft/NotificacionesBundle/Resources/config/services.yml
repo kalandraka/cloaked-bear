@@ -1,0 +1,45 @@
+parameters:
+    notificaciones.email.from: recaudadora@atsacr.com
+    notificaciones.sms.url: https://playsms.org/trial/index.php?app=ws
+    notificaciones.sms.user: buses
+    notificaciones.sms.token: a45a02791b2fe2fedb078c39fd83637a
+
+services:
+    #FORM SERVICES
+    notificaciones.config.type:
+        class: HatueySoft\NotificacionesBundle\Form\Type\ConfigNotificacionesType
+        arguments:
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: form.type, alias: notificaciones_config_type }
+
+    #MANAGERS
+    notificaciones.manager:
+        class: HatueySoft\NotificacionesBundle\Manager\NotificacionesManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @notificaciones.interna.manager
+            - @notificaciones.correo.manager
+            - @notificaciones.sms.manager
+
+    notificaciones.correo.manager:
+        class: HatueySoft\NotificacionesBundle\Manager\NotificacionesCorreoManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @security.token_storage
+            - @templating
+            - @mailer
+            - @service_container
+
+    notificaciones.interna.manager:
+        class: HatueySoft\NotificacionesBundle\Manager\NotificacionesInternaManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @security.token_storage
+            - @templating
+
+    notificaciones.sms.manager:
+        class: HatueySoft\NotificacionesBundle\Manager\NotificacionesSMSManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @service_container

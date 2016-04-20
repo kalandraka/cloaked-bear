@@ -1,0 +1,16 @@
+notificaciones_config_index:
+    path: /index
+    defaults: { _controller: HatueySoftNotificacionesBundle:ConfigNotificaciones:index }
+
+notificaciones_config_show:
+    path: /show
+    defaults: { _controller: HatueySoftNotificacionesBundle:ConfigNotificaciones:show }
+
+notificaciones_config_edit:
+    path: /{codigo}/edit
+    defaults: { _controller: HatueySoftNotificacionesBundle:ConfigNotificaciones:edit }
+
+notificaciones_config_update:
+    path: /{codigo}/update
+    defaults: { _controller: HatueySoftNotificacionesBundle:ConfigNotificaciones:update }
+    requirements: { methods: post }

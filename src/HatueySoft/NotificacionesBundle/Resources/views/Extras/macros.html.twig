@@ -1,0 +1,24 @@
+{% macro show_styles() %}
+    {{ 'table table-striped' }}
+{% endmacro %}
+
+{% macro table_styles() %}
+    {{ _self.show_styles() ~ ' table-bordered table-condensed table-hover' }}
+{% endmacro %}
+
+{% macro no_elements(colspan=8)%}
+    <tr><td colspan="{{ colspan }}">No existen elementos que mostrar.</td></tr>
+{% endmacro %}
+
+{% macro container_content(header_content, table_content, trans_domain) %}
+    <div class="block">
+        <div class="block-content collapse in">
+            {# TABLE HERE #}
+            {{ table_content }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro submit_button(label, trans_domain = 'HatueySoftNotificacionesBundle') %}
+    <input type="submit" class="btn btn-primary" value="{{ label | trans({}, trans_domain) }}" />
+{% endmacro %}

@@ -1,0 +1,219 @@
+{% extends "HatueySoftNotificacionesBundle::layout.html.twig" %}
+
+{% import 'HatueySoftNotificacionesBundle:Extras:macros.html.twig' as macros %}
+
+{% block header %} {{ 'notificaciones.configEdit' | trans({}, 'HatueySoftNotificacionesBundle') }} {% endblock %}
+
+{% set table_content %}
+<form action="{{ path('notificaciones_config_update',{ 'codigo' : codigo }) }}" method="post" {{ form_enctype(form) }}>
+    {% include 'HatueySoftNotificacionesBundle:ConfigNotificaciones:_form.html.twig' with {'form': form, 'macros': macros} %}
+</form>
+{% endset %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12">{{ macros.container_content(defaultNotificacion[codigo], table_content, 'HatueySoftNotificacionesBundle') }}</div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        //var _email_template = '<input type="hidden" id="notificaciones_config_type_correosDefinidos___name__" name="notificaciones_config_type[correosDefinidos][__name__]" />';
+        var $addEmailLink = $('a.add_email_link');
+        var $addNumeroLink = $('a.add_numero_link');
+
+        $(document).ready(function(){
+
+            initForm();
+
+            //preparando los enlaces para eliminar
+            updateDeleteLink();
+
+            $addEmailLink.on('click', function(e){
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                //select the reference collection(parent->div; parent->div; parent->form)
+                var collectionHolder = $(this).parent().parent().parent().find('._correos_definidos div#notificaciones_config_type_correosDefinidos');
+
+                var value = $(this).parent().find('input#notificaciones_config_type_correoSelector').val();
+
+                //add new email to list
+                addEmail(collectionHolder, value);
+                $(this).parent().find('input#notificaciones_config_type_numeroSelector').val("");
+            });
+
+            $addNumeroLink.on('click', function(e){
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                //select the reference collection(parent->div; parent->div; parent->form)
+                var collectionHolder = $(this).parent().parent().parent().find('._numeros_definidos div#notificaciones_config_type_numerosDefinidos');
+
+                var value = $(this).parent().find('input#notificaciones_config_type_numeroSelector').val();
+
+                //add new email to list
+                addNumero(collectionHolder, value);
+                $(this).parent().find('input#notificaciones_config_type_numeroSelector').val("");
+            });
+
+            $('#notificaciones_config_type_notificacionInterna').click(function(evento){
+                var notificacionInternaCheck = document.getElementById('notificaciones_config_type_notificacionInterna');
+                if(notificacionInternaCheck.checked){
+                    $('#notificaciones_config_type_usuariosDefinidos').attr('required', true);
+                    ocultarCamposCorreo();
+                    ocultarCamposSMS();
+                    mostrarCamposInterna();
+                    document.getElementById('notificaciones_config_type_notificacionSMS').checked = false;
+                    document.getElementById('notificaciones_config_type_notificacionCorreo').checked = false;
+                }
+                else{
+                    $('#notificaciones_config_type_usuariosDefinidos').attr('required', false);
+                }
+            });
+
+            $('#notificaciones_config_type_notificacionCorreo').on('change', function(evento){
+                var notificacionCorreoCheck = document.getElementById('notificaciones_config_type_notificacionCorreo');
+                if(notificacionCorreoCheck.checked){
+                    $('#notificaciones_config_type_correosDefinidos').attr('required', true);
+                    ocultarCamposInterna();
+                    ocultarCamposSMS();
+                    mostrarCamposCorreo();
+                    document.getElementById('notificaciones_config_type_notificacionSMS').checked = false;
+                    document.getElementById('notificaciones_config_type_notificacionInterna').checked = false;
+                }
+                else{
+                    $('#notificaciones_config_type_correosDefinidos').attr('required', false);
+                }
+
+            });
+
+            $('#notificaciones_config_type_notificacionSMS').on('change', function(evento){
+                var notificacionCorreoCheck = document.getElementById('notificaciones_config_type_notificacionSMS');
+                if(notificacionCorreoCheck.checked){
+                    $('#notificaciones_config_type_numerosDefinidos').attr('required', true);
+                    ocultarCamposInterna();
+                    ocultarCamposCorreo();
+                    mostrarCamposSMS();
+                    document.getElementById('notificaciones_config_type_notificacionCorreo').checked = false;
+                    document.getElementById('notificaciones_config_type_notificacionInterna').checked = false;
+                }
+                else{
+                    $('#notificaciones_config_type_numerosDefinidos').attr('required', false);
+                }
+
+            });
+
+            function initForm() {
+                if (document.getElementById('notificaciones_config_type_notificacionInterna').checked){
+                    ocultarCamposSMS();
+                    ocultarCamposCorreo();
+                    mostrarCamposInterna();
+                }
+                else if (document.getElementById('notificaciones_config_type_notificacionCorreo').checked){
+                    ocultarCamposInterna();
+                    ocultarCamposSMS();
+                    mostrarCamposCorreo();
+                }
+                else if (document.getElementById('notificaciones_config_type_notificacionSMS').checked){
+                    ocultarCamposInterna();
+                    ocultarCamposCorreo();
+                    mostrarCamposSMS();
+                }
+                else {
+                    document.getElementById('notificaciones_config_type_notificacionInterna').checked = true;
+                }
+            }
+
+            function addEmail(collectionHolder, value){
+                // Get the data-prototype explained earlier
+                var prototype = collectionHolder.data('prototype');
+
+                // get the new index
+                var index = collectionHolder.find('a.delete_link').length;
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = $(prototype.replace(/__name__/g, index));
+                newForm.val(value);
+
+                var divComponent = $('<span class="badge badge-info">' + value + ' '+'</span>')
+                        .append(newForm)
+                        .append($('<a class="delete_link" href="#"><i class="fa fa-remove"></i></a>'));
+
+                collectionHolder.append(divComponent);
+
+                updateDeleteLink();
+            }
+
+            function addNumero(collectionHolder, value){
+                // Get the data-prototype explained earlier
+                var prototype = collectionHolder.data('prototype');
+
+                // get the new index
+                var index = collectionHolder.find('a.delete_link').length;
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = $(prototype.replace(/__name__/g, index));
+                newForm.val(value);
+
+                var divComponent = $('<span class="badge badge-info">' + value + ' '+'</span>')
+                        .append(newForm)
+                        .append($('<a class="delete_link" href="#"><i class="fa fa-remove"></i></a>'));
+
+                collectionHolder.append(divComponent);
+
+                updateDeleteLink();
+            }
+
+            function updateDeleteLink(){
+                $('a.delete_link').on('click', function(e) {
+                    // prevent the link from creating a "#" on the URL
+                    e.preventDefault();
+
+                    // remove the li for the tag form
+                    $(this).parent().remove();
+                });
+            }
+
+            function ocultarCamposInterna() {
+                $('div._usuarios_definidos').attr('hidden', 'true');
+                $('div._asunto').attr('hidden', 'true');
+                $('#notificaciones_config_type_usuariosDefinidos').attr('required', false);
+            }
+
+            function ocultarCamposCorreo() {
+                $('div._correos_definidos').attr('hidden', 'true');
+                $('div._correo_selector').attr('hidden', 'true');
+                $('div._asunto').attr('hidden', 'true');
+                $('#notificaciones_config_type_correosDefinidos').attr('required', false);
+            }
+
+            function ocultarCamposSMS() {
+                $('div._numeros_definidos').attr('hidden', 'true');
+                $('div._numero_selector').attr('hidden', 'true');
+                $('div._asunto').attr('hidden', 'true');
+                $('#notificaciones_config_type_numerosDefinidos').attr('required', false);
+            }
+
+            function mostrarCamposInterna() {
+                $('div._usuarios_definidos').removeAttr('hidden');
+                $('div._asunto').removeAttr('hidden');
+            }
+
+            function mostrarCamposCorreo() {
+                $('div._correos_definidos').removeAttr('hidden');
+                $('div._correo_selector').removeAttr('hidden');
+                $('div._asunto').removeAttr('hidden');
+            }
+
+            function mostrarCamposSMS() {
+                $('div._numeros_definidos').removeAttr('hidden');
+                $('div._numero_selector').removeAttr('hidden');
+            }
+
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% form_theme form 'HatueySoftNotificacionesBundle:Widgets:collection_widget_notificaciones_config_emails.html.twig' %}
+
+<div class="_asunto">
+    {{ form_label(form.asunto) }}
+    {{ form_errors(form.asunto) }}
+    {{ form_widget(form.asunto,{'attr':{'class':'span12','placeholder':'Dejar en blanco para adoptar el propio nombre.'}}) }}
+</div>
+
+<div class="_correo_selector">
+    <div>
+        {{ form_label(form.correoSelector) }}
+        {{ form_errors(form.correoSelector) }}
+        {{ form_widget(form.correoSelector) }}
+        <a class="add_email_link btn btn-mini" style="margin-bottom: 8px;"><i class="fa fa-plus"></i> Adicionar</a>
+    </div>
+</div>
+
+<div class="_correos_definidos well well-small">
+    {{ form_errors(form.correosDefinidos) }}
+    {{ form_widget(form.correosDefinidos) }}
+</div>
+
+<div class="_usuarios_definidos">
+    {{ form_label(form.usuariosDefinidos) }}
+    {{ form_errors(form.usuariosDefinidos) }}
+    {{ form_widget(form.usuariosDefinidos,{'attr':{'class':'span12'}}) }}
+</div>
+
+<div class="_numero_selector">
+    <div>
+        {{ form_label(form.numeroSelector) }}
+        {{ form_errors(form.numeroSelector) }}
+        {{ form_widget(form.numeroSelector) }}
+        <a class="add_numero_link btn btn-mini" style="margin-bottom: 8px;"><i class="fa fa-plus"></i> Adicionar</a>
+    </div>
+</div>
+
+<div class="_numeros_definidos well well-small">
+    {{ form_errors(form.numerosDefinidos) }}
+    {{ form_widget(form.numerosDefinidos) }}
+</div>
+
+<div class="_notificacion_interna row-fluid">
+    {{ form_errors(form.notificacionInterna) }}
+    <div class="span12">Notificar Internamente {{ form_widget(form.notificacionInterna) }}</div>
+</div>
+
+<div class="_notificacion_correo row-fluid">
+    {{ form_errors(form.notificacionCorreo) }}
+    <div class="span12">Notificar por correo {{ form_widget(form.notificacionCorreo) }}</div>
+</div>
+
+<div class="_notificacion_sms row-fluid">
+    {{ form_errors(form.notificacionSMS) }}
+    <div class="span12">Notificar por SMS {{ form_widget(form.notificacionSMS) }}</div>
+</div>
+
+<div class="_activo row-fluid">
+    {{ form_errors(form.activo) }}
+    <div class="span12">Activo {{ form_widget(form.activo) }}</div>
+</div>
+
+{{ form_rest(form) }}
+
+{{ macros.submit_button('Salvar') }}
