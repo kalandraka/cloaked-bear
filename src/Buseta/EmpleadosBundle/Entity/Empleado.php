@@ -434,5 +434,17 @@ class Empleado
     {
         return $this->tipoEmpleado;
     }
+
+    /**
+     * @return string
+     */
+    function __toString()
+    {
+        return $this->nombres.' '.$this->apellidos;
+    }
+
+    public function getNombreCompleto(){
+        return $this->nombres . ' ' . $this->apellidos;
+    }
 }
 
