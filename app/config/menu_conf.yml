@@ -702,3 +702,19 @@ root:
                   disabled: false
                   attributes: { icon: null }
                   childrens: {  }
+        menu_G:
+          id: menu_G
+          name: menu_empleados
+          label: Empleados
+          route: empleados
+          roles:
+            - ROLE_SYSTEM_USER
+            - ROLE_ADMIN
+            - ROLE_SUPER_ADMIN
+          type: folder
+          disabled: true
+          attributes:
+            icon: 'fa fa-envelope'
+            color: bg-color-blue
+
+
