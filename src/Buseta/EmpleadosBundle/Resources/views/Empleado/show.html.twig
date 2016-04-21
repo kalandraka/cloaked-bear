@@ -1,0 +1,80 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Empleado</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombres</th>
+                <td>{{ entity.nombres }}</td>
+            </tr>
+            <tr>
+                <th>Apellidos</th>
+                <td>{{ entity.apellidos }}</td>
+            </tr>
+            <tr>
+                <th>Cedula</th>
+                <td>{{ entity.cedula }}</td>
+            </tr>
+            <tr>
+                <th>Genero</th>
+                <td>{{ entity.genero }}</td>
+            </tr>
+            <tr>
+                <th>Estadocivil</th>
+                <td>{{ entity.estadoCivil }}</td>
+            </tr>
+            <tr>
+                <th>Nacionalidad</th>
+                <td>{{ entity.nacionalidad }}</td>
+            </tr>
+            <tr>
+                <th>Direccion</th>
+                <td>{{ entity.direccion }}</td>
+            </tr>
+            <tr>
+                <th>Telefono</th>
+                <td>{{ entity.telefono }}</td>
+            </tr>
+            <tr>
+                <th>Fechanacimiento</th>
+                <td>{{ entity.fechaNacimiento|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Pin</th>
+                <td>{{ entity.pin }}</td>
+            </tr>
+            <tr>
+                <th>Codigobarras</th>
+                <td>{{ entity.codigoBarras }}</td>
+            </tr>
+            <tr>
+                <th>Hhrr</th>
+                <td>{{ entity.hhrr }}</td>
+            </tr>
+            <tr>
+                <th>Tipoempleado</th>
+                <td>{{ entity.tipoEmpleado }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('empleado') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('empleado_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

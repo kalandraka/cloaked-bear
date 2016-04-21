@@ -1,0 +1,65 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Empleado list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Cedula</th>
+                <th>Genero</th>
+                <th>Estadocivil</th>
+                <th>Nacionalidad</th>
+                <th>Direccion</th>
+                <th>Telefono</th>
+                <th>Fechanacimiento</th>
+                <th>Pin</th>
+                <th>Codigobarras</th>
+                <th>Hhrr</th>
+                <th>Tipoempleado</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('empleado_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.nombres }}</td>
+                <td>{{ entity.apellidos }}</td>
+                <td>{{ entity.cedula }}</td>
+                <td>{{ entity.genero }}</td>
+                <td>{{ entity.estadoCivil }}</td>
+                <td>{{ entity.nacionalidad }}</td>
+                <td>{{ entity.direccion }}</td>
+                <td>{{ entity.telefono }}</td>
+                <td>{% if entity.fechaNacimiento %}{{ entity.fechaNacimiento|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.pin }}</td>
+                <td>{{ entity.codigoBarras }}</td>
+                <td>{{ entity.hhrr }}</td>
+                <td>{{ entity.tipoEmpleado }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('empleado_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('empleado_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('empleado_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}
