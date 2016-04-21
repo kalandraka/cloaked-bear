@@ -40,6 +40,7 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
             new APY\BreadcrumbTrailBundle\APYBreadcrumbTrailBundle(),
+            new Buseta\EmpleadosBundle\BusetaEmpleadosBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
