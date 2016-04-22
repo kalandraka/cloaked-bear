@@ -56,3 +56,13 @@
         </div>
     </div>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $('#buseta_empleadosbundle_empleado_fechaNacimiento').datetimepicker({
+            'format': 'DD/MM/YYYY'
+        });
+    </script>
+
+{% endblock %}
