@@ -1,0 +1,35 @@
+multa:
+  importe_abogado: Importe pagado al abogado
+  valor: Valor
+  btn:
+    adicionar: Adicionar Multa
+  modal:
+    title: Crear Nueva Multa
+
+messages:
+  no_results: No existen elementos que mostrar.
+  unexpected_error: Ha ocurrido un error inesperado.
+  create.success: Se ha creado los datos de forma satisfactoria.
+  create.error.%key%: Ha ocurrido un error al crear una nueva entidad "key".
+  update.success: Se han actualizado los datos de forma satisfactoria.
+  update.error.%key%: Ha ocurrido un error al actualizar los datos de la entidad "key"
+  delete.success: Se ha eliminado la entidad de forma satisfactoria.
+  delete.error.%key%: Ha ocurrido un error intentando eliminar la entidad "key".
+  danger: Peligro
+
+actions:
+  confirm: Aceptar
+  save: Salvar
+  create: Crear
+  edit: Editar
+  delete: Eliminar
+  cancel: Cancelar
+  list: Listar
+
+estado:
+  CL: Cerrada
+  BO: Abierta
+  AP: Apelada
+  WN: Ganada
+  LS: Perdida
+  PA: Pagada

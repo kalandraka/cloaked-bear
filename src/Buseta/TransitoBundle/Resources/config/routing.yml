@@ -1,0 +1,11 @@
+transito_principal:
+    path:  /modulo/transito
+    defaults: { _controller: "BusetaTransitoBundle:Transito:principal" }
+
+BusetaTransitoBundle_transito:
+        resource: "@BusetaTransitoBundle/Resources/config/routing/transito.yml"
+        prefix:   /transito
+
+buseta_transito_multa:
+  resource: "@BusetaTransitoBundle/Controller/MultaController.php"
+  type:     annotation

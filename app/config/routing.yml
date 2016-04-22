@@ -1,3 +1,7 @@
+buseta_transito:
+    resource: "@BusetaTransitoBundle/Resources/config/routing.yml"
+    prefix:   /
+
 buseta_empleados:
     resource: "@BusetaEmpleadosBundle/Controller/"
     type:     annotation
@@ -52,7 +56,7 @@ easy_admin_bundle:
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
-hatuey_soft_notificaciones:
+hatueysoft_notificaciones:
     resource: "@HatueySoftNotificacionesBundle/Resources/config/routing.yml"
     prefix:   /notificaciones
 

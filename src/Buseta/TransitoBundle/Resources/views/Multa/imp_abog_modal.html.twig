@@ -1,0 +1,33 @@
+<div class="modal" id="form_abogado_modal" role="dialog" aria-labelledby="importeAbogadoForm"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="closeModal" type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title"
+                    id="importeAbogadoForm">{{ 'multa.importe_abogado'|trans({},'BusetaTransitoBundle') }}</h4>
+            </div>
+
+            <div class="modal-body">
+                    <label class="control-label">Importe abogado</label>
+                    <input id="buseta_transitobundle_multa_imp_abogado_in" class="form-control"
+                           value="0" type="number">
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-default" id="btn_abogado_cancel" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-chevron-left"></span>
+                    {{ 'actions.cancel' | trans({}, 'BusetaTransitoBundle') }}</a>
+                <a id="btn_multa_ganada" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-primary"></span>
+                    {{ 'actions.confirm' | trans({}, 'BusetaTransitoBundle') }}
+                </a>
+                <a id="btn_multa_perdida" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-primary"></span>
+                    {{ 'actions.confirm' | trans({}, 'BusetaTransitoBundle') }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

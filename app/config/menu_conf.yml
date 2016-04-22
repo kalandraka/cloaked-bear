@@ -665,6 +665,41 @@ root:
               disabled: false
               attributes: {  }
               childrens: {  }
+        menu_G:
+          id: menu_G
+          name: menu_transito
+          label: Tránsito
+          route: transito
+          roles:
+            - ROLE_USER
+          type: folder
+          disabled: false
+          attributes:
+            icon: 'fa fa-legal'
+            color: bg-color-purple
+          childrens:
+            menu_G_A:
+              id: menu_A_A
+              name: null
+              label: 'Gestión de multas'
+              route: null
+              roles:
+                - ROLE_USER
+              type: folder
+              disabled: false
+              attributes:
+                icon: 'fa fa-money'
+              childrens:
+                menu_G_A_A:
+                  id: menu_G_A_A
+                  name: null
+                  label: Multas
+                  route: multa
+                  roles: [ROLE_USER]
+                  type: item
+                  disabled: false
+                  attributes: { icon: null }
+                  childrens: {  }
         menu_N:
           id: menu_N
           name: menu_notificaciones

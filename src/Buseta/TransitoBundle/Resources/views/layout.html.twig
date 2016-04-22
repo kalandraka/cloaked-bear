@@ -1,0 +1,37 @@
+{% extends "::base.html.twig" %}
+
+{% block header %}{% endblock %}
+{% block header_right %}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/busetatemplate/css/g_transito.css') }}" media="screen">
+{% endblock %}
+
+{% block title %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header_superior_logo %}
+    {# Header Superior y logo #}
+    {% include 'BusetaTransitoBundle:Extras:header.html.twig'  %}
+{% endblock %}
+
+{% block left_menu_items %}
+    {# Left menu items #}
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            {{ knp_menu_render('BusetaTransitoBundle:MenuBuilder:mainMenu',{'currentClass': 'active', 'allow_safe_labels': true}) }}
+            <!-- /#side-menu -->
+        </div>
+        <!-- /.sidebar-collapse -->
+    </nav>
+    <!-- /.navbar-static-side -->
+{% endblock %}
+
+{% block content %}
+    {% block area_trabajo %}
+        Area trabajo
+    {% endblock %}
+{% endblock %}
+
+{% block javascripts %}{% endblock javascripts %}
