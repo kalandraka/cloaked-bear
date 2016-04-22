@@ -1,80 +1,79 @@
-{% extends '::base.html.twig' %}
+{% extends "BusetaEmpleadosBundle::layout.html.twig" %}
 
-{% block body -%}
-    <h1>Empleado</h1>
+{% block title block('header') %}
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Nombres</th>
-                <td>{{ entity.nombres }}</td>
-            </tr>
-            <tr>
-                <th>Apellidos</th>
-                <td>{{ entity.apellidos }}</td>
-            </tr>
-            <tr>
-                <th>Cedula</th>
-                <td>{{ entity.cedula }}</td>
-            </tr>
-            <tr>
-                <th>Genero</th>
-                <td>{{ entity.genero }}</td>
-            </tr>
-            <tr>
-                <th>Estadocivil</th>
-                <td>{{ entity.estadoCivil }}</td>
-            </tr>
-            <tr>
-                <th>Nacionalidad</th>
-                <td>{{ entity.nacionalidad }}</td>
-            </tr>
-            <tr>
-                <th>Direccion</th>
-                <td>{{ entity.direccion }}</td>
-            </tr>
-            <tr>
-                <th>Telefono</th>
-                <td>{{ entity.telefono }}</td>
-            </tr>
-            <tr>
-                <th>Fechanacimiento</th>
-                <td>{{ entity.fechaNacimiento|date('Y-m-d H:i:s') }}</td>
-            </tr>
-            <tr>
-                <th>Pin</th>
-                <td>{{ entity.pin }}</td>
-            </tr>
-            <tr>
-                <th>Codigobarras</th>
-                <td>{{ entity.codigoBarras }}</td>
-            </tr>
-            <tr>
-                <th>Hhrr</th>
-                <td>{{ entity.hhrr }}</td>
-            </tr>
-            <tr>
-                <th>Tipoempleado</th>
-                <td>{{ entity.tipoEmpleado }}</td>
-            </tr>
-        </tbody>
-    </table>
+    {% block header 'Ver Datos de Empleado' %}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('empleado') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('empleado_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
-{% endblock %}
+        {% block area_trabajo %}
+            <table class="table table-striped" style="font-size: 16px;">
+                <tbody>
+                <tr>
+                    <th>Nombres</th>
+                    <td>{{ entity.nombres }}</td>
+                </tr>
+                <tr>
+                    <th>Apellidos</th>
+                    <td>{{ entity.apellidos }}</td>
+                </tr>
+                <tr>
+                    <th>Cédula</th>
+                    <td>{{ entity.cedula }}</td>
+                </tr>
+                <tr>
+                    <th>Género</th>
+                    <td>{{ entity.genero }}</td>
+                </tr>
+                <tr>
+                    <th>Estado Civil</th>
+                    <td>{{ entity.estadoCivil }}</td>
+                </tr>
+                <tr>
+                    <th>Nacionalidad</th>
+                    <td>{{ entity.nacionalidad }}</td>
+                </tr>
+                <tr>
+                    <th>Dirección</th>
+                    <td>{{ entity.direccion }}</td>
+                </tr>
+                <tr>
+                    <th>Teléfono</th>
+                    <td>{{ entity.telefono }}</td>
+                </tr>
+                <tr>
+                    <th>Fecha de Nacimiento</th>
+                    <td>{{ entity.fechaNacimiento | date('d/m/Y') }}</td>
+                </tr>
+                <tr>
+                    <th>Pin</th>
+                    <td>{{ entity.pin }}</td>
+                </tr>
+                <tr>
+                    <th>Código de Barras</th>
+                    <td>{{ entity.codigoBarras }}</td>
+                </tr>
+                <tr>
+                    <th>HHRR</th>
+                    <td>{{ entity.hhrr }}</td>
+                </tr>
+                <tr>
+                    <th>Tipo de Empleado</th>
+                    <td>{{ entity.tipoEmpleado }}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="form-actions">
+                <a class="btn btn-primary" href="{{ path('empleado_edit', { 'id': entity.id }) }}"> Editar</a>
+                <a class="btn btn-primary" href="{{ path('empleado') }}"> Listado</a>
+                <a href="#delete" data-href="{{ path('empleado_delete', {'id': entity.id}) }}" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-trash"></span> {{ 'Borrar' }}
+                </a>
+            </div>
+        {% endblock %}
+        {% block contenido %}
+
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ parent() }}
+        {% endblock %}
