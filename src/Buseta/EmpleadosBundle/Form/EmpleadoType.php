@@ -15,22 +15,78 @@ class EmpleadoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombres')
-            ->add('apellidos')
-            ->add('cedula')
-            ->add('genero')
-            ->add('estadoCivil')
-            ->add('nacionalidad')
-            ->add('direccion')
-            ->add('telefono')
-            ->add('fechaNacimiento')
+            ->add('nombres', 'text', array(
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('apellidos', 'text', array(
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('cedula', 'text', array(
+                'required' => true,
+                'label' => 'Cédula',
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('genero', 'choice', array(
+                'label' => 'Género',
+                'choices' => array(
+                    'm' => 'Masculino',
+                    'f' => 'Femenino'
+                )
+            ))
+            ->add('estadoCivil','entity',array(
+                'class' => 'BusetaNomencladorBundle:EstadoCivil',
+                'placeholder' => '---Seleccione---',
+                'label' => 'Estado Civil',
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('nacionalidad','entity',array(
+                'class' => 'BusetaNomencladorBundle:Nacionalidad',
+                'placeholder' => '---Seleccione---',
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('direccion', 'textarea', array(
+                'required' => true,
+                'label' => 'Dirección',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('telefono', 'text', array(
+                'required' => true,
+                'label' => 'Teléfono',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
+            ->add('fechaNacimiento', 'date', array(
+                'widget' => 'single_text',
+                'label' => 'Fecha de Nacimiento',
+                'required' => false,
+                'format'  => 'dd/MM/yyyy',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
             ->add('pin')
             ->add('codigoBarras')
             ->add('hhrr')
-            ->add('tipoEmpleado')
-        ;
+            ->add('tipoEmpleado');
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
