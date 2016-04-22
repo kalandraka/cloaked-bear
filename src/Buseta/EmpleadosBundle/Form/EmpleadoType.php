@@ -84,7 +84,13 @@ class EmpleadoType extends AbstractType
             ->add('pin')
             ->add('codigoBarras')
             ->add('hhrr')
-            ->add('tipoEmpleado');
+            ->add('tipoEmpleado','choice',array(
+                'label'=>'Tipo de Empleado',
+                'choices' => array(
+                    'Mecanico' => 'Mecánico',
+                    'Chofer' => 'Chofer'
+                )
+            ));
     }
 
     /**
