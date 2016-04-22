@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             new Buseta\BodegaBundle\BusetaBodegaBundle(),
             new Buseta\TemplateBundle\BusetaTemplateBundle(),
             new Buseta\CombustibleBundle\BusetaCombustibleBundle(),
+            new Buseta\TransitoBundle\BusetaTransitoBundle(),
             new HatueySoft\SecurityBundle\HatueySoftSecurityBundle(),
             new HatueySoft\UploadBundle\HatueySoftUploadBundle(),
             new HatueySoft\SequenceBundle\HatueySoftSequenceBundle(),

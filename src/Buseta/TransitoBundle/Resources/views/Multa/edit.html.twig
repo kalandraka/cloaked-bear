@@ -1,0 +1,35 @@
+{% extends "BusetaTransitoBundle::layout.html.twig" %}
+
+{% block title block('header') %}
+
+{% block header 'Modificar Multa' %}
+
+{% block header_right %}
+    {% from '@BusetaTemplate/Macros/macros.html.twig' import documentState %}
+
+    <h4 class="pull-right">
+        {{ documentState(entity.estado, 'BusetaTransitoBundle') }}
+    </h4>
+{% endblock %}
+
+{% block area_trabajo %}
+
+    {% include '@BusetaTransito/Multa/form_template.html.twig' with {'form': edit_form} %}
+
+{% endblock area_trabajo %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $('input#transito_multa_fecha').datetimepicker({
+            'format': 'DD/MM/YYYY'
+        });
+        $('select#transito_multa_vehiculo').chosen();
+        $('select#transito_multa_chofer').chosen();
+        {% if entity.estado == 'WN' or entity.estado == 'LS'%}
+        $('div#multa_imp_abogado').css({visibility: 'visible'});
+        {% endif %}
+    </script>
+
+{% endblock %}

@@ -1,3 +1,7 @@
+buseta_transito:
+    resource: "@BusetaTransitoBundle/Resources/config/routing.yml"
+    prefix:   /
+
 buseta_combustible:
     resource: "@BusetaCombustibleBundle/Resources/config/routing.yml"
     prefix:   /
