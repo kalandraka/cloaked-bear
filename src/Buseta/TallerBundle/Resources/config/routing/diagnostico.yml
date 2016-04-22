@@ -29,9 +29,9 @@ diagnostico_delete:
     defaults: { _controller: "BusetaTallerBundle:Diagnostico:delete" }
     requirements: { methods: post|delete }
 
-diagnostico_generar_ordentrabajo:
-    path:  /{id}/generar_ordentrabajo
-    defaults: { _controller: "BusetaTallerBundle:Diagnostico:generarOrdenTrabajo" }
+diagnostico_crear_ordentrabajo:
+    path:  /{id}/crearOrden
+    defaults: { _controller: "BusetaTallerBundle:Diagnostico:crearOrden" }
 
 diagnostico_ajax_reporte_autobus:
   path: /select_reporte_autobus

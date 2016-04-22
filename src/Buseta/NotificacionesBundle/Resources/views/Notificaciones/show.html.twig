@@ -1,0 +1,27 @@
+{% extends "@BusetaNotificaciones/layout.html.twig" %}
+
+{% import '@BusetaTemplate/Macros/macros.html.twig' as macros %}
+
+{% block header %} {{ 'notificaciones.show' | trans({}, 'BusetaNotificacionesBundle') }} {% endblock %}
+
+{% set content %}
+<table class="{{ macros.table_styles }}">
+    <tr>
+        <th>Asunto</th><td>{{ notificacion.asunto }}</td>
+    </tr>
+    <tr>
+        <th>Generado</th><td>{{ notificacion.created | date('d/m/Y h:i') }}</td>
+    </tr>
+    <tr>
+        <th>Mensaje</th><td>{{ notificacion.mensaje | raw }}</td>
+    </tr>
+</table>
+
+<br/>
+<a class="btn" href="{{ path('notificaciones_list') }}">Volver</a>
+
+{% endset %}
+
+{% block content %}
+    {{ macros.container_content('notificaciones.show', content, 'BusetaNotificacionesBundle') }}
+{% endblock %}

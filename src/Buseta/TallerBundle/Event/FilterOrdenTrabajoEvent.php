@@ -19,6 +19,11 @@ class FilterOrdenTrabajoEvent extends Event
     private $orden;
 
     /**
+     * @var string|null
+     */
+    private $error;
+
+    /**
      * @param $orden
      */
     function __construct(OrdenTrabajo $orden)
@@ -39,5 +44,20 @@ class FilterOrdenTrabajoEvent extends Event
     public function setOrden(OrdenTrabajo $orden)
     {
         $this->orden = $orden;
+    }
+    /**
+     * @return string|null
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    /**
+     * @param string $error
+     */
+    public function setError($error)
+    {
+        $this->error = $error;
     }
 }

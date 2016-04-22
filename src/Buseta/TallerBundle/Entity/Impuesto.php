@@ -38,21 +38,7 @@ class Impuesto
      */
     private $numero;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\PedidoCompraLinea", mappedBy="impuesto", cascade={"all"})
-     */
-    private $pedido_compra_lineas;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\NecesidadMaterialLinea", mappedBy="impuesto", cascade={"all"})
-     */
-    private $necesidad_material_lineas;
-
-    /**
+     /**
      * @var string
      *
      * @ORM\Column(name="tipo", type="string", nullable=false)
@@ -73,8 +59,7 @@ class Impuesto
      */
     public function __construct()
     {
-        $this->pedido_compra_lineas = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->necesidad_material_lineas = new \Doctrine\Common\Collections\ArrayCollection();
+
     }
 
     /**
@@ -186,73 +171,5 @@ class Impuesto
     public function getNombre()
     {
         return $this->nombre;
-    }
-
-    /**
-     * Add pedido_compra_lineas.
-     *
-     * @param \Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas
-     *
-     * @return Impuesto
-     */
-    public function addPedidoCompraLinea(\Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas)
-    {
-        $this->pedido_compra_lineas[] = $pedidoCompraLineas;
-
-        return $this;
-    }
-
-    /**
-     * Remove pedido_compra_lineas.
-     *
-     * @param \Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas
-     */
-    public function removePedidoCompraLinea(\Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas)
-    {
-        $this->pedido_compra_lineas->removeElement($pedidoCompraLineas);
-    }
-
-    /**
-     * Add necesidad_material_lineas.
-     *
-     * @param \Buseta\BodegaBundle\Entity\NecesidadMaterialLinea $necesidadMaterialLineas
-     *
-     * @return Impuesto
-     */
-    public function addNecesidadMaterialLinea(\Buseta\BodegaBundle\Entity\NecesidadMaterialLinea $necesidadMaterialLineas)
-    {
-        $this->necesidad_material_lineas[] = $necesidadMaterialLineas;
-
-        return $this;
-    }
-
-    /**
-     * Remove necesidad_material_lineas.
-     *
-     * @param \Buseta\BodegaBundle\Entity\NecesidadMaterialLinea $necesidadMaterialLineas
-     */
-    public function removeNecesidadMaterialLinea(\Buseta\BodegaBundle\Entity\NecesidadMaterialLinea $necesidadMaterialLineas)
-    {
-        $this->pedido_compra_lineas->removeElement($necesidadMaterialLineas);
-    }
-
-    /**
-     * Get necesidad_material_lineas.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getNecesidadMaterialLineas()
-    {
-        return $this->necesidad_material_lineas;
-    }
-
-    /**
-     * Get pedido_compra_lineas.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPedidoCompraLineas()
-    {
-        return $this->pedido_compra_lineas;
     }
 }

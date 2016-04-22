@@ -20,7 +20,6 @@ class PedidoCompraModel
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
     private $numero_documento;
 

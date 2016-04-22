@@ -27,6 +27,10 @@ class AlbaranManager extends AbstractBodegaManager
         $albaran->setFechaMovimiento($model->getFechaMovimiento());
         $albaran->setFechaContable($model->getFechaContable());
 
+        if ($model->getNumeroDocumento() !== null){
+            $albaran->setNumeroDocumento($model->getNumeroDocumento());
+        }
+
         if ($model->getEstadoDocumento() !== null) {
             $albaran->setEstadoDocumento($model->getEstadoDocumento());
         }

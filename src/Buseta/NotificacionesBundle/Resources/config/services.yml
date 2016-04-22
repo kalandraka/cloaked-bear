@@ -1,0 +1,35 @@
+parameters:
+    notificaciones.email.from: recaudadora@atsacr.com
+
+services:
+    #FORM SERVICES
+    notificaciones.config.type:
+        class: Buseta\NotificacionesBundle\Form\Type\ConfigNotificacionesType
+        arguments:
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: form.type, alias: notificaciones_config_type }
+
+    #MANAGERS
+    notificaciones.manager:
+        class: Buseta\NotificacionesBundle\Manager\NotificacionesManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @notificaciones.interna.manager
+            - @notificaciones.correo.manager
+
+    notificaciones.correo.manager:
+        class: Buseta\NotificacionesBundle\Manager\NotificacionesCorreoManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @security.token_storage
+            - @templating
+            - @mailer
+            - @service_container
+
+    notificaciones.interna.manager:
+        class: Buseta\NotificacionesBundle\Manager\NotificacionesInternaManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @security.token_storage
+            - @templating

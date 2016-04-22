@@ -129,7 +129,7 @@
                 </td>
 
                 <td style="width: 18% !important; text-align: center;">
-                    {% if is_granted('VIEW', entity) %}
+                    {% if is_granted('SHOW', entity) %}
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs"
                            href="{{ path('diagnostico_show', { 'id': entity.id }) }}"><span

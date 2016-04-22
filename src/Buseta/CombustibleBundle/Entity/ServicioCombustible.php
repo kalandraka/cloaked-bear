@@ -56,10 +56,9 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
     /**
      * @var string
      *
-     * @ORM\Column(name="boleta", type="string")
+     * @ORM\Column(name="boleta", type="string", length=64, nullable=true)
      */
     private $boleta;
-
 
     /**
      * @var string

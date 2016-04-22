@@ -98,7 +98,7 @@
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ entity.realizadapor }}</td>
                     <td style="{{ color_fondo|raw }} {{ color_letra|raw }}">{{ tarea.fechaestimada |date('d/m/Y') }}</td>
                     <td style="width: 18% !important; text-align: center;  {{ color_fondo|raw }}">
-                    {% if is_granted('VIEW', entity) %}
+                    {% if is_granted('SHOW', entity) %}
                         <div class="btn-group">
                             <a class="btn btn-success btn-xs"
                                href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i
@@ -171,7 +171,7 @@
                         {{ ('estado.' ~ entity.estado) | trans({}, 'BusetaTallerBundle') | upper }}</span>
                     </td>
                     <td style="width: 18% !important; text-align: center; {{ color_fondo|raw }}">
-                        {% if is_granted('VIEW', entity) %}
+                        {% if is_granted('SHOW', entity) %}
                             <div class="btn-group">
                                 <a class="btn btn-success btn-xs"
                                    href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i

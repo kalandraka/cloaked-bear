@@ -7,12 +7,14 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use HatueySoft\SequenceBundle\Managers\SequenceManager;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Buseta\BodegaBundle\Form\Model\NecesidadMaterialModel;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class NecesidadMaterialType extends AbstractType
 {
@@ -26,7 +28,7 @@ class NecesidadMaterialType extends AbstractType
      */
     private $serviceContainer;
 
-    public function __construct(ObjectManager $em, Container $serviceContainer)
+    public function __construct(ObjectManager $em, ContainerInterface $serviceContainer)
     {
         $this->em = $em;
         $this->serviceContainer = $serviceContainer;
@@ -110,20 +112,6 @@ class NecesidadMaterialType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            /*->add('estado_documento', 'choice', array(
-                'required' => false,
-                'read_only' => true,
-                'placeholder' => '---Seleccione---',
-                'translation_domain' => 'BusetaTallerBundle',
-                'choices' => array(
-                    'CO' => 'estado.CO',
-                    'BO' => 'estado.BO',
-                    'PR' => 'estado.PR',
-                ),
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ))*/
             ->add('descuento', 'number', array(
                 'required'  => false,
                 'label'     => 'Descuento compra',
@@ -214,33 +202,22 @@ class NecesidadMaterialType extends AbstractType
         $form = $formEvent->getForm();
         $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
 
-        if ($sequenceManager->hasSequence('Buseta\BodegaBundle\Entity\NecesidadMaterial')) {
-            if ( $data->getNumeroDocumento() ) {
-                $secuencia = $data->getNumeroDocumento();
-            } else {
-                $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
-                $secuencia = $sequenceManager->getNextValue('necesidad_material_seq');
-            }
-
+        if ($data instanceof NecesidadMaterialModel && !$data->getNumeroDocumento()
+            && !$sequenceManager->hasSequence('Buseta\BodegaBundle\Entity\NecesidadMaterial')) {
+            $form->add('numeroDocumento', 'text', array(
+                'required' => true,
+                'label'  => 'Nro.Documento',
+                'constraints' => array(
+                    new NotBlank(),
+                )
+            ));
+        } elseif ($data instanceof NecesidadMaterialModel && $data->getNumeroDocumento()) {
             $form->add('numeroDocumento', 'text', array(
                 'required' => true,
                 'read_only' => true,
+                'data' => $data->getNumeroDocumento(),
                 'label'  => 'Nro.Documento',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-                'data' => $secuencia,
             ));
-
-        }  else {
-            $form->add('numeroDocumento', 'text', array(
-                'required' => true,
-                'label'  => 'Nro.Documento',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ));
-
         }
 
     }

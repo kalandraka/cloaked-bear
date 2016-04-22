@@ -1,18 +1,18 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 22/12/15
- * Time: 22:12
- */
-
 
 namespace Buseta\TallerBundle\EventListener;
 
+use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
+use Buseta\BodegaBundle\BusetaBodegaEvents;
+use Buseta\BodegaBundle\Event\BitacoraBodega\BitacoraAlbaranEvent;
+use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 use Buseta\TallerBundle\Event\FilterOrdenTrabajoEvent;
 use Buseta\TallerBundle\Event\OrdenTrabajoEvents;
 use Buseta\TallerBundle\Manager\OrdenTrabajoManager;
+use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use HatueySoft\SequenceBundle\Managers\SequenceManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class OrdenTrabajoSubscriber implements EventSubscriberInterface
 {
@@ -21,13 +21,25 @@ class OrdenTrabajoSubscriber implements EventSubscriberInterface
      */
     private $ordenTrabajoManager;
 
+    /**
+     * @var Logger
+     */
+    private $logger;
 
     /**
-     * @param \Buseta\TallerBundle\Manager\OrdenTrabajoManager $ordenTrabajoManager
+     * @var SequenceManager
      */
-    function __construct(OrdenTrabajoManager $ordenTrabajoManager)
+    private $sequenceManager;
+    /**
+     * @param \Buseta\TallerBundle\Manager\OrdenTrabajoManager $ordenTrabajoManager
+     * @param Logger $logger
+     * @param SequenceManager $sequenceManager
+     */
+    function __construct(OrdenTrabajoManager $ordenTrabajoManager,Logger $logger, SequenceManager $sequenceManager)
     {
         $this->ordenTrabajoManager = $ordenTrabajoManager;
+        $this->logger = $logger;
+        $this->sequenceManager = $sequenceManager;
     }
 
     /**
@@ -42,10 +54,16 @@ class OrdenTrabajoSubscriber implements EventSubscriberInterface
             OrdenTrabajoEvents::CAMBIAR_CANCELADO   => 'cambiarCancelado',
             OrdenTrabajoEvents::CAMBIAR_ESTADO_CERRADO   => 'cambioEstadoOrdenCerrado',
             OrdenTrabajoEvents::CAMBIAR_ESTADO_COMPLETADO  => 'cambioEstadoOrdenCompletado',
+            OrdenTrabajoEvents::ORDENTRABAJO_PRE_CREATE  => 'preCreate',
+            //OrdenTrabajoEvents::ORDENTRABAJO_POST_CREATE  => 'undefinedEvent',
+            OrdenTrabajoEvents::ORDENTRABAJO_PRE_PROCESS => 'preProcess',
+            //OrdenTrabajoEvents::ORDENTRABAJO_PROCESS  => 'undefinedEvent',
+            OrdenTrabajoEvents::ORDENTRABAJO_POST_PROCESS => 'postProcess',
+            OrdenTrabajoEvents::ORDENTRABAJO_PRE_COMPLETE => 'preComplete',
+            //OrdenTrabajoEvents::ORDENTRABAJO_COMPLETE => 'undefinedEvent',
+            //OrdenTrabajoEvents::ORDENTRABAJO_POST_COMPLETE => 'postComplete',
         );
     }
-
-
 
     public function cambiarCancelado(FilterOrdenTrabajoEvent $event)
     {
@@ -79,12 +97,52 @@ class OrdenTrabajoSubscriber implements EventSubscriberInterface
         $this->ordenTrabajoManager->cambiarEstado($orden, $estado);
     }
 
-//    public function crearSolicitudCompletada(FilterOrdenTrabajoEvent $event)
-//    {
-//        $orden = $event->getOrden();
-//
-//        $this->ordenTrabajoManager->crearSolicitudCompletada($orden);
-//
-//    }
+
+    /**
+     * @param FilterOrdenTrabajoEvent $event
+     *
+     * @throws \Exception
+     */
+    public function preCreate(FilterOrdenTrabajoEvent $event)
+    {
+        $ordenTrabajo = $event->getOrden();
+        if ($this->sequenceManager->hasSequence('Buseta\TallerBundle\Entity\OrdenTrabajo')) {
+            $ordenTrabajo->setNumero($this->sequenceManager->getNextValue('ot_seq'));
+        }
+    }
+
+    /**
+     * @param FilterOrdenTrabajoEvent $event
+     *
+     * @throws NotValidStateException
+     */
+    public function preProcess(FilterOrdenTrabajoEvent $event)
+    {
+        $ordenTrabajo = $event->getOrden();
+        if ($ordenTrabajo->getEstado() !== BusetaBodegaDocumentStatus::DOCUMENT_STATUS_DRAFT) {
+            throw new NotValidStateException();
+        }
+    }
+
+    /**
+     * @param FilterOrdenTrabajoEvent $event
+     */
+    public function postProcess(FilterOrdenTrabajoEvent $event)
+    {
+
+    }
+
+    /**
+     * @param FilterOrdenTrabajoEvent $event
+     *
+     * @throws NotValidStateException
+     */
+    public function preComplete(FilterOrdenTrabajoEvent $event)
+    {
+        $ordenTrabajo = $event->getOrden();
+        if ($ordenTrabajo->getEstado() !== BusetaBodegaDocumentStatus::DOCUMENT_STATUS_PROCESS) {
+            throw new NotValidStateException();
+        }
+    }
 
 }

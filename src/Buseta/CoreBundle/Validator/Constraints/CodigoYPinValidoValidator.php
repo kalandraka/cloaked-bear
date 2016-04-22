@@ -44,6 +44,10 @@ class CodigoYPinValidoValidator extends ConstraintValidator
      */
     public function validate($data, Constraint $constraint)
     {
+        if ($data->getChofer() === null) {
+            return ;
+        }
+
         //codigo barras del chofer
         $choferCodigoBarras = $data->getChofer()->getCodigoBarras();
 

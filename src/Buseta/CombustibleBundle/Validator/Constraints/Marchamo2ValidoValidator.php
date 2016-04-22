@@ -68,6 +68,9 @@ class Marchamo2ValidoValidator extends ConstraintValidator
 
         /** @var integer $marchamo2 */
         $marchamo2 = $data->getMarchamo2();
+        if ($marchamo2 === null) {
+            return ;
+        }
 
         $bodegaChecker = new FuncionesExtras();
 

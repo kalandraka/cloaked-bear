@@ -2,21 +2,26 @@
 
 namespace Buseta\TallerBundle\Controller;
 
+use Buseta\TallerBundle\Entity\OrdenTrabajo;
+use Buseta\TallerBundle\Entity\TareaAdicional;
 use Buseta\TallerBundle\Event\FilterDiagnosticoEvent;
 use Buseta\TallerBundle\Event\FilterReporteEvent;
 use Buseta\TallerBundle\Event\ReporteEvents;
 use Buseta\TallerBundle\Event\DiagnosticoEvents;
 use Buseta\TallerBundle\Entity\Diagnostico;
 use Buseta\TallerBundle\Entity\TareaDiagnostico;
+use Buseta\TallerBundle\Form\Model\DiagnosticoModel;
+use Buseta\TallerBundle\Form\Model\OrdenTrabajoModel;
 use Buseta\TallerBundle\Form\Type\ObservacionDiagnosticoType;
 use Buseta\TallerBundle\Form\Type\TareaDiagnosticoType;
 use Doctrine\ORM\AbstractQuery;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 use Buseta\TallerBundle\Form\Type\DiagnosticoType;
 use Buseta\TallerBundle\Form\Model\DiagnosticoFilterModel;
@@ -29,7 +34,7 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
  * @Route("/diagnostico")
  *
  * @Breadcrumb(title="Inicio", routeName="core_homepage")
- * @Breadcrumb(title="Módulo Estación de Servicios", routeName="taller_principal")
+ * @Breadcrumb(title="Módulo de Taller", routeName="taller_principal")
  *
  */
 class DiagnosticoController extends Controller
@@ -37,7 +42,7 @@ class DiagnosticoController extends Controller
 
     /**
      * @param $id
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function procesarDiagnosticoAction($id)
     {
@@ -146,7 +151,7 @@ class DiagnosticoController extends Controller
     /**
      * Finds and displays a Diagnostico entity.
      *
-     * @Security("is_granted('VIEW', diagnostico)")
+     * @Security("is_granted('SHOW', diagnostico)")
      *
      * @Route("/{id}/show", name="diagnostico_show")
      *
@@ -172,19 +177,25 @@ class DiagnosticoController extends Controller
     /**
      * Displays a form to edit an existing Diagnostico entity.
      *
-     * @Security("is_granted('EDIT', diagnostico)")
-     *
      * @Route("/{id}/edit", name="diagnostico_edit")
      *
      * @Breadcrumb(title="Modificar Diagnóstico", routeName="diagnostico_edit", routeParameters={"id"})
      */
-    public function editAction(Diagnostico $diagnostico)
+    public function editAction($id)
     {
-        $editForm = $this->createEditForm($diagnostico);
-        $deleteForm = $this->createDeleteForm($diagnostico->getId());
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('BusetaTallerBundle:Diagnostico')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Diagnostico entity.');
+        }
+
+        $editForm = $this->createEditForm(new DiagnosticoModel());
+        $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('BusetaTallerBundle:Diagnostico:edit.html.twig', array(
-            'entity' => $diagnostico,
+            'entity' => $entity,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -194,18 +205,16 @@ class DiagnosticoController extends Controller
     /**
      * Creates a form to edit a Diagnostico entity.
      *
-     * @param Diagnostico $entity The entity
+     * @param DiagnosticoModel $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(Diagnostico $entity)
+    private function createEditForm(DiagnosticoModel $entity)
     {
         $form = $this->createForm(new DiagnosticoType(), $entity, array(
             'action' => $this->generateUrl('diagnostico_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
-
-        //$form->add('submit', 'submit', array('label' => 'Actualizar'));
 
         return $form;
     }
@@ -222,7 +231,6 @@ class DiagnosticoController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('diagnostico_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            //->add('submit', 'submit', array('label' => 'Eliminar'))
             ->getForm();
     }
 
@@ -316,17 +324,11 @@ class DiagnosticoController extends Controller
      */
     public function newAction()
     {
-        $sequenceManager = $this->get('hatuey_soft.sequence.manager');
         $entity = new Diagnostico();
-
-        if ($sequenceManager->hasSequence(ClassUtils::getRealClass($entity))) {
-            $entity->setNumero($sequenceManager->getNextValue('diagnostico_seq'));
-        }
-
         $observacion = $this->createForm(new ObservacionDiagnosticoType());
         $tareadiagno = $this->createForm(new TareaDiagnosticoType());
 
-        $form = $this->createCreateForm($entity);
+        $form = $this->createCreateForm(new DiagnosticoModel());
 
         return $this->render('BusetaTallerBundle:Diagnostico:new.html.twig', array(
             'entity' => $entity,
@@ -339,13 +341,13 @@ class DiagnosticoController extends Controller
     /**
      * Creates a form to create a Diagnostico entity.
      *
-     * @param Diagnostico $entity The entity
+     * @param DiagnosticoModel $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Diagnostico $entity)
+    private function createCreateForm(DiagnosticoModel $entity)
     {
-        $form = $this->createForm(new DiagnosticoType(), $entity, array(
+        $form = $this->createForm('buseta_tallerbundle_diagnostico', $entity, array(
             'action' => $this->generateUrl('diagnostico_create'),
             'method' => 'POST',
         ));
@@ -365,43 +367,32 @@ class DiagnosticoController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new Diagnostico();
-        $tarea = new TareaDiagnostico();
-
-
-        //Esto me agrega solo la primera tarea, hacer que me las agregue todas
-        $tarea->setDiagnostico($entity);
-        $entity->addTareaDiagnostico($tarea);
-
-
-        $form = $this->createCreateForm($entity);
+        $diagnosticoModel = new DiagnosticoModel();
+        $form = $this->createCreateForm($diagnosticoModel);
 
         $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $trans  = $this->get('translator');
 
-        if ($form->isValid()) {
-            $em = $this->get('doctrine.orm.entity_manager');
+            $diagnosticoManager = $this->get('buseta.taller.diagnostico.manager');
 
-            try {
-                $em->persist($entity);
-                $em->flush();
+            if ($diagnostico = $diagnosticoManager->crear($diagnosticoModel)) {
+                $this->get('session')->getFlashBag()->add('success',
+                    $trans->trans(
+                        'messages.create.success',
+                        array(),
+                        'BusetaTallerBundle'
+                    )
+                );
 
-                $this->get('session')->getFlashBag()
-                    ->add('success', 'Se ha creado el Diagnóstico de forma satisfactoria.');
-
-                return $this->redirect($this->generateUrl('diagnostico_show', array('id' => $entity->getId())));
-            } catch (\Exception $e) {
-                $this->get('logger')
-                    ->addCritical(sprintf('Ha ocurrido un error creando el Diagnóstico. Detalles: %s',
-                        $e->getMessage()));
-
-                $this->get('session')->getFlashBag()
-                    ->add('danger', 'Ha ocurrido un error creando el Diagnóstico.');
+                return $this->redirect($this->generateUrl('diagnostico_show', array('id' => $diagnostico->getId())));
+            } else {
+                $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al crear Diagnostico');
             }
         }
 
-        return $this->render('BusetaTallerBundle:Diagnostico:new.html.twig', array(
-            'entity' => $entity,
-            'form' => $form->createView(),
+        return $this->render('@BusetaTaller/Diagnostico/new.html.twig', array(
+            'form' => $form->createView()
         ));
     }
 
@@ -489,5 +480,61 @@ class DiagnosticoController extends Controller
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
 
+    /**
+     * @param Diagnostico $diagnostico
+     *
+     * @return RedirectResponse
+     * @internal param $id
+     * @Route("/{id}/crearOrden", name="crearOrden")
+     * @Method("GET")
+     */
+    public function crearOrdenAction(Diagnostico $diagnostico)
+    {
+        $em         = $this->getDoctrine()->getManager();
+        $logger     = $this->get('logger');
+        $session    = $this->get('session');
+        $error      = false;
+
+        try {
+            $em->persist($diagnostico);
+            $em->flush();
+        } catch (\Exception $e) {
+            $logger->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
+            $session->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
+
+            $error = true;
+        }
+
+        if (!$error) {
+            $ordenTrabajoManager = $this->get('buseta.taller.ordentrabajo.manager');
+
+            $ordenTrabajoModel = new OrdenTrabajoModel();
+            $ordenTrabajoModel->setAutobus($diagnostico->getAutobus());
+            $ordenTrabajoModel->setDiagnostico($diagnostico);
+
+            foreach ($diagnostico->getTareaDiagnostico() as $tareaDiagnostico) {
+                /** @var \Buseta\TallerBundle\Entity\TareaDiagnostico $tareaDignostico */
+                $tareasAdicionales = new TareaAdicional();
+                $tareasAdicionales->setGrupo($tareasAdicionales->getGrupo());
+                $tareasAdicionales->setSubgrupo($tareasAdicionales->getSubgrupo());
+
+                $ordenTrabajoModel->addTareasAdicionales($tareasAdicionales);
+            }
+
+            //registro los datos del nueva OT que se crea al procesar el pedido
+            if ($ordenTrabajo = $ordenTrabajoManager->crear($ordenTrabajoModel)) {
+                $session->getFlashBag()->add('success', sprintf('Se ha creado la Orden de Trabajo "%s" para el Diagnóstico "%s".',
+                    $ordenTrabajo->getNumero(),
+                    $diagnostico->getNumero()
+                ));
+            } else {
+                $session->getFlashBag()->add('danger', sprintf('Ha ocurrido un error intentando crear la Orden de Trabajo para Diagnóstico "%s".',
+                    $diagnostico->getNumero()
+                ));
+            }
+        }
+
+        return $this->redirect($this->generateUrl('diagnostico_show', array('id' => $diagnostico->getId())));
+    }
 
 }

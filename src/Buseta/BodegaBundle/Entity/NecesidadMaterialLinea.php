@@ -64,7 +64,7 @@ class NecesidadMaterialLinea
     private $precio_unitario;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\Impuesto", inversedBy="necesidad_material_lineas")
+     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\Impuesto")
      */
     private $impuesto;
 

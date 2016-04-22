@@ -26,7 +26,8 @@ root:
           label: Vehículos
           route: autobus_principal
           roles:
-            - ROLE_USER
+            - ROLE_ADMIN
+            - ROLE_SUPER_ADMIN
           type: folder
           disabled: false
           attributes:
@@ -39,7 +40,8 @@ root:
               label: 'Gestión de vehículos'
               route: null
               roles:
-                - ROLE_USER
+                - ROLE_ADMIN
+                - ROLE_SUPER_ADMIN
               type: folder
               disabled: false
               attributes:
@@ -50,7 +52,7 @@ root:
                   name: null
                   label: Autobuses
                   route: autobus
-                  roles: [ROLE_USER]
+                  roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN]
                   type: item
                   disabled: false
                   attributes: { icon: null }
@@ -60,7 +62,7 @@ root:
                   name: null
                   label: Choferes
                   route: chofer
-                  roles: [ROLE_USER]
+                  roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN]
                   type: item
                   disabled: false
                   attributes: { icon: null }
@@ -70,7 +72,7 @@ root:
                   name: null
                   label: Vehículos
                   route: vehiculo
-                  roles: [ROLE_USER]
+                  roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN]
                   type: item
                   disabled: false
                   attributes: { icon: null }
@@ -81,7 +83,8 @@ root:
               label: Configuración
               route: null
               roles:
-                - ROLE_USER
+                - ROLE_ADMIN
+                - ROLE_SUPER_ADMIN
               type: folder
               disabled: false
               attributes:
@@ -92,7 +95,7 @@ root:
                   name: null
                   label: 'Cambio hora del sistema'
                   route: null
-                  roles: [ROLE_USER]
+                  roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN]
                   type: item
                   disabled: false
                   attributes: { icon: null }
@@ -102,7 +105,7 @@ root:
                   name: null
                   label: 'Cambio fecha del sistema'
                   route: null
-                  roles: [ROLE_USER]
+                  roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN]
                   type: item
                   disabled: false
                   attributes: { icon: null }
@@ -112,7 +115,7 @@ root:
                   name: null
                   label: 'Grupo Buses'
                   route: grupobuses
-                  roles: [ROLE_USER]
+                  roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -125,6 +128,7 @@ root:
           roles:
             - ROLE_ADMIN
             - ROLE_SUPER_ADMIN
+            - ROLE_BODEGUERO
           type: folder
           disabled: false
           attributes:
@@ -169,7 +173,7 @@ root:
               label: 'Gestión de Productos'
               route: null
               roles:
-                - ROLE_USER
+                - ROLE_BODEGUERO
               type: folder
               disabled: false
               attributes:
@@ -180,7 +184,7 @@ root:
                   name: null
                   label: Productos
                   route: producto
-                  roles: [ROLE_USER]
+                  roles: [ROLE_BODEGUERO]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -191,7 +195,7 @@ root:
               label: 'Gestión de Compras'
               route: null
               roles:
-                - ROLE_USER
+                - ROLE_BODEGUERO
               type: folder
               disabled: false
               attributes:
@@ -202,7 +206,7 @@ root:
                   name: null
                   label: 'Necesidad de Material'
                   route: necesidadmaterial
-                  roles: [ROLE_USER]
+                  roles: [ROLE_BODEGUERO]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -212,7 +216,7 @@ root:
                   name: null
                   label: 'Registro de Compra'
                   route: pedidocompra
-                  roles: [ROLE_USER]
+                  roles: [ROLE_BODEGUERO]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -222,7 +226,7 @@ root:
                   name: null
                   label: 'Orden de Entrada'
                   route: albaran
-                  roles: [ROLE_USER]
+                  roles: [ROLE_BODEGUERO]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -233,7 +237,7 @@ root:
               label: 'Gestión de Bodega'
               route: null
               roles:
-                - ROLE_USER
+                - ROLE_BODEGUERO
               type: folder
               disabled: false
               attributes:
@@ -244,7 +248,7 @@ root:
                   name: null
                   label: Bodegas
                   route: bodega
-                  roles: [ROLE_USER]
+                  roles: [ROLE_BODEGUERO]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -254,7 +258,7 @@ root:
                   name: null
                   label: 'Movimiento entre Bodegas'
                   route: movimiento
-                  roles: [ROLE_USER]
+                  roles: [ROLE_BODEGUERO]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -264,7 +268,7 @@ root:
                   name: null
                   label: 'Salida de Bodegas'
                   route: salidabodega
-                  roles: [ROLE_USER]
+                  roles: [ROLE_BODEGUERO]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -274,7 +278,7 @@ root:
                   name: null
                   label: 'Inventario Físico'
                   route: inventariofisico
-                  roles: [ROLE_USER]
+                  roles: [ROLE_BODEGUERO]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -284,7 +288,7 @@ root:
                   name: null
                   label: 'Maximos y Minimos'
                   route: productotope
-                  roles: [ROLE_USER]
+                  roles: [ROLE_BODEGUERO]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -295,7 +299,7 @@ root:
               label: Informes
               route: null
               roles:
-                - ROLE_USER
+                - ROLE_BODEGUERO
               type: folder
               disabled: false
               attributes:
@@ -306,7 +310,7 @@ root:
                   name: null
                   label: 'Informe de Stock'
                   route: bodega_informe_stock
-                  roles: [ROLE_USER]
+                  roles: [ROLE_BODEGUERO]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -316,7 +320,7 @@ root:
                   name: null
                   label: 'Informe de Movimientos'
                   route: movimiento_informe
-                  roles: [ROLE_USER]
+                  roles: [ROLE_BODEGUERO]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -326,7 +330,7 @@ root:
                   name: null
                   label: 'Informe de Costos'
                   route: bodega_informe_costos
-                  roles: [ROLE_USER]
+                  roles: [ROLE_BODEGUERO]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -336,7 +340,7 @@ root:
                   name: null
                   label: 'Bitacora general'
                   route: bitacoraalmacen
-                  roles: [ROLE_ADMIN]
+                  roles: [ROLE_BODEGUERO]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -346,7 +350,7 @@ root:
                   name: null
                   label: 'Bitacora de seriales'
                   route: bitacoraserial
-                  roles: [ROLE_ADMIN]
+                  roles: [ROLE_BODEGUERO]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -357,7 +361,8 @@ root:
               label: Configuración
               route: null
               roles:
-                - ROLE_USER
+                - ROLE_ADMIN
+                - ROLE_SUPER_ADMIN
               type: folder
               disabled: false
               attributes:
@@ -383,23 +388,15 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
-                menu_B_F_C:
-                  id: menu_B_F_C
-                  name: null
-                  label: Impuesto
-                  route: impuesto
-                  roles: [ROLE_USER]
-                  type: item
-                  disabled: false
-                  attributes: {  }
-                  childrens: {  }
         menu_C:
           id: menu_C
           name: menu_taller
-          label: Estación de Servicios
+          label: 'Estación de Servicios'
           route: taller_principal
           roles:
-            - ROLE_USER
+            - ROLE_ADMIN
+            - ROLE_SUPER_ADMIN
+            - ROLE_SOLICITUD
           type: folder
           disabled: false
           attributes:
@@ -412,7 +409,7 @@ root:
               label: Solicitudes
               route: reporte
               roles:
-                - ROLE_USER
+                - ROLE_SOLICITUD
               type: item
               disabled: false
               attributes:
@@ -488,7 +485,9 @@ root:
           label: Combustible
           route: servicioCombustible
           roles:
-            - ROLE_USER
+            - ROLE_ADMIN
+            - ROLE_SUPER_ADMIN
+            - ROLE_COMBUSTIBLE
           type: folder
           disabled: false
           attributes:
@@ -512,7 +511,7 @@ root:
                   name: null
                   label: 'Lista Negra de Combustible'
                   route: listaNegraCombustible
-                  roles: [ROLE_USER]
+                  roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -522,7 +521,7 @@ root:
                   name: null
                   label: 'Servicios de Combustible'
                   route: servicioCombustible
-                  roles: [ROLE_USER]
+                  roles: [ROLE_COMBUSTIBLE]
                   type: item
                   disabled: false
                   attributes: {  }
@@ -533,7 +532,8 @@ root:
               label: Configuración
               route: null
               roles:
-                - ROLE_USER
+                - ROLE_ADMIN
+                - ROLE_SUPER_ADMIN
               type: folder
               disabled: false
               attributes:
@@ -565,7 +565,8 @@ root:
           label: 'Módulo Nomenclador'
           route: admin
           roles:
-            - ROLE_USER
+            - ROLE_ADMIN
+            - ROLE_SUPER_ADMIN
           type: item
           disabled: false
           attributes:
@@ -578,7 +579,7 @@ root:
           label: 'Módulo Seguridad'
           route: security_usuario
           roles:
-            - ROLE_USER
+            - ROLE_SUPER_ADMIN
           type: folder
           disabled: false
           attributes:
@@ -591,7 +592,7 @@ root:
               label: Usuarios
               route: security_usuario
               roles:
-                - ROLE_USER
+                - ROLE_SUPER_ADMIN
               type: item
               disabled: false
               attributes:
@@ -603,7 +604,7 @@ root:
               label: Roles
               route: role_manager
               roles:
-                - ROLE_USER
+                - ROLE_SUPER_ADMIN
               type: item
               disabled: false
               attributes: {  }
@@ -614,7 +615,7 @@ root:
               label: Rutas
               route: role_grants
               roles:
-                - ROLE_USER
+                - ROLE_SUPER_ADMIN
               type: item
               disabled: false
               attributes: {  }
@@ -625,7 +626,7 @@ root:
               label: 'Reglas ACL'
               route: aclrules
               roles:
-                - ROLE_USER
+                - ROLE_SUPER_ADMIN
               type: item
               disabled: false
               attributes: {  }
@@ -636,7 +637,7 @@ root:
               label: Secuencia
               route: sequence
               roles:
-                - ROLE_USER
+                - ROLE_SUPER_ADMIN
               type: item
               disabled: false
               attributes: {  }
@@ -647,43 +648,46 @@ root:
               label: Menú
               route: hatueysoft_menu
               roles:
-                - ROLE_USER
+                - ROLE_SUPER_ADMIN
               type: item
               disabled: false
               attributes: {  }
               childrens: {  }
-        menu_G:
-          id: menu_G
-          name: menu_transito
-          label: Tránsito
-          route: transito
+        menu_N:
+          id: menu_N
+          name: menu_notificaciones
+          label: Notificaciones
+          route: notificaciones_list
           roles:
-            - ROLE_USER
+            - ROLE_SYSTEM_USER
+            - ROLE_ADMIN
+            - ROLE_SUPER_ADMIN
           type: folder
-          disabled: false
+          disabled: true
           attributes:
-            icon: 'fa fa-legal'
-            color: bg-color-purple
+            icon: 'fa fa-envelope'
+            color: bg-color-blue
           childrens:
-            menu_G_A:
-              id: menu_A_A
+            menu_N_A:
+              id: menu_N_A
               name: null
-              label: 'Gestión de multas'
+              label: 'Configurar notificaciones'
               route: null
               roles:
                 - ROLE_USER
               type: folder
               disabled: false
               attributes:
-                icon: 'fa fa-money'
+                icon: 'fa fa-envelope'
               childrens:
-                menu_G_A_A:
-                  id: menu_G_A_A
+                menu_N_A_A:
+                  id: menu_N_A_A
                   name: null
-                  label: Multas
-                  route: multa
+                  label: 'Tipos de notificaciones'
+                  route: notificaciones_config_index
                   roles: [ROLE_USER]
                   type: item
                   disabled: false
                   attributes: { icon: null }
                   childrens: {  }
+

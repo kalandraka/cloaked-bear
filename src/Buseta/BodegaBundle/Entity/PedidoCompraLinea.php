@@ -64,7 +64,7 @@ class PedidoCompraLinea
     private $precio_unitario;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\Impuesto", inversedBy="pedido_compra_lineas")
+     * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\Impuesto")
      */
     private $impuesto;
 

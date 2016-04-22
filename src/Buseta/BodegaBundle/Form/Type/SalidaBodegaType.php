@@ -89,12 +89,9 @@ class SalidaBodegaType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('control_entrega_material', 'text', array(
-                'required' => false,
+            ->add('controlEntregaMaterial', 'text', array(
+                'required' => true,
                 'label'  => 'Control Entrega de Materiales',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
             ))
         ;
     }

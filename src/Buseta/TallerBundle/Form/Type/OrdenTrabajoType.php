@@ -2,9 +2,13 @@
 
 namespace Buseta\TallerBundle\Form\Type;
 
+use Buseta\TallerBundle\Form\Model\OrdenTrabajoModel;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Buseta\TallerBundle\Form\EventListener\AddAutobusFieldSubscriber;
 use Buseta\TallerBundle\Form\EventListener\AddDiagnosticadoporFieldSubscriber;
@@ -12,6 +16,8 @@ use Buseta\TallerBundle\Form\EventListener\AddKilometrajeFieldSubscriber;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Util\ClassUtils;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 
 class OrdenTrabajoType extends AbstractType
 {
@@ -21,35 +27,33 @@ class OrdenTrabajoType extends AbstractType
     private $tokenStorage;
 
     /**
+     * @var Container
+     */
+    private $serviceContainer;
+
+    /**
      * Constructor
      *
-     * @param SecurityContextInterface $tokenStorage
+     * @param TokenStorageInterface|SecurityContextInterface $tokenStorage
+     * @param Container                                      $serviceContainer
      */
-    function __construct(TokenStorageInterface $tokenStorage)
+    function __construct(TokenStorageInterface $tokenStorage, Container $serviceContainer)
     {
         $this->tokenStorage = $tokenStorage;
+        $this->serviceContainer = $serviceContainer;
     }
-
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-//        $builder->addEventSubscriber(new AddAutobusFieldSubscriber());
-//        $builder->addEventSubscriber(new AddDiagnosticadoporFieldSubscriber());
-//        $builder->addEventSubscriber(new AddKilometrajeFieldSubscriber());
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'preSetData'));
         $attr['readonly'] = true;
         $builder
             ->add('id', 'hidden',  array(
                 'required' => false,
-            ))
-            ->add('numero', 'text', array(
-                'required' => false,
-                'label'  => 'Número',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
+                'virtual' => true,
             ))
             ->add('requisionMateriales', 'text', array(
                     'required' => false,
@@ -103,14 +107,6 @@ class OrdenTrabajoType extends AbstractType
                     return $qb;
                 },
             ))
-//            ->add('cancelado', null, array(
-//                'label' => 'Cancelado',
-//                'required' => false,
-//                'attr' => array(
-//                    'class' => 'form-control',
-//                )
-//            ))
-
 
             ->add('diagnosticadoPor', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Tercero',
@@ -263,7 +259,7 @@ class OrdenTrabajoType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\TallerBundle\Entity\OrdenTrabajo',
+            'data_class' => 'Buseta\TallerBundle\Form\Model\OrdenTrabajoModel',
         ));
     }
 
@@ -274,4 +270,32 @@ class OrdenTrabajoType extends AbstractType
     {
         return 'buseta_tallerbundle_ordentrabajo';
     }
+
+    public function preSetData(FormEvent $formEvent)
+    {
+        $data = $formEvent->getData();
+        $form = $formEvent->getForm();
+        $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
+
+        if ($data instanceof OrdenTrabajoModel && !$data->getNumero()
+            && !$sequenceManager->hasSequence('Buseta\TallerBundle\Entity\OrdenTrabajo')) {
+            $form->add('numero', 'text', array(
+                'required' => true,
+                'label'  => 'Número',
+                'constraints' => array(
+                    new NotBlank(),
+                )
+            ));
+        } elseif ($data instanceof OrdenTrabajoModel && $data->getNumero()) {
+            $form->add('numero', 'text', array(
+                'required' => true,
+                'read_only' => true,
+                'data' => $data->getNumero(),
+                'label'  => 'Número',
+            ));
+        }
+
+    }
+
+
 }

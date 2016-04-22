@@ -1,0 +1,16 @@
+notificaciones_list:
+    path: /list
+    defaults: { _controller: BusetaNotificacionesBundle:Notificaciones:list }
+
+notificaciones_show:
+    path: /{id}/show
+    defaults: { _controller: BusetaNotificacionesBundle:Notificaciones:show }
+
+notificaciones_delete:
+    path: /delete
+    defaults: { _controller: BusetaNotificacionesBundle:Notificaciones:delete }
+    requirements: { methods: post}
+
+BusetaNotificacionesBundle_config:
+    resource: "@BusetaNotificacionesBundle/Resources/config/config/config.yml"
+    prefix:   /config

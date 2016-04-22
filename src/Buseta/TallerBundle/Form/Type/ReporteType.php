@@ -2,40 +2,45 @@
 
 namespace Buseta\TallerBundle\Form\Type;
 
+use Buseta\TallerBundle\Form\Model\ReporteModel;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use HatueySoft\SequenceBundle\Managers\SequenceManager;
+use Symfony\Component\DependencyInjection\Dump\Container;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ReporteType extends AbstractType
 {
-        /**
+
+    /**
+     * @var ObjectManager
+     */
+    private $em;
+
+    /**
+     * @var SequenceManager
+     */
+    private $sequenceManager;
+
+    public function __construct(ObjectManager $em, SequenceManager $sequenceManager)
+    {
+        $this->em = $em;
+        $this->sequenceManager = $sequenceManager;
+    }
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $formEvent) {
-            $form = $formEvent->getForm();
-            $data = $formEvent->getData();
-
-            $propertyAccesor = PropertyAccess::createPropertyAccessor();
-            $numero = $propertyAccesor->getValue($data, 'numero');
-            $attr = array();
-            if ($numero !== null) {
-                $attr['readonly'] = true;
-            }
-
-            $form->add('numero', 'text', array(
-                'required' => false,
-                'label'  => 'Número',
-                'attr' => $attr,
-            ));
-        });
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'preSetData'));
         $builder
             ->add('autobus','entity',array(
                 'class' => 'BusetaBusesBundle:Autobus',
@@ -91,20 +96,6 @@ class ReporteType extends AbstractType
                 'required' => false,
                 'label'  => 'Teléfono Persona',
             ))
-//            ->add('estado', 'choice', array(
-//                'required' => false,
-//                'placeholder' => '---Seleccione---',
-//                'translation_domain' => 'BusetaTallerBundle',
-//                'choices' => array(
-//                    'CO' => 'estado.CO',
-//                    'BO' => 'estado.BO',
-//                    'PR' => 'estado.PR',
-//                ),
-//                'attr'   => array(
-//                    'class' => 'form-control',
-//                    'disabled' => 'disabled',
-//                ),
-//            ))
         ;
     }
 
@@ -114,7 +105,7 @@ class ReporteType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\TallerBundle\Entity\Reporte'
+            'data_class' => 'Buseta\TallerBundle\Form\Model\ReporteModel'
         ));
     }
 
@@ -124,5 +115,31 @@ class ReporteType extends AbstractType
     public function getName()
     {
         return 'buseta_tallerbundle_reporte';
+    }
+
+    public function preSetData(FormEvent $formEvent)
+    {
+        $data = $formEvent->getData();
+        $form = $formEvent->getForm();
+        $sequenceManager = $this->sequenceManager;
+
+        if ($data instanceof ReporteModel && !$data->getNumero()
+            && !$sequenceManager->hasSequence('Buseta\TallerBundle\Entity\Reporte')) {
+            $form->add('numero', 'text', array(
+                'required' => true,
+                'label'  => 'Número',
+                'constraints' => array(
+                    new NotBlank(),
+                )
+            ));
+        } elseif ($data instanceof ReporteModel && $data->getNumero()) {
+            $form->add('numero', 'text', array(
+                'required' => true,
+                'read_only' => true,
+                'data' => $data->getNumero(),
+                'label'  => 'Número',
+            ));
+        }
+
     }
 }

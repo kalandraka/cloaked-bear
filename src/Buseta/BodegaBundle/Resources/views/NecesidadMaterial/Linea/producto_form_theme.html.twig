@@ -8,11 +8,13 @@
                 </optgroup>
             {%- else -%}
                 {% set alt_search = choice.data.codigo %}
+                {#
                 {% for costo in choice.data.costoProducto %}
                     {% if costo.codigoAlternativo %}
                         {% set alt_search = alt_search ~ ' ' ~ costo.codigoAlternativo %}
                     {% endif %}
                 {% endfor %}
+                #}
                 <option data-alt-search="{{ alt_search }}" value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice.label|trans({}, translation_domain) }}</option>
             {%- endif -%}
         {% endfor %}

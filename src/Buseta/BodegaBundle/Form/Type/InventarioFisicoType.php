@@ -69,20 +69,6 @@ class InventarioFisicoType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('estado', 'choice', array(
-                'required' => false,
-                'read_only' => true,
-                'placeholder' => '---Seleccione---',
-                'translation_domain' => 'BusetaTallerBundle',
-                'choices' => array(
-                    'CO' => 'estado.CO',
-                    'BO' => 'estado.BO',
-                    'PR' => 'estado.PR',
-                ),
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
-            ))
             ->add('inventarioFisicoLinea', 'collection', array(
                 'type' => new InventarioFisicoLineaType(),
                 'label'  => false,

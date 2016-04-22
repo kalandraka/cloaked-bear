@@ -14,3 +14,7 @@ parameters:
 
     # Easy Admin Nomenclators CSS Assets
     nomenclator.assets.css: 'bundles/busetanomenclador/css/admin.css'
+
+    # Configuración para api de boletas(Sistema Recaudadora)
+    recaudadora.boletas_api_server_hostname: buses.recaudadora.localhost
+    recaudadora.boletas_api_server_port: 80

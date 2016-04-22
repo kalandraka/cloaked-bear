@@ -8,6 +8,7 @@ use Buseta\BodegaBundle\Form\Model\AlbaranModel;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,7 +30,7 @@ class AlbaranType extends AbstractType
      */
     private $serviceContainer;
 
-    public function __construct(ObjectManager $em, Container $serviceContainer)
+    public function __construct(ObjectManager $em, ContainerInterface $serviceContainer)
     {
         $this->em = $em;
         $this->serviceContainer = $serviceContainer;
@@ -130,8 +131,9 @@ class AlbaranType extends AbstractType
         $data = $formEvent->getData();
         $form = $formEvent->getForm();
         $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
-
-        if (!$sequenceManager->hasSequence('Buseta\BodegaBundle\Entity\Albaran')) {
+dump($data);
+        if ($data instanceof AlbaranModel && !$data->getNumeroDocumento()
+            && !$sequenceManager->hasSequence('Buseta\BodegaBundle\Entity\Albaran')) {
             $form->add('numeroDocumento', 'text', array(
                 'required' => true,
                 'label'  => 'Nro.Documento',

@@ -27,7 +27,7 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
-        version_sistema: beta4
+        version_sistema: alpha_v1
     form:
         resources: ['BusetaTemplateBundle:Form:fields.html.twig']
 
@@ -137,6 +137,9 @@ easy_admin:
         cajaChica:
             class: Buseta\NomencladorBundle\Entity\CajaChica
             label: 'Caja Chica'
+        categoriaProducto:
+            class: Buseta\BodegaBundle\Entity\CategoriaProducto
+            label: 'Categoría Producto'
         color:
             class: Buseta\NomencladorBundle\Entity\Color
             label: 'Color'
@@ -170,6 +173,30 @@ easy_admin:
         impuesto:
             class: Buseta\TallerBundle\Entity\Impuesto
             label: 'Impuesto'
+            list:
+                fields:
+                    - 'nombre'
+                    - { property: 'numero', label: 'Número' }
+                    - { property: 'tipo' }
+                    - 'tarifa'
+            show:
+                fields:
+                    - 'nombre'
+                    - { property: 'numero', label: 'Número' }
+                    - 'tipo'
+                    - 'tarifa'
+            new:
+                fields:
+                    - 'nombre'
+                    - { property: 'numero', label: 'Número' }
+                    - { property: 'tipo', type: 'choice', type_options: { placeholder: '---Seleccione---', choices: {fijo: 'Fijo', porcentaje: 'Porcentaje (%)' } } }
+                    - { property: 'tarifa', type: 'number', format: '%.2f' }
+            edit:
+                fields:
+                    - 'nombre'
+                    - { property: 'numero', label: 'Número' }
+                    - { property: 'tipo', type: 'choice', type_options: { placeholder: '---Seleccione---', choices: {fijo: 'Fijo', porcentaje: 'Porcentaje (%)' } } }
+                    - { property: 'tarifa', type: 'number', format: '%.2f' }
         mantenimientoPorcientoCumplido:
             class: Buseta\NomencladorBundle\Entity\MantenimientoPorcientoCumplido
             label: 'Mantenimiento % Cumplido'
@@ -222,33 +249,57 @@ hatuey_soft_security:
     acl:
         symfony_acl: false
         entities:
-            reporte:
-                    class: Buseta\TallerBundle\Entity\Reporte
-                    label: 'Reporte de Transacciones'
-                    rules:
-                             - !
-                             - { code: 'aa', icon: 'book' }
-                             - { code: 'cc' }
-                             - { code: 'show' }
-            trabajador:
-                    class: Buseta\TallerBundle\Entity\Trabajador
-                    label: 'Trabajador de Planilla'
-                    rules:
-                             - { code: pasaraborrador, icon: 'book' }
-                             - { code: 'cc' }
-                             - { code: '!show' }
-            diagnostico:
-                    class: Buseta\TallerBundle\Entity\Diagnostico
-                    rules: [ terminar , delete , { code: 'list', label: 'LISTADOOOOOOO',  icon: 'leaf' } ]
-            ordentrabajo:
-                    class: Buseta\TallerBundle\Entity\OrdenTrabajo
-                    rules: [ !list , !search ]
-            bodega:
-                    class: Buseta\BodegaBundle\Entity\Bodega
+            reporte: Buseta\TallerBundle\Entity\Reporte
+            diagnostico: Buseta\TallerBundle\Entity\Diagnostico
+            ordentrabajo: Buseta\TallerBundle\Entity\OrdenTrabajo
+#            reporte:
+#                    class: Buseta\TallerBundle\Entity\Reporte
+#                    label: 'Reporte de Transacciones'
+#                    rules:
+#                             - !
+#                             - { code: 'aa', icon: 'book' }
+#                             - { code: 'cc' }
+#                             - { code: 'show' }
+#            trabajador:
+#                    class: Buseta\TallerBundle\Entity\Trabajador
+#                    label: 'Trabajador de Planilla'
+#                    rules:
+#                             - { code: pasaraborrador, icon: 'book' }
+#                             - { code: 'cc' }
+#                             - { code: '!show' }
+#            diagnostico:
+#                    class: Buseta\TallerBundle\Entity\Diagnostico
+#                    rules: [ terminar , delete , { code: 'list', label: 'LISTADOOOOOOO',  icon: 'leaf' } ]
+#            ordentrabajo:
+#                    class: Buseta\TallerBundle\Entity\OrdenTrabajo
+#                    rules: [ !list , !search ]
+#            bodega:
+#                    class: Buseta\BodegaBundle\Entity\Bodega
+#                    rules: []
+#            almacen:
+#                    class: Buseta\BodegaBundle\Entity\Almacen
+#            usuario: Buseta\TallerBundle\Entity\Usuario
+            albaran:
+                    class: Buseta\BodegaBundle\Entity\Albaran
+                    rules: []
+            inventariofisico:
+                    class: Buseta\BodegaBundle\Entity\InventarioFisico
+                    rules: []
+            salidabodega:
+                    class: Buseta\BodegaBundle\Entity\SalidaBodega
+                    rules: []
+            producto:
+                    class: Buseta\BodegaBundle\Entity\Producto
+                    rules: []
+            pedidocompra:
+                    class: Buseta\BodegaBundle\Entity\PedidoCompra
                     rules: []
             almacen:
                     class: Buseta\BodegaBundle\Entity\Almacen
-            usuario: Buseta\TallerBundle\Entity\Usuario
+            movimiento:
+                    class: Buseta\BodegaBundle\Entity\Movimiento
+                    rules: []
+
 
 #    acl:
 #        entities:
@@ -285,5 +336,5 @@ services:
 
 buseta_combustible:
     server:
-        address: "localhost"
-        port: "80"
+        address: "%recaudadora.boletas_api_server_hostname%"
+        port: "%recaudadora.boletas_api_server_port%"

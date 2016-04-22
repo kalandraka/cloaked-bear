@@ -349,6 +349,26 @@ var lineas = {
         if (costo != undefined && costo != null) {
             $('#' + lineas.form_id + '_precio_unitario').val(costo);
         }
+
+        //obtener la moneda del proveedor seleccionado
+        var terceroID = $this.parent().prev().prev().prev().children().val();
+        if (terceroID != undefined && terceroID != null) {
+            var data = {
+                tercero_id: terceroID
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: Routing.generate('necesidadMaterial_ajax_proveedor_moneda'),
+                data: data,
+                success: function (data) {
+                    var moneda = $.parseJSON(data);
+                    if (moneda != undefined && moneda != null) {
+                        $('#buseta_bodegabundle_necesidad_material_linea_moneda').val(moneda.id);
+                    }
+                }
+            });
+        }
     },
     _edit_product_cost: function (event) {
         var $this = $(this),
@@ -463,20 +483,20 @@ var lineas = {
             cantidadPedido = 0;
         }
 
-        var bruto = cantidadPedido * costoUnitario;
-        var importeDescuento = bruto * porcientoDescuento / 100;
+        var bruto = Number(cantidadPedido) * Number(costoUnitario);
+        var importeDescuento = Number(bruto) * Number(porcientoDescuento) / 100;
 
         if($impuesto.val() != undefined && $impuesto.val() != null && $impuesto.val() != '') {
             var tarifa  = $impuesto.find(':selected').data('tarifa'),
                 tipo    = $impuesto.find(':selected').data('tipo');
             if (tipo == 'porcentaje') {
-                importeImpuesto = bruto * tarifa / 100;
+                importeImpuesto = Number(bruto) * Number(tarifa) / 100;
             } else {
                 importeImpuesto = tarifa;
             }
         }
 
-        importeTotal = bruto + importeImpuesto - importeDescuento;
+        importeTotal = Number(bruto) + Number(importeImpuesto) - Number(importeDescuento);
         if(!isNaN(importeTotal)) {
             $importeLinea.val(importeTotal);
         } else {

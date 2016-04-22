@@ -2,7 +2,10 @@
 
 namespace Buseta\TallerBundle\Controller;
 
+use Buseta\TallerBundle\Form\Model\DiagnosticoModel;
+use Buseta\TallerBundle\Form\Model\ReporteModel;
 use Buseta\TallerBundle\Form\Type\ObservacionType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\TallerBundle\Entity\Reporte;
@@ -39,9 +42,20 @@ class ReporteController extends Controller
             'resumentotalPR' => $resumentotalPR
         ));
     }
-
+    /**
+     * @param Reporte $reporte
+     *
+     * @return RedirectResponse
+     * @internal param $id
+     * @Method("GET")
+     */
     public function procesarReporteAction(Reporte $reporte)
     {
+        $em         = $this->getDoctrine()->getManager();
+        $logger     = $this->get('logger');
+        $session    = $this->get('session');
+        $error      = false;
+
         //Se llama al EventDispatcher
         $eventDispatcher = $this->get('event_dispatcher');
 
@@ -49,14 +63,42 @@ class ReporteController extends Controller
         $evento = new FilterReporteEvent($reporte);
         $evento->setReporte($reporte);
 
-        //Lanzo los Evento donde se crea el diagnostico y
         //cambio el estado de la solicitud de Abierto a Pendiente
-
-        $eventDispatcher->dispatch( ReporteEvents::PROCESAR_SOLICITUD, $evento );
         $eventDispatcher->dispatch( ReporteEvents::CAMBIAR_ESTADO_PENDIENTE, $evento );
 
-        return $this->redirect($this->generateUrl('reporte_index'));
+        try {
+            $em->persist($reporte);
+            $em->flush();
+        } catch (\Exception $e) {
+            $logger->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
+            $session->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
+
+            $error = true;
+        }
+
+        if (!$error) {
+            $diagnosticoManager = $this->get('buseta.taller.diagnostico.manager');
+
+            $diagnosticoModel = new DiagnosticoModel();
+            $diagnosticoModel->setAutobus($reporte->getAutobus());
+            $diagnosticoModel->setReporte($reporte);
+
+            //registro los datos del Diagnostico que se crea al procesar el reporte
+            if ($diagnostico = $diagnosticoManager->crear($diagnosticoModel)) {
+                $session->getFlashBag()->add('success', sprintf('Se ha creado Diagnostico "%s" para Solicitud "%s".',
+                    $diagnostico->getNumero(),
+                    $reporte->getNumero()
+                ));
+            } else {
+                $session->getFlashBag()->add('danger', sprintf('Ha ocurrido un error intentando crear Diagnostico para Solicitud "%s".',
+                    $reporte->getNumero()
+                ));
+            }
+        }
+
+        return $this->redirect($this->generateUrl('reporte_show', array('id' => $reporte->getId())));
     }
+
     /**
      * Lists all Reporte entities.
      * @Route("/reporte", name="reporte")
@@ -106,52 +148,46 @@ class ReporteController extends Controller
      */
     public function createAction(Request $request)
     {
-        $status = $request->query->get('status', self::DEFAULT_STATUS );
-
-        $entity = new Reporte();
-
-        $form = $this->createCreateForm($entity);
+        $reporteModel = new ReporteModel();
+        $form = $this->createCreateForm($reporteModel);
+        $status = $request->query->get('status', self::DEFAULT_STATUS);
 
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $em = $this->get('doctrine.orm.entity_manager');
-            try {
-                $em->persist($entity);
-                $em->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $trans  = $this->get('translator');
 
-                $this->get('session')->getFlashBag()
-                    ->add('success', 'Se ha creado la Solicitud de forma satisfactoria.');
+            $reporteManager = $this->get('buseta.taller.reporte.manager');
 
-                return $this->redirect($this->generateUrl('reporte_show', array(
-                    'id' => $entity->getId(),
-                    'status' => $status,
-                )));
-            } catch(\Exception $e) {
-                $this->get('logger')
-                    ->addCritical(sprintf('Ha ocurrido un error creando la Solicitud. Detalles: %s', $e->getMessage()));
+            if ($reporte = $reporteManager->crear($reporteModel)) {
+                $this->get('session')->getFlashBag()->add('success',
+                    $trans->trans(
+                        'messages.create.success',
+                        array(),
+                        'BusetaTallerBundle'
+                    )
+                );
 
-                $this->get('session')->getFlashBag()
-                    ->add('danger', 'Ha ocurrido un error creando la Solicitud.');
+                return $this->redirect($this->generateUrl('reporte_show', array('id' => $reporte->getId())));
+            } else {
+                $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error al crear Solicitud');
             }
         }
 
-        return $this->render('BusetaTallerBundle:Reporte:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+        return $this->render('@BusetaTaller/Reporte/new.html.twig', array(
+            'form' => $form->createView(),
             'status' => $status,
         ));
     }
-
     /**
      * Creates a form to create a Reporte entity.
      *
-     * @param Reporte $entity The entity
+     * @param ReporteModel $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Reporte $entity)
+    private function createCreateForm(ReporteModel $entity)
     {
-        $form = $this->createForm(new ReporteType(), $entity, array(
+        $form = $this->createForm('buseta_tallerbundle_reporte', $entity, array(
             'action' => $this->generateUrl('reporte_create'),
             'method' => 'POST',
         ));
@@ -168,22 +204,14 @@ class ReporteController extends Controller
      */
     public function newAction(Request $request)
     {
-        $status = $request->query->get('status', self::DEFAULT_STATUS );
-        $sequenceManager = $this->get('hatuey_soft.sequence.manager');
         $entity = new Reporte();
+        $status = $request->query->get('status', self::DEFAULT_STATUS);
 
-        if ($sequenceManager->hasSequence(ClassUtils::getRealClass($entity))) {
-            $entity->setNumero($sequenceManager->getNextValue('reporte_seq'));
-        }
-
-        $observacion = $this->createForm(new ObservacionType());
-
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm(new ReporteModel());
 
         return $this->render('BusetaTallerBundle:Reporte:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
-            'observacion'  => $observacion->createView(),
+            'form' => $form->createView(),
             'status' => $status,
         ));
     }
@@ -191,7 +219,7 @@ class ReporteController extends Controller
     /**
      * Finds and displays a Reporte entity.
      *
-     * @Security("is_granted('VIEW', reporte)")
+     * @Security("is_granted('SHOW', reporte)")
      * @Route("/{id}/show", name="reporte_show")
      * @Breadcrumb(title="Ver Datos de Solicitud", routeName="reporte_show", routeParameters={"id"})
      */

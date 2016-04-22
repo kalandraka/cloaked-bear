@@ -2,7 +2,6 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
-use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\Form\Filter\AlbaranFilter;
 use Buseta\BodegaBundle\Form\Model\AlbaranFilterModel;
 use Buseta\BodegaBundle\Form\Model\AlbaranModel;
@@ -10,6 +9,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\Albaran;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -253,20 +253,20 @@ class AlbaranController extends Controller
      *
      * @Route("/{id}/show", name="albaran_show")
      * @Method({"GET"})
-     *
+     * @Security("is_granted('show', albaran)")
      * @Breadcrumb(title="Ver Datos de Orden de Entrada", routeName="albaran_show", routeParameters={"id"})
      */
-    public function showAction($id)
+    public function showAction(Albaran $albaran)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaBodegaBundle:Albaran')->find($id);
+        $entity = $em->getRepository('BusetaBodegaBundle:Albaran')->find($albaran->getId());
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Albaran entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($albaran->getId());
 
         return $this->render('BusetaBodegaBundle:Albaran:show.html.twig', array(
             'entity'      => $entity,
@@ -280,17 +280,11 @@ class AlbaranController extends Controller
      *
      * @Route("/{id}/edit", name="albarans_albaran_edit")
      * @Method({"GET"})
-     *
+     * @Security("is_granted('edit', albaran)")
      * @Breadcrumb(title="Modificar Orden de Entrada", routeName="albarans_albaran_edit", routeParameters={"id"})
      */
     public function editAction(Albaran $albaran)
     {
-        if ($albaran->getEstadoDocumento() !== BusetaBodegaDocumentStatus::DOCUMENT_STATUS_DRAFT) {
-            throw $this->createAccessDeniedException(
-                'No se puede modificar la Orden de Entrada, pues ya ha sido Procesada.'
-            );
-        }
-
         $editForm = $this->createEditForm(new AlbaranModel($albaran));
         /*$deleteForm = $this->createDeleteForm($albaran->getId());*/
 
@@ -363,7 +357,6 @@ class AlbaranController extends Controller
 
         $renderView = $this->renderView('@BusetaBodega/Albaran/form_template.html.twig', array(
             'form'     => $editForm->createView(),
-            'entity'   => $albaran,
         ));
 
         return new JsonResponse(array('view' => $renderView));
@@ -374,7 +367,7 @@ class AlbaranController extends Controller
      *
      * @Route("/create", name="albarans_albaran_create", options={"expose":true})
      * @Method({"POST"})
-     *
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\Albaran')")
      * @Breadcrumb(title="Crear Nueva Orden de Entrada", routeName="albarans_albaran_create")
      */
     public function createAction(Request $request)
@@ -384,13 +377,18 @@ class AlbaranController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $em     = $this->get('doctrine.orm.entity_manager');
             $trans  = $this->get('translator');
             $logger = $this->get('logger');
-            $albaranManager = $this->get('buseta.bodega.albaran.manager');
 
-            if ($albaran = $albaranManager->crear($albaranModel)) {
+            try {
+                $entity = $albaranModel->getEntityData();
+
+                $em->persist($entity);
+                $em->flush();
+
                 // Creando nuevamente el formulario con los datos actualizados de la entidad
-                $form = $this->createEditForm(new AlbaranModel($albaran));
+                $form = $this->createEditForm(new AlbaranModel($entity));
                 $renderView = $this->renderView('@BusetaBodega/Albaran/form_template.html.twig', array(
                     'form'   => $form->createView(),
                 ));
@@ -399,9 +397,14 @@ class AlbaranController extends Controller
                     'view' => $renderView,
                     'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
                 ), 201);
-            } else {
+            } catch (\Exception $e) {
+                $logger->addCritical(sprintf(
+                    $trans->trans('', array(), 'BusetaBodegaBundle') . '. Detalles: %s',
+                    $e->getMessage()
+                ));
+
                 return new JsonResponse(array(
-                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Orden de Entrada'), 'BusetaBodegaBundle')
+                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Albarán'), 'BusetaBodegaBundle')
                 ), 500);
             }
         }
@@ -435,7 +438,7 @@ class AlbaranController extends Controller
      *
      * @Route("/new", name="albaran_new", options={"expose":true})
      * @Method({"GET"})
-     *
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\Albaran')")
      * @Breadcrumb(title="Crear Nueva Orden de Entrada", routeName="albaran_new")
      */
     public function newAction()
@@ -471,6 +474,7 @@ class AlbaranController extends Controller
      * Deletes a Albaran entity.
      *
      * @Route("/{id}/delete", name="albaran_delete")
+     * @Security("is_granted('delete', albaran)")
      * @Method({"DELETE", "GET"})
      */
     public function deleteAction(Albaran $albaran, Request $request)

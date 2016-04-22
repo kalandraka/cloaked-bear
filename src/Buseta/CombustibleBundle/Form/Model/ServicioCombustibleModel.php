@@ -48,13 +48,13 @@ class ServicioCombustibleModel
 
     /**
      * @var \Buseta\BusesBundle\Entity\Vehiculo
+     *
+     * @Assert\NotNull()
      */
     private $vehiculo;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
      */
     private $boleta;
 

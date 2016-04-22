@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Buseta\BodegaBundle\Entity\MovimientosProductos;
 use Buseta\BodegaBundle\Form\Type\MovimientosProductosType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Buseta\BodegaBundle\Entity\Movimiento;
 use Buseta\BodegaBundle\Form\Type\MovimientoType;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
@@ -191,6 +192,7 @@ class MovimientoController extends Controller
     /**
      * Creates a new Movimiento entity.
      * @Route("/create", name="movimiento_create", methods={"POST"}, options={"expose":true})
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\Movimiento')")
      * @Breadcrumb(title="Crear Nuevo Movimiento de Productos", routeName="movimiento_create")
      */
     public function createAction(Request $request)
@@ -330,6 +332,7 @@ class MovimientoController extends Controller
     /**
      * Displays a form to create a new Movimiento entity.
      * @Route("/new", name="movimiento_new", methods={"GET"}, options={"expose":true})
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\Movimiento')")
      * @Breadcrumb(title="Crear Nuevo Movimiento de Productos", routeName="movimiento_new")
      */
     public function newAction()
@@ -365,19 +368,20 @@ class MovimientoController extends Controller
     /**
      * Finds and displays a Movimiento entity.
      * @Route("/{id}/show", name="movimiento_show", methods={"GET"}, options={"expose":true})
+     * @Security("is_granted('show', movimiento)")
      * @Breadcrumb(title="Ver Datos de Movimiento de Productos", routeName="movimiento_show", routeParameters={"id"})
      */
-    public function showAction($id)
+    public function showAction(Movimiento $movimiento)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaBodegaBundle:Movimiento')->find($id);
+        $entity = $em->getRepository('BusetaBodegaBundle:Movimiento')->find($movimiento->getId());
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Movimiento entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($movimiento->getId());
 
         return $this->render('BusetaBodegaBundle:Movimiento:show.html.twig', array(
             'entity'      => $entity,
@@ -388,13 +392,14 @@ class MovimientoController extends Controller
     /**
      * Displays a form to edit an existing Movimiento entity.
      * @Route("/{id}/edit", name="movimiento_edit", methods={"GET"}, options={"expose":true})
+     * @Security("is_granted('edit', movimiento)")
      * @Breadcrumb(title="Modificar Movimiento de Productos", routeName="movimiento_edit", routeParameters={"id"})
      */
-    public function editAction($id)
+    public function editAction(Movimiento $movimiento)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaBodegaBundle:Movimiento')->find($id);
+        $entity = $em->getRepository('BusetaBodegaBundle:Movimiento')->find($movimiento->getId());
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Movimiento entity.');
@@ -403,7 +408,7 @@ class MovimientoController extends Controller
         $movimientosProductos = $this->createForm(new MovimientosProductosType());
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($movimiento->getId());
 
         return $this->render('BusetaBodegaBundle:Movimiento:edit.html.twig', array(
             'entity'      => $entity,
@@ -468,6 +473,7 @@ class MovimientoController extends Controller
      * Deletes a Movimiento entity.
      *
      * /////@Route("/{id}/delete", name="movimiento_delete")
+     * @Security("is_granted('delete', movimiento)")
      * /////@Method({"DELETE", "GET"})
      */
     public function deleteAction(Movimiento $movimiento, Request $request)

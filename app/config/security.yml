@@ -3,7 +3,8 @@ security:
         strategy:             affirmative
 
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
+        Symfony\Component\Security\Core\User\User:
+            algorithm: sha512
         FOS\UserBundle\Model\UserInterface:
             algorithm: sha512
             iterations: 1000
@@ -18,8 +19,10 @@ security:
         in_memory:
             memory:
                 users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+                    combustible:  { password: "cxydUKpoRLTX3HAEg5l87EF+m2AY8rTCseguukFdTl/IT8jZ9+v6jkDoYCFb673+b8pwk9nFfNBoHfSvb09EGg==", roles: [ 'ROLE_COMBUSTIBLE' ] }
+                    bodeguero:  { password: "A55v0B2IHnchC0oyOafaGr+M9eMs43BfYHznuPp7mwECuSpBlpXZaqlkHs933RWrAqZ61ktSOb0nQOcf57xdpQ==", roles: [ 'ROLE_BODEGUERO' ] }
+                    admin: { password: "Oob0FmH8l5IkiIuMaHmbxA2SrO/6o3yiRCtIs4JS7ZWBHirzUZwxCWbSLVbGT+f3H8cqUIcta5hkWfmo/+LJgA==", roles: [ 'ROLE_ADMIN' ] }
+                    superadmin: { password: "ZTNGCB5tk7EEQpGUjNYVGxMqrncFXhqHtR5Ty7laO4VxaaodraPI4rppc95RnGFDNIfo/ZHvppfF+lteLmJY1A==", roles: [ 'ROLE_SUPER_ADMIN' ] }
 
     firewalls:
         dev:

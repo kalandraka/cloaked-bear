@@ -2,44 +2,21 @@
 
 namespace Buseta\TallerBundle\Manager;
 
-use Buseta\TallerBundle\Entity\Diagnostico;
+use Buseta\TallerBundle\Event\FilterOrdenTrabajoEvent;
+use Buseta\TallerBundle\Event\OrdenTrabajoEvents;
 use Buseta\TallerBundle\Entity\OrdenTrabajo;
-use Buseta\TallerBundle\Entity\TareaAdicional;
-use Buseta\TallerBundle\Entity\TareaDiagnostico;
+use Buseta\TallerBundle\Form\Model\OrdenTrabajoModel;
 use Doctrine\Common\Persistence\ObjectManager;
 use HatueySoft\SequenceBundle\Managers\SequenceManager;
 use Symfony\Bridge\Monolog\Logger;
-use Symfony\Component\Security\Core\Util\ClassUtils;
 
-class OrdenTrabajoManager
+/**
+ * Class OrdenTrabajo
+ *
+ * @package Buseta\TallerBundle\Manager
+ */
+class OrdenTrabajoManager extends AbstractTallerManager
 {
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    private $em;
-
-    /**
-     * @var \Symfony\Bridge\Monolog\Logger
-     */
-    private $logger;
-
-
-    /**
-     * @var \HatueySoft\SequenceBundle\Managers\SequenceManager
-     */
-    private $sequenceManager;
-
-    /**
-     * @param ObjectManager $em
-     * @param Logger $logger
-     */
-    function __construct(ObjectManager $em, Logger $logger, SequenceManager $sequenceManager)
-    {
-        $this->em = $em;
-        $this->logger = $logger;
-        $this->sequenceManager = $sequenceManager;
-    }
-
 
     public function cambiarEstado(OrdenTrabajo $orden, $estado = 'BO')
     {
@@ -76,54 +53,98 @@ class OrdenTrabajoManager
     }
 
     /**
-     * Crea una orden de trabajo a partir de un diagnostico
-     * @param Diagnostico $diagnostico
-     * @return Boolean $resultado
+     * @param OrdenTrabajoModel $model
+     *
+     * @return bool|OrdenTrabajo
      */
-    public function crearOrdenTrabajo(Diagnostico $diagnostico)
+    public function crear(OrdenTrabajoModel $model)
     {
+        $error = false;
+        $ordenTrabajo = new OrdenTrabajo();
+        $ordenTrabajo->setCreated ($model->getCreated());
+        $ordenTrabajo->setDeleted ($model->getDeleted());
+        $ordenTrabajo->setUpdated ($model->getUpdated());
+        $ordenTrabajo->setEstado($model->getEstado());
+        $ordenTrabajo->setNumero($model->getNumero());
+        $ordenTrabajo->setObservaciones($model->getObservaciones());
+        $ordenTrabajo->setFechaInicio($model->getFechaInicio());
+        $ordenTrabajo->setFechaFinal($model->getFechaFinal());
+        $ordenTrabajo->setDuracionDias($model->getDuracionDias());
+        $ordenTrabajo->setDuracionHorasLaboradas($model->getDuracionHorasLaboradas());
+        $ordenTrabajo->setKilometraje($model->getKilometraje());
+        $ordenTrabajo->setDiagnosticadoPor($model->getDiagnosticadoPor());
+        $ordenTrabajo->setAyudante($model->getAyudante());
+        $ordenTrabajo->setRevisadoPor($model->getRevisadoPor());
+        $ordenTrabajo->setRealizadaPor($model->getRealizadaPor());
+        $ordenTrabajo->setAprobadoPor($model->getAprobadoPor());
+
+
+        if ($model->getDiagnostico() !== null) {
+            $ordenTrabajo->setDiagnostico($model->getDiagnostico());
+        }
+        if ($model->getAutobus() !== null) {
+            $ordenTrabajo->setAutobus($model->getAutobus());
+        }
+        if ($model->getPrioridad() !== null) {
+            $ordenTrabajo->setPrioridad($model->getPrioridad());
+        }
+
+        if (!$model->getTareasAdicionales()->isEmpty()) {
+            foreach ($model->getTareasAdicionales() as $tareasAdicionale) {
+                $ordenTrabajo->addTareasAdicionale($tareasAdicionale);
+            }
+        }
+
+
         try {
-            //Crear nueva orden de trabajo a partir del Diagnostico seleccionado
-            $ordenTrabajo = new OrdenTrabajo();
+            $this->beginTransaction();
 
+            if ($this->dispatcher->hasListeners(OrdenTrabajoEvents::ORDENTRABAJO_PRE_CREATE)) {
+                $preCreateEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
+                $this->dispatcher->dispatch(OrdenTrabajoEvents::ORDENTRABAJO_PRE_CREATE, $preCreateEvent);
 
-            if (($this->sequenceManager->getNextValue('ot_seq')) != null) {
-                if ($this->sequenceManager->hasSequence(ClassUtils::getRealClass($ordenTrabajo))) {
-                    $ordenTrabajo->setNumero($this->sequenceManager->getNextValue('ot_seq'));
-
-                } else {
-                    $ordenTrabajo->setNumero( $diagnostico->getNumero() );
-
+                if ($preCreateEvent->getError()) {
+                    $error = $preCreateEvent->getError();
                 }
             }
-            $ordenTrabajo->setDiagnostico($diagnostico);
-            $ordenTrabajo->setAutobus($diagnostico->getAutobus());
-            $ordenTrabajo->setCancelado(false);
-            $ordenTrabajo->setEstado('BO');
-            $ordenTrabajo->setDiagnostico($diagnostico);
 
-            $this->em->persist($ordenTrabajo);
-
-            $tareasDiag = $diagnostico->getTareaDiagnostico();
-            /** @var TareaDiagnostico $taDiag */
-            /** @var TareaAdicional $taAdic */
-            foreach($tareasDiag as $taDiag){
-                $taAdic = new TareaAdicional();
-                $taAdic->setOrdenTrabajo($ordenTrabajo);
-                $taAdic->setGrupo($taDiag->getGrupo());
-                $taAdic->setSubgrupo($taDiag->getSubgrupo());
-                $taAdic->setTareaMantenimiento($taDiag->getTareaMantenimiento());
-                $taAdic->setDescripcion($taDiag->getDescripcion());
-                $this->em->persist($taAdic);
+            if (!$error) {
+                $this->em->persist($ordenTrabajo);
             }
 
-            $this->em->flush();
+            if (!$error && $this->dispatcher->hasListeners(OrdenTrabajoEvents::ORDENTRABAJO_POST_CREATE)) {
+                $postCreateEvent = new FilterOrdenTrabajoEvent($ordenTrabajo);
+                $this->dispatcher->dispatch(OrdenTrabajoEvents::ORDENTRABAJO_POST_CREATE, $postCreateEvent);
 
-            return true;
+                if ($postCreateEvent->getError()) {
+                    $error = $postCreateEvent->getError();
+                }
+            }
+
+            if (!$error) {
+                $this->em->flush();
+
+                // Try and commit the transaction, aqui puede ocurrir un error
+                $this->commitTransaction();
+
+                return $ordenTrabajo;
+            }
+
+            $this->logger->warning(sprintf('Orden Trabajo no fue creado debido a errores previos: %s', $error));
         } catch (\Exception $e) {
-            $this->logger->error(sprintf('Diagnostico.Persist: %s', $e->getMessage()));
-
-            return false;
+            $this->logger->error(
+                sprintf(
+                    'Ha ocurrido un error al crear Orden Trabajo. Detalles: {message: %s, class: %s, line: %d}',
+                    $e->getMessage(),
+                    $e->getFile(),
+                    $e->getLine()
+                )
+            );
         }
+
+        $this->rollbackTransaction();
+
+        return false;
     }
+
 }

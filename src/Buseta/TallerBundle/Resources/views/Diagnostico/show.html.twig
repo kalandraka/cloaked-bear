@@ -46,10 +46,10 @@
         <div class="col-md-8">
 
             {% if entity.ordenTrabajo == null and entity.estado == 'PR'%}
-                <a class="btn btn-primary" href="{{ path('diagnostico_generar_ordentrabajo', { 'id': entity.id }) }}">
+                <a class="btn btn-primary" href="{{ path('diagnostico_crear_ordentrabajo', { 'id': entity.id }) }}">
                     <span class="glyphicon glyphicon-save"></span> Generar Orden de Trabajo</a>
             {% elseif entity.ordenTrabajo != null and entity.estado == 'CO' %}
-                <a class="btn btn-primary disabled" href="{{ path('diagnostico_generar_ordentrabajo', { 'id': entity.id }) }}">
+                <a class="btn btn-primary disabled" href="{{ path('diagnostico_crear_ordentrabajo', { 'id': entity.id }) }}">
                     <span class="glyphicon glyphicon-save"></span> Generar Orden de Trabajo</a>
             {% endif %}
 

@@ -4,31 +4,30 @@
 
 {% block header 'Ver Datos de Inventario Físico' %}
 
+{% block header_right %}
+    {% from '@BusetaTemplate/Macros/macros.html.twig' import documentState %}
+
+    <h4 class="pull-right">
+        {{ documentState(entity.estado, 'BusetaTallerBundle') }}
+    </h4>
+{% endblock %}
+
 {% block area_trabajo %}
 
     <table class="table table-striped" style="font-size: 16px;">
         <tbody>
-
             <tr>
                 <th>Nombre</th>
                 <td>{{ entity.nombre }}</td>
             </tr>
-
             <tr>
                 <th>Bodega</th>
                 <td>{{ entity.almacen }}</td>
             </tr>
-
             <tr>
                 <th>Fecha</th>
                 <td>{{ entity.fecha | date('d/m/Y') }}</td>
             </tr>
-
-            <tr>
-                <th>Estado</th>
-                <td>{{ ('estado.'~entity.estado) | trans({}, 'BusetaTallerBundle') }}</td>
-            </tr>
-
             <tr>
                 <th>Descripción</th>
                 <td>{{ entity.descripcion }}</td>
@@ -36,8 +35,7 @@
             <tr>
                 <th>Líneas existentes</th>
                 <td>
-                    <table class="table table-striped" style="font-size: 16px;">
-                        <th>Número</th>
+                    <table class="table table-striped table-condensed" style="font-size: 16px;">
                         <th>Producto</th>
                         <th>Descripción</th>
                         <th>Cantidad Real</th>
@@ -47,7 +45,6 @@
                         {% for linea in entity.inventarioFisicoLineas %}
                         <tbody>
                             <tr>
-                                <td>{{ linea.numero }}</td>
                                 <td>{{ linea.producto.nombre }}</td>
                                 <td>{{ linea.descripcion }}</td>
                                 <td>{{ linea.cantidadReal }}</td>
@@ -69,18 +66,22 @@
 
     <div class="form-actions">
         {% if entity.estado == 'BO' %}
-            <a class="btn btn-primary" href="{{ path('inventariofisico_edit', { 'id': entity.id }) }}"> Editar</a>
+            {% if is_granted('edit', entity) %}
+                <a class="btn btn-primary" href="{{ path('inventariofisico_edit', { 'id': entity.id }) }}"> Editar</a>
+            {% endif %}
         {% endif %}
         {% if entity.estado == 'PR' %}
             <a class="btn btn-primary" href="{{ path('completarInventarioFisico', { 'id': entity.id }) }}"> Completar Proceso</a>
         {% elseif entity.estado == 'BO' %}
             <a class="btn btn-primary" href="{{ path('procesarInventarioFisico', { 'id': entity.id }) }}"> Procesar</a>
         {% endif %}
-        <a class="btn btn-primary" href="{{ path('inventariofisico') }}"> Listado</a>
+        <a class="btn btn-default" href="{{ path('inventariofisico') }}"><span class="glyphicon glyphicon-chevron-left"></span> Listado</a>
 
         {% if entity.estado == 'BO' %}
-            <a href="#delete" data-href="{{ path('inventariofisico_delete', {'id': entity.id}) }}" class="btn btn-danger">
-                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+            {% if is_granted('delete', entity) %}
+                <a href="#delete" data-href="{{ path('inventariofisico_delete', {'id': entity.id}) }}" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+            {% endif %}
         {% endif %}
     </div>
 

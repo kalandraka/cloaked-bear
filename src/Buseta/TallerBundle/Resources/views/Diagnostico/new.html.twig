@@ -14,9 +14,11 @@
         {{ form_errors(form) }}
 
         <div class="row">
-            <div class="col-md-4">
-                {{ form_row(form.numero) }}
-            </div>
+            {% if form.numero is defined %}
+                <div class="col-md-4">
+                    {{ form_row(form.numero) }}
+                </div>
+            {% endif %}
             <div class="col-md-4">
                 {{ form_row(form.reporte) }}
             </div>
@@ -262,10 +264,10 @@
 
 
     <script type="text/javascript">
-        var collectionHolder = $('div#buseta_tallerbundle_reporte_observaciones');
+        var collectionHolder = $('div#buseta_tallerbundle_diagnostico_observaciones');
         var $addTagLink = '';
 
-        var collectionHolderD = $('div#buseta_tallerbundle_reporte_tareaDiagnostico');
+        var collectionHolderD = $('div#buseta_tallerbundle_diagnostico_tareaDiagnostico');
         var $addTagLinkD = '';
 
         jQuery(document).ready(function () {
@@ -394,10 +396,10 @@
 
                 addTagFormD(collectionHolderD);
 
-                $('#buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_grupo').val(tareadiagnostico_grupo.val());
-                $('#buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_subgrupo').val(tareadiagnostico_subgrupo.val());
-                $('#buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_tareamantenimiento').val(tareadiagnostico_tareamantenimiento.val());
-                $('#buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_descripcion').val(tareadiagnostico_descripcion.val());
+                $('#buseta_tallerbundle_diagnostico_tareaDiagnostico_' + index + '_grupo').val(tareadiagnostico_grupo.val());
+                $('#buseta_tallerbundle_diagnostico_tareaDiagnostico_' + index + '_subgrupo').val(tareadiagnostico_subgrupo.val());
+                $('#buseta_tallerbundle_diagnostico_tareaDiagnostico_' + index + '_tareamantenimiento').val(tareadiagnostico_tareamantenimiento.val());
+                $('#buseta_tallerbundle_diagnostico_tareaDiagnostico_' + index + '_descripcion').val(tareadiagnostico_descripcion.val());
 
 
 
@@ -415,7 +417,7 @@
 
                     //dinamicSelects();
 
-                    var subgrupo_selector = $('select[id="buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_subgrupo"]');
+                    var subgrupo_selector = $('select[id="buseta_tallerbundle_diagnostico_tareaDiagnostico_' + index + '_subgrupo"]');
                     subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
                     for (var i = 0, total = values.length; i < total; i++) {
                         subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
@@ -434,7 +436,7 @@
                     async: false
                 }).done(function (data) {
                     var values = $.parseJSON(data);
-                    var tarea_selector = $('#buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_tareamantenimiento');
+                    var tarea_selector = $('#buseta_tallerbundle_diagnostico_tareaDiagnostico_' + index + '_tareamantenimiento');
 
                     tarea_selector.html('<option>---Seleccione---</option>');
                     for (var i = 0, len = values.length; i < len; i++) {

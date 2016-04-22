@@ -124,11 +124,14 @@
             form_id: $('div#basicos').find('form').attr('id'),
             form_name: $('div#basicos').find('form').attr('name'),
             id: '',
-            _load: function () {
-
+             _start_events: function () {
                 $('#bodega_inventariofisico_type_fecha').datetimepicker({
                     'format': 'DD/MM/YYYY'
                 });
+                $('#bodega_inventariofisico_type_almacen').chosen();
+
+            },
+            _load: function () {
 
                 $('a#btn_inventariofisico_save').on('click', inventariofisico._save);
                 inventariofisico.id = $('input[id="' + inventariofisico.form_id + '_id"]').val();
@@ -152,6 +155,7 @@
                         lineas._load();
                     }
                 });
+                inventariofisico._start_events();
             },
             _save: function (event) {
                 if (event != undefined) {
@@ -194,6 +198,7 @@
                 } else if(jqXHR.status == 202) {
                     $btalerts.addSuccess(response.message);
                 }
+                 inventariofisico._start_events();
                 $('a#btn_inventariofisico_save').on('click', inventariofisico._save);
             },
             _always: function() {
@@ -386,7 +391,6 @@
                 });
             },
             _done: function (response, textStatus, jqXHR) {
-
                 $('form#' + lineas.form_id).replaceWith($(response.view).find('form'));
 
                 if(jqXHR.status == 201 || jqXHR.status == 202) {

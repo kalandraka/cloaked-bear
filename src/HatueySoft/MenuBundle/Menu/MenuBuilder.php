@@ -67,7 +67,7 @@ class MenuBuilder extends ContainerAware
 
         /** add principal page into all menus */
         $menu->addChild('pagina_principal', array(
-            'label' => sprintf('<i class="fa fa-dashboard"></i> %s', 'Página principal'),
+            'label' => sprintf('<i class="fa fa-dashboard"></i> %s <span class="fa fa-bars pull-right" id="menu-toggle"></span>', 'Página principal'),
             'route' => 'core_homepage',
         ));
         $menu['pagina_principal']->setExtra('safe_label', true);

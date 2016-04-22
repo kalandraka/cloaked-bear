@@ -18,29 +18,31 @@
         $(document).ready(function () {
             TallerApp.servicioCombustible.init();
 
-            $.ajax({
-                type: 'GET',
-                url: 'http://{{ server.address }}:{{ server.port }}/boleta/api/boletas?fecha=',
-                success: function (data) {
-                    var values = $.parseJSON(data);
-                    var selectBoleta = $('select#combustible_servicio_combustible_boleta');
-                    selectBoleta.html('<option></option>');
-                    for (var i = 0, total = values.length; i < total; i++) {
-                        var opt = "<option value=\"" + values[i].identificador + "\">" +
-                                values[i].identificador + "</option>";
-                        $(opt).appendTo(selectBoleta);
-                        selectBoleta.trigger("chosen:updated");
-                    }
-                }
-            });
+            {#$.ajax({#}
+                {#type: 'GET',#}
+                {#url: 'http://{{ server.address }}:{{ server.port }}/boleta/api/boletas?fecha=',#}
+                {#success: function (data) {#}
+                    {#//var values = $.parseJSON(data);#}
+                    {#var values = data;#}
+                    {#var selectBoleta = $('select#combustible_servicio_combustible_boleta');#}
+                    {#selectBoleta.html('<option></option>');#}
+                    {#for (var i = 0, total = values.length; i < total; i++) {#}
+                        {#var opt = "<option value=\"" + values[i].identificador + "\">" +#}
+                                {#values[i].identificador + "</option>";#}
+                        {#$(opt).appendTo(selectBoleta);#}
+                        {#selectBoleta.trigger("chosen:updated");#}
+                    {#}#}
+                {#}#}
+            {#});#}
 
             $('select#combustible_servicio_combustible_boleta').change(function () {
                 var boleta_id = $('select#combustible_servicio_combustible_boleta').val();
                 $.ajax({
                     type: 'GET',
-                    url: 'http://{{ server.address }}:{{ server.port }}/boleta/api/choferAndAutobusFromBoleta?identificador=' + boleta_id,
+                    url: 'http://{{ server.address }}/boleta/api/choferAndAutobusFromBoleta?identificador=' + boleta_id,
                     success: function (data) {
-                        var values = $.parseJSON(data);
+                        //var values = $.parseJSON(data);
+                        var values = data;
                         var selectChofer = $('select#combustible_servicio_combustible_chofer_chofer');
                         var selectVehiculo = $('select#combustible_servicio_combustible_vehiculo');
 
@@ -48,16 +50,23 @@
                             cedula_chofer: values.chofer.cedula,
                             numero_bus: values.autobus.identificador
                         };
+
                         $.ajax({
                             type: 'GET',
                             url: '{{ path("chofer_bus_ajax") }}',
                             data: requestData,
                             success: function (data) {
-                                var values = $.parseJSON(data);
-                                selectChofer.val(values.chofer);
-                                selectChofer.trigger("chosen:updated");
-                                selectVehiculo.val(values.autobus);
-                                selectVehiculo.trigger("chosen:updated");
+                                //var values = $.parseJSON(data);
+                                var values = data;
+                                selectChofer
+                                        .val(values.chofer)
+                                        .trigger("chosen:updated")
+                                        .trigger("change");
+                                selectVehiculo
+                                        .val(values.autobus)
+                                        .trigger("chosen:updated")
+                                        .trigger('change');
+
                             }
                         });
                     }

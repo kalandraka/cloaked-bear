@@ -6,9 +6,11 @@
     {{ form_row(form.id) }}
     {{ form_row(form._token) }}
     <div class="row">
-        <div class="col-md-4">
-            {{ form_row(form.numeroDocumento) }}
-        </div>
+        {% if form.numeroDocumento is defined %}
+            <div class="col-md-4">
+                {{ form_row(form.numeroDocumento) }}
+            </div>
+        {% endif %}
 
         <div class="col-md-4">
             {{ form_row(form.numeroReferencia) }}
@@ -83,6 +85,9 @@
         <div class="col-md-4">
             <a class="btn btn-primary" id="btn_pedidocompra_save" href="#"><span class="glyphicon glyphicon-save"></span>
                 {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
+            {% if entity is defined and entity.estadodocumento == 'BO' %}
+            <a class="btn btn-primary" href="{{ path('procesarRegistro', { 'id': entity.id }) }}"> Procesar</a>
+            {% endif %}
             <a class="btn btn-default" id="btn_pedidocompra_cancel" href="{{ path('pedidocompra') }}"><span class="glyphicon glyphicon-chevron-left"></span>
                 {{ 'actions.back' | trans({}, 'BusetaBodegaBundle') }}</a>
         </div>

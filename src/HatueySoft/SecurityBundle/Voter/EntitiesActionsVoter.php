@@ -82,7 +82,7 @@ class EntitiesActionsVoter implements VoterInterface
         }
 
         // set the attribute to check against
-        $attribute = $attributes[0];
+        $attribute = trim(strtolower($attributes[0]));
 
         // check if the given attribute is covered by this voter
         if (!$this->supportsAttribute($attribute)) {

@@ -49,14 +49,7 @@ class ServicioCombustibleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('boleta', 'choice', array(
-                'required' => true,
-                'label' => 'Boleta',
-            ))
-            ->add('chofer',new ChoferInServicioCombustibleType(),array(
-                    'label' => ' ',
-                )
-            )
+            ->add('chofer', new ChoferInServicioCombustibleType())
             ->add('combustible','entity',array(
                 'class' => 'BusetaCombustibleBundle:ConfiguracionCombustible',
                 'placeholder' => '---Seleccione---',
@@ -70,7 +63,7 @@ class ServicioCombustibleType extends AbstractType
             ->add('marchamo1')
             ->add('marchamo2')
         ;
-
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'boletaPreSetData'));
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();
             $form = $event->getForm();
@@ -103,10 +96,7 @@ class ServicioCombustibleType extends AbstractType
                 },
                 'placeholder' => '---Seleccione---',
                 'label' => 'Vehículo',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
+                'required' => false,
             ));
 
             /*$form->add('autobus', 'entity', array(
@@ -146,5 +136,44 @@ class ServicioCombustibleType extends AbstractType
     public function getName()
     {
         return 'combustible_servicio_combustible';
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function boletaPreSetData(FormEvent $event)
+    {
+        $resource = curl_init();
+        $serverApi = $this->serviceContainer->getParameter('buseta_combustible.server');
+        $url = sprintf('http://%s/boleta/api/boletas', $serverApi['address']);
+        curl_setopt_array($resource, array(
+            CURLOPT_URL => $url. (strpos($url, '?') === FALSE ? '?' : ''). http_build_query(array(
+                    'fecha' => null
+                )),
+            CURLOPT_HEADER => 0,
+            CURLOPT_RETURNTRANSFER => TRUE,
+            CURLOPT_TIMEOUT => 4
+        ));
+
+        $result = curl_exec($resource);
+        $boletasArray = json_decode($result);
+        curl_close($resource);
+
+        $choices = array();
+        if ($boletasArray !== null) {
+            foreach ($boletasArray as $value) {
+                $choices[$value->identificador] = $value->identificador;
+            }
+        }
+
+        $data = $event->getData();
+        $form = $event->getForm();
+
+        $form->add('boleta', 'choice', array(
+            'required' => false,
+            'label' => 'Boleta',
+            'choices' => $choices,
+            'placeholder' => '---Seleccione---',
+        ));
     }
 }

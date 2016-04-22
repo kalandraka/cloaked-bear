@@ -1,0 +1,5 @@
+notificaciones:
+  list: Listado de Notificaciones
+  show: Ver Notificación
+  configList: Listado de Tipos de Notificación
+  configEdit: Editar Tipo de Notificación

@@ -1,0 +1,16 @@
+notificaciones_config_index:
+    path: /index
+    defaults: { _controller: BusetaNotificacionesBundle:ConfigNotificaciones:index }
+
+notificaciones_config_show:
+    path: /show
+    defaults: { _controller: BusetaNotificacionesBundle:ConfigNotificaciones:show }
+
+notificaciones_config_edit:
+    path: /{codigo}/edit
+    defaults: { _controller: BusetaNotificacionesBundle:ConfigNotificaciones:edit }
+
+notificaciones_config_update:
+    path: /{codigo}/update
+    defaults: { _controller: BusetaNotificacionesBundle:ConfigNotificaciones:update }
+    requirements: { methods: post }

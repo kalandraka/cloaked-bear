@@ -1,0 +1,32 @@
+{% block collection_widget %}
+    {% spaceless %}
+        <div class="collection">
+            {% if prototype is defined %}
+                {% set attr = attr | merge({'data-prototype': block('collection_item_widget') }) %}
+            {% endif %}
+            {{ form_errors(form) }}
+
+            <div {{ block('widget_container_attributes') }}>
+                {% set counter = form | length %}
+                {% for rows in form %}
+                    <span class="badge badge-info">
+                        {{ _self.template(rows) }}
+                        {{ rows.vars.value }}
+                        <a class="delete_link" href="#"><i class="icon-remove icon-white"></i></a>
+                    </span>
+                {% endfor %}
+            </div>
+            {{ form_rest(form) }}
+        </div>
+    {% endspaceless %}
+{% endblock collection_widget %}
+
+{% block collection_item_widget %}
+    {% spaceless %}
+        {{ _self.template(prototype) }}
+    {% endspaceless %}
+{% endblock collection_item_widget %}
+
+{% macro template(prototype) %}
+    {{ form_widget(prototype) }}
+{% endmacro %}

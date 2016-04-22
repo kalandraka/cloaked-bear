@@ -6,9 +6,11 @@
     {{ form_row(form.id) }}
     {{ form_row(form._token) }}
     <div class="row">
-        <div class="col-md-4">
-            {{ form_row(form.numeroDocumento) }}
-        </div>
+        {% if form.numeroDocumento is defined %}
+            <div class="col-md-4">
+                {{ form_row(form.numeroDocumento) }}
+            </div>
+        {% endif %}
 
         <div class="col-md-4">
             {{ form_row(form.numero_referencia) }}

@@ -638,4 +638,9 @@ class Vehiculo
     {
         return $this->combustible;
     }
+
+    public function __toString()
+    {
+        return sprintf('%d (%s)', $this->getNumero(), $this->getMatricula());
+    }
 }

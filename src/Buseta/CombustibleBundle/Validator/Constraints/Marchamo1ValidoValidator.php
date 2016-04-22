@@ -41,6 +41,9 @@ class Marchamo1ValidoValidator extends ConstraintValidator
     {
         $vehiculo = $data->getVehiculo();
         $marchamo1 = $data->getMarchamo1();
+        if ($marchamo1 === null || $vehiculo === null) {
+            return;
+        }
 
         $qb = $this->em->createQueryBuilder();
         $qb->select('servicio.marchamo2')

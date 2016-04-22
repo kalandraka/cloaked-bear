@@ -51,11 +51,13 @@
     </div>
 
     <hr/>
+    {% if is_granted('create', 'Buseta\\BodegaBundle\\Entity\\Producto') %}
     <div class="btn-group" style="margin-bottom: 8px;">
         <a class="btn btn-primary" href="{{ path('producto_new') }}">
             <span class="glyphicon glyphicon-plus-sign"></span> {{ 'producto.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}
         </a>
     </div>
+    {% endif %}
 
     <div class="paginator row">
         <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
@@ -84,19 +86,25 @@
                 <td>{{ entity.condicion }}</td>
 
                 <td style="width: 18% !important; text-align: center;">
+                    {% if is_granted('show', 'Buseta\\BodegaBundle\\Entity\\Producto') %}
                     <div class="btn-group">
-                        <a class="btn btn-success btn-xs"
-                           href="{{ path('producto_show', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-search"> Mostrar</span></a>
+                        <a class="btn btn-success btn-xs" href="{{ path('producto_show', { 'id': entity.id }) }}">
+                            <span class="glyphicon glyphicon-search"> Mostrar</span>
+                        </a>
                     </div>
-
+                    {% endif %}
+                    {% if is_granted('edit', 'Buseta\\BodegaBundle\\Entity\\Producto') %}
                     <div class="btn-group">
-                        <a class="btn btn-danger btn-xs"
-                           href="{{ path('producto_edit', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-edit"> Editar</span></a>
+                        <a class="btn btn-danger btn-xs" href="{{ path('producto_edit', { 'id': entity.id }) }}">
+                            <span class="glyphicon glyphicon-edit"> Editar</span>
+                        </a>
                     </div>
+                    {% endif %}
+                    {% if is_granted('delete', 'Buseta\\BodegaBundle\\Entity\\Producto') %}
                     {#<a href="#delete" data-href="{{ path('producto_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
-                        <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>#}
+                        <span class="glyphicon glyphicon-trash"> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</span>
+                    </a>#}
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

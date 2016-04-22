@@ -27,7 +27,7 @@ class HatueySoftSecurityExtension extends Extension
     private $defaultRulesProperties = array(
         'create' => array('code' => 'create', 'label' => 'Crear', 'icon' => 'plus'),
         'edit' => array('code' => 'edit', 'label' => 'Editar', 'icon' => 'pencil'),
-        'show' => array('code' => 'show', 'label' => 'Mostrar', 'icon' => 'eye-open'),
+        'view' => array('code' => 'view', 'label' => 'Mostrar', 'icon' => 'eye-open'),
         'delete' => array('code' => 'delete', 'label' => 'Eliminar', 'icon' => 'trash'),
         'list' => array('code' => 'list', 'label' => 'Listar', 'icon' => 'list'),
         'search' => array('code' => 'search', 'label' => 'Buscar', 'icon' => 'search'),

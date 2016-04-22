@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\InventarioFisicoLinea;
@@ -11,6 +12,7 @@ use Buseta\BodegaBundle\Form\Model\InventarioFisicoModel;
 use Buseta\BodegaBundle\Form\Type\InventarioFisicoLineaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Buseta\BodegaBundle\Entity\InventarioFisico;
 use Buseta\BodegaBundle\Entity\BitacoraAlmacen;
 use Symfony\Component\Routing\Annotation\Route;
@@ -116,6 +118,7 @@ class InventarioFisicoController extends Controller
      * Creates a new InventarioFisico entity.
      *
      * @Route("/create", name="inventariofisicos_inventariofisico_create", methods={"POST"}, options={"expose":true})
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\InventarioFisico')")
      * @Breadcrumb(title="Crear Nuevo Inventario Físico", routeName="inventariofisicos_inventariofisico_create")
      */
     public function createAction(Request $request)
@@ -131,7 +134,7 @@ class InventarioFisicoController extends Controller
 
             try {
                 $entity = $inventariofisicoModel->getEntityData();
-
+                $entity->setEstado(BusetaBodegaDocumentStatus::DOCUMENT_STATUS_DRAFT);
                 $em->persist($entity);
                 $em->flush();
 
@@ -185,6 +188,7 @@ class InventarioFisicoController extends Controller
      * Displays a form to create a new InventarioFisico entity.
      *
      * @Route("/new", name="inventariofisicos_inventariofisico_new", methods={"GET"}, options={"expose":true})
+     * @Security("is_granted('create', 'Buseta\\BodegaBundle\\Entity\\InventarioFisico')")
      * @Breadcrumb(title="Crear Nuevo Inventario Físico", routeName="inventariofisicos_inventariofisico_new")
      */
     public function newAction()
@@ -202,19 +206,20 @@ class InventarioFisicoController extends Controller
     /**
      * Finds and displays a InventarioFisico entity.
      * @Route("/{id}/show", name="inventariofisico_show", methods={"GET"}, options={"expose":true})
+     * @Security("is_granted('show', inventarioFisico)")
      * @Breadcrumb(title="Ver Datos de Inventario Físico", routeName="inventariofisico_show", routeParameters={"id"})
      */
-    public function showAction($id)
+    public function showAction(InventarioFisico $inventarioFisico)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BusetaBodegaBundle:InventarioFisico')->find($id);
+        $entity = $em->getRepository('BusetaBodegaBundle:InventarioFisico')->find($inventarioFisico->getId());
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find InventarioFisico entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($inventarioFisico->getId());
 
         return $this->render('BusetaBodegaBundle:InventarioFisico:show.html.twig', array(
             'entity'      => $entity,
@@ -225,6 +230,7 @@ class InventarioFisicoController extends Controller
      * Displays a form to edit an existing InventarioFisico entity.
      *
      * @Route("/{id}/edit", name="inventariofisicos_inventariofisico_edit", methods={"GET"}, options={"expose":true})
+     * @Security("is_granted('edit', inventariofisico)")
      * @Breadcrumb(title="Modificar Inventario Físico", routeName="inventariofisicos_inventariofisico_edit", routeParameters={"id"})
      */
     public function editAction(InventarioFisico $inventariofisico)
@@ -308,6 +314,7 @@ class InventarioFisicoController extends Controller
      * Deletes a InventarioFisico entity.
      *
      * @Route("/{id}/delete", name="inventariofisico_delete")
+     * @Security("is_granted('delete', inventariofisico)")
      * @Method({"DELETE", "GET"})
      */
     public function deleteAction(InventarioFisico $inventariofisico, Request $request)

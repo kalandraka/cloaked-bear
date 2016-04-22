@@ -10,7 +10,9 @@ TallerApp.combustible.servicioCombustible = (function (App, $) {
         marchamo2 = 'input#combustible_servicio_combustible_marchamo2, label[for="combustible_servicio_combustible_marchamo2"]',
 
         init = function () {
-            $(selectBoleta).chosen();
+            $(selectBoleta).chosen({
+                allow_single_deselect: true
+            });
 
             $(selectVehiculo).chosen();
             $(selectVehiculo).on('change', function (e) {

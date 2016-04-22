@@ -36,7 +36,7 @@ class PedidoCompra
     /**
      * @var string
      *
-     * @ORM\Column(name="numero_referencia", type="string", length=32)
+     * @ORM\Column(name="numero_referencia", type="string", length=32, nullable=true)
      * @Assert\NotBlank()
      */
     private $numeroReferencia;

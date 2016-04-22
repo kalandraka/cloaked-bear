@@ -232,6 +232,36 @@ class ReporteModel
     }
 
     /**
+     * @return \Buseta\NomencladorBundle\Entity\PrioridadSolicitud
+     */
+    public function getPrioridad()
+    {
+        return $this->prioridad;
+    }
+
+    /**
+     * @param \Buseta\NomencladorBundle\Entity\PrioridadSolicitud
+     */
+    public function setPrioridad($prioridad)
+    {
+        $this->prioridad = $prioridad;
+    }
+    /**
+     * @return \Buseta\NomencladorBundle\Entity\Grupo
+     */
+    public function getGrupo()
+    {
+        return $this->grupo;
+    }
+
+    /**
+     * @param \Buseta\NomencladorBundle\Entity\Grupo
+     */
+    public function setGrupo($grupo)
+    {
+        $this->grupo = $grupo;
+    }
+    /**
      * @return string
      */
     public function getTelefonoPersona()

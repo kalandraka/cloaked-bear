@@ -5,13 +5,15 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - @logger
-            - @hatuey_soft.sequence.manager
+            - @event_dispatcher
 
     # EVENT SUBSCRIBER
     buseta.taller.ordentrabajo.subscriber:
         class: Buseta\TallerBundle\EventListener\OrdenTrabajoSubscriber
         arguments:
             - @buseta.taller.ordentrabajo.manager
+            - @logger
+            - @hatuey_soft.sequence.manager
         tags:
             - {name: kernel.event_subscriber}
 
@@ -21,6 +23,7 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - @logger
+            - @event_dispatcher
             - @session
             - @hatuey_soft.sequence.manager
 
@@ -30,6 +33,8 @@ services:
         arguments:
             - @buseta.taller.diagnostico.manager
             - @buseta.taller.ordentrabajo.manager
+            - @logger
+            - @hatuey_soft.sequence.manager
         tags:
             - {name: kernel.event_subscriber}
 
@@ -39,6 +44,7 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - @logger
+            - @event_dispatcher
 
     # EVENT SUBSCRIBER
     buseta.taller.reporte.subscriber:
@@ -46,6 +52,8 @@ services:
         arguments:
             - @buseta.taller.reporte.manager
             - @buseta.taller.diagnostico.manager
+            - @logger
+            - @hatuey_soft.sequence.manager
         tags:
             - {name: kernel.event_subscriber}
 
@@ -123,6 +131,19 @@ services:
      #Form Type
     taller.orden_trabajo.type:
         class: Buseta\TallerBundle\Form\Type\OrdenTrabajoType
-        arguments: [@security.token_storage]
+        arguments: [@security.token_storage, @service_container]
         tags:
             - {name: form.type, alias: 'buseta_tallerbundle_ordentrabajo'}
+
+     #Form Type
+    taller.reporte.type:
+        class: Buseta\TallerBundle\Form\Type\ReporteType
+        arguments: [@doctrine.orm.entity_manager, @hatuey_soft.sequence.manager]
+        tags:
+            - {name: form.type, alias: 'buseta_tallerbundle_reporte'}
+     #Form Type
+    taller.dignostico.type:
+        class: Buseta\TallerBundle\Form\Type\DiagnosticoType
+        arguments: [@doctrine.orm.entity_manager, @hatuey_soft.sequence.manager]
+        tags:
+            - {name: form.type, alias: 'buseta_tallerbundle_diagnostico'}

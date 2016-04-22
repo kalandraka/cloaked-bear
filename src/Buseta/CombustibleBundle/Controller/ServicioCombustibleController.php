@@ -372,10 +372,9 @@ class ServicioCombustibleController extends Controller
      *
      * @param Request $request
      *
-     * @return Response
+     * @return JsonResponse
      *
-     * @Route("/find_chofer_bus", name="chofer_bus_ajax",
-     *   options={"expose": true})
+     * @Route("/find_chofer_bus", name="chofer_bus_ajax", options={"expose": true})
      * @Method({"GET"})
      */
     public function findChoferBusAction(Request $request)
@@ -404,13 +403,11 @@ class ServicioCombustibleController extends Controller
             $bus_id = $autobus->getId();
         }
 
-        return new Response(
-            json_encode(
-                array(
-                    'chofer' => $chofer_id,
-                    'autobus' => $bus_id,
-                )
-            ), 200
+        return new JsonResponse(
+            array(
+                'chofer' => $chofer_id,
+                'autobus' => $bus_id,
+            )
         );
     }
 

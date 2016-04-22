@@ -13,11 +13,16 @@ class FilterReporteEvent extends Event
     private $reporte;
 
     /**
+     * @var string|null
+     */
+    private $error;
+
+    /**
      * @param $reporte
      */
     function __construct(Reporte $reporte)
     {
-        $this->$reporte = $reporte;
+        $this->reporte = $reporte;
     }
 
     /**
@@ -33,5 +38,21 @@ class FilterReporteEvent extends Event
     public function setReporte(Reporte $reporte)
     {
         $this->reporte=$reporte;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    /**
+     * @param string $error
+     */
+    public function setError($error)
+    {
+        $this->error = $error;
     }
 }

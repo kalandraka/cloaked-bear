@@ -36,7 +36,7 @@ class Albaran implements DateTimeAwareInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="numeroDocumento", type="string", nullable=true)
+     * @ORM\Column(name="numeroDocumento", type="string")
      * @Assert\NotBlank()
      */
     private $numeroDocumento;

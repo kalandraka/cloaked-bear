@@ -5,6 +5,7 @@ namespace Buseta\BodegaBundle\Form\Model;
 use Buseta\BodegaBundle\Entity\NecesidadMaterial;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * NecesidadMaterial Model
@@ -20,7 +21,6 @@ class NecesidadMaterialModel
 
     /**
      * @var string
-     * @Assert\NotBlank()
      */
     private $numero_documento;
 

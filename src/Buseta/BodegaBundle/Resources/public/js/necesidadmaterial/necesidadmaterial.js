@@ -11,6 +11,7 @@ var necesidadmaterial = {
         $('#bodega_necesidad_material_almacen').chosen();
 
         $('a#btn_necesidadmaterial_save').on('click', necesidadmaterial._save);
+        $('#bodega_necesidad_material_tercero').on('change', necesidadmaterial._updateMoneda);
     },
     _load: function () {
         necesidadmaterial.id = $('input[id="' + necesidadmaterial.form_id + '_id"]').val();
@@ -92,5 +93,22 @@ var necesidadmaterial = {
             $(progressBarr).css('width', percentComplete + '%');
             $(progressBarr).find('span').html(percentComplete + '% Completado');
         }
+    },
+    _updateMoneda: function(){
+        var data = {
+            tercero_id: $(this).val()
+        };
+
+        $.ajax({
+            type: 'GET',
+            url: Routing.generate('necesidadMaterial_ajax_proveedor_moneda'),
+            data: data,
+            success: function(data) {
+                var moneda = $.parseJSON(data);
+                if (moneda != undefined && moneda != null) {
+                    $('#bodega_necesidad_material_moneda').val(moneda.id);
+                }
+            }
+        });
     }
 };

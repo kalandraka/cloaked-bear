@@ -1,0 +1,71 @@
+{% extends "@BusetaNotificaciones/layout.html.twig" %}
+
+{% import '@BusetaTemplate/Macros/macros.html.twig' as macros %}
+
+{% block header %} {{ 'notificaciones.list' | trans({}, 'BusetaNotificacionesBundle') }} {% endblock %}
+
+{% set content %}
+    <form action="{{ path('notificaciones_delete') }}" method="post" enctype="multipart/form-data" style="display: none;">
+        <input type="hidden" name="notificacion_id" id="notificacion_id" value="">
+        <div class="alert alert-block alert-danger">
+            <a class="close" data-dismiss="alert" href="#">&times;</a>
+            <h4 class="alert-heading">Atención</h4>
+            <p>Está intentando eliminar una notificación.<strong>¿Está seguro que desea continuar?</strong></p>
+            <p>
+                <input class="btn btn-danger" type="submit" value="Eliminar" />
+                <a href="#" class="btn cancelar">Cancelar</a>
+            </p>
+        </div>
+    </form>
+
+    <table class="{{ macros.table_styles }}">
+        <tr>
+            <th></th>
+            <th>No.</th>
+            <th>Asunto</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+        </tr>
+        {% for notificacion in notificaciones %}
+            <tr>
+                <td></td>
+                <td>{{ loop.index }}</td>
+                <td>{{ notificacion.asunto }}</td>
+                <td>{{ notificacion.created | date('d/m/Y h:i') }}</td>
+                <td>
+                    <a class="btn btn-mini" href="{{ path('notificaciones_show',{ 'id' : notificacion.id }) }}" title="Ver Mensaje"><i class="fa fa-eye"></i></a>
+                    <a class="btn btn-mini eliminar" data-content="{{ notificacion.id }}" title="Eliminar"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            {{ macros.no_elements }}
+        {% endfor %}
+    </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(notificaciones) }}
+    </div>
+{% endset %}
+
+{% block content %}
+    {{ macros.container_content('notificaciones.list', content, 'BusetaNotificacionesBundle') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.alert').alert();
+            $('a.eliminar').on('click',function(){
+                $('form').show(300);
+                var id = $(this).data('content');
+                $('form input#notificacion_id').val(id);
+            });
+            $('form a.cancelar').on('click',function(){
+                $('form').hide(200);
+                $('form input#notificacion_id').val('');
+            });
+        });
+    </script>
+{% endblock %}

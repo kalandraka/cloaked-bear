@@ -32,7 +32,7 @@ class AlbaranRepository extends EntityRepository
                     ->setParameter('numeroReferencia', '%' . $filter->getNumeroReferencia() . '%');
             }
             if ($filter->getNumeroDocumento() !== null && $filter->getNumeroDocumento() !== '') {
-                $query->andWhere($qb->expr()->like('a.consecutivoCompra',':consecutivoCompra'))
+                $query->andWhere($qb->expr()->like('a.numeroDocumento',':numeroDocumento'))
                     ->setParameter('numeroDocumento', '%' . $filter->getNumeroDocumento() . '%');
             }
             if ($filter->getAlmacen() !== null && $filter->getAlmacen() !== '') {

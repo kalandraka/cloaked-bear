@@ -49,12 +49,13 @@
         </div>
 
         <hr/>
-        <div class="btn-group" style="margin-bottom: 8px;">
-            <a class="btn btn-primary" href="{{ path('inventariofisico_new') }}">
-                <span class="glyphicon glyphicon-plus-sign"></span> {{ 'inventariofisico.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}
-            </a>
-        </div>
-
+        {% if is_granted('create', 'Buseta\\BodegaBundle\\Entity\\InventarioFisico') %}
+            <div class="btn-group" style="margin-bottom: 8px;">
+                <a class="btn btn-primary" href="{{ path('inventariofisico_new') }}">
+                    <span class="glyphicon glyphicon-plus-sign"></span> {{ 'inventariofisico.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}
+                </a>
+            </div>
+        {% endif %}
         <div class="paginator row">
             <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
         </div>
@@ -76,31 +77,52 @@
                 <td>{{ entity.nombre }}</td>
                 <td>{{ entity.almacen }}</td>
                 <td>{{ entity.fecha | date('d/m/Y') }}</td>
-                <td>{{ ('estado.'~entity.estado) | trans({}, 'BusetaTallerBundle') }}</td>
+                {% if entity.estado == 'CO' %}
+                    {% set badge = 'success' %}
+                    {% set text_color = 'success' %}
+                {% elseif entity.estado == 'PR' %}
+                    {% set badge = 'primary' %}
+                    {% set text_color = 'primary' %}
+                {% else %}
+                    {% set badge = 'danger' %}
+                    {% set text_color = 'danger' %}
+                {% endif %}
+                <td class="text-{{ text_color }}"><span
+                            class="label label-{{ badge }}">{{ ('estado.' ~entity.estado) | trans({}, 'BusetaBodegaBundle') | upper }}</span>
+                </td>
 
                 <td style="width: 24% !important; text-align: center;">
-                    <div class="btn-group">
-                        <a class="btn btn-success btn-xs"
-                           href="{{ path('inventariofisico_show', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-search"> Mostrar</span></a>
-                    </div>
-
+                    {% if is_granted('show', entity) %}
+                        <div class="btn-group">
+                            <a class="btn btn-success btn-xs"
+                               href="{{ path('inventariofisico_show', { 'id': entity.id }) }}"><span
+                                        class="glyphicon glyphicon-search"> Mostrar</span></a>
+                        </div>
+                    {% endif %}
                     {% if entity.estado == 'BO' %}
-                        <div class="btn-group">
-                            <a class="btn btn-danger btn-xs"
-                               href="{{ path('inventariofisicos_inventariofisico_edit', { 'id': entity.id }) }}"><span
-                                        class="glyphicon glyphicon-edit"> Editar</span></a>
-                        </div>
-                        <a href="#delete" data-href="{{ path('inventariofisico_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
-                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+                        {% if is_granted('edit', entity) %}
+                            <div class="btn-group">
+                                <a class="btn btn-danger btn-xs"
+                                   href="{{ path('inventariofisicos_inventariofisico_edit', { 'id': entity.id }) }}"><span
+                                            class="glyphicon glyphicon-edit"> Editar</span></a>
+                            </div>
+                        {% endif %}
+                        {% if is_granted('delete', entity) %}
+                            <a href="#delete" data-href="{{ path('inventariofisico_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
+                                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+                        {% endif %}
                     {% else %}
-                        <div class="btn-group">
-                            <a class="btn btn-danger btn-xs disabled"
-                               href="{{ path('inventariofisicos_inventariofisico_edit', { 'id': entity.id }) }}"><span
-                                        class="glyphicon glyphicon-edit"> Editar</span></a>
-                        </div>
-                        <a href="#delete" data-href="{{ path('inventariofisico_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs disabled">
-                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+                        {% if is_granted('edit', entity) %}
+                            <div class="btn-group">
+                                <a class="btn btn-danger btn-xs disabled"
+                                   href="{{ path('inventariofisicos_inventariofisico_edit', { 'id': entity.id }) }}"><span
+                                            class="glyphicon glyphicon-edit"> Editar</span></a>
+                            </div>
+                        {% endif %}
+                        {% if is_granted('delete', entity) %}
+                            <a href="#delete" data-href="{{ path('inventariofisico_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs disabled">
+                                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+                        {% endif %}
                     {% endif %}
                 </td>
             </tr>

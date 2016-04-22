@@ -1339,11 +1339,6 @@ class Autobus extends Vehiculo
         return $this->archivosAdjuntos;
     }
 
-    public function __toString()
-    {
-        return sprintf('%d (%s)', $this->getNumero(), $this->getMatricula());
-    }
-
     /**
      * @return mixed
      */

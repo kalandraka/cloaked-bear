@@ -29,7 +29,6 @@ class NecesidadMaterial
      * @var string
      *
      * @ORM\Column(name="numero_documento", type="string")
-     * @Assert\NotBlank()
      */
     private $numero_documento;
 
@@ -910,14 +909,20 @@ class NecesidadMaterial
 
             // impuesto por linea
             $factorImpuestoLinea = 0;
+            $importeImpuesto = 0;
             if ($linea->getImpuesto() !== null) {
-                $factorImpuestoLinea = $linea->getImpuesto()->getTarifa() / 100;
+                if ($linea->getImpuesto()->getTipo() == 'porcentaje') {
+                    $factorImpuestoLinea = $linea->getImpuesto()->getTarifa() / 100;
+                    $impuesto = $factorImpuesto + $factorImpuestoLinea;
+                    $importeImpuesto = $importeLinea * $impuesto;
+                } else {
+                    $importeImpuesto = $linea->getImpuesto()->getTarifa();
+                }
+
             }
-            $impuesto = $factorImpuesto + $factorImpuestoLinea;
-            $importeImpuesto = ($importeLinea - $importeDescuento) * $impuesto;
 
             // importe total (formula reducida)
-            $importeTotal = $importeLinea * (1 - $descuento) * (1 + $impuesto);
+            $importeTotal = $importeLinea + $importeImpuesto - $importeDescuento;
 
             $this->importeDescuento += $importeDescuento;
             $this->importeImpuesto += $importeImpuesto;

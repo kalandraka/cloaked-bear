@@ -13,6 +13,11 @@ class FilterDiagnosticoEvent extends Event
     private $diagnostico;
 
     /**
+     * @var string|null
+     */
+    private $error;
+
+    /**
      * @param $diagnostico
      */
     function __construct(Diagnostico $diagnostico)
@@ -33,5 +38,21 @@ class FilterDiagnosticoEvent extends Event
     public function setDiagnostico(Diagnostico $diagnostico)
     {
         $this->diagnostico = $diagnostico;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    /**
+     * @param string $error
+     */
+    public function setError($error)
+    {
+        $this->error = $error;
     }
 }

@@ -79,33 +79,22 @@ class NecesidadMaterialController extends Controller
      */
     public function procesarNecesidadAction(NecesidadMaterial $necesidadMaterial)
     {
-        $validator  = $this->get('validator');
-        $session    = $this->get('session');
-        if (($errors = $validator->validate($necesidadMaterial, 'on_complete')) && count($errors) > 0) {
-            foreach ($errors as $e) {
-                /** @var ConstraintViolation $e */
-                $session->getFlashBag()->add('danger', $e->getMessage());
-            }
+        $manager = $this->get('buseta.bodega.necesidadmaterial.manager');
+        if (true === $result = $manager->procesar($necesidadMaterial)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'Se ha procesado la Necesidad Material de forma correcta.'
+            );
+
+            return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                'danger',
+                'Ha ocurrido un error al procesar la Necesidad Material.'
+            );
 
             return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
         }
-
-        $em = $this->getDoctrine()->getManager();
-
-        //Cambia el estado de Borrador a Procesado
-        $necesidadMaterial->setEstadoDocumento('PR');
-
-        try {
-            $em->persist($necesidadMaterial);
-            $em->flush();
-
-            $session->getFlashBag()->add('success', 'Se ha procesado la Necesidad Material de forma correcta.');
-        } catch (\Exception $e) {
-            $this->get('logger')->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
-            $this->get('session')->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
-        }
-
-        return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
     }
 
     /**
@@ -117,88 +106,24 @@ class NecesidadMaterialController extends Controller
      */
     public function completarNecesidadAction(NecesidadMaterial $necesidadMaterial)
     {
-        $em         = $this->getDoctrine()->getManager();
-        $logger     = $this->get('logger');
-        $session    = $this->get('session');
-        $error      = false;
+        {
+            $manager = $this->get('buseta.bodega.necesidadmaterial.manager');
+            if (true === $result = $manager->completar($necesidadMaterial)) {
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    'Se ha completado la Necesidad Material de forma correcta.'
+                );
 
-        //Cambia el estado de Procesado a Completado
-        $necesidadMaterial->setEstadoDocumento('CO');
-        try {
-            $em->persist($necesidadMaterial);
-            $em->flush();
+                return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                    'danger',
+                    sprintf('Ha ocurrido un error al completar la Necesidad Material.')
+                );
 
-            $session->getFlashBag()->add('success', 'Se ha completado la Necesidad Material de forma correcta.');
-        } catch (\Exception $e) {
-            $logger->addCritical(sprintf('Ha ocurrido un error actualizando el estado del documento. Detalles: %s', $e->getMessage()));
-            $session->getFlashBag()->add('danger', 'Ha ocurrido un error actualizando el estado del documento.');
-
-            $error = true;
-        }
-
-        if (!$error) {
-            $fecha =  new \DateTime();
-
-            $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($necesidadMaterial->getAlmacen());
-            $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($necesidadMaterial->getTercero());
-
-            //Registro los datos del nuevo PedidoCompra que se crear al procesar la NecesidadMaterial
-
-            $sequenceManager = $this->get('hatuey_soft.sequence.manager');
-            $pedidoCompra = new PedidoCompra();
-            if (null !== $numeroDocumento = $sequenceManager->getNextValue('orden_entrada_seq')) {
-                $pedidoCompra->setNumeroDocumento($sequenceManager->getNextValue('registro_compra_seq'));
-
-            }  else {
-                $pedidoCompra->setNumeroDocumento($necesidadMaterial->getNumeroDocumento());
-
+                return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
             }
-            $pedidoCompra->setTercero($tercero);
-            $pedidoCompra->setFechaPedido($necesidadMaterial->getFechaPedido());
-            $pedidoCompra->setAlmacen($almacen);
-            $pedidoCompra->setMoneda($necesidadMaterial->getMoneda());
-            $pedidoCompra->setFormaPago($necesidadMaterial->getFormaPago());
-            $pedidoCompra->setCondicionesPago($necesidadMaterial->getCondicionesPago());
-            $pedidoCompra->setEstadoDocumento('BO');
-            $pedidoCompra->setImporteTotal($necesidadMaterial->getImporteTotal());
-            $pedidoCompra->setImporteTotalLineas($necesidadMaterial->getImporteTotalLineas());
-            $pedidoCompra->setImpuesto($necesidadMaterial->getImpuesto());
-            $pedidoCompra->setDescuento($necesidadMaterial->getDescuento());
-            $pedidoCompra->setImporteImpuesto($necesidadMaterial->getImporteImpuesto());
-            $pedidoCompra->setImporteDescuento($necesidadMaterial->getImporteDescuento());
-            $pedidoCompra->setImporteCompra($necesidadMaterial->getImporteCompra());
-            $pedidoCompra->setObservaciones($necesidadMaterial->getObservaciones());
-            $pedidoCompra->setCreated(new \DateTime());
-
-            $em->persist($pedidoCompra);
-            $em->flush();
-
-            //Registro los datos de las líneas del PedidoCompra
-            foreach ($necesidadMaterial->getNecesidadMaterialLineas() as $linea) {
-                $registroCompraLinea = new PedidoCompraLinea();
-                $registroCompraLinea->setPedidoCompra($pedidoCompra);
-                $registroCompraLinea->setLinea($linea->getLinea());
-                $registroCompraLinea->setProducto($linea->getProducto());
-                $registroCompraLinea->setCantidadPedido($linea->getCantidadPedido());
-                $registroCompraLinea->setUom($linea->getUom());
-                $registroCompraLinea->setPrecioUnitario($linea->getPrecioUnitario());
-                $registroCompraLinea->setImpuesto($linea->getImpuesto());
-                $registroCompraLinea->setMoneda($linea->getMoneda());
-                $registroCompraLinea->setPorcientoDescuento($linea->getPorcientoDescuento());
-                $registroCompraLinea->setImporteLinea($linea->getImporteLinea());
-
-                $em->persist($registroCompraLinea);
-                $em->flush();
-            }
-
-            $necesidadMaterial->setEstadoDocumento('CO');
-            $em->persist($necesidadMaterial);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('necesidadmaterial'));
         }
-
-        return $this->redirect($this->generateUrl('necesidadmaterial'));
     }
 
     /**
@@ -210,23 +135,18 @@ class NecesidadMaterialController extends Controller
      */
     public function createAction(Request $request)
     {
-        $necesidadmaterialModel = new NecesidadMaterialModel();
-        $form = $this->createCreateForm($necesidadmaterialModel);
+        $necesidadMaterialModel = new NecesidadMaterialModel();
+        $form = $this->createCreateForm($necesidadMaterialModel);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em     = $this->get('doctrine.orm.entity_manager');
             $trans  = $this->get('translator');
             $logger = $this->get('logger');
+            $necesidadMaterialManager = $this->get('buseta.bodega.necesidadmaterial.manager');
 
-            try {
-                $entity = $necesidadmaterialModel->getEntityData();
-
-                $em->persist($entity);
-                $em->flush();
-
+            if ($necesidadMaterial = $necesidadMaterialManager->crear($necesidadMaterialModel)) {
                 // Creando nuevamente el formulario con los datos actualizados de la entidad
-                $form = $this->createEditForm(new NecesidadMaterialModel($entity));
+                $form = $this->createEditForm(new NecesidadMaterialModel($necesidadMaterial));
                 $renderView = $this->renderView('@BusetaBodega/NecesidadMaterial/form_template.html.twig', array(
                     'form'   => $form->createView(),
                 ));
@@ -235,14 +155,9 @@ class NecesidadMaterialController extends Controller
                     'view' => $renderView,
                     'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
                 ), 201);
-            } catch (\Exception $e) {
-                $logger->addCritical(sprintf(
-                    $trans->trans('', array(), 'BusetaBodegaBundle') . '. Detalles: %s',
-                    $e->getMessage()
-                ));
-
+            } else {
                 return new JsonResponse(array(
-                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Registro de Compra'), 'BusetaBodegaBundle')
+                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Necesidad Material'), 'BusetaBodegaBundle')
                 ), 500);
             }
         }
@@ -282,6 +197,7 @@ class NecesidadMaterialController extends Controller
     public function newAction()
     {
         $form   = $this->createCreateForm(new NecesidadMaterialModel());
+
         $em = $this->get('doctrine.orm.entity_manager');
         $productos = $em->getRepository('BusetaBodegaBundle:Producto')
             ->createQueryBuilder('p')
@@ -480,5 +396,34 @@ class NecesidadMaterialController extends Controller
             ->setMethod('DELETE')
             ->getForm()
             ;
+    }
+
+    /**
+     * @param Request $request
+     * @param Tercero $vehiculo
+     *
+     * @return JsonResponse
+     *
+     * @Route("/select_proveedor_moneda", name="necesidadMaterial_ajax_proveedor_moneda", options={"expose": true})
+     * @Method({"GET"})
+     */
+    public function selectProveedorMonedaAction(Request $request) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+
+        if (!$request->isXmlHttpRequest())
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+
+        $em = $this->getDoctrine()->getManager();
+        $tercero = $em->getRepository('BusetaBodegaBundle:Tercero')->find($request->query->get('tercero_id'));
+        $moneda = $tercero->getProveedor()->getMoneda();
+
+        $json = array(
+            'id' => $moneda->getId(),
+            'valor' => $moneda->getValor(),
+            );
+
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
 }

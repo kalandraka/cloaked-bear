@@ -61,7 +61,7 @@ tercero:
 # PROVEEDOR
 proveedor:
   codigo: Código
-  alias: Alias"Se ha creado los datos de forma satisfactoria."
+  alias: Alias
   nombres: Nombres
   apellidos: Apellidos
   alias: Alias

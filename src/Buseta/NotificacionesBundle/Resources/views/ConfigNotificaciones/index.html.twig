@@ -1,0 +1,88 @@
+{% extends "@BusetaNotificaciones/layout.html.twig" %}
+
+{% import '@BusetaTemplate/Macros/macros.html.twig' as macros %}
+{% block header %} {{ 'notificaciones.configList' | trans({}, 'BusetaNotificacionesBundle') }} {% endblock %}
+{% set table_content %}
+    <table class="{{ macros.table_styles() }}">
+        <tr>
+            <th>Notificación</th>
+            <th>Acciones</th>
+        </tr>
+        {% for codigo,n in defaultNotificacion %}
+            <tr>
+                <td>{{ n }}</td>
+                <td>
+                    <a href="{{ path('notificaciones_config_edit',{'codigo':codigo}) }}" class="btn btn-danger btn-mini" title="Editar"><i class="icon-edit icon-white"></i> Editar</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endset %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12">{{ macros.container_content('Listado de Notificaciones', table_content, 'BusetaNotificacionesBundle') }}</div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        //var _email_template = '<input type="hidden" id="notificaciones_config_type_correosDefinidos___name__" name="notificaciones_config_type[correosDefinidos][__name__]" />';
+        var $addEmailLink = $('a.add_email_link');
+
+        $(document).ready(function(){
+
+            //preparando los enlaces para eliminar
+            updateDeleteLink();
+
+            $addEmailLink.on('click', function(e){
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                //select the reference collection(parent->div; parent->div; parent->form)
+                var collectionHolder = $(this).parent().parent().parent().find('._correos_definidos div#notificaciones_config_type_correosDefinidos');
+
+                var value = $(this).parent().find('input#notificaciones_config_type_correoSelector').val();
+
+                //add new email to list
+               addEmail(collectionHolder, value);
+            });
+
+            function addEmail(collectionHolder, value){
+                // Get the data-prototype explained earlier
+                var prototype = collectionHolder.data('prototype');
+
+                // get the new index
+                var index = collectionHolder.find('a.delete_link').length;
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = $(prototype.replace(/__name__/g, index));
+                newForm.val(value);
+
+                var divComponent = $('<span class="badge badge-info">' + value + '</span>')
+                        .append(newForm)
+                        .append($('<a class="delete_link" href="#"><i class="icon-remove icon-white"></i></a>'));
+
+                collectionHolder.append(divComponent);
+
+                updateDeleteLink();
+            }
+
+            function updateDeleteLink(){
+                $('a.delete_link').on('click', function(e) {
+                    // prevent the link from creating a "#" on the URL
+                    e.preventDefault();
+
+                    // remove the li for the tag form
+                    $(this).parent().remove();
+                });
+            }
+
+
+
+
+        });
+    </script>
+{% endblock %}

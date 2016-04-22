@@ -1,3 +1,5 @@
+{% from 'flash.html.twig' import flash %}
+
 <div class="modal fade" id="form_lineas_modal" tabindex="-1" role="dialog" aria-labelledby="createLineas"
      aria-hidden="true">
     <div class="modal-dialog">
@@ -9,6 +11,8 @@
             <div class="modal-body">
                 <form name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" action="{{ form.vars.action }}"
                       method="post" enctype="multipart/form-data">
+                    {{ form_errors(form) }}
+
                     {% if form.vars.method == 'PUT' %}
                         <input type="hidden" name="_method" value="PUT"/>
                     {% endif %}
@@ -17,6 +21,7 @@
                     {{ form_row(form.cantidadTeorica) }}
                     {{ form_row(form.cantidadReal) }}
                     {{ form_row(form.seriales) }}
+                    {{ form_widget(form._token) }}
                 </form>
             </div>
             <div class="modal-footer">

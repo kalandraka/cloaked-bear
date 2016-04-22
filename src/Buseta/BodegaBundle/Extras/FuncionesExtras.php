@@ -2,6 +2,8 @@
 
 namespace Buseta\BodegaBundle\Extras;
 
+use Buseta\BodegaBundle\BusetaBodegaMovementTypes;
+
 class FuncionesExtras
 {
     public function ImporteLinea($cantidad_pedido, $precio_unitario, $impuesto = null, $porciento_descuento = 0)
@@ -46,14 +48,10 @@ class FuncionesExtras
                     /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacora */
                     if ($producto == $bitacora->getProducto()) {
                         //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                        if ($bitacora->getTipoMovimiento() === 'V+'
-                            || $bitacora->getTipoMovimiento() === 'M+'
-                            || $bitacora->getTipoMovimiento() === 'I+' ) {
+                        if ($this->movementTypeComparePlus($bitacora->getTipoMovimiento())) {
                             $cantidadPedido += $bitacora->getCantidadMovida();
                         }
-                        if ($bitacora->getTipoMovimiento() === 'M-'
-                            || $bitacora->getTipoMovimiento() === 'P-'
-                            || $bitacora->getTipoMovimiento() === 'I-') {
+                        if ($this->movementTypeCompareMinus($bitacora->getTipoMovimiento())) {
                             $cantidadPedido -= $bitacora->getCantidadMovida();
                         }
                     }
@@ -109,14 +107,10 @@ class FuncionesExtras
                     /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacora */
                     if ($producto == $bitacora->getProducto() && $bitacora->getAlmacen() == $almacen) {
                         //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                        if ($bitacora->getTipoMovimiento() === 'V+'
-                            || $bitacora->getTipoMovimiento() === 'M+'
-                            || $bitacora->getTipoMovimiento() === 'I+') {
+                        if ($this->movementTypeComparePlus($bitacora->getTipoMovimiento())) {
                             $cantidadPedido += $bitacora->getCantidadMovida();
                         }
-                        if ($bitacora->getTipoMovimiento() === 'M-'
-                            || $bitacora->getTipoMovimiento() === 'P-'
-                            || $bitacora->getTipoMovimiento() === 'I-') {
+                        if ($this->movementTypeCompareMinus($bitacora->getTipoMovimiento())) {
                             $cantidadPedido -= $bitacora->getCantidadMovida();
                         }
                     }
@@ -160,16 +154,10 @@ class FuncionesExtras
             //Comprobar tipo de movimiento para realizar operación de sustracción o adición
             //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
             $existe = true;
-            if ($bitacora->getTipoMovimiento() === 'V+'       //V+ es Entrada desde albaran
-                || $bitacora->getTipoMovimiento() === 'M+'    //M+ es Entrada desde Movimiento % almacenes
-                || $bitacora->getTipoMovimiento() === 'I+'    //I+ es incremento por inventario fisico
-            ) {
+            if ($this->movementTypeComparePlus($bitacora->getTipoMovimiento())) {
                 $cantidadPedido += $bitacora->getCantidadMovida();
             }
-            if ($bitacora->getTipoMovimiento() === 'P-'      //P- es Salida desde SalidaProduccion
-                || $bitacora->getTipoMovimiento() === 'M-'    //M- es Salida desde Movimiento % almacenes
-                || $bitacora->getTipoMovimiento() === 'I-'   //I- es decremento por inventario fisico
-            ) {
+            if ($this->movementTypeCompareMinus($bitacora->getTipoMovimiento())) {
                 $cantidadPedido -= $bitacora->getCantidadMovida();
             }
             //}
@@ -203,16 +191,10 @@ class FuncionesExtras
             //Comprobar tipo de movimiento para realizar operación de sustracción o adición
             //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
 
-            if ($bitacora->getTipoMovimiento() === 'V+'       //V+ es Entrada desde albaran
-                || $bitacora->getTipoMovimiento() === 'M+'    //M+ es Entrada desde Movimiento % almacenes
-                || $bitacora->getTipoMovimiento() === 'I+'    //I+ es incremento por inventario fisico
-            ) {
+            if ($this->movementTypeComparePlus($bitacora->getTipoMovimiento())) {
                 $cantidad += $bitacora->getCantidadMovida();
             }
-            if ($bitacora->getTipoMovimiento() === 'P-'      //P- es Salida desde SalidaProduccion
-                || $bitacora->getTipoMovimiento() === 'M-'    //M- es Salida desde Movimiento % almacenes
-                || $bitacora->getTipoMovimiento() === 'I-'   //I- es decremento por inventario fisico
-            ) {
+            if ($this->movementTypeCompareMinus($bitacora->getTipoMovimiento())) {
                 $cantidad -= $bitacora->getCantidadMovida();
             }
         }
@@ -242,14 +224,10 @@ class FuncionesExtras
             $existe = true;
             //Comprobar tipo de movimiento para realizar operación de sustracción o adición
             //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-            if ($bitacora->getTipoMovimiento() === 'V+'
-                || $bitacora->getTipoMovimiento() === 'M+'
-                || $bitacora->getTipoMovimiento() === 'I+') {
+            if ($this->movementTypeComparePlus($bitacora->getTipoMovimiento())) {
                 $cantidad += $bitacora->getCantidadMovida();
             }
-            if ($bitacora->getTipoMovimiento() === 'M-'
-                || $bitacora->getTipoMovimiento() === 'P-'
-                || $bitacora->getTipoMovimiento() === 'I-') {
+            if ($this->movementTypeCompareMinus($bitacora->getTipoMovimiento())) {
                 $cantidad -= $bitacora->getCantidadMovida();
             }
         }
@@ -402,14 +380,10 @@ class FuncionesExtras
                     /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacora */
                     if ($producto == $bitacora->getProducto() && $bitacora->getAlmacen() == $almacen) {
                         //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                        if ($bitacora->getTipoMovimiento() === 'V+'
-                            || $bitacora->getTipoMovimiento() === 'M+'
-                            || $bitacora->getTipoMovimiento() === 'I+') {
+                        if ($this->movementTypeComparePlus($bitacora->getTipoMovimiento())) {
                             $cantidadPedido += $bitacora->getCantidadMovida();
                         }
-                        if ($bitacora->getTipoMovimiento() == 'M-'
-                            || $bitacora->getTipoMovimiento() === 'P-'
-                            || $bitacora->getTipoMovimiento() === 'I-'){
+                        if ($this->movementTypeCompareMinus($bitacora->getTipoMovimiento())){
                             $cantidadPedido -= $bitacora->getCantidadMovida();
                         }
 
@@ -448,7 +422,7 @@ class FuncionesExtras
         //Obtengo las bitacoras
         //$bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->findAll();
         //hallar solo las lineas de bitacora del producto y almacen especificado
-        $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraSerial')->findBy(array(
+        $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->findBy(array(
             'producto' => $producto,
             'almacen' => $almacen,
         ));
@@ -460,14 +434,10 @@ class FuncionesExtras
                 //$existe = true;
                 //Comprobar tipo de movimiento para realizar operación de sustracción o adición
                 //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                if ($bitacora->getTipoMovimiento() === 'V+'
-                    || $bitacora->getTipoMovimiento() === 'M+'
-                    || $bitacora->getTipoMovimiento() === 'I+') {
+                if ($this->movementTypeComparePlus($bitacora->getTipoMovimiento())) {
                     $cantidadReal += $bitacora->getCantidadMovida();
                 }
-                if ($bitacora->getTipoMovimiento() === 'M-'
-                    || $bitacora->getTipoMovimiento() === 'P-'
-                    || $bitacora->getTipoMovimiento() === 'I-') {
+                if ($this->movementTypeCompareMinus($bitacora->getTipoMovimiento())) {
                     $cantidadReal -= $bitacora->getCantidadMovida();
                 }
             //}
@@ -493,5 +463,37 @@ class FuncionesExtras
         }
 
         return false;
+    }
+
+    /**
+     * Check if movementType is positive.
+     *
+     * @param $tipoMovimiento
+     *
+     * @return bool
+     */
+    private function movementTypeComparePlus($tipoMovimiento)
+    {
+        return $tipoMovimiento === BusetaBodegaMovementTypes::VENDOR_RECEIPTS
+        || $tipoMovimiento === BusetaBodegaMovementTypes::MOVEMENT_TO
+        || $tipoMovimiento === BusetaBodegaMovementTypes::PRODUCTION_PLUS
+        || $tipoMovimiento === BusetaBodegaMovementTypes::INVENTORY_IN
+        || $tipoMovimiento === BusetaBodegaMovementTypes::INTERNAL_CONSUMPTION_PLUS;
+    }
+
+    /**
+     * Check if movementType is negative.
+     *
+     * @param $tipoMovimiento
+     *
+     * @return bool
+     */
+    private function movementTypeCompareMinus($tipoMovimiento)
+    {
+        return $tipoMovimiento === BusetaBodegaMovementTypes::VENDOR_RETURNS
+        || $tipoMovimiento === BusetaBodegaMovementTypes::MOVEMENT_FROM
+        || $tipoMovimiento === BusetaBodegaMovementTypes::PRODUCTION_MINUS
+        || $tipoMovimiento === BusetaBodegaMovementTypes::INVENTORY_OUT
+        || $tipoMovimiento === BusetaBodegaMovementTypes::INTERNAL_CONSUMPTION_MINUS;
     }
 }

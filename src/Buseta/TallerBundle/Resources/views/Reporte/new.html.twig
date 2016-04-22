@@ -12,9 +12,11 @@
         {{ form_errors(form) }}
 
         <div class="row">
-            <div class="col-md-4">
-                {{ form_row(form.numero) }}
-            </div>
+           {% if form.numero is defined %}
+                <div class="col-md-4">
+                    {{ form_row(form.numero) }}
+                </div>
+            {% endif %}
             <div class="col-md-4">
                 {{ form_row(form.autobus) }}
             </div>

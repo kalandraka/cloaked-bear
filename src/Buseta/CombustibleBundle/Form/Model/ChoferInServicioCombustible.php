@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ChoferInServicioCombustible {
     /**
      * @var \Buseta\BusesBundle\Entity\Chofer
+     * @Assert\NotNull()
      */
     private $chofer;
 

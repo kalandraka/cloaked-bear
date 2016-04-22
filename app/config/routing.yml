@@ -50,3 +50,7 @@ easy_admin_bundle:
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+buseta_notificaciones:
+    resource: "@BusetaNotificacionesBundle/Resources/config/routing.yml"
+    prefix:   /notificaciones
