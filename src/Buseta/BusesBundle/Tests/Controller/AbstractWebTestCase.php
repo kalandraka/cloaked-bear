@@ -31,7 +31,7 @@ abstract class AbstractWebTestCase extends WebTestCase
     {
         $session = $this->client->getContainer()->get('session');
         $firewall = 'secured_area';
-        $user = new User('admin', 'adminpass', array('ROLE_SUPER_ADMIN'));
+        $user = new User('dontest', '123456789', array('ROLE_SUPER_ADMIN'));
         $token = new UsernamePasswordToken($user, null, $firewall, array('ROLE_ADMIN'));
         $session->set('_security_'.$firewall, serialize($token));
         $session->save();
