@@ -93,5 +93,13 @@ class TipoEmpleado
     {
         return $this->descripcion;
     }
+
+    /**
+     * @return string
+     */
+    function __toString()
+    {
+        return $this->nombre;
+    }
 }
 

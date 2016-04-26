@@ -52,14 +52,14 @@ class Empleado
     /**
      * @var string
      *
-     * @ORM\Column(name="estadoCivil", type="string", length=15)
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\EstadoCivil")
      */
     private $estadoCivil;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="nacionalidad", type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Nacionalidad")
      */
     private $nacionalidad;
 
@@ -108,10 +108,9 @@ class Empleado
     /**
      * @var string
      *
-     * @ORM\Column(name="tipoEmpleado", type="string", length=15)
+     * @ORM\ManyToOne(targetEntity="Buseta\EmpleadosBundle\Entity\TipoEmpleado")
      */
     private $tipoEmpleado;
-
 
     /**
      * Get id
@@ -412,27 +411,19 @@ class Empleado
     }
 
     /**
-     * Set tipoEmpleado
-     *
-     * @param string $tipoEmpleado
-     *
-     * @return Empleado
-     */
-    public function setTipoEmpleado($tipoEmpleado)
-    {
-        $this->tipoEmpleado = $tipoEmpleado;
-
-        return $this;
-    }
-
-    /**
-     * Get tipoEmpleado
-     *
      * @return string
      */
     public function getTipoEmpleado()
     {
         return $this->tipoEmpleado;
+    }
+
+    /**
+     * @param string $tipoEmpleado
+     */
+    public function setTipoEmpleado($tipoEmpleado)
+    {
+        $this->tipoEmpleado = $tipoEmpleado;
     }
 
     /**

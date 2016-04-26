@@ -84,12 +84,10 @@ class EmpleadoType extends AbstractType
             ->add('pin')
             ->add('codigoBarras')
             ->add('hhrr')
-            ->add('tipoEmpleado','choice',array(
+            ->add('tipoEmpleado','entity',array(
                 'label'=>'Tipo de Empleado',
-                'choices' => array(
-                    'Mecanico' => 'Mecánico',
-                    'Chofer' => 'Chofer'
-                )
+                'class' => 'BusetaEmpleadosBundle:TipoEmpleado',
+                'placeholder' => '---Seleccione---',
             ));
     }
 
