@@ -5,64 +5,20 @@
 {% block header 'Crear Nuevo Empleado' %}
 
 {% block area_trabajo %}
-    <div class="row row-grid" style="padding-top: 20px;">
-        <div class="col-md-12">
-            <div class="col-md-4">
-                {{ form_row(form.nombres) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(form.apellidos) }}
-            </div>
 
-            <div class="col-md-4">
-                {{ form_row(form.cedula) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(form.genero) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(form.estadoCivil) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(form.nacionalidad) }}
-            </div>
-            <div class="col-md-12">
-                {{ form_row(form.direccion) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(form.telefono) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(form.fechaNacimiento) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(form.pin) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(form.codigoBarras) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(form.hhrr) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(form.tipoEmpleado) }}
-            </div>
-        </div>
-        <div class="row show-grid">
-            <div class="col-md-4">
-                <a id="btn_tercero_save" class="btn btn-primary" href="#save">{{ 'Crear' }}</a>
-                <a class="btn btn-default" href="{{ path('empleado') }}"> {{ 'Cancelar' }}</a>
-            </div>
-        </div>
-    </div>
-{% endblock %}
+    {% include '@BusetaEmpleados/Empleado/form_template.html.twig' with {'form': form} %}
+
+{% endblock area_trabajo %}
+
 {% block javascripts %}
     {{ parent() }}
 
     <script type="text/javascript">
-        $('#buseta_empleadosbundle_empleado_fechaNacimiento').datetimepicker({
-            'format': 'DD/MM/YYYY'
-        });
+    $('#buseta_empleadosbundle_empleado_fechaNacimiento').datetimepicker({
+        'format': 'DD/MM/YYYY'
+    });
+
+
     </script>
 
 {% endblock %}

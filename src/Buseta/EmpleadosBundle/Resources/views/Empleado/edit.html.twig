@@ -6,57 +6,7 @@
 
 {% block area_trabajo %}
 
-    <div class="row row-grid" style="padding-top: 20px;">
-        <div class="col-md-12">
-            <div class="col-md-4">
-                {{ form_row(edit_form.nombres) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(edit_form.apellidos) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(edit_form.cedula) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(edit_form.genero) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(edit_form.estadoCivil) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(edit_form.nacionalidad) }}
-            </div>
-            <div class="col-md-12">
-                {{ form_row(edit_form.direccion) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(edit_form.telefono) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(edit_form.fechaNacimiento) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(edit_form.pin) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(edit_form.codigoBarras) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(edit_form.hhrr) }}
-            </div>
-            <div class="col-md-4">
-                {{ form_row(edit_form.tipoEmpleado) }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
-                <div class="btn-group">
-                    <a class="btn btn-primary" href="{{ path('empleado') }}"> Cancelar</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include '@BusetaEmpleados/Empleado/form_template.html.twig' with {'form': edit_form} %}
 
 {% endblock area_trabajo %}
 
