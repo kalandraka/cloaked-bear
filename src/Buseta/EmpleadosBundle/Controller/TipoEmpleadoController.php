@@ -58,7 +58,7 @@ class TipoEmpleadoController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -91,11 +91,11 @@ class TipoEmpleadoController extends Controller
     public function newAction()
     {
         $entity = new TipoEmpleado();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -119,7 +119,7 @@ class TipoEmpleadoController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -145,8 +145,8 @@ class TipoEmpleadoController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -169,6 +169,7 @@ class TipoEmpleadoController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing TipoEmpleado entity.
      *
@@ -192,16 +193,16 @@ class TipoEmpleadoController extends Controller
 
         if ($editForm->isValid()) {
             $em->flush();
-
             return $this->redirect($this->generateUrl('tipoempleado_edit', array('id' => $id)));
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a TipoEmpleado entity.
      *
@@ -241,7 +242,6 @@ class TipoEmpleadoController extends Controller
             ->setAction($this->generateUrl('tipoempleado_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-        ;
+            ->getForm();
     }
 }

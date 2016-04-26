@@ -1,15 +1,11 @@
-{% extends '::base.html.twig' %}
+{% extends "BusetaEmpleadosBundle::layout.html.twig" %}
 
-{% block body -%}
-    <h1>TipoEmpleado creation</h1>
+{% block title block('header') %}
 
-    {{ form(form) }}
+{% block header 'Crear Nuevo Tipo de Empleado' %}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('tipoempleado') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+{% block area_trabajo %}
+
+    {% include '@BusetaEmpleados/TipoEmpleado/form_template.html.twig' with {'form': form} %}
+
 {% endblock %}

@@ -15,11 +15,14 @@ class TipoEmpleadoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre')
-            ->add('descripcion')
-        ;
+            ->add('nombre', 'text', array(
+                'label' => 'Tipo de Empleado'
+            ))
+            ->add('descripcion', 'textarea', array(
+                'label' => 'Descripción',
+            ));
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
