@@ -1,0 +1,23 @@
+<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST" enctype="multipart/form-data">
+    {% if form.vars.method == 'PUT' %}
+        <input type="hidden" name="_method" value="PUT"/>
+    {% endif %}
+    <div class="row">
+    {{ form_errors(form) }}
+    {{ form_row(form._token) }}
+    {{ form_row(form.nombre) }}
+    {{ form_row(form.descripcion) }}
+    </div>
+    <br/>
+
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+            <div class="btn-group">
+                <a class="btn btn-primary" href="{{ path('tipoempleado') }}"> Cancelar</a>
+            </div>
+        </div>
+    </div>
+
+</form>
