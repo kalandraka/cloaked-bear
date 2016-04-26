@@ -1,0 +1,60 @@
+<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST" enctype="multipart/form-data">
+    {% if form.vars.method == 'PUT' %}
+        <input type="hidden" name="_method" value="PUT"/>
+    {% endif %}
+    {{ form_errors(form) }}
+    {{ form_row(form._token) }}
+    <div class="row row-grid" style="padding-top: 20px;">
+        <div class="col-md-4">
+            {{ form_row(form.nombres) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.apellidos) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_row(form.cedula) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.genero) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.estadoCivil) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.nacionalidad) }}
+        </div>
+        <div class="col-md-12">
+            {{ form_row(form.direccion) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.telefono) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.fechaNacimiento) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.pin) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.codigoBarras) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.hhrr) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.tipoEmpleado) }}
+        </div>
+    </div>
+    <br/>
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+
+            <div class="btn-group">
+                <a class="btn btn-primary" href="{{ path('empleado') }}"> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</form>
