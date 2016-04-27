@@ -1,0 +1,18 @@
+services:
+  hatueysoft.fecha_sistema.manager:
+    class: HatueySoft\DateTimeBundle\Managers\FechaSistemaManager
+    arguments:
+      - @doctrine.orm.entity_manager
+      - @hatueysoft.hora_sistema.manager
+
+  hatueysoft.hora_sistema.manager:
+    class: HatueySoft\DateTimeBundle\Managers\CambioHoraSistemaManager
+    arguments:
+      - @doctrine.orm.entity_manager
+
+  hatueysoft.fecha_sistema.twig_extension:
+    class: HatueySoft\DateTimeBundle\Twig\FechaSistemaExtension
+    arguments:
+        - @hatueysoft.fecha_sistema.manager
+    tags:
+        - { name: twig.extension }

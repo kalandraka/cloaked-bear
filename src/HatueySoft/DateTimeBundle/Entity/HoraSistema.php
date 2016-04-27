@@ -1,18 +1,18 @@
 <?php
 
-namespace Buseta\CoreBundle\Entity;
+namespace HatueySoft\DateTimeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
- * CambioHoraSistema
+ * HoraSistema
  *
- * @ORM\Table(name="conf_cambio_hora")
+ * @ORM\Table(name="hatueysoft_hora_sistema")
  * @ORM\Entity
  */
-class CambioHoraSistema
+class HoraSistema
 {
     /**
      * @var integer
@@ -26,7 +26,7 @@ class CambioHoraSistema
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="hora", type="time", nullable=true)
+     * @ORM\Column(name="hora", type="time")
      * @Assert\NotBlank()
      */
     private $hora;
@@ -34,9 +34,16 @@ class CambioHoraSistema
     /**
      * @var boolean
      *
-     * @ORM\Column(name="activo", type="boolean")
+     * @ORM\Column(name="activo", type="boolean", nullable=true)
      */
     private $activo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="username", type="string", nullable=true)
+     */
+    private $username;
 
 
     /**
@@ -53,7 +60,8 @@ class CambioHoraSistema
      * Set hora
      *
      * @param \DateTime $hora
-     * @return CambioHoraSistema
+     *
+     * @return HoraSistema
      */
     public function setHora($hora)
     {
@@ -76,7 +84,8 @@ class CambioHoraSistema
      * Set activo
      *
      * @param boolean $activo
-     * @return CambioHoraSistema
+     *
+     * @return HoraSistema
      */
     public function setActivo($activo)
     {
@@ -93,5 +102,29 @@ class CambioHoraSistema
     public function getActivo()
     {
         return $this->activo;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return HoraSistema
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
     }
 }

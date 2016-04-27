@@ -5,11 +5,3 @@ core_homepage:
 configuracion_principal:
     path:  /modulo/configuracion
     defaults: { _controller: "CoreBundle:Default:principal" }
-
-coreBundle_cambiohorasistema:
-    resource: "@CoreBundle/Resources/config/routing/cambiohorasistema.yml"
-    prefix:   /cambiohorasistema
-
-coreBundle_fechasistema:
-    resource: "@CoreBundle/Resources/config/routing/fechasistema.yml"
-    prefix:   /fechaistema

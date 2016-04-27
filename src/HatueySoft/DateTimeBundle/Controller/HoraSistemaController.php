@@ -1,48 +1,78 @@
 <?php
 
-namespace Buseta\CoreBundle\Controller;
+namespace HatueySoft\DateTimeBundle\Controller;
 
-use Buseta\CoreBundle\Entity\CambioHoraSistema;
-use Buseta\CoreBundle\Form\Type\CambioHoraSistemaType;
+use HatueySoft\DateTimeBundle\Entity\HoraSistema;
+use HatueySoft\DateTimeBundle\Form\Type\HoraSistemaType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
-class CambioHoraSistemaController extends Controller
+/**
+ * Class HoraController
+ *
+ * @package HatueySoft\DateTimeBundle\Controller
+ *
+ * @Route("/horasistema")
+ * @Security("has_role('ROLE_ADMIN')")
+ */
+class HoraSistemaController extends Controller
 {
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Exception
+     *
+     * @Route("/", name="hatueysoft_datetime_horasistema")
+     * @Method({"GET"})
+     */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $cambioHoraConfig = $em->getRepository('CoreBundle:CambioHoraSistema')->findAll();
+        $cambioHoraConfig = $em->getRepository('HatueySoftDateTimeBundle:HoraSistema')->findAll();
         if(count($cambioHoraConfig) == 1)
             $cambioHoraConfig = $cambioHoraConfig[0];
         elseif(count($cambioHoraConfig) == 0)
-            $cambioHoraConfig = new CambioHoraSistema();
+            $cambioHoraConfig = new HoraSistema();
         else
             throw new \Exception('No pueden existir más de una configuración para cambio de hora en el sistema');
 
-        $form = $this->createForm(new CambioHoraSistemaType(), $cambioHoraConfig);
+        $form = $this->createForm(new HoraSistemaType(), $cambioHoraConfig);
 
-        return $this->render('CoreBundle:CambioHoraSistema:index.html.twig',array(
+        return $this->render('@HatueySoftDateTime/HoraSistema/index.html.twig',array(
                 'form'      => $form->createView(),
                 'entity'    => $cambioHoraConfig,
             ));
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Exception
+     *
+     * @Route("/update", name="hatueysoft_datetime_horasistema_update")
+     * @Method({"PUT", "POST"})
+     */
     public function updateAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $cambioHoraConfig = $em->getRepository('CoreBundle:CambioHoraSistema')->findAll();
+        $cambioHoraConfig = $em->getRepository('HatueySoftDateTimeBundle:HoraSistema')->findAll();
         if(count($cambioHoraConfig) == 1)
             $cambioHoraConfig = $cambioHoraConfig[0];
         elseif(count($cambioHoraConfig) == 0)
-            $cambioHoraConfig = new CambioHoraSistema();
+            $cambioHoraConfig = new HoraSistema();
         else
             throw new \Exception('No pueden existir más de una configuración para cambio de hora en el sistema');
 
-        $form = $this->createForm(new CambioHoraSistemaType(), $cambioHoraConfig);
+        $form = $this->createForm(new HoraSistemaType(), $cambioHoraConfig);
 
         $form->submit($request);
         if($form->isValid())
@@ -67,16 +97,16 @@ class CambioHoraSistemaController extends Controller
                 $em->persist($cambioHoraConfig);
                 $em->flush();
 
-                $this->get('session')->getFlashBag()->set('success',$msg);
+                $this->get('session')->getFlashBag()->set('success', $msg);
 
-                return $this->redirect($this->generateUrl('cambiohora_index'));
+                return $this->redirect($this->generateUrl('hatueysoft_datetime_horasistema'));
             }
         }
 
-        return $this->render('CoreBundle:CambioHoraSistema:index.html.twig',array(
-                'form'      => $form->createView(),
-                'entity'    => $cambioHoraConfig,
-            ));
+        return $this->render('@HatueySoftDateTime/HoraSistema/index.html.twig',array(
+            'form'      => $form->createView(),
+            'entity'    => $cambioHoraConfig,
+        ));
     }
 
 }

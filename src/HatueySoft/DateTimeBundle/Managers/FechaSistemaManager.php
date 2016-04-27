@@ -1,13 +1,25 @@
 <?php
 
-namespace Buseta\CoreBundle\Managers;
+namespace HatueySoft\DateTimeBundle\Managers;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Util\StringUtils;
 
+/**
+ * Class FechaSistemaManager
+ *
+ * @package HatueySoft\DateTimeBundle\Managers
+ */
 class FechaSistemaManager
 {
+    /**
+     * @var EntityManager
+     */
     private $em;
+
+    /**
+     * @var CambioHoraSistemaManager
+     */
     private $cambioHoraManager;
 
     function __construct(EntityManager $em, CambioHoraSistemaManager $cambioHoraManager)
@@ -22,7 +34,7 @@ class FechaSistemaManager
     public function getFechaSistema()
     {
         //comprobando si existe fecha de sistema activa
-        $fechaSistemaConfig = $this->em->getRepository('CoreBundle:FechaSistema')
+        $fechaSistemaConfig = $this->em->getRepository('HatueySoftDateTimeBundle:FechaSistema')
             ->findOneBy(array('activo', true));
 
         if ($fechaSistemaConfig !== null) {
@@ -40,18 +52,20 @@ class FechaSistemaManager
     public function isActive()
     {
         //comprobando si existe fecha de sistema activa
-        $fechaSistemaConfig = $this->em->getRepository('CoreBundle:FechaSistema')->findAll();
+        $fechaSistemaConfig = $this->em->getRepository('HatueySoftDateTimeBundle:FechaSistema')->findAll();
         if (count($fechaSistemaConfig) == 1) {
             $fechaSistemaConfig = $fechaSistemaConfig[0];
             if ($fechaSistemaConfig->getActivo()) {
                 return true;
             }
         }
+
         return false;
     }
 
     /**
      * @param \DateTime $date
+     *
      * @return bool
      */
     public function isTodayDate(\DateTime $date)

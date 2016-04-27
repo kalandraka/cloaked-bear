@@ -1,6 +1,6 @@
 <?php
 
-namespace Buseta\CoreBundle\Managers;
+namespace HatueySoft\DateTimeBundle\Managers;
 
 use Doctrine\ORM\EntityManager;
 

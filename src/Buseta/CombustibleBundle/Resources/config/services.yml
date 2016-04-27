@@ -10,7 +10,7 @@ services:
 
     buses.combustible_servicio_combustible.type:
         class: Buseta\CombustibleBundle\Form\Type\ServicioCombustibleType
-        arguments: [@doctrine.orm.entity_manager, @service_container, @core.fecha_sistema, @core.cambiohora_sistema]
+        arguments: [@doctrine.orm.entity_manager, @service_container, @hatueysoft.fecha_sistema.manager, @hatueysoft.hora_sistema.manager]
         tags:
             - {name: form.type, alias: 'combustible_servicio_combustible'}
 
@@ -19,13 +19,6 @@ services:
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
             - {name: form.type, alias: 'combustible_lista_negra_combustible'}
-
-    core.twig.fecha_sistema_extension:
-        class: Buseta\CoreBundle\Twig\FechaSistemaExtension
-        arguments:
-            - @core.fecha_sistema
-        tags:
-            - { name: twig.extension }
 
     #VALIDATORS
     buseta.combustible.marchamo1valido.validador:

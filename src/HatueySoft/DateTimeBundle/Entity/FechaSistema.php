@@ -1,13 +1,13 @@
 <?php
 
-namespace Buseta\CoreBundle\Entity;
+namespace HatueySoft\DateTimeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * FechaSistema
  *
- * @ORM\Table(name="conf_fecha_sistema")
+ * @ORM\Table(name="hatueysoft_fecha_sistema")
  * @ORM\Entity
  */
 class FechaSistema
@@ -24,16 +24,23 @@ class FechaSistema
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha", type="date", nullable=true)
+     * @ORM\Column(name="fecha", type="date")
      */
     private $fecha;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="activo", type="boolean")
+     * @ORM\Column(name="activo", type="boolean", nullable=true)
      */
     private $activo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="username", type="string", nullable=true)
+     */
+    private $username;
 
 
     /**
@@ -50,6 +57,7 @@ class FechaSistema
      * Set fecha
      *
      * @param \DateTime $fecha
+     *
      * @return FechaSistema
      */
     public function setFecha($fecha)
@@ -73,6 +81,7 @@ class FechaSistema
      * Set activo
      *
      * @param boolean $activo
+     *
      * @return FechaSistema
      */
     public function setActivo($activo)
@@ -90,5 +99,29 @@ class FechaSistema
     public function getActivo()
     {
         return $this->activo;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return FechaSistema
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
     }
 }

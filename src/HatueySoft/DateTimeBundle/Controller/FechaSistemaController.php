@@ -1,20 +1,38 @@
 <?php
 
-namespace Buseta\CoreBundle\Controller;
+namespace HatueySoft\DateTimeBundle\Controller;
 
-use Buseta\CoreBundle\Entity\FechaSistema;
-use Buseta\CoreBundle\Form\Type\FechaSistemaType;
+use HatueySoft\DateTimeBundle\Entity\FechaSistema;
+use HatueySoft\DateTimeBundle\Form\Type\FechaSistemaType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+/**
+ * Class FechaSistemaController
+ *
+ * @package HatueySoft\SysteDateTimeBundle\Controller
+ *
+ * @Route("/fechasistema")
+ * @Security("has_role('ROLE_ADMIN')")
+ */
 class FechaSistemaController extends Controller
 {
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     *
+     * @Route("/", name="hatueysoft_datetime_fechasistema")
+     * @Method({"GET"})
+     */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $fechaSistemaConfig = $em->getRepository('CoreBundle:FechaSistema')->findAll();
+        $fechaSistemaConfig = $em->getRepository('HatueySoftDateTimeBundle:FechaSistema')->findAll();
         if(count($fechaSistemaConfig) == 1)
             $fechaSistemaConfig = $fechaSistemaConfig[0];
         elseif(count($fechaSistemaConfig) == 0)
@@ -24,17 +42,26 @@ class FechaSistemaController extends Controller
 
         $form = $this->createForm(new FechaSistemaType(),$fechaSistemaConfig);
 
-        return $this->render('@Core/FechaSistema/index.html.twig',array(
+        return $this->render('@HatueySoftDateTime/FechaSistema/index.html.twig',array(
                 'form' => $form->createView(),
                 'entity' => $fechaSistemaConfig,
             ));
     }
 
-    public function editAction(Request $request)
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     *
+     * @Route("/update", name="hatueysoft_datetime_fechasistema_update")
+     * @Method({"PUT", "POST"})
+     */
+    public function updateAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $fechaSistemaConfig = $em->getRepository('CoreBundle:FechaSistema')->findAll();
+        $fechaSistemaConfig = $em->getRepository('HatueySoftDateTimeBundle:FechaSistema')->findAll();
         if(count($fechaSistemaConfig) == 1)
             $fechaSistemaConfig = $fechaSistemaConfig[0];
         elseif(count($fechaSistemaConfig) == 0)
@@ -69,11 +96,11 @@ class FechaSistemaController extends Controller
 
                 $this->get('session')->getFlashBag()->set('success',$msg);
 
-                return $this->redirect($this->generateUrl('fecha_sistema'));
+                return $this->redirect($this->generateUrl('hatueysoft_datetime_fechasistema'));
             }
         }
 
-        return $this->render('@Core/FechaSistema/index.html.twig',array(
+        return $this->render('@HatueySoftDateTime/FechaSistema/index.html.twig',array(
                 'form' => $form->createView(),
                 'entity' => $fechaSistemaConfig,
             ));

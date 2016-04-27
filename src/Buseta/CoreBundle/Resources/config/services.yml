@@ -13,16 +13,6 @@ services:
             - @doctrine.orm.entity_manager
         tags:
             - {name: validator.constraint_validator, alias: codigoYpin_validador}
-    core.fecha_sistema:
-        class: Buseta\CoreBundle\Managers\FechaSistemaManager
-        arguments:
-            - @doctrine.orm.entity_manager
-            - @core.cambiohora_sistema
-
-    core.cambiohora_sistema:
-        class: Buseta\CoreBundle\Managers\CambioHoraSistemaManager
-        arguments:
-            - @doctrine.orm.entity_manager
 
     #TWIG EXTENSIONS
     core.twig.moneda_simbolo_extension:

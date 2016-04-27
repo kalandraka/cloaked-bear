@@ -1,8 +1,8 @@
 <?php
 
-namespace Buseta\CoreBundle\Twig;
+namespace HatueySoft\DateTimeBundle\Twig;
 
-use Buseta\CoreBundle\Managers\FechaSistemaManager;
+use HatueySoft\DateTimeBundle\Managers\FechaSistemaManager;
 
 class FechaSistemaExtension extends \Twig_Extension
 {
@@ -29,4 +29,4 @@ class FechaSistemaExtension extends \Twig_Extension
     {
         return 'fecha_sistema_extension';
     }
-} 
+}

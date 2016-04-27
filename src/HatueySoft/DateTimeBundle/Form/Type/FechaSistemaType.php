@@ -1,12 +1,12 @@
 <?php
 
-namespace Buseta\CoreBundle\Form\Type;
+namespace HatueySoft\DateTimeBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CambioHoraSistemaType extends AbstractType
+class FechaSistemaType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,17 +15,19 @@ class CambioHoraSistemaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('hora','time',array(
-                    'required' => false,
-                    'label' => 'Hora de Cambio',
-                    'widget' => 'single_text',
-                    'attr' => array(
-                        'class' => 'pickatime'
-                    )
-                ))
             ->add('activo', 'checkbox', array(
                 'required' => false,
-            ));
+            ))
+            ->add('fecha','date',array(
+                    'required' => false,
+                    'label' => 'Fecha de Sistema',
+                    'widget' => 'single_text',
+                    'format' => 'dd/MM/yyyy',
+                    'attr' => array(
+                        'class' => 'pickadate-fecha'
+                    )
+                ))
+            ;
     }
 
     /**
@@ -34,7 +36,7 @@ class CambioHoraSistemaType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Buseta\CoreBundle\Entity\CambioHoraSistema'
+            'data_class' => 'HatueySoft\DateTimeBundle\Entity\FechaSistema'
         ));
     }
 
@@ -43,6 +45,6 @@ class CambioHoraSistemaType extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_corebundle_horacambiosistematype';
+        return 'hatueysoft_datetime_fechasistema_type';
     }
 }

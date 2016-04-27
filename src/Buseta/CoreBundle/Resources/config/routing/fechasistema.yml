@@ -1,7 +1,0 @@
-fecha_sistema:
-    path: /index
-    defaults: { _controller: CoreBundle:FechaSistema:index }
-
-fecha_sistema_edit:
-    path: /edit
-    defaults: { _controller: CoreBundle:FechaSistema:edit }
