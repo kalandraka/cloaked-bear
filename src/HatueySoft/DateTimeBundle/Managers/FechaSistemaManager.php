@@ -3,6 +3,7 @@
 namespace HatueySoft\DateTimeBundle\Managers;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Util\StringUtils;
 
 /**
@@ -13,31 +14,48 @@ use Symfony\Component\Security\Core\Util\StringUtils;
 class FechaSistemaManager
 {
     /**
-     * @var EntityManager
+     * @var \Doctrine\ORM\EntityManager
      */
     private $em;
 
     /**
-     * @var CambioHoraSistemaManager
+     * @var HoraSistemaManager
      */
     private $cambioHoraManager;
 
-    function __construct(EntityManager $em, CambioHoraSistemaManager $cambioHoraManager)
+    /**
+     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
+     */
+    private $tokenStorage;
+
+
+    /**
+     * FechaSistemaManager constructor.
+     *
+     * @param EntityManager         $em
+     * @param HoraSistemaManager    $cambioHoraManager
+     * @param TokenStorageInterface $tokenStorage
+     */
+    function __construct(EntityManager $em, HoraSistemaManager $cambioHoraManager, TokenStorageInterface $tokenStorage)
     {
         $this->em = $em;
         $this->cambioHoraManager = $cambioHoraManager;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
+     * Get System Date and Time
+     *
      * @return \DateTime
      */
     public function getFechaSistema()
     {
+        $username = $this->tokenStorage->getToken()->getUsername();
+
         //comprobando si existe fecha de sistema activa
         $fechaSistemaConfig = $this->em->getRepository('HatueySoftDateTimeBundle:FechaSistema')
-            ->findOneBy(array('activo', true));
-
-        if ($fechaSistemaConfig !== null) {
+            ->getUserConfig($username);
+        if ($fechaSistemaConfig && $fechaSistemaConfig->getActivo()) {
             $fechaSistema = $fechaSistemaConfig->getFecha();
         } else {
             $fechaSistema = new \DateTime();
@@ -47,23 +65,26 @@ class FechaSistemaManager
     }
 
     /**
+     * Check if any system date is active for the current user.
+     *
      * @return bool
      */
     public function isActive()
     {
-        //comprobando si existe fecha de sistema activa
-        $fechaSistemaConfig = $this->em->getRepository('HatueySoftDateTimeBundle:FechaSistema')->findAll();
-        if (count($fechaSistemaConfig) == 1) {
-            $fechaSistemaConfig = $fechaSistemaConfig[0];
-            if ($fechaSistemaConfig->getActivo()) {
-                return true;
-            }
+        $username = $this->tokenStorage->getToken()->getUsername();
+
+        $fechaSistemaConfig = $this->em->getRepository('HatueySoftDateTimeBundle:FechaSistema')
+            ->getUserConfig($username);
+        if ($fechaSistemaConfig && $fechaSistemaConfig->getActivo()) {
+            return true;
         }
 
         return false;
     }
 
     /**
+     * Compare if date is the same as system date.
+     *
      * @param \DateTime $date
      *
      * @return bool
@@ -76,5 +97,18 @@ class FechaSistemaManager
         $fechaSistemaString = date_format($fechaSistema, 'Y-m-d');
 
         return StringUtils::equals($dateString, $fechaSistemaString);
+    }
+
+    /**
+     * Returns active system date for the user, false otherwise
+     *
+     * @return \HatueySoft\DateTimeBundle\Entity\FechaSistema | bool
+     */
+    public function getUserConfig()
+    {
+        $username = $this->tokenStorage->getToken()->getUsername();
+
+        return $this->em->getRepository('HatueySoftDateTimeBundle:FechaSistema')
+            ->getUserConfig($username);
     }
 }

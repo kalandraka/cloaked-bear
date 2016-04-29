@@ -4,8 +4,16 @@ namespace HatueySoft\DateTimeBundle\Managers;
 
 use Doctrine\ORM\EntityManager;
 
-class CambioHoraSistemaManager
+/**
+ * Class HoraSistemaManager
+ *
+ * @package HatueySoft\DateTimeBundle\Managers
+ */
+class HoraSistemaManager
 {
+    /**
+     * @var EntityManager
+     */
     private $em;
 
     function __construct(EntityManager $em)
@@ -29,6 +37,4 @@ class CambioHoraSistemaManager
 
         return $horaCambio;
     }
-
-
 }

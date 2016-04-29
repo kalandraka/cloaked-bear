@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * FechaSistema
  *
  * @ORM\Table(name="hatueysoft_fecha_sistema")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="HatueySoft\DateTimeBundle\Entity\Repository\FechaSistemaRepository")
  */
 class FechaSistema
 {

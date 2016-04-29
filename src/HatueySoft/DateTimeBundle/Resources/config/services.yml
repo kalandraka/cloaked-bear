@@ -4,12 +4,14 @@ services:
     arguments:
       - @doctrine.orm.entity_manager
       - @hatueysoft.hora_sistema.manager
+      - @security.token_storage
 
   hatueysoft.hora_sistema.manager:
-    class: HatueySoft\DateTimeBundle\Managers\CambioHoraSistemaManager
+    class: HatueySoft\DateTimeBundle\Managers\HoraSistemaManager
     arguments:
       - @doctrine.orm.entity_manager
 
+  # TWIG EXTENSION
   hatueysoft.fecha_sistema.twig_extension:
     class: HatueySoft\DateTimeBundle\Twig\FechaSistemaExtension
     arguments:

@@ -40,7 +40,7 @@ class FechaSistemaController extends Controller
         else
             throw new \Exception('No pueden existir más de una configuración para fecha de sistema');
 
-        $form = $this->createForm(new FechaSistemaType(),$fechaSistemaConfig);
+        $form = $this->createForm(new FechaSistemaType(), $fechaSistemaConfig);
 
         return $this->render('@HatueySoftDateTime/FechaSistema/index.html.twig',array(
                 'form' => $form->createView(),
