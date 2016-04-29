@@ -303,7 +303,7 @@ class PedidoCompraController extends Controller
             throw $this->createNotFoundException('Unable to find PedidoCompra entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($pedidocompra);
+        $deleteForm = $this->createDeleteForm($pedidocompra->getId());
 
         return $this->render('BusetaBodegaBundle:PedidoCompra:show.html.twig', array(
             'entity'      => $entity,
