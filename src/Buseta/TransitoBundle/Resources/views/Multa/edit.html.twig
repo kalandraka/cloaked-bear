@@ -27,6 +27,7 @@
         });
         $('select#transito_multa_vehiculo').chosen();
         $('select#transito_multa_chofer').chosen();
+        $('select#transito_multa_numArticulo').chosen();
         {% if entity.estado == 'WN' or entity.estado == 'LS'%}
         $('div#multa_imp_abogado').css({visibility: 'visible'});
         {% endif %}

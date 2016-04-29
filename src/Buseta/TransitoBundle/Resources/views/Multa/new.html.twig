@@ -18,8 +18,47 @@
         $('input#transito_multa_fecha').datetimepicker({
             'format': 'DD/MM/YYYY'
         });
+        $('select#transito_multa_numArticulo').chosen();
         $('select#transito_multa_vehiculo').chosen();
         $('select#transito_multa_chofer').chosen();
+
+        $('input#transito_multa_numBoleta').change(function () {
+            var boleta_id = $('input#transito_multa_numBoleta').val();
+            $.ajax({
+                type: 'GET',
+                url: 'http://{{ server.address }}/boleta/api/choferAndAutobusFromBoleta?identificador=' + boleta_id,
+                success: function (data) {
+                    //var values = $.parseJSON(data);
+                    var values = data;
+                    var selectChofer = $('select#transito_multa_chofer');
+                    var selectVehiculo = $('select#transito_multa_vehiculo');
+
+                    var requestData = {
+                        cedula_chofer: values.chofer.cedula,
+                        numero_bus: values.autobus.identificador
+                    };
+                    $('input#transito_multa_fecha').val(values.boleta.fecha);
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ path("chofer_bus_ajax") }}',
+                        data: requestData,
+                        success: function (data) {
+                            //var values = $.parseJSON(data);
+                            var values = data;
+                            selectChofer
+                                    .val(values.chofer)
+                                    .trigger("chosen:updated")
+                                    .trigger("change");
+                            selectVehiculo
+                                    .val(values.autobus)
+                                    .trigger("chosen:updated")
+                                    .trigger('change');
+
+                        }
+                    });
+                }
+            });
+        });
     </script>
 
 {% endblock %}

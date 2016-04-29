@@ -18,17 +18,21 @@ class MultaRepository extends \Doctrine\ORM\EntityRepository
         $query = $qb->where($qb->expr()->eq(true,true));
 
         if($filter) {
-            if ($filter->getFecha() !== null && $filter->getFecha() !== '') {
-                $query->andWhere($qb->expr()->gte('m.fecha',':fecha'))
-                    ->setParameter('fecha', $filter->getFecha());
+            if ($filter->getFechaInicio() !== null && $filter->getFechaInicio() !== '') {
+                $query->andWhere($qb->expr()->gte('m.fecha',':fechaInicio'))
+                    ->setParameter('fechaInicio', $filter->getFechaInicio());
+            }
+            if ($filter->getFechaFin() !== null && $filter->getFechaFin() !== '') {
+                $query->andWhere($qb->expr()->lte('m.fecha',':fechaFin'))
+                    ->setParameter('fechaFin', $filter->getFechaFin());
             }
             if ($filter->getDescripcion() !== null && $filter->getDescripcion() !== '') {
                 $query->andWhere($qb->expr()->like('m.descripcion',':descripcion'))
                     ->setParameter('descripcion', '%' . $filter->getDescripcion() . '%');
             }
             if ($filter->getNumArticulo() !== null && $filter->getNumArticulo() !== '') {
-                $query->andWhere($qb->expr()->like('m.numArticulo',':numArticulo'))
-                    ->setParameter('numArticulo', '%' . $filter->getNumArticulo() . '%');
+                $query->andWhere($query->expr()->eq('m.numArticulo', ':numArticulo'))
+                    ->setParameter('numArticulo', $filter->getNumArticulo());
             }
             if ($filter->getVehiculo() !== null && $filter->getVehiculo() !== '') {
                 $query->andWhere($query->expr()->eq('m.vehiculo', ':vehiculo'))
@@ -40,7 +44,7 @@ class MultaRepository extends \Doctrine\ORM\EntityRepository
             }
         }
 
-        $query->orderBy('m.id', 'ASC');
+        $query->orderBy('m.id', 'DESC');
 
         try {
             return $query->getQuery();

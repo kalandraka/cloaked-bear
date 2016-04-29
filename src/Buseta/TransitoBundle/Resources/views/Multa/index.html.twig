@@ -11,7 +11,8 @@
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.descripcion is null or filter_form.vars.value.descripcion is empty)
     and (filter_form.vars.value.numArticulo is null or filter_form.vars.value.numArticulo is empty)
-    and (filter_form.vars.value.fecha is null or filter_form.vars.value.fecha is empty)
+    and (filter_form.vars.value.fechaInicio is null or filter_form.vars.value.fechaInicio is empty)
+    and (filter_form.vars.value.fechaFin is null or filter_form.vars.value.fechaFin is empty)
     and (filter_form.vars.value.vehiculo is null or filter_form.vars.value.vehiculo is empty)
     and (filter_form.vars.value.chofer is null or filter_form.vars.value.chofer is empty)
     %}
@@ -30,9 +31,10 @@
             <div class="row">
                 <div class="col-lg-4">{{ form_row(filter_form.descripcion) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.numArticulo) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.fecha) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.vehiculo) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.chofer) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.fechaInicio) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.fechaFin) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
@@ -212,10 +214,14 @@
     </script>
 
     <script type="text/javascript">
-        $('input#buseta_multa_filter_fecha').datetimepicker({
+        $('input#buseta_multa_filter_fechaInicio').datetimepicker({
+            'format': 'DD/MM/YYYY'
+        });
+        $('input#buseta_multa_filter_fechaFin').datetimepicker({
             'format': 'DD/MM/YYYY'
         });
         $('select#buseta_multa_filter_vehiculo').chosen();
+        $('select#buseta_multa_filter_numArticulo').chosen();
         $('select#buseta_multa_filter_chofer').chosen();
     </script>
 
