@@ -18,10 +18,12 @@ class MultaType extends AbstractType
                     'class' => 'form-control',
                 )
             ))
-            ->add('numArticulo', 'text', array(
-                'required' => true,
+            ->add('numArticulo','entity',array(
+                'class' => 'BusetaNomencladorBundle:Articulo',
+                'placeholder' => '---Seleccione---',
                 'label' => 'Artículo',
-                'attr'   => array(
+                'required' => true,
+                'attr' => array(
                     'class' => 'form-control',
                 )
             ))

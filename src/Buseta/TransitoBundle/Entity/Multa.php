@@ -37,11 +37,11 @@ class Multa
     protected $numBoleta;
 
     /**
-     * @var string
+     * @var \Buseta\NomencladorBundle\Entity\Articulo
      *
-     * @ORM\Column(name="num_articulo", type="string", length=32)
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Articulo")
      */
-    protected $numArticulo;
+    private $numArticulo;
 
     /**
      * @var \DateTime

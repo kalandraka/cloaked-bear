@@ -134,6 +134,9 @@ easy_admin:
         aceiteTransision:
             class: Buseta\NomencladorBundle\Entity\AceiteTransmision
             label: 'Aceite Transmisión'
+        articulo:
+            class: Buseta\NomencladorBundle\Entity\Articulo
+            label: 'Artículo'
         cajaChica:
             class: Buseta\NomencladorBundle\Entity\CajaChica
             label: 'Caja Chica'
@@ -340,5 +343,5 @@ services:
 
 buseta_combustible:
     server:
-        address: "%recaudadora.boletas_api_server_hostname%"
-        port: "%recaudadora.boletas_api_server_port%"
+        address: localhost
+        port: 80

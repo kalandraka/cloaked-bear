@@ -665,41 +665,6 @@ root:
               disabled: false
               attributes: {  }
               childrens: {  }
-        menu_G:
-          id: menu_G
-          name: menu_transito
-          label: Tránsito
-          route: transito
-          roles:
-            - ROLE_USER
-          type: folder
-          disabled: false
-          attributes:
-            icon: 'fa fa-legal'
-            color: bg-color-purple
-          childrens:
-            menu_G_A:
-              id: menu_A_A
-              name: null
-              label: 'Gestión de multas'
-              route: null
-              roles:
-                - ROLE_USER
-              type: folder
-              disabled: false
-              attributes:
-                icon: 'fa fa-money'
-              childrens:
-                menu_G_A_A:
-                  id: menu_G_A_A
-                  name: null
-                  label: Multas
-                  route: multa
-                  roles: [ROLE_USER]
-                  type: item
-                  disabled: false
-                  attributes: { icon: null }
-                  childrens: {  }
         menu_N:
           id: menu_N
           name: menu_notificaciones
@@ -710,7 +675,7 @@ root:
             - ROLE_ADMIN
             - ROLE_SUPER_ADMIN
           type: folder
-          disabled: true
+          disabled: false
           attributes:
             icon: 'fa fa-envelope'
             color: bg-color-blue
@@ -732,6 +697,41 @@ root:
                   name: null
                   label: 'Tipos de notificaciones'
                   route: notificaciones_config_index
+                  roles: [ROLE_USER]
+                  type: item
+                  disabled: false
+                  attributes: { icon: null }
+                  childrens: {  }
+        menu_G:
+          id: menu_G
+          name: menu_transito
+          label: Tránsito
+          route: transito
+          roles:
+            - ROLE_USER
+          type: folder
+          disabled: false
+          attributes:
+            icon: 'fa fa-legal'
+            color: bg-color-purple
+          childrens:
+            menu_G_A:
+              id: menu_G_A
+              name: null
+              label: 'Gestión de multas'
+              route: null
+              roles:
+                - ROLE_USER
+              type: folder
+              disabled: false
+              attributes:
+                icon: 'fa fa-money'
+              childrens:
+                menu_G_A_A:
+                  id: menu_G_A_A
+                  name: null
+                  label: Multas
+                  route: multa
                   roles: [ROLE_USER]
                   type: item
                   disabled: false
