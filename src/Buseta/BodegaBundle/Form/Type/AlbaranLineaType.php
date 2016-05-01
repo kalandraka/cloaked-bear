@@ -27,15 +27,6 @@ class AlbaranLineaType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('almacen', 'entity', array(
-                'class' => 'BusetaBodegaBundle:Bodega',
-                'placeholder' => '---Seleccione---',
-                'label' => 'Bodega',
-                'required' => false,
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
             ->add('valorAtributos', 'text', array(
                 'required' => true,
                 'label' => 'Valor atributos',
