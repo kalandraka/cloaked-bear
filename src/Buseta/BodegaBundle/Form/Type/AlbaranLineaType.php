@@ -27,13 +27,13 @@ class AlbaranLineaType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('valorAtributos', 'text', array(
-                'required' => true,
-                'label' => 'Valor atributos',
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
+            //->add('valorAtributos', 'text', array(
+            //    'required' => true,
+            //    'label' => 'Valor atributos',
+            //    'attr' => array(
+            //        'class' => 'form-control',
+            //    ),
+            //))
             ->add('cantidadMovida', 'integer', array(
                 'required' => true,
                 'label' => 'Cantidad movida',
