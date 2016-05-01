@@ -71,7 +71,7 @@
                 <td>{{ entity.almacen }}</td>
                 <td>{{ entity.cantidadMovida }}</td>
                 <td>{{ entity.fechaMovimiento | date('d/m/Y h:i a') }}</td>
-                <td>{{ entity.tipoMovimiento }}</td>
+                <td>{{ ('tipo_movimiento.' ~entity.tipoMovimiento) | trans({}, 'BusetaBodegaBundle') }}</td>
                 <td style="width: 24% !important; text-align: center;">
                     <div class="btn-group">
                         <a class="btn btn-success btn-xs"

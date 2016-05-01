@@ -70,7 +70,7 @@
                 <td>{{ entity.serial }}</td>
                 <td>{{ entity.producto }}</td>
                 <td>{{ entity.almacen }}</td>
-                <td>{{ entity.tipoMovimiento }}</td>
+                <td>{{ ('tipo_movimiento.' ~entity.tipoMovimiento) | trans({}, 'BusetaBodegaBundle') }}</td>
                 <td>{{ entity.cantidadMovida }}</td>
                 <td>{{ entity.fechaMovimiento | date('d/m/Y h:i a') }}</td>
                 <td style="width: 24% !important; text-align: center;">

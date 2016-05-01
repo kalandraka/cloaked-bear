@@ -112,6 +112,23 @@ movimientos_productos:
   modal:
     title: Filtrar Productos
 
+#TIPO DE MOVIMIENTOS
+tipo_movimiento:
+     C+: Customer Returns
+     C-: Customer Shipment
+     D+: Internal Consumption +
+     D-: Internal Consumption -
+     I+: Entrada de Inventario #Inventory In
+     I-: Salida de Inventario #Inventory Out
+     M+: Movement To
+     M-: Movement From
+     P+: Production +
+     P-: Production -
+     V+: Vendor Receipts
+     V-: Vendor Returns
+     W+: Work Order +
+     W-: Work Order -
+
 # COSTO
 costo:
   btn:

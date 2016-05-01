@@ -21,7 +21,7 @@
             </tr>
             <tr>
                 <th>Tipo Movimiento</th>
-                <td>{{ entity.tipoMovimiento }}</td>
+                <td>{{ ('tipo_movimiento.' ~entity.tipoMovimiento) | trans({}, 'BusetaBodegaBundle') }}</td>
             </tr>
             <tr>
                 <th>Cantidad Movida</th>
