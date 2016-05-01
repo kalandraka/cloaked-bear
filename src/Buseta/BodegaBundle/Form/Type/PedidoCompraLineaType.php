@@ -57,14 +57,6 @@ class PedidoCompraLineaType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('moneda', 'entity', array(
-                'class' => 'BusetaNomencladorBundle:Moneda',
-                'placeholder' => '---Seleccione---',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
             ->add('porciento_descuento', 'text', array(
                 'required' => false,
                 'label' => '% Descuento',

@@ -71,15 +71,6 @@ class PedidoCompraLinea
      */
     private $impuesto;
 
-    //!TODO: Remove $moneda
-    /**
-     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Moneda")
-     * @Assert\NotBlank()
-     *
-     * @deprecated
-     */
-    private $moneda;
-
     /**
      * @var float
      *
@@ -332,35 +323,5 @@ class PedidoCompraLinea
     public function getImpuesto()
     {
         return $this->impuesto;
-    }
-
-    /**
-     * Set moneda.
-     *
-     * @param \Buseta\NomencladorBundle\Entity\Moneda $moneda
-     *
-     * @return PedidoCompraLinea
-     *
-     * @deprecated setMoneda() in PedidoCompraLinea is deprecated and will be removed. Use PedidoCompra->setMoneda() instead.
-     */
-    public function setMoneda(\Buseta\NomencladorBundle\Entity\Moneda $moneda = null)
-    {
-        //!TODO: Remove setMoneda
-        $this->moneda = $moneda;
-
-        return $this;
-    }
-
-    /**
-     * Get moneda.
-     *
-     * @return \Buseta\NomencladorBundle\Entity\Moneda
-     *
-     * @deprecated getMoneda in PedidoCompraLinea is deprecated and will be removed. Use PedidoCompra->getMoneda() instead.
-     */
-    public function getMoneda()
-    {
-        //!TODO: Remove getMoneda
-        return $this->moneda;
     }
 }
