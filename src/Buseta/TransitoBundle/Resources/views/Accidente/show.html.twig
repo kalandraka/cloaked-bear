@@ -1,0 +1,66 @@
+{% extends "BusetaTransitoBundle::layout.html.twig" %}
+
+{% block title block('header') %}
+
+{% block header 'Ver Datos de Accidente' %}
+
+{% block header_right %}
+    {% from '@BusetaTemplate/Macros/macros.html.twig' import documentState %}
+
+    <h4 class="pull-right">
+        {{ documentState(entity.estado, 'BusetaTransitoBundle') }}
+    </h4>
+{% endblock %}
+
+{% block area_trabajo %}
+    <table class="table table-striped" style="font-size: 16px;">
+        <tbody>
+
+        <tr>
+            <th>Descripción</th>
+            <td>{{ entity.descripcion }}</td>
+        </tr>
+
+        <tr>
+            <th>Vehículo</th>
+            <td>{{ entity.vehiculo }}</td>
+        </tr>
+
+        <tr>
+            <th>Chofer</th>
+            <td>{{ entity.chofer }}</td>
+        </tr>
+
+        <tr>
+            <th>Fecha</th>
+            <td>{{ entity.fecha|date('d/m/Y') }}</td>
+        </tr>
+
+        <tr>
+            <th>Importe</th>
+            <td>{{ entity.importe }}</td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <div class="form-actions">
+        <a class="btn btn-primary" href="{{ path('accidente_edit', { 'id': entity.id }) }}">
+            <i class="fa fa-edit"></i> Editar</a>
+        <a class="btn btn-primary" href="{{ path('accidente') }}">
+            <i class="fa fa-list"></i> Listado</a>
+    </div>
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}

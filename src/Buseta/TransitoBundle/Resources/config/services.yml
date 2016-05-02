@@ -6,3 +6,7 @@ services:
                 class: Buseta\TransitoBundle\Form\Type\MultaType
                 tags:
                     - {name: form.type, alias: 'transito_multa'}
+        transito.transito_accidente.type:
+                class: Buseta\TransitoBundle\Form\Type\AccidenteType
+                tags:
+                    - {name: form.type, alias: 'transito_accidente'}

@@ -725,3 +725,25 @@ root:
                   disabled: false
                   attributes: { icon: null }
                   childrens: {  }
+            menu_A_B:
+              id: menu_A_B
+              name: null
+              label: 'Gestión de accidentes'
+              route: null
+              roles:
+                - ROLE_USER
+              type: folder
+              disabled: false
+              attributes:
+                icon: 'fa fa-ambulance'
+              childrens:
+                menu_G_A_B:
+                  id: menu_G_A_B
+                  name: null
+                  label: Accidentes
+                  route: accidente
+                  roles: [ROLE_USER]
+                  type: item
+                  disabled: false
+                  attributes: { icon: null }
+                  childrens: {  }

@@ -1,0 +1,221 @@
+{% extends "BusetaTransitoBundle::layout.html.twig" %}
+
+{% block title block('header') %}
+
+{% block header 'Listado de Accidentes' %}
+
+{% block area_trabajo %}
+
+<div id="records_list">
+    {% set display = '' %}
+    {% set headericon = 'glyphicon-chevron-down' %}
+    {% if (filter_form.vars.value.descripcion is null or filter_form.vars.value.descripcion is empty)
+    and (filter_form.vars.value.fechaInicio is null or filter_form.vars.value.fechaInicio is empty)
+    and (filter_form.vars.value.fechaFin is null or filter_form.vars.value.fechaFin is empty)
+    and (filter_form.vars.value.vehiculo is null or filter_form.vars.value.vehiculo is empty)
+    and (filter_form.vars.value.chofer is null or filter_form.vars.value.chofer is empty)
+    %}
+        {% set display = 'display: none;' %}
+        {% set headericon = 'glyphicon-chevron-right' %}
+    {% endif %}
+
+    <h4>
+        <a id="filter_form_header" style="cursor: pointer;">
+            <span class="glyphicon {{ headericon }}"></span>
+            Búsqueda
+        </a>
+    </h4>
+    <div id="filter_form_component" style="{{ display }}">
+        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+            <div class="row">
+                <div class="col-lg-4">{{ form_row(filter_form.descripcion) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.vehiculo) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.chofer) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.fechaInicio) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.fechaFin) }}</div>
+            </div>
+            {{ form_widget(filter_form._token) }}
+
+            <div class="filter-actions" style="margin-top: 8px;">
+                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                    <span class="glyphicon glyphicon-filter"></span> Filtrar
+                </a>
+                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <hr/>
+    <div class="btn-group" style="margin-bottom: 8px;">
+        <a class="btn btn-primary" href="{{ path('accidente_new') }}">
+            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'accidente.btn.adicionar'|trans({}, 'BusetaTransitoBundle') }}
+        </a>
+    </div>
+
+    <div id="accidentes_results_container">
+        <div class="row"><div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div></div>
+        <table class="accidentes_records_list table table-striped table-bordered table-condensed table-hover">
+            <thead>
+            <tr>
+                <th>Descripción</th>
+                <th>Vehículo</th>
+                <th>Chofer</th>
+                <th>Importe</th>
+                <th>Estado</th>
+                <th style="text-align: center">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.descripcion }}</td>
+                    <td>{{ entity.vehiculo }}</td>
+                    <td>{{ entity.chofer }}</td>
+                    {#{% if entity.estado == 'WN' %}#}
+                        {#{% set amount_style = 'text-decoration: line-through;color: #900;' %}#}
+                    {#{% else %}#}
+                        {#{% set amount_style = '' %}#}
+                    {#{% endif %}#}
+                    <td>{{ entity.importe }}</td>
+                    {#{% if entity.estado == 'WN' %}#}
+                        {#{% set badge = 'success' %}#}
+                        {#{% set text_color = 'success' %}#}
+                    {#{% elseif entity.estado == 'PA' or entity.estado == 'LS' %}#}
+                        {#{% set badge = 'warning' %}#}
+                        {#{% set text_color = 'warning' %}#}
+                    {#{% elseif entity.estado == 'AP' %}#}
+                        {#{% set badge = 'primary' %}#}
+                        {#{% set text_color = 'primary' %}#}
+                    {#{% else %}#}
+                        {% set badge = 'danger' %}
+                        {% set text_color = 'danger' %}
+                    {#{% endif %}#}
+                    <td class="text-{{ text_color }}"><span class="label label-{{ badge }}">
+                        {{ ('estado.' ~ entity.estado) | trans({}, 'BusetaTransitoBundle') | upper }}</span>
+                    </td>
+                    <td style="width: 24% !important; text-align: center;">
+                        <div class="btn-group">
+                            <a class="btn btn-success btn-xs"
+                               href="{{ path('accidente_show', { 'id': entity.id }) }}"><span
+                                        class="glyphicon glyphicon-search"> Mostrar</span></a>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-danger btn-xs"
+                               href="{{ path('accidente_edit', { 'id': entity.id }) }}"><span
+                                        class="glyphicon glyphicon-edit"> Editar</span></a>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaTransitoBundle') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="accidentes-paginator row">
+            <div class="col-lg-12 text-center">{{ knp_pagination_render(entities) }}</div>
+        </div>
+    </div>
+</div>
+
+    <!-- Delete modal -->
+    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('a#filter_form_header').click(function () {
+                if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-right')
+                            .addClass('glyphicon-chevron-down');
+                } else {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-down')
+                            .addClass('glyphicon-chevron-right');
+                }
+
+                $('div#filter_form_component').slideToggle(500);
+            });
+
+            $('a#filter_form_submit_btn').click(function () {
+                $('form#filter_form').submit();
+            });
+
+            $('a#filter_form_reset_btn').click(function () {
+                $('form#filter_form').find('input').each(function () {
+                    $(this).val(null);
+                });
+                $('form#filter_form').find('select').each(function () {
+                    $(this).val(null);
+                })
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        var accidentes = {
+            activeblock: false,
+            _start_events: function (){
+                // Paginator sort
+                $('table.accidentes_records_list').find('a.sortable, a.asc, a.desc').on('click', accidentes._load);
+                // Paginator navigation
+                $('div.accidentes-paginator.row ul.pagination').find('a.paginator-link').on('click', accidentes._load);
+            },
+            _load: function(event) {
+                if(event !== undefined) {
+                    event.preventDefault();
+                }
+
+                accidentes.toggle();
+
+                url = $(this).attr('href');
+
+                $.get(url).done(function (response, textStatus, jqXHR) {
+                    accidentes.toggle();
+                    $('div#accidentes_results_container').replaceWith($(response).find('div#accidentes_results_container'));
+
+                    accidentes._start_events();
+                }).fail(utils._fail).always(function(){
+                    //on complete function
+                });
+            },
+            toggle: function() {
+                if(accidentes.activeblock) {
+                    $('div#accidentes_results_container').unblock();
+                    accidentes.activeblock = false;
+                } else {
+                    $('div#accidentes_results_container').block();
+                    accidentes.activeblock = true;
+                }
+            }
+        };
+
+        var utils = {
+            _fail: function (jqXHR, textStatus, errorThrown) {
+                if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                    $btalerts.addDanger(jqXHR.responseText.message);
+                } else {
+                    $btalerts.addDanger('{{ 'messages.unexpected_error' | trans({}, 'BusetaTransitoBundle') }}');
+                }
+            }
+        };
+    </script>
+
+    <script type="text/javascript">
+        $('input#buseta_accidente_filter_fechaInicio').datetimepicker({
+            'format': 'DD/MM/YYYY'
+        });
+        $('input#buseta_accidente_filter_fechaFin').datetimepicker({
+            'format': 'DD/MM/YYYY'
+        });
+        $('select#buseta_accidente_filter_vehiculo').chosen();
+        $('select#buseta_accidente_filter_chofer').chosen();
+    </script>
+
+{% endblock javascripts %}

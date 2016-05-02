@@ -1,0 +1,26 @@
+{% extends "BusetaTransitoBundle::layout.html.twig" %}
+
+{% block title block('header') %}
+
+{% block header 'Crear Nuevo Accidente' %}
+
+{% block area_trabajo %}
+
+    {% include '@BusetaTransito/Accidente/form_template.html.twig' with {'form': form} %}
+
+{% endblock area_trabajo %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+
+        $('input#transito_accidente_fecha').datetimepicker({
+            'format': 'DD/MM/YYYY'
+        });
+        $('select#transito_accidente_vehiculo').chosen();
+        $('select#transito_accidente_chofer').chosen();
+
+    </script>
+
+{% endblock %}
