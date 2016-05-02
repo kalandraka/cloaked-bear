@@ -1,0 +1,44 @@
+<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST" enctype="multipart/form-data">
+    {% if form.vars.method == 'PUT' %}
+        <input type="hidden" name="_method" value="PUT"/>
+    {% endif %}
+    {{ form_errors(form) }}
+    {{ form_row(form._token) }}
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_row(form.descripcion) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            {{ form_row(form.vehiculo) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.chofer) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.fecha) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_row(form.importe) }}
+        </div>
+    </div>
+
+    <br/>
+
+    {# buttons group #}
+    <div class="row">
+        <div class="col-md-4">
+            <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+            <div class="btn-group">
+                <a class="btn btn-primary" href="{{ path('accidente') }}"> Cancelar</a>
+            </div>
+        </div>
+    </div>
+
+</form>

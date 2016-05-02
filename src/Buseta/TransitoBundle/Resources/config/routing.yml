@@ -9,3 +9,7 @@ BusetaTransitoBundle_transito:
 buseta_transito_multa:
   resource: "@BusetaTransitoBundle/Controller/MultaController.php"
   type:     annotation
+
+buseta_transito_accidente:
+  resource: "@BusetaTransitoBundle/Controller/AccidenteController.php"
+  type:     annotation

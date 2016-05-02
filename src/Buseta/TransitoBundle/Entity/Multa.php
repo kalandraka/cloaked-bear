@@ -67,6 +67,13 @@ class Multa
     private $vehiculo;
 
     /**
+     * @var \Buseta\TransitoBundle\Entity\Accidente
+     *
+     * @ORM\ManyToOne(targetEntity="Buseta\TransitoBundle\Entity\Accidente")
+     */
+    private $accidente;
+
+    /**
      * @var boolean
      * @ORM\Column(name="apelada", type="boolean")
      */
@@ -374,5 +381,29 @@ class Multa
     public function getEstado()
     {
         return $this->estado;
+    }
+
+    /**
+     * Set accidente
+     *
+     * @param \Buseta\TransitoBundle\Entity\Accidente $accidente
+     *
+     * @return Multa
+     */
+    public function setAccidente(\Buseta\TransitoBundle\Entity\Accidente $accidente = null)
+    {
+        $this->accidente = $accidente;
+
+        return $this;
+    }
+
+    /**
+     * Get accidente
+     *
+     * @return \Buseta\TransitoBundle\Entity\Accidente
+     */
+    public function getAccidente()
+    {
+        return $this->accidente;
     }
 }

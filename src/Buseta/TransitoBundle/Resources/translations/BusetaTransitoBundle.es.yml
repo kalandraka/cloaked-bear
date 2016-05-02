@@ -6,6 +6,13 @@ multa:
   modal:
     title: Crear Nueva Multa
 
+accidente:
+  valor: Valor
+  btn:
+    adicionar: Adicionar Accidente
+  modal:
+    title: Crear Nuevo Accidente
+
 messages:
   no_results: No existen elementos que mostrar.
   unexpected_error: Ha ocurrido un error inesperado.
