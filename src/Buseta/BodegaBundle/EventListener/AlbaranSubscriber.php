@@ -60,7 +60,7 @@ class AlbaranSubscriber implements EventSubscriberInterface
         );
     }
 
-    /** 
+    /**
      * @param FilterAlbaranEvent $event
      *
      * @throws \Exception
@@ -118,7 +118,7 @@ class AlbaranSubscriber implements EventSubscriberInterface
         EventDispatcherInterface $eventDispatcher = null
     ) {
         $bitacoraEvent = new BitacoraAlbaranEvent($event->getAlbaran());
-        $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_INVENTORY_IN_OUT, $bitacoraEvent);
+        $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_VENDOR_RECEIPTS, $bitacoraEvent);
 
         if ($error = $bitacoraEvent->getError()) {
             $event->setError($error);
