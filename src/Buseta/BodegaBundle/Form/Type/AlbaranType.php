@@ -131,7 +131,7 @@ class AlbaranType extends AbstractType
         $data = $formEvent->getData();
         $form = $formEvent->getForm();
         $sequenceManager = $this->serviceContainer->get('hatuey_soft.sequence.manager');
-dump($data);
+
         if ($data instanceof AlbaranModel && !$data->getNumeroDocumento()
             && !$sequenceManager->hasSequence('Buseta\BodegaBundle\Entity\Albaran')) {
             $form->add('numeroDocumento', 'text', array(
