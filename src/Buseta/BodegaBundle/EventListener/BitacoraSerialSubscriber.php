@@ -16,6 +16,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class BitacoraSerialSubscriber implements EventSubscriberInterface
 {
+    const TRANSACTION_ERROR = 'Ha ocurrido un error al crear numeraciones seriadas';
+
     /**
      * @var BitacoraSerialManager
      */
@@ -60,18 +62,13 @@ class BitacoraSerialSubscriber implements EventSubscriberInterface
 
         try {
             $bitacoraSerialEvents = $event->getBitacoraSerialEvents();
-            foreach ($bitacoraSerialEvents->getIterator() as $bitacoraSerialEvent) {
-                /** @var \Buseta\BodegaBundle\Model\BitacoraSerialEventModel $bitacoraSerialEvent */
-                $result = $this->bitacoraSerialManager->createRegistry($bitacoraSerialEvent, $event->isFlush());
-                if (!$result && $bitacoraSerialEvent->getError()) {
-                    $event->setError($bitacoraSerialEvent->getError());
-
-                    break;
-                }
+            $result = $this->bitacoraSerialManager->bulkNativeCreateRegistry($bitacoraSerialEvents, $event->isFlush());
+            if (!$result) {
+                $event->setError(self::TRANSACTION_ERROR);
             }
-        } catch(\Exception $e) {
-            $this->logger->critical(sprintf('Ha ocurrido un error al crear la Bitacora Serial. Detalles: %s', $e->getMessage()));
-            $event->setError('Ha ocurrido un error al crear la Bitacora Serial.');
+        } catch (\Exception $e) {
+            $this->logger->critical(sprintf('%s. Detalles: %s', self::TRANSACTION_ERROR, $e->getMessage()));
+            $event->setError(self::TRANSACTION_ERROR);
         }
     }
 }

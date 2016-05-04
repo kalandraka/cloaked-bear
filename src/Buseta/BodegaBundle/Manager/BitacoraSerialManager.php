@@ -4,12 +4,16 @@ namespace Buseta\BodegaBundle\Manager;
 
 use Buseta\BodegaBundle\Entity\BitacoraSerial;
 use Buseta\BodegaBundle\Model\BitacoraSerialEventModel;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Symfony\Bridge\Monolog\Logger;
 use Buseta\BodegaBundle\Extras\GeneradorSeriales;
 use Buseta\BodegaBundle\Exceptions\NotValidBitacoraTypeException;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 use Buseta\BodegaBundle\Extras\FuncionesExtras;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -19,8 +23,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class BitacoraSerialManager
 {
+    const BULK_SIZE = 400;
     /**
-     * @var ObjectManager
+     * @var EntityManager
      */
     private $em;
 
@@ -41,12 +46,12 @@ class BitacoraSerialManager
 
 
     /**
-     * @param ObjectManager $em
+     * @param EntityManager $em
      * @param Logger $logger
      * @param ValidatorInterface $validator
      * @param GeneradorSeriales $generadorSeriales
      */
-    function __construct(ObjectManager $em, Logger $logger, ValidatorInterface $validator, GeneradorSeriales $generadorSeriales)
+    function __construct(EntityManager $em, Logger $logger, ValidatorInterface $validator, GeneradorSeriales $generadorSeriales)
     {
         $this->em = $em;
         $this->logger = $logger;
@@ -346,6 +351,7 @@ class BitacoraSerialManager
 
         } catch (\Exception $e) {
             $this->logger->error(sprintf('BitacoraSerial.Persist: %s', $e->getMessage()));
+
             return $error = 'Ocurrio un error salvando en la bitacora de seriales';
         }
 
@@ -419,5 +425,108 @@ class BitacoraSerialManager
 
             return false;
         }
+    }
+
+    public function nativeCreateRegistry(BitacoraSerialEventModel $bitacoraSerialEventModel, $flush=false)
+    {
+        try {
+            $sql = sprintf('INSERT INTO d_bitacora_serial
+(warehouse_id, product_id, movement_type, movement_date, movement_qty, created, serial)
+VALUES (%d, %d, \'%s\', \'%s\', %d, \'%s\', \'%s\')',
+                $bitacoraSerialEventModel->getWarehouse()->getId(),
+                $bitacoraSerialEventModel->getProduct()->getId(),
+                $bitacoraSerialEventModel->getMovementType(),
+                date_format($bitacoraSerialEventModel->getMovementDate(), 'Y-m-d'),
+                $bitacoraSerialEventModel->getMovementQty(),
+                date_format(new \DateTime(), 'Y-m-d'),
+                $bitacoraSerialEventModel->getSerial()
+                );
+
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+
+            return true;
+        } catch (\Exception $e) {
+            $this->logger->critical(sprintf('BitacoraSerial.Persist: %s', $e->getMessage()));
+            $bitacoraSerialEventModel->setError($e->getMessage());
+
+            return false;
+        }
+    }
+
+    public function bulkNativeCreateRegistry(ArrayCollection $bitacoraSerialEventCollection, $flush=false)
+    {
+        try {
+            $sql = $this->getBitacoraSerialInsertQuery();
+            $count = 0;
+            foreach ($bitacoraSerialEventCollection->getIterator() as $item) {
+                $count++;
+                $values = $this->getBitacoraSerialValues($item);
+                $sql = $count === 1 ? sprintf('%s %s', $sql, $values) : sprintf('%s, %s', $sql, $values);
+
+                if ($count % self::BULK_SIZE === 0) {
+                    $stmt = $this->em->getConnection()->prepare($sql);
+                    $stmt->execute();
+
+                    $count = 0;
+                    $sql = $this->getBitacoraSerialInsertQuery();
+                }
+            }
+
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+
+            return true;
+        } catch (\Exception $e) {
+            $this->logger->critical(sprintf('BitacoraSerial.Persist: %s', $e->getMessage()));
+
+            return false;
+        }
+    }
+
+    /**
+     * Devuelve los valores en la estructura:
+     * (warehouse_id, product_id, serial, movement_qty, movement_date, movement_type, inoutline_id, inventoryline_id,
+     *  movementline_id, production_line, internal_consumption_line, created)
+     *
+     * @param BitacoraSerialEventModel $bitacoraSerialEventModel
+     *
+     * @return string
+     */
+    private function getBitacoraSerialValues(BitacoraSerialEventModel $bitacoraSerialEventModel)
+    {
+        $registry = new BitacoraSerial();
+        $registry->setAlmacen($bitacoraSerialEventModel->getWarehouse());
+        $registry->setProducto($bitacoraSerialEventModel->getProduct());
+        $registry->setSerial($bitacoraSerialEventModel->getSerial());
+        $registry->setCantidadMovida($bitacoraSerialEventModel->getMovementQty());
+        $registry->setFechaMovimiento($bitacoraSerialEventModel->getMovementDate());
+        $registry->setTipoMovimiento($bitacoraSerialEventModel->getMovementType());
+
+        if ($bitacoraSerialEventModel->getCallback() !== null) {
+            call_user_func($bitacoraSerialEventModel->getCallback(), $registry);
+        }
+
+        return sprintf('(%d, %d, \'%s\', %d, \'%s\', \'%s\', %s, %s, %s, %s, %s, \'%s\')',
+            $registry->getAlmacen()->getId(),
+            $registry->getProducto()->getId(),
+            $registry->getSerial(),
+            $registry->getCantidadMovida(),
+            date_format($registry->getFechaMovimiento(), 'Y-m-d'),
+            $registry->getTipoMovimiento(),
+            $registry->getEntradaSalidaLinea() !== null ? $registry->getEntradaSalidaLinea()->getId() : 'null',
+            $registry->getInventarioLinea() !== null ? $registry->getInventarioLinea()->getId() : 'null',
+            $registry->getMovimientoLinea() !== null ? $registry->getMovimientoLinea()->getId() : 'null',
+            $registry->getProduccionLinea() !== null ? sprintf('\'%s\'', $registry->getProduccionLinea()) : 'null',
+            $registry->getConsumoInterno() !== null ? sprintf('\'%s\'', $registry->getConsumoInterno()) : 'null',
+            date_format(new \DateTime(), 'Y-m-d H:i:s')
+        );
+    }
+
+    private function getBitacoraSerialInsertQuery()
+    {
+        return 'INSERT INTO d_bitacora_serial
+(warehouse_id, product_id, serial, movement_qty, movement_date, movement_type, inoutline_id, inventoryline_id, movementline_id, production_line, internal_consumption_line, created)
+VALUES ';
     }
 }
