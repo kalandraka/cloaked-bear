@@ -377,18 +377,12 @@ class AlbaranController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em     = $this->get('doctrine.orm.entity_manager');
             $trans  = $this->get('translator');
-            $logger = $this->get('logger');
+            $albaranManager = $this->get('buseta.bodega.albaran.manager');
 
-            try {
-                $entity = $albaranModel->getEntityData();
-
-                $em->persist($entity);
-                $em->flush();
-
+            if ($albaran = $albaranManager->crear($albaranModel)) {
                 // Creando nuevamente el formulario con los datos actualizados de la entidad
-                $form = $this->createEditForm(new AlbaranModel($entity));
+                $form = $this->createEditForm(new AlbaranModel($albaran));
                 $renderView = $this->renderView('@BusetaBodega/Albaran/form_template.html.twig', array(
                     'form'   => $form->createView(),
                 ));
@@ -397,14 +391,9 @@ class AlbaranController extends Controller
                     'view' => $renderView,
                     'message' => $trans->trans('messages.create.success', array(), 'BusetaBodegaBundle')
                 ), 201);
-            } catch (\Exception $e) {
-                $logger->addCritical(sprintf(
-                    $trans->trans('', array(), 'BusetaBodegaBundle') . '. Detalles: %s',
-                    $e->getMessage()
-                ));
-
+            } else {
                 return new JsonResponse(array(
-                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Albarán'), 'BusetaBodegaBundle')
+                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Orden de Entrada'), 'BusetaBodegaBundle')
                 ), 500);
             }
         }
