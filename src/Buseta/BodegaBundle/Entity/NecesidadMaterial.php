@@ -2,11 +2,13 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Entity\Interfaces\NecesidadMaterialInterface;
 use Buseta\BodegaBundle\Form\Model\NecesidadMaterialModel;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
+//!TODO: Cambiar nombre Almacen por Bodega en Necesidad Material.
 /**
  * NecesidadMaterial.
  *
@@ -14,7 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\NecesidadMaterialRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class NecesidadMaterial
+class NecesidadMaterial implements NecesidadMaterialInterface
 {
     /**
      * @var integer
@@ -76,6 +78,7 @@ class NecesidadMaterial
      */
     private $forma_pago;
 
+    //!TODO: Cambiar las Condiciones de Pago(que ahora se encuentran en Buseta\TallerBundle\Entity\CondicionesPago) para nomenclador CondicionesPago.
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\CondicionesPago")
      */
@@ -96,6 +99,7 @@ class NecesidadMaterial
      */
     private $descuento;
 
+    //!TODO: Cambiar impuesto(que ahora se encuentran en Buseta\TallerBundle\Entity\Impuesto) para nomenclador Impuestos.
     /**
      * @var \Buseta\TallerBundle\Entity\Impuesto
      *
@@ -509,8 +513,18 @@ class NecesidadMaterial
      * Get almacen.
      *
      * @return \Buseta\BodegaBundle\Entity\Bodega
+     *
+     * @deprecated use getBodega instead
      */
     public function getAlmacen()
+    {
+        return $this->almacen;
+    }
+
+    /**
+     * @return \Buseta\BodegaBundle\Entity\Bodega
+     */
+    public function getBodega()
     {
         return $this->almacen;
     }

@@ -2,11 +2,13 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Entity\Interfaces\PedidoCompraInterface;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
+//!TODO: Cambiar nombre Almacen por Bodega en Pedido Compra.
 /**
  * PedidoCompra.
  *
@@ -14,7 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\PedidoCompraRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class PedidoCompra
+class PedidoCompra implements PedidoCompraInterface
 {
     /**
      * @var integer
@@ -42,6 +44,8 @@ class PedidoCompra
     private $numeroReferencia;
 
     /**
+     * @var \Buseta\BodegaBundle\Entity\Tercero
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="pedidoCompra")
      */
     private $tercero;
@@ -63,21 +67,29 @@ class PedidoCompra
     private $fecha_pedido;
 
     /**
+     * @var \Buseta\BodegaBundle\Entity\Bodega
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="pedidoCompra")
      */
     private $almacen;
 
     /**
+     * @var \Buseta\NomencladorBundle\Entity\Moneda
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Moneda")
      */
     private $moneda;
 
     /**
+     * @var \Buseta\NomencladorBundle\Entity\FormaPago
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\FormaPago")
      */
     private $forma_pago;
 
     /**
+     * @var \Buseta\TallerBundle\Entity\CondicionesPago
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\TallerBundle\Entity\CondicionesPago")
      */
     private $condiciones_pago;
@@ -510,8 +522,18 @@ class PedidoCompra
      * Get almacen.
      *
      * @return \Buseta\BodegaBundle\Entity\Bodega
+     *
+     * @deprecated
      */
     public function getAlmacen()
+    {
+        return $this->almacen;
+    }
+
+    /**
+     * @return \Buseta\BodegaBundle\Entity\Bodega
+     */
+    public function getBodega()
     {
         return $this->almacen;
     }

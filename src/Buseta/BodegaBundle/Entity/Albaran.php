@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Entity\Interfaces\AlbaranInterface;
 use Buseta\BodegaBundle\Form\Model\AlbaranModel;
 use Buseta\BodegaBundle\Interfaces\DateTimeAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="d_albaran")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\AlbaranRepository")
  */
-class Albaran implements DateTimeAwareInterface
+class Albaran implements DateTimeAwareInterface, AlbaranInterface
 {
     /**
      * @var integer
@@ -42,12 +43,14 @@ class Albaran implements DateTimeAwareInterface
     private $numeroDocumento;
 
     /**
+     * @var \Buseta\BodegaBundle\Entity\Tercero
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Tercero", inversedBy="albaran")
      */
     private $tercero;
 
     /**
-     * @var date
+     * @var \DateTime
      *
      * @ORM\Column(name="fechaMovimiento", type="date", nullable=true)
      * @Assert\Date()
@@ -55,7 +58,7 @@ class Albaran implements DateTimeAwareInterface
     private $fechaMovimiento;
 
     /**
-     * @var date
+     * @var \DateTime
      *
      * @ORM\Column(name="fechaContable", type="date", nullable=true)
      * @Assert\Date()
@@ -63,6 +66,8 @@ class Albaran implements DateTimeAwareInterface
     private $fechaContable;
 
     /**
+     * @var \Buseta\BodegaBundle\Entity\Bodega
+     *
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="albaran")
      */
     private $almacen;
@@ -403,6 +408,14 @@ class Albaran implements DateTimeAwareInterface
      * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getAlmacen()
+    {
+        return $this->almacen;
+    }
+
+    /**
+     * @var \Buseta\BodegaBundle\Entity\Bodega
+     */
+    public function getBodega()
     {
         return $this->almacen;
     }
