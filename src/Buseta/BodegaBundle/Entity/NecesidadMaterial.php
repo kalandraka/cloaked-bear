@@ -150,9 +150,10 @@ class NecesidadMaterial implements NecesidadMaterialInterface
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\NecesidadMaterialLinea", mappedBy="necesidadMaterial", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\NecesidadMaterialLinea", mappedBy="necesidadMaterial",
+     *     cascade={"persist", "remove"}, fetch="EXTRA_LAZY")
      */
-    private $necesidad_material_lineas;
+    private $necesidadMaterialLineas;
 
     /**
      * @var \DateTime
@@ -522,6 +523,18 @@ class NecesidadMaterial implements NecesidadMaterialInterface
     }
 
     /**
+     * @param \Buseta\BodegaBundle\Entity\Bodega $bodega
+     *
+     * @return NecesidadMaterial
+     */
+    public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega)
+    {
+        $this->almacen = $bodega;
+
+        return $this;
+    }
+
+    /**
      * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getBodega()
@@ -554,7 +567,7 @@ class NecesidadMaterial implements NecesidadMaterialInterface
     }
 
     /**
-     * Add necesidad_material_lineas.
+     * Add necesidadMaterialLineas.
      *
      * @param \Buseta\BodegaBundle\Entity\NecesidadMaterialLinea $necesidadMaterialLineas
      *
@@ -564,29 +577,29 @@ class NecesidadMaterial implements NecesidadMaterialInterface
     {
         $necesidadMaterialLineas->setNecesidadMaterial($this);
 
-        $this->necesidad_material_lineas[] = $necesidadMaterialLineas;
+        $this->necesidadMaterialLineas[] = $necesidadMaterialLineas;
 
         return $this;
     }
 
     /**
-     * Remove necesidad_material_lineas.
+     * Remove necesidadMaterialLineas.
      *
      * @param \Buseta\BodegaBundle\Entity\NecesidadMaterialLinea $necesidadMaterialLineas
      */
     public function removeNecesidadMaterialLinea(\Buseta\BodegaBundle\Entity\NecesidadMaterialLinea $necesidadMaterialLineas)
     {
-        $this->necesidad_material_lineas->removeElement($necesidadMaterialLineas);
+        $this->necesidadMaterialLineas->removeElement($necesidadMaterialLineas);
     }
 
     /**
-     * Get necesidad_material_lineas.
+     * Get necesidadMaterialLineas.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
     public function getNecesidadMaterialLineas()
     {
-        return $this->necesidad_material_lineas;
+        return $this->necesidadMaterialLineas;
     }
 
     /**

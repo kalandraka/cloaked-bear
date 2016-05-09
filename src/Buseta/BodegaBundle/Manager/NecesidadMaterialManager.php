@@ -7,6 +7,7 @@ use Buseta\BodegaBundle\BusetaBodegaEvents;
 use Buseta\BodegaBundle\Entity\NecesidadMaterial;
 use Buseta\BodegaBundle\Event\FilterNecesidadMaterialEvent;
 use Buseta\BodegaBundle\Exceptions\NotValidStateException;
+use Buseta\BodegaBundle\Form\Model\Converters\NecesidadMaterialConverter;
 use Buseta\BodegaBundle\Form\Model\NecesidadMaterialModel;
 
 /**
@@ -24,35 +25,7 @@ class NecesidadMaterialManager extends AbstractBodegaManager
     public function crear(NecesidadMaterialModel $model)
     {
         $error = false;
-        $necesidadMaterial = new NecesidadMaterial();
-        $necesidadMaterial->setNumeroReferencia($model->getNumeroReferencia());
-        $necesidadMaterial->setObservaciones($model->getObservaciones());
-        $necesidadMaterial->setFechaPedido($model->getFechaPedido());
-        $necesidadMaterial->setImporteTotalLineas($model->getImporteTotalLineas());
-        $necesidadMaterial->setImporteTotal($model->getImporteTotal());
-        $necesidadMaterial->setImporteCompra($model->getImporteCompra());
-        $necesidadMaterial->setImporteDescuento($model->getImporteDescuento());
-        $necesidadMaterial->setImporteImpuesto($model->getImporteImpuesto());
-        $necesidadMaterial->setTercero($model->getTercero());
-        $necesidadMaterial->setAlmacen($model->getAlmacen());
-        $necesidadMaterial->setFormaPago($model->getFormaPago());
-        $necesidadMaterial->setCondicionesPago($model->getCondicionesPago());
-        $necesidadMaterial->setMoneda($model->getMoneda());
-        $necesidadMaterial->setDescuento($model->getDescuento());
-        $necesidadMaterial->setImpuesto($model->getImpuesto());
-
-
-        if ($model->getNumeroDocumento() !== null){
-            $necesidadMaterial->setNumeroDocumento($model->getNumeroDocumento());
-        }
-        if ($model->getEstadoDocumento() !== null) {
-            $necesidadMaterial->setEstadoDocumento($model->getEstadoDocumento());
-        }
-        if (!$model->getNecesidadMaterialLineas()->isEmpty()) {
-            foreach ($model->getNecesidadMaterialLineas() as $lineas) {
-                $necesidadMaterial->addNecesidadMaterialLinea($lineas);
-            }
-        }
+        $necesidadMaterial = NecesidadMaterialConverter::getEntity($model);
 
         try {
             $this->beginTransaction();
@@ -201,6 +174,15 @@ class NecesidadMaterialManager extends AbstractBodegaManager
 
             if (!$error) {
                 $this->cambiarEstado($necesidadMaterial, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_COMPLETE, $error);
+            }
+
+            if ($this->dispatcher->hasListeners(BusetaBodegaEvents::NECESIDADMATERIAL_POST_COMPLETE)) {
+                $postCompleteEvent = new FilterNecesidadMaterialEvent($necesidadMaterial);
+                $this->dispatcher->dispatch(BusetaBodegaEvents::NECESIDADMATERIAL_POST_COMPLETE, $postCompleteEvent);
+
+                if ($postCompleteEvent->getError()) {
+                    $error = $postCompleteEvent->getError();
+                }
             }
 
             if (!$error) {

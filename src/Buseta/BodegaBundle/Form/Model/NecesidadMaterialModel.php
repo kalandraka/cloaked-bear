@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Form\Model;
 
+use Buseta\BodegaBundle\Entity\Interfaces\NecesidadMaterialInterface;
 use Buseta\BodegaBundle\Entity\NecesidadMaterial;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,13 +10,11 @@ use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * NecesidadMaterial Model
- *
  */
-class NecesidadMaterialModel
+class NecesidadMaterialModel implements NecesidadMaterialInterface
 {
     /**
      * @var integer
-     *
      */
     private $id;
 
@@ -157,49 +156,51 @@ class NecesidadMaterialModel
 
     /**
      * Constructor
+     *
+     * @param NecesidadMaterial $necesidadMaterial
      */
-    public function __construct(NecesidadMaterial $necesidadmaterial = null)
+    public function __construct(NecesidadMaterial $necesidadMaterial = null)
     {
         $this->necesidad_material_lineas = new \Doctrine\Common\Collections\ArrayCollection();
 
-        if ($necesidadmaterial !== null) {
-            $this->id = $necesidadmaterial->getId();
-            $this->created = $necesidadmaterial->getCreated();
-            $this->createdby = $necesidadmaterial->getCreatedby();
-            $this->deleted = $necesidadmaterial->getDeleted();
-            $this->deletedby = $necesidadmaterial->getDeletedby();
-            $this->updated = $necesidadmaterial->getUpdated();
-            $this->updatedby = $necesidadmaterial->getUpdatedby();
-            $this->estado_documento = $necesidadmaterial->getEstadoDocumento();
-            $this->fecha_pedido = $necesidadmaterial->getFechaPedido();
-            $this->importeCompra = $necesidadmaterial->getImporteCompra();
-            $this->importe_total = $necesidadmaterial->getImporteTotal();
-            $this->importe_total_lineas = $necesidadmaterial->getImporteTotalLineas();
-            $this->numero_documento = $necesidadmaterial->getNumeroDocumento();
-            $this->numero_referencia = $necesidadmaterial->getNumeroReferencia();
-            $this->descuento        = $necesidadmaterial->getDescuento();
-            $this->impuesto         = $necesidadmaterial->getImpuesto();
-            $this->importeDescuento = $necesidadmaterial->getImporteDescuento();
-            $this->importeImpuesto  = $necesidadmaterial->getImporteImpuesto();
-            $this->observaciones = $necesidadmaterial->getObservaciones();
+        if ($necesidadMaterial !== null) {
+            $this->id = $necesidadMaterial->getId();
+            $this->created = $necesidadMaterial->getCreated();
+            $this->createdby = $necesidadMaterial->getCreatedby();
+            $this->deleted = $necesidadMaterial->getDeleted();
+            $this->deletedby = $necesidadMaterial->getDeletedby();
+            $this->updated = $necesidadMaterial->getUpdated();
+            $this->updatedby = $necesidadMaterial->getUpdatedby();
+            $this->estado_documento = $necesidadMaterial->getEstadoDocumento();
+            $this->fecha_pedido = $necesidadMaterial->getFechaPedido();
+            $this->importeCompra = $necesidadMaterial->getImporteCompra();
+            $this->importe_total = $necesidadMaterial->getImporteTotal();
+            $this->importe_total_lineas = $necesidadMaterial->getImporteTotalLineas();
+            $this->numero_documento = $necesidadMaterial->getNumeroDocumento();
+            $this->numero_referencia = $necesidadMaterial->getNumeroReferencia();
+            $this->descuento        = $necesidadMaterial->getDescuento();
+            $this->impuesto         = $necesidadMaterial->getImpuesto();
+            $this->importeDescuento = $necesidadMaterial->getImporteDescuento();
+            $this->importeImpuesto  = $necesidadMaterial->getImporteImpuesto();
+            $this->observaciones = $necesidadMaterial->getObservaciones();
 
-            if ($necesidadmaterial->getTercero()) {
-                $this->tercero  = $necesidadmaterial->getTercero();
+            if ($necesidadMaterial->getTercero()) {
+                $this->tercero  = $necesidadMaterial->getTercero();
             }
-            if ($necesidadmaterial->getAlmacen()) {
-                $this->almacen  = $necesidadmaterial->getAlmacen();
+            if ($necesidadMaterial->getAlmacen()) {
+                $this->almacen  = $necesidadMaterial->getAlmacen();
             }
-            if ($necesidadmaterial->getMoneda()) {
-                $this->moneda  = $necesidadmaterial->getMoneda();
+            if ($necesidadMaterial->getMoneda()) {
+                $this->moneda  = $necesidadMaterial->getMoneda();
             }
-            if ($necesidadmaterial->getFormaPago()) {
-                $this->forma_pago  = $necesidadmaterial->getFormaPago();
+            if ($necesidadMaterial->getFormaPago()) {
+                $this->forma_pago  = $necesidadMaterial->getFormaPago();
             }
-            if ($necesidadmaterial->getCondicionesPago()) {
-                $this->condiciones_pago  = $necesidadmaterial->getCondicionesPago();
+            if ($necesidadMaterial->getCondicionesPago()) {
+                $this->condiciones_pago  = $necesidadMaterial->getCondicionesPago();
             }
-            if (!$necesidadmaterial->getNecesidadMaterialLineas()->isEmpty()) {
-                $this->necesidad_material_lineas = $necesidadmaterial->getNecesidadMaterialLineas();
+            if (!$necesidadMaterial->getNecesidadMaterialLineas()->isEmpty()) {
+                $this->necesidad_material_lineas = $necesidadMaterial->getNecesidadMaterialLineas();
             } else {
                 $this->necesidad_material_lineas = new ArrayCollection();
             }
@@ -306,6 +307,26 @@ class NecesidadMaterialModel
     public function setAlmacen($almacen)
     {
         $this->almacen = $almacen;
+    }
+
+    /**
+     * @return \Buseta\BodegaBundle\Entity\Bodega
+     */
+    public function getBodega()
+    {
+        return $this->almacen;
+    }
+
+    /**
+     * @param \Buseta\BodegaBundle\Entity\Bodega $bodega
+     *
+     * @return NecesidadMaterialModel
+     */
+    public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega)
+    {
+        $this->almacen = $bodega;
+
+        return $this;
     }
 
     /**

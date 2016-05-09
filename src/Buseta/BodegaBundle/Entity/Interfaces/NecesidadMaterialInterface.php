@@ -31,6 +31,13 @@ interface NecesidadMaterialInterface
     public function getBodega();
 
     /**
+     * @param \Buseta\BodegaBundle\Entity\Bodega $bodega
+     *
+     * @return mixed
+     */
+    public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega);
+
+    /**
      * @return \Buseta\NomencladorBundle\Entity\Moneda
      */
     public function getMoneda();
@@ -50,6 +57,11 @@ interface NecesidadMaterialInterface
      * @return string
      */
     public function getEstadoDocumento();
+
+    /**
+     * @return string
+     */
+    public function getObservaciones();
 
     /**
      * @return float

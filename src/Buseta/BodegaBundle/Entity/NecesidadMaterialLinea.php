@@ -23,7 +23,7 @@ class NecesidadMaterialLinea
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\NecesidadMaterial", inversedBy="necesidad_material_lineas")
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\NecesidadMaterial", inversedBy="necesidadMaterialLineas")
      */
     private $necesidadMaterial;
 

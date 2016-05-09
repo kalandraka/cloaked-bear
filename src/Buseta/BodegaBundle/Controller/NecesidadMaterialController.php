@@ -9,6 +9,7 @@ use Buseta\BodegaBundle\Entity\NecesidadMaterialLinea;
 use Buseta\BodegaBundle\Entity\PedidoCompra;
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
 use Buseta\BodegaBundle\Form\Filter\NecesidadMaterialFilter;
+use Buseta\BodegaBundle\Form\Model\Converters\NecesidadMaterialConverter;
 use Buseta\BodegaBundle\Form\Model\NecesidadMaterialFilterModel;
 use Buseta\BodegaBundle\Form\Model\NecesidadMaterialModel;
 use Buseta\BodegaBundle\Form\Type\NecesidadMaterialLineaType;
@@ -24,6 +25,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 use Symfony\Component\Validator\ConstraintViolation;
 use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
+
+//!TODO: Implementar seguridad en NecesidadMaterialController
 /**
  * NecesidadMaterial controller.
  *
@@ -146,7 +149,7 @@ class NecesidadMaterialController extends Controller
 
             if ($necesidadMaterial = $necesidadMaterialManager->crear($necesidadMaterialModel)) {
                 // Creando nuevamente el formulario con los datos actualizados de la entidad
-                $form = $this->createEditForm(new NecesidadMaterialModel($necesidadMaterial));
+                $form = $this->createEditForm(NecesidadMaterialConverter::getModel($necesidadMaterial));
                 $renderView = $this->renderView('@BusetaBodega/NecesidadMaterial/form_template.html.twig', array(
                     'form'   => $form->createView(),
                 ));
@@ -198,14 +201,6 @@ class NecesidadMaterialController extends Controller
     {
         $form   = $this->createCreateForm(new NecesidadMaterialModel());
 
-        $em = $this->get('doctrine.orm.entity_manager');
-        $productos = $em->getRepository('BusetaBodegaBundle:Producto')
-            ->createQueryBuilder('p')
-            ->select('p,c')
-            ->innerJoin('p.costoProducto', 'c')
-            ->getQuery()
-            ->getResult();
-
         return $this->render('@BusetaBodega/NecesidadMaterial/new.html.twig', array(
             'form'   => $form->createView(),
         ));
@@ -251,7 +246,7 @@ class NecesidadMaterialController extends Controller
             );
         }
 
-        $editForm = $this->createEditForm(new NecesidadMaterialModel($necesidadmaterial));
+        $editForm = $this->createEditForm(NecesidadMaterialConverter::getModel($necesidadmaterial));
         $deleteForm = $this->createDeleteForm($necesidadmaterial->getId());
 
         return $this->render('BusetaBodegaBundle:NecesidadMaterial:edit.html.twig', array(
@@ -288,7 +283,7 @@ class NecesidadMaterialController extends Controller
      */
     public function updateAction(Request $request, NecesidadMaterial $necesidadmaterial)
     {
-        $necesidadmaterialModel = new NecesidadMaterialModel($necesidadmaterial);
+        $necesidadmaterialModel = NecesidadMaterialConverter::getModel($necesidadmaterial);
         $editForm = $this->createEditForm($necesidadmaterialModel);
 
         $editForm->handleRequest($request);
@@ -298,10 +293,11 @@ class NecesidadMaterialController extends Controller
             $logger = $this->get('logger');
 
             try {
-                $necesidadmaterial->setModelData($necesidadmaterialModel);
+                NecesidadMaterialConverter::getEntity($necesidadmaterialModel, $necesidadmaterial);
+
                 $em->flush();
 
-                $editForm = $this->createEditForm(new NecesidadMaterialModel($necesidadmaterial));
+                $editForm = $this->createEditForm(NecesidadMaterialConverter::getModel($necesidadmaterial));
                 $renderView = $this->renderView('@BusetaBodega/NecesidadMaterial/form_template.html.twig', array(
                     'form'     => $editForm->createView(),
                 ));
@@ -400,7 +396,6 @@ class NecesidadMaterialController extends Controller
 
     /**
      * @param Request $request
-     * @param Tercero $vehiculo
      *
      * @return JsonResponse
      *

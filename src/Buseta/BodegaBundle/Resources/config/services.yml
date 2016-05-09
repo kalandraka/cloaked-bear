@@ -197,6 +197,7 @@ services:
             arguments:
                 - @logger
                 - @hatuey_soft.sequence.manager
+                - @buseta.bodega.pedidocompra.manager
             tags:
                 - {name: kernel.event_subscriber}
     buseta.bodega.pedidocompra.subscriber:
