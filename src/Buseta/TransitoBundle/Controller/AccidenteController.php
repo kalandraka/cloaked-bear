@@ -35,12 +35,16 @@ class AccidenteController extends Controller
     {
         $filter = new AccidenteFilterModel();
 
-        $form = $this->createForm(new AccidenteFilter(), $filter, array(
-            'action' => $this->generateUrl('accidente'),
-        ));
+        $form = $this->createForm(
+            new AccidenteFilter(),
+            $filter,
+            array(
+                'action' => $this->generateUrl('accidente'),
+            )
+        );
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entities = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('BusetaTransitoBundle:Accidente')->filter($filter);
         } else {
@@ -55,10 +59,13 @@ class AccidenteController extends Controller
             10
         );
 
-        return $this->render('BusetaTransitoBundle:Accidente:index.html.twig', array(
-            'entities'      => $entities,
-            'filter_form'   => $form->createView(),
-        ));
+        return $this->render(
+            'BusetaTransitoBundle:Accidente:index.html.twig',
+            array(
+                'entities' => $entities,
+                'filter_form' => $form->createView(),
+            )
+        );
     }
 
     /**
@@ -70,12 +77,15 @@ class AccidenteController extends Controller
     public function newAction()
     {
         $entity = new Accidente();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
-        return $this->render('BusetaTransitoBundle:Accidente:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ));
+        return $this->render(
+            'BusetaTransitoBundle:Accidente:new.html.twig',
+            array(
+                'entity' => $entity,
+                'form' => $form->createView(),
+            )
+        );
     }
 
     /**
@@ -87,10 +97,14 @@ class AccidenteController extends Controller
      */
     private function createCreateForm(Accidente $entity)
     {
-        $form = $this->createForm('transito_accidente', $entity, array(
-            'action' => $this->generateUrl('accidente_create'),
-            'method' => 'POST',
-        ));
+        $form = $this->createForm(
+            'transito_accidente',
+            $entity,
+            array(
+                'action' => $this->generateUrl('accidente_create'),
+                'method' => 'POST',
+            )
+        );
 
         return $form;
     }
@@ -115,10 +129,13 @@ class AccidenteController extends Controller
             return $this->redirect($this->generateUrl('accidente_show', array('id' => $entity->getId())));
         }
 
-        return $this->render('BusetaTransitoBundle:Accidente:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ));
+        return $this->render(
+            'BusetaTransitoBundle:Accidente:new.html.twig',
+            array(
+                'entity' => $entity,
+                'form' => $form->createView(),
+            )
+        );
     }
 
     /**
@@ -134,18 +151,20 @@ class AccidenteController extends Controller
 
         $entity = $em->getRepository('BusetaTransitoBundle:Accidente')->find($id);
         $penal = null;
-        if($entity->getParte() == 'PENAL')
-        {
+        if ($entity->getParte() == 'PENAL') {
             $penal = $em->getRepository('BusetaTransitoBundle:PenalAccidente')->findOneByAccidente($entity);
         }
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Accidente entity.');
         }
 
-        return $this->render('BusetaTransitoBundle:Accidente:show.html.twig', array(
-            'entity'      => $entity,
-            'penal'      => $penal
-        ));
+        return $this->render(
+            'BusetaTransitoBundle:Accidente:show.html.twig',
+            array(
+                'entity' => $entity,
+                'penal' => $penal,
+            )
+        );
     }
 
     /**
@@ -171,10 +190,13 @@ class AccidenteController extends Controller
 
         $editForm = $this->createEditForm($entity);
 
-        return $this->render('BusetaTransitoBundle:Accidente:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-        ));
+        return $this->render(
+            'BusetaTransitoBundle:Accidente:edit.html.twig',
+            array(
+                'entity' => $entity,
+                'edit_form' => $editForm->createView(),
+            )
+        );
     }
 
     /**
@@ -186,10 +208,14 @@ class AccidenteController extends Controller
      */
     private function createEditForm(Accidente $entity)
     {
-        $form = $this->createForm(new AccidenteType(), $entity, array(
-            'action' => $this->generateUrl('accidente_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-        ));
+        $form = $this->createForm(
+            new AccidenteType(),
+            $entity,
+            array(
+                'action' => $this->generateUrl('accidente_update', array('id' => $entity->getId())),
+                'method' => 'PUT',
+            )
+        );
 
         return $form;
     }
@@ -220,10 +246,13 @@ class AccidenteController extends Controller
             return $this->redirect($this->generateUrl('accidente_show', array('id' => $id)));
         }
 
-        return $this->render('BusetaTransitoBundle:Accidente:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-        ));
+        return $this->render(
+            'BusetaTransitoBundle:Accidente:edit.html.twig',
+            array(
+                'entity' => $entity,
+                'edit_form' => $editForm->createView(),
+            )
+        );
     }
 
     /**
@@ -240,5 +269,31 @@ class AccidenteController extends Controller
         $em->flush();
 
         return $this->redirect($this->generateUrl('accidente_show', array('id' => $id)));
+    }
+
+    /**
+     *
+     * @param Request $request
+     *
+     * @Route("/accidente_no_parte", name="accidente_no_parte",
+     *   options={"expose": true})
+     * @return Response
+     */
+    public function accidenteNoParteAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $id = $request->query->get('id');
+        $responsable = $request->query->get('responsable');
+        $quienPaga = $request->query->get('quienPaga');
+
+        $entity = $em->getRepository('BusetaTransitoBundle:Accidente')->find($id);
+        $entity->setEstado('NOPARTE');
+        $entity->setParte('NOPARTE');
+        $entity->setResponsable($responsable);
+        $entity->setQuienPaga($quienPaga);
+        $em->persist($entity);
+        $em->flush();
+
+        return new Response(json_encode("success"), 200);
     }
 }

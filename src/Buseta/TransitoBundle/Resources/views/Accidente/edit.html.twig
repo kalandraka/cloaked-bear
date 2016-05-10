@@ -27,6 +27,21 @@
         });
         $('select#transito_accidente_vehiculo').chosen();
         $('select#transito_accidente_chofer').chosen();
+        $('select#transito_accidente_responsable').chosen();
+        $('select#transito_accidente_quienPaga').chosen();
+        {% if entity.responsable != ''%}
+        $('div#accidente_responsable').css({visibility: 'visible'});
+        {% endif %}
+        {% if entity.quienPaga != ''%}
+        $('div#accidente_quien_paga').css({visibility: 'visible'});
+        {% endif %}
+        $(document).ready(function () {
+            $('select#transito_accidente_responsable').val('{{ entity.responsable }}');
+            $('select#transito_accidente_responsable').trigger("chosen:updated");
+            $('select#transito_accidente_quienPaga').val('{{ entity.quienPaga }}');
+            $('select#transito_accidente_quienPaga').trigger("chosen:updated");
+
+        });
     </script>
 
 {% endblock %}

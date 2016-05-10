@@ -15,7 +15,7 @@
 {% block area_trabajo %}
     <table class="table table-striped" style="font-size: 16px;">
         {% if entity is defined and entity.parte == 'PENAL' %}
-        <caption style="font-size: 22px;text-align: left;">Accidente</caption>
+            <caption style="font-size: 22px;text-align: left;">Accidente</caption>
         {% endif %}
         <tbody>
 
@@ -44,6 +44,21 @@
             <td>{{ entity.importe }}</td>
         </tr>
 
+        {% if entity.estado == 'NOPARTE' %}
+            <tr>
+                <th>Responsable</th>
+                <td>
+                    {{ ('accidente.responsable.' ~ entity.responsable) | trans({}, 'BusetaTransitoBundle') }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Quien solventa</th>
+                <td>
+                    {{ ('accidente.quien_paga.' ~ entity.quienPaga) | trans({}, 'BusetaTransitoBundle') }}</span>
+                </td>
+            </tr>
+        {% endif %}
+
         </tbody>
     </table>
     <div class="form-actions">
@@ -52,13 +67,12 @@
         <a class="btn btn-primary" href="{{ path('accidente') }}">
             <i class="fa fa-list"></i> Listado</a>
         {% if entity is defined and entity.estado == 'BO' %}
-            <a class="btn btn-primary" href="{{ path('cambiarParteAccidente', { 'id': entity.id, 'state': 'NOPARTE' }) }}">
-                <span class="glyphicon glyphicon-primary"></span>
-                No hubo parte
-            </a>
+            <a id="btnNoParte" class="btn btn-primary"
+               href="#"> No hubo parte</a>
             <a id="penalAccidente" class="btn btn-primary"
                href="#"> Penal</a>
-            <a class="btn btn-primary" href="{{ path('cambiarParteAccidente', { 'id': entity.id, 'state': 'TRANSITO' }) }}">
+            <a class="btn btn-primary"
+               href="{{ path('cambiarParteAccidente', { 'id': entity.id, 'state': 'TRANSITO' }) }}">
                 <span class="glyphicon glyphicon-primary"></span>
                 Tránsito
             </a>
@@ -109,6 +123,9 @@
     {% endif %}
 
     <div class="modal" id="form_penal_modal"></div>
+
+    {% include 'BusetaTransitoBundle:Accidente:no_parte_modal.html.twig' with {'entity': entity} %}
+
 {% endblock %}
 
 {% block contenido %}
@@ -121,6 +138,10 @@
     <script type="text/javascript">
         $('#penalAccidente').on('click', penalAccidente);
         $('#editPenalAccidente').on('click', penalAccidente);
+        $('select#buseta_transitobundle_accidente_responsable').chosen();
+        $('select#buseta_transitobundle_accidente_quienPaga').chosen();
+        $('#btnNoParte').on('click', noParteLoad);
+        $('#btn_noparte_aceptar').on('click', aceptarNoParte);
 
         function penalAccidente(e) {
             if (e !== undefined) {
@@ -134,11 +155,11 @@
             }
             {% endif %}
             $.get(url)
-                    .done(function(response, textStatus, jqXHR){
+                    .done(function (response, textStatus, jqXHR) {
                         $('div#form_penal_modal').replaceWith($(response.view));
 
                         $('a#btn_penal_save').on('click', savePenalModal);
-                        $('a#btn_penal_cancel').on('click', function(){
+                        $('a#btn_penal_cancel').on('click', function () {
                             $('div#form_penal_modal').modal('hide');
                         });
                         $('input#transito_penal_accidente_fecha').datetimepicker({
@@ -148,11 +169,12 @@
                             'format': 'DD/MM/YYYY'
                         });
                         $('div#form_penal_modal').modal('show');
-                    }).fail(utils._fail).always(function(){});
+                    }).fail(utils._fail).always(function () {
+            });
         }
 
         function savePenalModal(e) {
-            if(e !== undefined) {
+            if (e !== undefined) {
                 e.preventDefault();
             }
 
@@ -176,7 +198,7 @@
 
         var utils = {
             _fail: function (jqXHR, textStatus, errorThrown) {
-                if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                if (jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
                     $btalerts.addDanger(jqXHR.responseText.message);
                 } else if (jqXHR.status == 200) {
                     $btalerts.addSuccess('{{ 'messages.update.success' | trans({}, 'BusetaTransitoBundle') }}');
@@ -189,5 +211,29 @@
                 window.location = "{{ path('accidente_show', { 'id': entity.id }) }}";
             },
         };
+
+        function noParteLoad(e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+
+            $('div#form_noparte_modal').modal('show');
+        }
+
+        function aceptarNoParte(e) {
+            var responsable = $('select#buseta_transitobundle_accidente_responsable').selected().val();
+            var quienPaga = $('select#buseta_transitobundle_accidente_quienPaga').selected().val();
+            $.ajax({
+                url: '{{ path("accidente_no_parte") }}',
+                data: {
+                    id: {{ entity.id }},
+                    responsable: responsable,
+                    quienPaga: quienPaga,
+                },
+                success: function () {
+                    window.location = "{{ path('accidente_show', { 'id': entity.id }) }}";
+                }
+            });
+        }
     </script>
 {% endblock %}
