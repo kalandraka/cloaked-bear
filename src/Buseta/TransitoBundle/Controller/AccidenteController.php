@@ -133,13 +133,18 @@ class AccidenteController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('BusetaTransitoBundle:Accidente')->find($id);
-
+        $penal = null;
+        if($entity->getParte() == 'PENAL')
+        {
+            $penal = $em->getRepository('BusetaTransitoBundle:PenalAccidente')->findOneByAccidente($entity);
+        }
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Accidente entity.');
         }
 
         return $this->render('BusetaTransitoBundle:Accidente:show.html.twig', array(
-            'entity'      => $entity
+            'entity'      => $entity,
+            'penal'      => $penal
         ));
     }
 
@@ -219,5 +224,21 @@ class AccidenteController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
         ));
+    }
+
+    /**
+     * @Route("/{id}/cambiarParteAccidente/{state}", name="cambiarParteAccidente", options={"expose": true})
+     * @Breadcrumb(title="Cambiar parte accidente", routeName="cambiarParteAccidente", routeParameters={"id", "state"})
+     */
+    public function cambiarParteAccidenteAction($id, $state)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('BusetaTransitoBundle:Accidente')->find($id);
+        $entity->setEstado($state);
+        $entity->setParte($state);
+        $em->persist($entity);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('accidente_show', array('id' => $id)));
     }
 }

@@ -10,8 +10,18 @@ accidente:
   valor: Valor
   btn:
     adicionar: Adicionar Accidente
+    editar: Modificar Accidente
   modal:
     title: Crear Nuevo Accidente
+
+
+penal_accidente:
+  valor: Valor
+  btn:
+    adicionar: Adicionar Penal Accidente
+    editar: Modificar Penal Accidente
+  modal:
+    title: Crear Nuevo Penal Accidente
 
 messages:
   no_results: No existen elementos que mostrar.
@@ -40,3 +50,6 @@ estado:
   WN: Ganada
   LS: Perdida
   PA: Pagada
+  NOPARTE: No hubo parte
+  TRANSITO: Transito
+  PENAL: Penal

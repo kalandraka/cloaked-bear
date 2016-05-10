@@ -14,6 +14,9 @@
 
 {% block area_trabajo %}
     <table class="table table-striped" style="font-size: 16px;">
+        {% if entity is defined and entity.parte == 'PENAL' %}
+        <caption style="font-size: 22px;text-align: left;">Accidente</caption>
+        {% endif %}
         <tbody>
 
         <tr>
@@ -43,14 +46,69 @@
 
         </tbody>
     </table>
-
     <div class="form-actions">
         <a class="btn btn-primary" href="{{ path('accidente_edit', { 'id': entity.id }) }}">
             <i class="fa fa-edit"></i> Editar</a>
         <a class="btn btn-primary" href="{{ path('accidente') }}">
             <i class="fa fa-list"></i> Listado</a>
+        {% if entity is defined and entity.estado == 'BO' %}
+            <a class="btn btn-primary" href="{{ path('cambiarParteAccidente', { 'id': entity.id, 'state': 'NOPARTE' }) }}">
+                <span class="glyphicon glyphicon-primary"></span>
+                No hubo parte
+            </a>
+            <a id="penalAccidente" class="btn btn-primary"
+               href="#"> Penal</a>
+            <a class="btn btn-primary" href="{{ path('cambiarParteAccidente', { 'id': entity.id, 'state': 'TRANSITO' }) }}">
+                <span class="glyphicon glyphicon-primary"></span>
+                Tránsito
+            </a>
+        {% endif %}
     </div>
 
+    {% if entity is defined and entity.parte == 'PENAL' %}
+        <table class="table table-striped" style="font-size: 16px;margin-top:10px;">
+            <caption style="font-size: 22px;text-align: left;">Penal</caption>
+            <tbody>
+
+            <tr>
+                <th>Nota</th>
+                <td>{{ penal.nota }}</td>
+            </tr>
+
+            <tr>
+                <th>Adjunto</th>
+                <td>{{ penal.adjunto }}</td>
+            </tr>
+
+            <tr>
+                <th>Alerta</th>
+                <td>{{ penal.alerta }}</td>
+            </tr>
+
+            <tr>
+                <th>Fecha</th>
+                <td>{{ penal.fecha|date('d/m/Y') }}</td>
+            </tr>
+
+            <tr>
+                <th>Expira</th>
+                <td>{{ penal.fechaExpira|date('d/m/Y') }}</td>
+            </tr>
+
+            <tr>
+                <th>Costo</th>
+                <td>{{ penal.costo }}</td>
+            </tr>
+
+            </tbody>
+        </table>
+        <div class="form-actions">
+            <a id="editPenalAccidente" class="btn btn-primary"
+               href="#editPenalAccidente"><i class="fa fa-edit"></i> Editar Penal</a>
+        </div>
+    {% endif %}
+
+    <div class="modal" id="form_penal_modal"></div>
 {% endblock %}
 
 {% block contenido %}
@@ -61,6 +119,75 @@
     {{ parent() }}
 
     <script type="text/javascript">
+        $('#penalAccidente').on('click', penalAccidente);
+        $('#editPenalAccidente').on('click', penalAccidente);
 
+        function penalAccidente(e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+
+            var url = Routing.generate('penal_accidente_new', {'accidente': {{ entity.id }}});
+            {% if entity is defined and entity.parte == 'PENAL' %}
+            if ($(this).attr('href') !== undefined && $(this).attr('href') === '#editPenalAccidente') {
+                url = Routing.generate('penal_accidente_edit', {'id': {{ penal.id }}});
+            }
+            {% endif %}
+            $.get(url)
+                    .done(function(response, textStatus, jqXHR){
+                        $('div#form_penal_modal').replaceWith($(response.view));
+
+                        $('a#btn_penal_save').on('click', savePenalModal);
+                        $('a#btn_penal_cancel').on('click', function(){
+                            $('div#form_penal_modal').modal('hide');
+                        });
+                        $('input#transito_penal_accidente_fecha').datetimepicker({
+                            'format': 'DD/MM/YYYY'
+                        });
+                        $('input#transito_penal_accidente_fechaExpira').datetimepicker({
+                            'format': 'DD/MM/YYYY'
+                        });
+                        $('div#form_penal_modal').modal('show');
+                    }).fail(utils._fail).always(function(){});
+        }
+
+        function savePenalModal(e) {
+            if(e !== undefined) {
+                e.preventDefault();
+            }
+
+            $('#btn_penal_save').find('span')
+                    .removeClass('glyphicon')
+                    .removeClass('glyphicon-save')
+                    .addClass('fa')
+                    .addClass('fa-gear')
+                    .addClass('fa-spin');
+            var form_id = $('div#form_penal_modal').find('form').attr('id');
+
+            $('form#' + form_id).ajaxSubmit({
+                success: utils._done_penal,
+                error: utils._fail,
+                beforeSubmit: function () {
+                    var tempo = '';
+                },
+                dataType: 'json'
+            });
+        }
+
+        var utils = {
+            _fail: function (jqXHR, textStatus, errorThrown) {
+                if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                    $btalerts.addDanger(jqXHR.responseText.message);
+                } else if (jqXHR.status == 200) {
+                    $btalerts.addSuccess('{{ 'messages.update.success' | trans({}, 'BusetaTransitoBundle') }}');
+                }
+                else {
+                    $btalerts.addDanger('{{ 'messages.unexpected_error' | trans({}, 'BusetaTransitoBundle') }}');
+                }
+            },
+            _done_penal: function (response, textStatus, jqXHR) {
+                window.location = "{{ path('accidente_show', { 'id': entity.id }) }}";
+            },
+        };
     </script>
 {% endblock %}

@@ -79,19 +79,19 @@
                         {#{% set amount_style = '' %}#}
                     {#{% endif %}#}
                     <td>{{ entity.importe }}</td>
-                    {#{% if entity.estado == 'WN' %}#}
-                        {#{% set badge = 'success' %}#}
-                        {#{% set text_color = 'success' %}#}
+                    {% if entity.estado == 'PENAL' %}
+                        {% set badge = 'primary' %}
+                        {% set text_color = 'primary' %}
                     {#{% elseif entity.estado == 'PA' or entity.estado == 'LS' %}#}
                         {#{% set badge = 'warning' %}#}
                         {#{% set text_color = 'warning' %}#}
                     {#{% elseif entity.estado == 'AP' %}#}
                         {#{% set badge = 'primary' %}#}
                         {#{% set text_color = 'primary' %}#}
-                    {#{% else %}#}
+                    {% else %}
                         {% set badge = 'danger' %}
                         {% set text_color = 'danger' %}
-                    {#{% endif %}#}
+                    {% endif %}
                     <td class="text-{{ text_color }}"><span class="label label-{{ badge }}">
                         {{ ('estado.' ~ entity.estado) | trans({}, 'BusetaTransitoBundle') | upper }}</span>
                     </td>
