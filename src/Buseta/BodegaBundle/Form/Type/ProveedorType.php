@@ -12,18 +12,11 @@ class ProveedorType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('terceroId', 'integer', array(
-                'required' => false,
-                'label' => false,
-                'attr' => array(
-                    'class' => 'hidden',
-                ),
-            ))
             ->add('proveedorId', 'integer', array(
                 'required' => false,
                 'label' => false,
@@ -38,14 +31,6 @@ class ProveedorType extends AbstractType
                     'class' => 'hidden',
                 ),
             ))
-            ->add('codigo', 'text', array(
-                'required' => true,
-                'translation_domain' => 'BusetaBodegaBundle',
-                'label' => 'proveedor.codigo',
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
             ->add('alias', 'text', array(
                 'required' => true,
                 'translation_domain' => 'BusetaBodegaBundle',
@@ -54,7 +39,7 @@ class ProveedorType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('nombres', 'text', array(
+            ->add('nombre', 'text', array(
                 'required' => true,
                 'translation_domain' => 'BusetaBodegaBundle',
                 'label' => 'proveedor.nombres',
@@ -62,23 +47,98 @@ class ProveedorType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('apellidos', 'text', array(
-                'required' => true,
+            ->add('telefono', 'text', array(
+                'required' => false,
                 'translation_domain' => 'BusetaBodegaBundle',
-                'label' => 'proveedor.apellidos',
+                'label' => 'proveedor.telefono',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
             ))
-            ->add('activo', 'checkbox', array(
+            ->add('fax', 'text', array(
                 'required' => false,
                 'translation_domain' => 'BusetaBodegaBundle',
-                'label' => 'proveedor.activo',
+                'label' => 'proveedor.fax',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
             ))
-            ->add('cif_nif', 'text', array(
-                'translation_domain' => 'BusetaBodegaBundle',
-                'label' => 'proveedor.cifnif',
+            ->add('web', 'text', array(
                 'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'proveedor.web',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('direccion', 'textarea', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'proveedor.direccion',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('ciudad', 'text', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'proveedor.ciudad',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('region', 'text', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'proveedor.region',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('apartado', 'text', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'proveedor.apartado',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('pais', 'text', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'proveedor.pais',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('contacto', 'text', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'proveedor.contacto',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('puesto', 'text', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'proveedor.puesto',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('celular', 'text', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'proveedor.celular',
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('email', 'text', array(
+                'required' => false,
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'proveedor.email',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -100,6 +160,14 @@ class ProveedorType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
+            ->add('cif_nif', 'text', array(
+                'translation_domain' => 'BusetaBodegaBundle',
+                'label' => 'proveedor.cifnif',
+                'required' => false,
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+            ))
             ->add('observaciones', 'textarea', array(
                 'required' => false,
                 'translation_domain' => 'BusetaBodegaBundle',
@@ -108,18 +176,10 @@ class ProveedorType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('email', 'email', array(
+            ->add('pago', 'text', array(
                 'required' => false,
                 'translation_domain' => 'BusetaBodegaBundle',
-                'label' => 'proveedor.email',
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-            ))
-            ->add('web', 'url', array(
-                'required' => false,
-                'translation_domain' => 'BusetaBodegaBundle',
-                'label' => 'proveedor.web',
+                'label' => 'proveedor.pago',
                 'attr' => array(
                     'class' => 'form-control',
                 ),
@@ -129,8 +189,7 @@ class ProveedorType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-            ))
-        ;
+            ));
     }
 
     /**

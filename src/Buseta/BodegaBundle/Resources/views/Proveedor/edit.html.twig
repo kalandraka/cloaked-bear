@@ -2,125 +2,35 @@
 
 {% block title block('header') %}
 
-{% block header 'Modificar Proveedor' %}
+{% block header 'Crear Nuevo Proveedor' %}
 
 {% block area_trabajo %}
-<div class="row">
-    <div class="col-lg-12">
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#basicos" data-toggle="tab">Proveedor</a></li>
-            <li><a href="#direcciones" data-toggle="tab">Direcciones</a></li>
-            <li><a href="#contactos" data-toggle="tab">Mecanismos de contacto</a></li>
-            <li><a href="#pcontactos" data-toggle="tab">Personas de contacto</a></li>
-        </ul>
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#basicos" data-toggle="tab">Proveedor</a></li>
+                <li><a href="#direcciones" data-toggle="tab">Direcciones</a></li>
+                <li><a href="#contactos" data-toggle="tab">Mecanismos de contacto</a></li>
+                <li><a href="#pcontactos" data-toggle="tab">Personas de contacto</a></li>
+            </ul>
 
-        {# Tab panes #}
-        <div class="tab-content" style="padding-top: 20px;">
-            <!-- TAB BASICOS-->
-            <div class="tab-pane fade in active" id="basicos">
-                <form id="{{ edit_form.vars.id }}" name="{{ edit_form.vars.full_name }}" action="{{ edit_form.vars.action }}"
-                      method="POST" enctype="multipart/form-data">
-                    {% if edit_form.vars.method == 'PUT' %}
-                        <input type="hidden" name="_method" value="PUT"/>
-                    {% endif %}
-                    {{ form_errors(edit_form) }}
-                    {{ form_row(edit_form._token) }}
-                    {{ form_row(edit_form.proveedorId) }}
-                    {{ form_row(edit_form.terceroId) }}
-                    {{ form_row(edit_form.foto) }}
-
-                    <div class="row show-grid">
-                        <div class="col-md-2">
-                            <a href="#" class="thumbnail">
-                                {%  if entity.foto %}
-                                    <img src="{{ asset(entity.foto.webPath)}}" alt="Imagen" width="152" height="120"/>
-                                {% else %}
-                                    <img src="{{ asset('bundles/busetabodega/images/default.png') }}" alt="Imagen por defecto"/>
-                                {% endif %}
-                            </a>
-                        </div>
-
-                        <div class="col-md-10">
-                            <div class="row show-grid">
-                                <div class="col-md-6">
-                                    {{ form_row(edit_form.codigo) }}
-                                </div>
-                                <div class="col-md-6">
-                                    {{ form_row(edit_form.alias) }}
-                                </div>
-                            </div>
-
-                            <div class="row show-grid">
-                                <div class="col-md-6">
-                                    {{ form_row(edit_form.nombres) }}
-                                </div>
-                                <div class="col-md-6">
-                                    {{ form_row(edit_form.apellidos) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row show-grid">
-                        <div class="col-md-4">
-                            {{ form_row(edit_form.moneda) }}
-                        </div>
-                        <div class="col-md-4">
-                            {{ form_row(edit_form.creditoLimite) }}
-                        </div>
-                        <div class="col-md-4">
-                            {{ form_row(edit_form.cif_nif) }}
-                        </div>
-                    </div>
-
-                    <div class="row show-grid">
-                        <div class="col-md-6">
-                            {{ form_row(edit_form.email) }}
-                        </div>
-                        <div class="col-md-6">
-                            {{ form_row(edit_form.web) }}
-                        </div>
-                        <div class="col-md-4">
-                            {{ form_row(edit_form.activo) }}
-                        </div>
-                        <div class="col-md-12">
-                            {{ form_row(edit_form.observaciones) }}
-                        </div>
-                        <div class="col-md-12">
-                            <label for="buseta_bodegabundle_marcas">Marcas</label>
-                            <ul id="buseta_bodegabundle_marcas" class="tags form-control" data-prototype="{{ form_widget(edit_form.marcas.vars.prototype) | e }}">
-                                {% for marca in edit_form.marcas %}
-                                    <li class="tag">
-                                        <span>{{ form_widget(marca) }}</span>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-
-                    {# buttons group #}
-                    <div class="row">
-                        <div class="col-md-4">
-                            <a class="btn btn-primary" id="btn_proveedor_save" href="#"><span class="glyphicon glyphicon-save"></span>
-                                {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
-                            <a class="btn btn-default" id="btn_proveedor_cancel" href="{{ path('proveedor') }}"><span class="glyphicon glyphicon-chevron-left"></span>
-                                {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
-                        </div>
-                    </div>
-                </form>
+            {# Tab panes #}
+            <div class="tab-content" style="padding-top: 20px;">
+                <!-- TAB BASICOS-->
+                <div class="tab-pane fade in active" id="basicos">
+                    {% include 'BusetaBodegaBundle:Proveedor:proveedor_model.html.twig' with {'form': edit_form} %}
+                </div>
+                <!-- TAB DIRECCIONES-->
+                <div class="tab-pane fade" id="direcciones"></div>
+                <!-- TAB MECANISMOS DE CONTACTO-->
+                <div class="tab-pane fade" id="contactos"></div>
+                <!-- TAB PERSONAS DE CONTACTO-->
+                <div class="tab-pane fade" id="pcontactos"></div>
             </div>
-            <!-- TAB DIRECCIONES-->
-            <div class="tab-pane fade" id="direcciones">
-
-            </div>
-            <!-- TAB MECANISMOS DE CONTACTO-->
-            <div class="tab-pane fade" id="contactos"></div>
-            <!-- TAB MECANISMOS DE CONTACTO-->
-            <div class="tab-pane fade" id="pcontactos"></div>
         </div>
     </div>
-</div>
 {% endblock %}
+
 
 {% block javascripts %}
 {{ parent() }}

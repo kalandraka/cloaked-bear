@@ -18,36 +18,35 @@ class ProveedorRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('p');
         $query = $qb->where($qb->expr()->eq(true,true));
-        $query->innerJoin('p.tercero', 'tercero');
 
         if($filter) {
-            if ($filter->getCodigo() !== null && $filter->getCodigo() !== '') {
+            /**if ($filter->getCodigo() !== null && $filter->getCodigo() !== '') {
                 $query->andWhere($qb->expr()->andX(
                     $qb->expr()->like('tercero.codigo',':codigo')
                 ))
                     ->setParameter('codigo', '%' . $filter->getCodigo() . '%');
-            }
+            }**/
             if ($filter->getAlias() !== null && $filter->getAlias() !== '') {
                 $query->andWhere($qb->expr()->andX(
-                    $qb->expr()->like('tercero.alias',':alias')
+                    $qb->expr()->like('p.alias',':alias')
                 ))
                 ->setParameter('alias', '%' . $filter->getAlias() . '%');
             }
-            if ($filter->getNombres() !== null && $filter->getNombres() !== '') {
+            if ($filter->getNombre() !== null && $filter->getNombre() !== '') {
                 $query->andWhere($qb->expr()->andX(
-                    $qb->expr()->like('tercero.nombres',':nombres')
+                    $qb->expr()->like('p.nombre',':nombre')
                 ))
-                ->setParameter('nombres', '%' . $filter->getNombres() . '%');
+                ->setParameter('nombre', '%' . $filter->getNombre() . '%');
             }
-            if ($filter->getApellidos() !== null && $filter->getApellidos() !== '') {
+            /**if ($filter->getApellidos() !== null && $filter->getApellidos() !== '') {
                 $query->andWhere($qb->expr()->andX(
                     $qb->expr()->like('tercero.apellidos',':apellidos')
                 ))
                     ->setParameter('apellidos', '%' . $filter->getApellidos() . '%');
-            }
+            }**/
             if ($filter->getCifNif() !== null && $filter->getCifNif() !== '') {
                 $query->andWhere($qb->expr()->andX(
-                    $qb->expr()->like('tercero.cifNif',':cifNif')
+                    $qb->expr()->like('p.cifNif',':cifNif')
                 ))
                     ->setParameter('cifNif', '%' . $filter->getCifNif() . '%');
             }
@@ -55,9 +54,6 @@ class ProveedorRepository extends EntityRepository
                 $query->andWhere($query->expr()->eq('p.moneda', ':moneda'))
                     ->setParameter('moneda', $filter->getMoneda());
             }
-
-
-
         }
 
         $query->orderBy('p.id', 'ASC');
@@ -68,6 +64,4 @@ class ProveedorRepository extends EntityRepository
             return array();
         }
     }
-
-
 }

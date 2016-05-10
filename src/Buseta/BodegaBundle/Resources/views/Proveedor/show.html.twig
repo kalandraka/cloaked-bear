@@ -19,26 +19,25 @@
         <div class="col-md-10">
             <table class="table table-striped" style="font-size: 16px;">
                 <tbody>
-
-                <tr>
-                    <th>Código</th>
-                    <td>{{ entity.codigo }}</td>
-                </tr>
-                <tr>
-                    <th>Nombres</th>
-                    <td>{{ entity.nombres }}</td>
-                </tr>
-                <tr>
-                    <th>Apellidos</th>
-                    <td>{{ entity.apellidos }}</td>
-                </tr>
                 <tr>
                     <th>Alias</th>
                     <td>{{ entity.alias }}</td>
                 </tr>
                 <tr>
-                    <th>Moneda</th>
-                    <td>{{ entity.moneda }}</td>
+                    <th>Nombre</th>
+                    <td>{{ entity.nombre }}</td>
+                </tr>
+                <tr>
+                    <th>Teléfono</th>
+                    <td>{{ entity.telefono }}</td>
+                </tr>
+                <tr>
+                    <th>Fax</th>
+                    <td>{{ entity.fax }}</td>
+                </tr>
+                <tr>
+                    <th>CifNif</th>
+                    <td>{{ entity.cifNif }}</td>
                 </tr>
                 <tr>
                     <th>Crédito Límite</th>
@@ -48,23 +47,13 @@
                     <th>Observaciones</th>
                     <td>{{ entity.observaciones }}</td>
                 </tr>
-                <tr>
-                    <th>Activo</th>
-                    <td>
-                        {% if entity.activo %}
-                            Sí
-                        {% else %}
-                            No
-                        {% endif %}
-                    </td>
-                </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
     <div class="form-actions">
-        <form action="{{ path('proveedor_delete', {'id': entity.terceroId}) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ path('proveedor_delete', {'id': entity.proveedorId}) }}" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="_method" value="DELETE"/>
             <a class="btn btn-primary" href="{{ path('proveedor') }}"> Listado</a>
             <button type="submit" class="btn btn-primary"> Eliminar</button>

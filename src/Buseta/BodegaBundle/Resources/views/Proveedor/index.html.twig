@@ -7,9 +7,7 @@
 {% block area_trabajo -%}
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
-    {% if (filter_form.vars.value.codigo is null or filter_form.vars.value.codigo is empty)
-    and (filter_form.vars.value.nombres is null or filter_form.vars.value.nombres is empty)
-    and (filter_form.vars.value.apellidos is null or filter_form.vars.value.apellidos is empty)
+    {% if (filter_form.vars.value.nombre is null or filter_form.vars.value.nombre is empty)
     and (filter_form.vars.value.alias is null or filter_form.vars.value.alias is empty)
     and (filter_form.vars.value.moneda is null or filter_form.vars.value.moneda is empty)
     and (filter_form.vars.value.cifnif is null or filter_form.vars.value.cifnif is empty)
@@ -27,9 +25,7 @@
     <div id="filter_form_component" style="{{ display }}">
         <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
             <div class="row">
-                <div class="col-lg-4">{{ form_row(filter_form.codigo) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.nombres) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.apellidos) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.nombre) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.alias) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.moneda) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.cif_nif) }}</div>
@@ -63,9 +59,7 @@
     <table class="records_list table table-striped table-bordered table-condensed table-hover">
         <thead>
             <tr>
-                <th>Código</th>
-                <th>Nombres</th>
-                <th>Apellidos</th>
+                <th>Nombre</th>
                 <th>Moneda</th>
                 <th>Crédito límite</th>
                 <th>Acciones</th>
@@ -74,9 +68,7 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.tercero.codigo }}</td>
-                <td>{{ entity.tercero.nombres }}</td>
-                <td>{{ entity.tercero.apellidos }}</td>
+                <td>{{ entity.nombre }}</td>
                 <td>{{ entity.moneda }}</td>
                 <td>{{ entity.creditoLimite }}</td>
                 <td  style="width: 18% !important; text-align: center;">

@@ -1,7 +1,6 @@
 <?php
 namespace Buseta\BodegaBundle\Form\Model;
 
-use Buseta\BodegaBundle\Entity\Tercero;
 use Buseta\NomencladorBundle\Entity\Moneda;
 
 class ProveedorFilterModel
@@ -9,17 +8,7 @@ class ProveedorFilterModel
     /**
      * @var string
      */
-    private $codigo;
-
-    /**
-     * @var string
-     */
-    private $nombres;
-
-    /**
-     * @var string
-     */
-    private $apellidos;
+    private $nombre;
 
     /**
      * @var string
@@ -39,49 +28,17 @@ class ProveedorFilterModel
     /**
      * @return string
      */
-    public function getCodigo()
+    public function getNombre()
     {
-        return $this->codigo;
+        return $this->nombre;
     }
 
     /**
-     * @param string $codigo
+     * @param string $nombre
      */
-    public function setCodigo($codigo)
+    public function setNombre($nombre)
     {
-        $this->codigo = $codigo;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNombres()
-    {
-        return $this->nombres;
-    }
-
-    /**
-     * @param string $nombres
-     */
-    public function setNombres($nombres)
-    {
-        $this->nombres = $nombres;
-    }
-
-    /**
-     * @return string
-     */
-    public function getApellidos()
-    {
-        return $this->apellidos;
-    }
-
-    /**
-     * @param string $apellidos
-     */
-    public function setApellidos($apellidos)
-    {
-        $this->apellidos = $apellidos;
+        $this->nombre = $nombre;
     }
 
     /**

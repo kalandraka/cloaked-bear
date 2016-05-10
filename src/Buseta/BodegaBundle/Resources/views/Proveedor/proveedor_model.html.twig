@@ -1,8 +1,8 @@
-<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="post" enctype="multipart/form-data">
+<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="post"
+      enctype="multipart/form-data">
     {{ form_errors(form) }}
     {{ form_row(form._token) }}
     {{ form_row(form.proveedorId) }}
-    {{ form_row(form.terceroId) }}
     {{ form_row(form.foto) }}
 
     {% if form.vars.method == 'PUT' %}
@@ -18,73 +18,103 @@
 
         <div class="col-md-10">
             <div class="row show-grid">
-                <div class="col-md-6">
-                    {{ form_row(form.codigo) }}
-                </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     {{ form_row(form.alias) }}
+                </div>
+                <div class="col-md-8">
+                    {{ form_row(form.nombre) }}
                 </div>
             </div>
 
             <div class="row show-grid">
-                <div class="col-md-6">
-                    {{ form_row(form.nombres) }}
+                <div class="col-md-4">
+                    {{ form_row(form.telefono) }}
                 </div>
-                <div class="col-md-6">
-                    {{ form_row(form.apellidos) }}
+                <div class="col-md-4">
+                    {{ form_row(form.fax) }}
                 </div>
+                <div class="col-md-4">
+                    {{ form_row(form.cif_nif) }}
+                </div>
+
+            </div>
+        </div>
+        <div class="row show-grid">
+            <div class="col-md-4">
+                {{ form_row(form.moneda) }}
+            </div>
+            <div class="col-md-8">
+                {{ form_row(form.web) }}
+            </div>
+        </div>
+        <div class="row show-grid">
+            <div class="col-md-4">
+                {{ form_row(form.pago) }}
+            </div>
+            <div class="col-md-8">
+                {{ form_row(form.direccion) }}
+            </div>
+        </div>
+        <div class="row show-grid">
+            <div class="col-md-4">
+                {{ form_row(form.ciudad) }}
+            </div>
+
+            <div class="col-md-4">
+                {{ form_row(form.region) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.apartado) }}
+            </div>
+        </div>
+        <div class="row show-grid">
+            <div class="col-md-4">
+                {{ form_row(form.pais) }}
+            </div>
+            <div class="col-md-8">
+                {{ form_row(form.contacto) }}
+            </div>
+        </div>
+        <div class="row show-grid">
+            <div class="col-md-4">
+                {{ form_row(form.puesto) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.celular) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.email) }}
             </div>
         </div>
     </div>
-
     <div class="row show-grid">
-        <div class="col-md-4">
-            {{ form_row(form.moneda) }}
-        </div>
         <div class="col-md-4">
             {{ form_row(form.creditoLimite) }}
         </div>
-        <div class="col-md-4">
-            {{ form_row(form.cif_nif) }}
-        </div>
-    </div>
-
-    <div class="row show-grid">
-        <div class="col-md-6">
-            {{ form_row(form.email) }}
-        </div>
-        <div class="col-md-6">
-            {{ form_row(form.web) }}
-        </div>
-        <div class="col-md-4">
-            {{ form_row(form.activo) }}
-        </div>
-    </div>
-
-    <div class="row show-grid">
-        <div class="col-md-12">
+        <div class="col-md-8">
             {{ form_row(form.observaciones) }}
         </div>
-        <div class="col-md-12">
-            <label for="buseta_bodegabundle_marcas">Marcas</label>
-            <ul id="buseta_bodegabundle_marcas" class="tags form-control" data-prototype="{{ form_widget(form.marcas.vars.prototype) | e }}">
-                {% for marca in form.marcas %}
-                    <li class="tag">
-                        <span>{{ marca.vars.value.nombre }}</span>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
     </div>
-
-
+    <div class="col-md-12">
+        <label for="buseta_bodegabundle_marcas">Marcas</label>
+        <ul id="buseta_bodegabundle_marcas" class="tags form-control"
+            data-prototype="{{ form_widget(form.marcas.vars.prototype) | e }}">
+            {% for marca in form.marcas %}
+                <li class="tag">
+                    <span>{{ marca.vars.value.nombre }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
     {# buttons group #}
     <div class="row">
         <div class="col-md-4">
-            <a class="btn btn-primary" id="btn_proveedor_save" href="#"><span class="glyphicon glyphicon-save"></span>
-                {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>
-            <a class="btn btn-default" id="btn_proveedor_cancel" href="{{ path('proveedor') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+            <button type="submit" class="btn btn-primary" >Aceptar</button>
+           {#<a class="btn btn-primary" id="btn_proveedor_save" type="submit" href="{{ path('proveedor_create') }}"><span class="glyphicon glyphicon-save"></span>
+                {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>#}
+            <a class="btn btn-default" id="btn_proveedor_cancel" href="{{ path('proveedor') }}"><span
+                        class="glyphicon glyphicon-chevron-left"></span>
                 {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
         </div>
     </div>

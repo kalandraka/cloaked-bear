@@ -70,6 +70,17 @@ proveedor:
   credito: Crédito Límite
   observaciones: Observaciones
   cifnif: CIF\NIF
+  telefono: Teléfono
+  fax: Fax
+  direccion: Dirección
+  region: Region
+  ciudad: Ciudad
+  pago: Pago
+  apartado: Apartado
+  contacto: Contacto
+  pais: País
+  puesto: Puesto
+  celular: Celular
   btn:
       adicionar: Adicionar proveedor
   email: Email
