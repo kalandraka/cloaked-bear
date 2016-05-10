@@ -35,7 +35,7 @@ class ServicioCombustibleRepository extends EntityRepository
             }
         }
 
-        $query->orderBy('s.id', 'ASC');
+        $query->orderBy('s.id', 'DESC');
 
         try {
             return $query->getQuery();
