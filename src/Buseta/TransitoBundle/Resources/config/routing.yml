@@ -6,10 +6,7 @@ BusetaTransitoBundle_transito:
         resource: "@BusetaTransitoBundle/Resources/config/routing/transito.yml"
         prefix:   /transito
 
-buseta_transito_multa:
-  resource: "@BusetaTransitoBundle/Controller/MultaController.php"
+buseta_transito:
+  resource: "@BusetaTransitoBundle/Controller/"
   type:     annotation
 
-buseta_transito_accidente:
-  resource: "@BusetaTransitoBundle/Controller/AccidenteController.php"
-  type:     annotation

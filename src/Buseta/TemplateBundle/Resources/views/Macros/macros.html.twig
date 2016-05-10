@@ -2,9 +2,10 @@
 
 {% macro documentState(state, translationDomain) %}
     {% if state == 'COMPLETE' or state == 'CO' or
-    state == 'CL' or state == 'WN'%}
+    state == 'CL' or state == 'WN' or state == 'NOPARTE'%}
         {% set badge = 'success' %}
-    {% elseif state == 'PROCESS' or state == 'PR' or state == 'AP'%}
+    {% elseif state == 'PROCESS' or state == 'PR' or state == 'AP'
+    or state == 'PENAL' or state == 'TRANSITO'%}
         {% set badge = 'primary' %}
     {% elseif state == 'POSTED' or state == 'LS' or state == 'PA'%}
         {% set badge = 'warning' %}
