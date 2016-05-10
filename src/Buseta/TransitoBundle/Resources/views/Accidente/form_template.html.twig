@@ -24,8 +24,14 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-4">
             {{ form_row(form.importe) }}
+        </div>
+        <div id="accidente_responsable" class="col-md-4" style="visibility: hidden;">
+            {{ form_row(form.responsable) }}
+        </div>
+        <div id="accidente_quien_paga" class="col-md-4" style="visibility: hidden;">
+            {{ form_row(form.quienPaga) }}
         </div>
     </div>
 

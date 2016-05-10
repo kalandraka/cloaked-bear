@@ -13,7 +13,20 @@ accidente:
     editar: Modificar Accidente
   modal:
     title: Crear Nuevo Accidente
-
+  no_parte:
+    No hubo parte. Complete los datos.
+  responsable:
+    NOHUBO: No hubo
+    CHOFER: Chofer
+    TERCERO: Tercero
+    EMPRESA: Empresa
+  quien_paga:
+    NADIE: Nadie
+    CHOFER: Chofer
+    TERCERO: Tercero
+    EMPRESA: Empresa
+    TALLER: Taller
+    SEGURO: Seguro
 
 penal_accidente:
   valor: Valor

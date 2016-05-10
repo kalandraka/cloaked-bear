@@ -49,6 +49,34 @@ class AccidenteType extends AbstractType
                 'required' => false,
                 'label' => 'Importe',
             ))
+            ->add('responsable', 'choice', array(
+                'label'  => 'Responsable',
+                'choices' => array(
+                    'NOHUBO' => 'No hubo',
+                    'CHOFER' => 'Chofer',
+                    'TERCERO' => 'Tercero',
+                    'EMPRESA' => 'Empresa',
+                ),
+                'data' => 'normal',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('quienPaga', 'choice', array(
+                'label'  => 'Quien solventa',
+                'choices' => array(
+                    'NADIE' => 'Nadie',
+                    'CHOFER' => 'Chofer',
+                    'TERCERO' => 'Tercero',
+                    'EMPRESA' => 'Empresa',
+                    'TALLER' => 'Taller',
+                    'SEGURO' => 'Seguro',
+                ),
+                'data' => 'normal',
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
         ;
     }
 

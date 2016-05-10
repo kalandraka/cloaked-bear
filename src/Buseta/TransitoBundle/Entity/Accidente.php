@@ -71,6 +71,12 @@ class Accidente
     /**
      * @var string
      *
+     * The allowed values for this are:
+     *
+     * NOPARTE
+     * TRANSITO
+     * PENAL
+     *
      * @ORM\Column(name="parte", type="string")
      */
     private $parte = "";
@@ -78,14 +84,32 @@ class Accidente
     /**
      * @var string
      *
+     * The allowed values for this are:
+     *
+     * NOHUBO
+     * CHOFER
+     * TERCERO
+     * EMPRESA
+     *
      * @ORM\Column(name="responsable", type="string")
+     * @Assert\Choice(choices={"NOHUBO", "CHOFER", "TERCERO", "EMPRESA"})
      */
     private $responsable = "";
 
     /**
      * @var string
      *
+     * The allowed values for this are:
+     *
+     * NADIE
+     * CHOFER
+     * TERCERO
+     * EMPRESA
+     * TALLER
+     * SEGURO
+     *
      * @ORM\Column(name="quien_paga", type="string")
+     * @Assert\Choice(choices={"NADIE", "CHOFER", "TERCERO", "EMPRESA", "TALLER", "SEGURO"})
      */
     private $quienPaga = "";
 

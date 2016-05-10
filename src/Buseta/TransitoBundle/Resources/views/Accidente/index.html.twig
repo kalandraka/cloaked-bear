@@ -80,14 +80,14 @@
                     {#{% endif %}#}
                     <td>{{ entity.importe }}</td>
                     {% if entity.estado == 'PENAL' %}
-                        {% set badge = 'primary' %}
-                        {% set text_color = 'primary' %}
+                        {% set badge = 'warning' %}
+                        {% set text_color = 'warning' %}
                     {#{% elseif entity.estado == 'PA' or entity.estado == 'LS' %}#}
                         {#{% set badge = 'warning' %}#}
                         {#{% set text_color = 'warning' %}#}
-                    {#{% elseif entity.estado == 'AP' %}#}
-                        {#{% set badge = 'primary' %}#}
-                        {#{% set text_color = 'primary' %}#}
+                    {% elseif entity.estado == 'NOPARTE' %}
+                        {% set badge = 'success' %}
+                        {% set text_color = 'success' %}
                     {% else %}
                         {% set badge = 'danger' %}
                         {% set text_color = 'danger' %}
