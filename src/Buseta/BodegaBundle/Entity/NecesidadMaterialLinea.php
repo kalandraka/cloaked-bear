@@ -71,6 +71,8 @@ class NecesidadMaterialLinea
     /**
      * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\Moneda")
      * @Assert\NotBlank()
+     *
+     * @deprecated
      */
     private $moneda;
 
@@ -328,6 +330,8 @@ class NecesidadMaterialLinea
      * @param \Buseta\NomencladorBundle\Entity\Moneda $moneda
      *
      * @return NecesidadMaterialLinea
+     *
+     * @deprecated setMoneda() in NecesidadMaterialLinea is deprecated and will be removed. Use NecesidadMaterial->setMoneda() instead.
      */
     public function setMoneda(\Buseta\NomencladorBundle\Entity\Moneda $moneda = null)
     {
@@ -340,6 +344,8 @@ class NecesidadMaterialLinea
      * Get moneda.
      *
      * @return \Buseta\NomencladorBundle\Entity\Moneda
+     *
+     * @deprecated getMoneda in NecesidadMaterialLinea is deprecated and will be removed. Use NecesidadMaterial->getMoneda() instead.
      */
     public function getMoneda()
     {

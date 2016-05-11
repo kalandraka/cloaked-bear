@@ -10,6 +10,7 @@ use Buseta\BodegaBundle\Entity\PedidoCompra;
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
 use Buseta\BodegaBundle\Form\Filter\NecesidadMaterialFilter;
 use Buseta\BodegaBundle\Form\Model\Converters\NecesidadMaterialConverter;
+use Buseta\BodegaBundle\Form\Model\Converters\PedidoCompraConverter;
 use Buseta\BodegaBundle\Form\Model\NecesidadMaterialFilterModel;
 use Buseta\BodegaBundle\Form\Model\NecesidadMaterialModel;
 use Buseta\BodegaBundle\Form\Type\NecesidadMaterialLineaType;
@@ -117,7 +118,26 @@ class NecesidadMaterialController extends Controller
                     'Se ha completado la Necesidad Material de forma correcta.'
                 );
 
-                return $this->redirect($this->generateUrl('necesidadmaterial_show', array('id' => $necesidadMaterial->getId())));
+                // Transform NecesidadMaterial into PedidoCompra
+                $registroCompraManager = $this->get('buseta.bodega.pedidocompra.manager');
+                if ($registroCompra = $registroCompraManager->crear(
+                    PedidoCompraConverter::convertFrom($necesidadMaterial)
+                )) {
+                    $this->get('session')->getFlashBag()->add(
+                        'success',
+                        sprintf(
+                            'Se ha creado Registro de Compra %s para Necesidad Material completada.',
+                            $registroCompra->getNumeroDocumento()
+                            )
+                    );
+                } else {
+                    $this->get('session')->getFlashBag()->add(
+                        'warning',
+                        'No se ha podido crear el Registro de Compra asociado.'
+                    );
+                }
+
+                return $this->redirect($this->generateUrl('necesidadmaterial', array('id' => $necesidadMaterial->getId())));
             } else {
                 $this->get('session')->getFlashBag()->add(
                     'danger',

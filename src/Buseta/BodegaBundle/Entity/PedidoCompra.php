@@ -87,6 +87,7 @@ class PedidoCompra implements PedidoCompraInterface
      */
     private $forma_pago;
 
+    //!TODO: Cambiar las Condiciones de Pago(que ahora se encuentran en Buseta\TallerBundle\Entity\CondicionesPago) para nomenclador CondicionesPago.
     /**
      * @var \Buseta\TallerBundle\Entity\CondicionesPago
      *
@@ -109,6 +110,7 @@ class PedidoCompra implements PedidoCompraInterface
      */
     private $descuento;
 
+    //!TODO: Cambiar impuesto(que ahora se encuentran en Buseta\TallerBundle\Entity\Impuesto) para nomenclador Impuestos.
     /**
      * @var \Buseta\TallerBundle\Entity\Impuesto
      *
@@ -161,7 +163,7 @@ class PedidoCompra implements PedidoCompraInterface
      *
      * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\PedidoCompraLinea", mappedBy="pedidoCompra", cascade={"all"})
      */
-    private $pedido_compra_lineas;
+    private $pedidoCompraLineas;
 
     /**
      * @var \DateTime
@@ -199,6 +201,7 @@ class PedidoCompra implements PedidoCompraInterface
      */
     private $deletedby;
 
+
     /**
      * Constructor.
      */
@@ -206,50 +209,8 @@ class PedidoCompra implements PedidoCompraInterface
     {
         $this->importe_total = 0;
         $this->importe_total_lineas = 0;
-        $this->pedido_compra_lineas = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pedidoCompraLineas = new \Doctrine\Common\Collections\ArrayCollection();
         $this->deleted = false;
-    }
-
-    /**
-     * @param PedidoCompraModel $model
-     * @return PedidoCompra
-     */
-    public function setModelData(PedidoCompraModel $model)
-    {
-        $this->created = $model->getCreated();
-        $this->createdby = $model->getCreatedby();
-        $this->numeroReferencia = $model->getNumeroReferencia();
-        $this->deleted = $model->getDeleted();
-        $this->deletedby = $model->getDeletedby();
-        $this->updated = $model->getUpdated();
-        $this->updatedby = $model->getUpdatedby();
-        $this->estado_documento = $model->getEstadoDocumento();
-        $this->fecha_pedido = $model->getFechaPedido();
-        $this->observaciones = $model->getObservaciones();
-        $this->importeCompra = $model->getImporteCompra();
-        $this->numero_documento = $model->getNumeroDocumento();
-        $this->descuento        = $model->getDescuento();
-        $this->impuesto         = $model->getImpuesto();
-        $this->importeDescuento = $model->getImporteDescuento();
-        $this->importeImpuesto  = $model->getImporteImpuesto();
-
-        if ($model->getTercero()) {
-            $this->tercero  = $model->getTercero();
-        }
-        if ($model->getAlmacen()) {
-            $this->almacen  = $model->getAlmacen();
-        }
-        if ($model->getMoneda()) {
-            $this->moneda  = $model->getMoneda();
-        }
-        if ($model->getFormaPago()) {
-            $this->forma_pago  = $model->getFormaPago();
-        }
-        if ($model->getCondicionesPago()) {
-            $this->condiciones_pago  = $model->getCondicionesPago();
-        }
-
-        return $this;
     }
 
     /**
@@ -531,6 +492,18 @@ class PedidoCompra implements PedidoCompraInterface
     }
 
     /**
+     * @param Bodega $bodega
+     *
+     * @return PedidoCompra
+     */
+    public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega)
+    {
+        $this->almacen = $bodega;
+
+        return $this;
+    }
+
+    /**
      * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getBodega()
@@ -563,7 +536,7 @@ class PedidoCompra implements PedidoCompraInterface
     }
 
     /**
-     * Add pedido_compra_lineas.
+     * Add pedidoCompraLineas.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas
      *
@@ -573,29 +546,29 @@ class PedidoCompra implements PedidoCompraInterface
     {
         $pedidoCompraLineas->setPedidoCompra($this);
 
-        $this->pedido_compra_lineas[] = $pedidoCompraLineas;
+        $this->pedidoCompraLineas[] = $pedidoCompraLineas;
 
         return $this;
     }
 
     /**
-     * Remove pedido_compra_lineas.
+     * Remove pedidoCompraLineas.
      *
      * @param \Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas
      */
     public function removePedidoCompraLinea(\Buseta\BodegaBundle\Entity\PedidoCompraLinea $pedidoCompraLineas)
     {
-        $this->pedido_compra_lineas->removeElement($pedidoCompraLineas);
+        $this->pedidoCompraLineas->removeElement($pedidoCompraLineas);
     }
 
     /**
-     * Get pedido_compra_lineas.
+     * Get pedidoCompraLineas.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
     public function getPedidoCompraLineas()
     {
-        return $this->pedido_compra_lineas;
+        return $this->pedidoCompraLineas;
     }
 
     /**
@@ -918,7 +891,7 @@ class PedidoCompra implements PedidoCompraInterface
             $factorImpuesto = $this->impuesto->getTarifa() / 100;
         }
 
-        foreach ($this->pedido_compra_lineas as $linea) {
+        foreach ($this->pedidoCompraLineas as $linea) {
             /** @var PedidoCompraLinea $linea */
             $importeLinea = $linea->getPrecioUnitario() * $linea ->getCantidadPedido();
 

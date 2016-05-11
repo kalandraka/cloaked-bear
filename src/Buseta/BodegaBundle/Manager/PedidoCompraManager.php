@@ -5,10 +5,12 @@ namespace Buseta\BodegaBundle\Manager;
 use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\BusetaBodegaEvents;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
+use Buseta\BodegaBundle\Entity\Interfaces\PedidoCompraInterface;
 use Buseta\BodegaBundle\Entity\PedidoCompra;
 use Buseta\BodegaBundle\Event\FilterPedidoCompraEvent;
 use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 use Buseta\BodegaBundle\Form\Model\AlbaranModel;
+use Buseta\BodegaBundle\Form\Model\Converters\PedidoCompraConverter;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
@@ -24,41 +26,18 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class PedidoCompraManager extends AbstractBodegaManager
 {
     /**
-     * @param PedidoCompraModel $model
+     * @param PedidoCompraInterface $object
      *
      * @return bool|PedidoCompra
      */
-    public function crear(PedidoCompraModel $model)
+    public function crear(PedidoCompraInterface $object)
     {
         $error = false;
-        $pedidoCompra = new PedidoCompra();
-        $pedidoCompra->setNumeroReferencia($model->getNumeroReferencia());
-        $pedidoCompra->setObservaciones($model->getObservaciones());
-        $pedidoCompra->setFechaPedido($model->getFechaPedido());
-        $pedidoCompra->setImporteTotalLineas($model->getImporteTotalLineas());
-        $pedidoCompra->setImporteTotal($model->getImporteTotal());
-        $pedidoCompra->setImporteCompra($model->getImporteCompra());
-        $pedidoCompra->setImporteDescuento($model->getImporteDescuento());
-        $pedidoCompra->setImporteImpuesto($model->getImporteImpuesto());
-        $pedidoCompra->setTercero($model->getTercero());
-        $pedidoCompra->setAlmacen($model->getAlmacen());
-        $pedidoCompra->setFormaPago($model->getFormaPago());
-        $pedidoCompra->setCondicionesPago($model->getCondicionesPago());
-        $pedidoCompra->setMoneda($model->getMoneda());
-        $pedidoCompra->setDescuento($model->getDescuento());
-        $pedidoCompra->setImpuesto($model->getImpuesto());
 
-
-        if ($model->getNumeroDocumento() !== null){
-            $pedidoCompra->setNumeroDocumento($model->getNumeroDocumento());
-        }
-        if ($model->getEstadoDocumento() !== null) {
-            $pedidoCompra->setEstadoDocumento($model->getEstadoDocumento());
-        }
-        if (!$model->getPedidoCompraLineas()->isEmpty()) {
-            foreach ($model->getPedidoCompraLineas() as $lineas) {
-                $pedidoCompra->addPedidoCompraLinea($lineas);
-            }
+        if ($object instanceof PedidoCompra) {
+            $pedidoCompra = $object;
+        } else {
+            $pedidoCompra = PedidoCompraConverter::getEntity($object);
         }
 
         try {

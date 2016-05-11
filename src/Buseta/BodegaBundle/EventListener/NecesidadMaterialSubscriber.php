@@ -5,7 +5,6 @@ namespace Buseta\BodegaBundle\EventListener;
 
 use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\BusetaBodegaEvents;
-use Buseta\BodegaBundle\Event\BitacoraBodega\BitacoraAlbaranEvent;
 use Buseta\BodegaBundle\Event\FilterNecesidadMaterialEvent;
 use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 use HatueySoft\SequenceBundle\Managers\SequenceManager;
@@ -34,8 +33,8 @@ class NecesidadMaterialSubscriber implements EventSubscriberInterface
     /**
      * NecesidadMaterialSubscriber Constructor
      *
-     * @param Logger $logger
-     * @param SequenceManager $sequenceManager
+     * @param Logger                $logger
+     * @param SequenceManager       $sequenceManager
      */
     function __construct(Logger $logger, SequenceManager $sequenceManager)
     {
@@ -52,11 +51,9 @@ class NecesidadMaterialSubscriber implements EventSubscriberInterface
             BusetaBodegaEvents::NECESIDADMATERIAL_PRE_CREATE  => 'preCreate',
             //BusetaBodegaEvents::NECESIDADMATERIAL_POST_CREATE  => 'undefinedEvent',
             BusetaBodegaEvents::NECESIDADMATERIAL_PRE_PROCESS => 'preProcess',
-            //BusetaBodegaEvents::NECESIDADMATERIAL_PROCESS  => 'undefinedEvent',
-            BusetaBodegaEvents::NECESIDADMATERIAL_POST_PROCESS => 'postProcess',
+            //BusetaBodegaEvents::NECESIDADMATERIAL_POST_PROCESS => 'postProcess',
             BusetaBodegaEvents::NECESIDADMATERIAL_PRE_COMPLETE => 'preComplete',
-            //BusetaBodegaEvents::NECESIDADMATERIAL_COMPLETE => 'undefinedEvent',
-            BusetaBodegaEvents::NECESIDADMATERIAL_POST_COMPLETE => 'postComplete',
+            //BusetaBodegaEvents::NECESIDADMATERIAL_POST_COMPLETE => 'postComplete',
         );
     }
 
@@ -117,11 +114,6 @@ class NecesidadMaterialSubscriber implements EventSubscriberInterface
         $eventName = null,
         EventDispatcherInterface $eventDispatcher = null
     ) {
-        $bitacoraEvent = new BitacoraAlbaranEvent($event->getAlbaran());
-        $eventDispatcher->dispatch(BusetaBodegaEvents::BITACORA_INVENTORY_IN_OUT, $bitacoraEvent);
 
-        if ($error = $bitacoraEvent->getError()) {
-            $event->setError($error);
-        }
     }
 }

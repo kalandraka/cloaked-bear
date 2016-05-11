@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Form\Model;
 
+use Buseta\BodegaBundle\Entity\Interfaces\PedidoCompraInterface;
 use Buseta\BodegaBundle\Entity\PedidoCompra;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * PedidoCompra Model
  *
  */
-class PedidoCompraModel
+class PedidoCompraModel implements PedidoCompraInterface
 {
     /**
      * @var integer
@@ -293,6 +294,8 @@ class PedidoCompraModel
 
     /**
      * @return mixed
+     *
+     * @deprecated Use getBodega() instead
      */
     public function getAlmacen()
     {
@@ -301,10 +304,32 @@ class PedidoCompraModel
 
     /**
      * @param mixed $almacen
+     *
+     * @deprecated Use setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega) instead
      */
     public function setAlmacen($almacen)
     {
         $this->almacen = $almacen;
+    }
+
+    /**
+     * @param \Buseta\BodegaBundle\Entity\Bodega $bodega
+     *
+     * @return PedidoCompraInterface
+     */
+    public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega)
+    {
+        $this->almacen = $bodega;
+
+        return $this;
+    }
+
+    /**
+     * @return \Buseta\BodegaBundle\Entity\Bodega
+     */
+    public function getBodega()
+    {
+        return $this->almacen;
     }
 
     /**

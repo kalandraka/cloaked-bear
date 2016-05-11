@@ -26,6 +26,13 @@ interface PedidoCompraInterface
     public function getFechaPedido();
 
     /**
+     * @param \Buseta\BodegaBundle\Entity\Bodega $bodega
+     *
+     * @return PedidoCompraInterface
+     */
+    public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega);
+
+    /**
      * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getBodega();
@@ -39,6 +46,11 @@ interface PedidoCompraInterface
      * @return \Buseta\TallerBundle\Entity\CondicionesPago
      */
     public function getCondicionesPago();
+
+    /**
+     * @return \Buseta\NomencladorBundle\Entity\FormaPago
+     */
+    public function getFormaPago();
 
     /**
      * @return string
@@ -84,4 +96,9 @@ interface PedidoCompraInterface
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getPedidoCompraLineas();
+
+    /**
+     * @return string
+     */
+    public function getObservaciones();
 }
