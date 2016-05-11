@@ -5,6 +5,7 @@ namespace Buseta\BodegaBundle\Entity;
 use Buseta\BodegaBundle\Entity\Interfaces\NecesidadMaterialInterface;
 use Buseta\BodegaBundle\Form\Model\NecesidadMaterialModel;
 use Doctrine\ORM\Mapping as ORM;
+use Buseta\BodegaBundle\Interfaces\DateTimeAwareInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -16,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\NecesidadMaterialRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class NecesidadMaterial implements NecesidadMaterialInterface
+class NecesidadMaterial implements NecesidadMaterialInterface, DateTimeAwareInterface
 {
     /**
      * @var integer
@@ -143,11 +144,6 @@ class NecesidadMaterial implements NecesidadMaterialInterface
     private $importe_total;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\NecesidadMaterial")
-     */
-    private $necesidadMaterial;
-
-    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\NecesidadMaterialLinea", mappedBy="necesidadMaterial",
@@ -180,9 +176,9 @@ class NecesidadMaterial implements NecesidadMaterialInterface
     private $updatedby;
 
     /**
-     * @var boolean
+     * @var \DateTime
      *
-     * @ORM\Column(name="deleted", type="boolean", nullable=true)
+     * @ORM\Column(name="deleted", type="datetime", nullable=true)
      */
     private $deleted;
 
@@ -191,6 +187,7 @@ class NecesidadMaterial implements NecesidadMaterialInterface
      */
     private $deletedby;
 
+
     /**
      * Constructor.
      */
@@ -198,50 +195,7 @@ class NecesidadMaterial implements NecesidadMaterialInterface
     {
         $this->importe_total = 0;
         $this->importe_total_lineas = 0;
-        $this->necesidad_material_lineas = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->deleted = false;
-    }
-
-    /**
-     * @param NecesidadMaterialModel $model
-     * @return NecesidadMaterial
-     */
-    public function setModelData(NecesidadMaterialModel $model)
-    {
-        $this->created = $model->getCreated();
-        $this->createdby = $model->getCreatedby();
-        $this->numero_referencia = $model->getNumeroReferencia();
-        $this->deleted = $model->getDeleted();
-        $this->deletedby = $model->getDeletedby();
-        $this->updated = $model->getUpdated();
-        $this->updatedby = $model->getUpdatedby();
-        $this->estado_documento = $model->getEstadoDocumento();
-        $this->fecha_pedido = $model->getFechaPedido();
-        $this->observaciones = $model->getObservaciones();
-        $this->importeCompra = $model->getImporteCompra();
-        $this->numero_documento = $model->getNumeroDocumento();
-        $this->descuento        = $model->getDescuento();
-        $this->impuesto         = $model->getImpuesto();
-        $this->importeDescuento = $model->getImporteDescuento();
-        $this->importeImpuesto  = $model->getImporteImpuesto();
-
-        if ($model->getTercero()) {
-            $this->tercero  = $model->getTercero();
-        }
-        if ($model->getAlmacen()) {
-            $this->almacen  = $model->getAlmacen();
-        }
-        if ($model->getMoneda()) {
-            $this->moneda  = $model->getMoneda();
-        }
-        if ($model->getFormaPago()) {
-            $this->forma_pago  = $model->getFormaPago();
-        }
-        if ($model->getCondicionesPago()) {
-            $this->condiciones_pago  = $model->getCondicionesPago();
-        }
-
-        return $this;
+        $this->necesidadMaterialLineas = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -657,7 +611,7 @@ class NecesidadMaterial implements NecesidadMaterialInterface
      *
      * @return NecesidadMaterial
      */
-    public function setCreated($created)
+    public function setCreated(\DateTime $created = null)
     {
         $this->created = $created;
 
@@ -681,7 +635,7 @@ class NecesidadMaterial implements NecesidadMaterialInterface
      *
      * @return NecesidadMaterial
      */
-    public function setUpdated($updated)
+    public function setUpdated(\DateTime $updated = null)
     {
         $this->updated = $updated;
 
@@ -705,7 +659,7 @@ class NecesidadMaterial implements NecesidadMaterialInterface
      *
      * @return NecesidadMaterial
      */
-    public function setDeleted($deleted)
+    public function setDeleted(\DateTime $deleted)
     {
         $this->deleted = $deleted;
 
@@ -922,7 +876,7 @@ class NecesidadMaterial implements NecesidadMaterialInterface
             $factorImpuesto = $this->impuesto->getTarifa() / 100;
         }
 
-        foreach ($this->necesidad_material_lineas as $linea) {
+        foreach ($this->necesidadMaterialLineas as $linea) {
             /** @var NecesidadMaterialLinea $linea */
             $importeLinea = $linea->getPrecioUnitario() * $linea ->getCantidadPedido();
 

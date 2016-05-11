@@ -23,7 +23,7 @@ class PedidoCompraLinea
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\PedidoCompra", inversedBy="pedido_compra_lineas")
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\PedidoCompra", inversedBy="pedidoCompraLineas")
      */
     private $pedidoCompra;
 

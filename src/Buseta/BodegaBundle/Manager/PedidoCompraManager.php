@@ -206,15 +206,14 @@ class PedidoCompraManager extends AbstractBodegaManager
                 $this->cambiarEstado($pedidoCompra, BusetaBodegaDocumentStatus::DOCUMENT_STATUS_COMPLETE, $error);
             }
 
-                if (!$error) {
-                    $this->em->flush();
+            if (!$error) {
+                $this->em->flush();
 
-                    // Try and commit the transaction, aqui puede ocurrir un error
-                    $this->commitTransaction();
+                // Try and commit the transaction, aqui puede ocurrir un error
+                $this->commitTransaction();
 
-                    return true;
-                }
-
+                return true;
+            }
 
             $this->logger->warning(sprintf('Registro de Compra no completado debido a errores previos: %s', $error));
 

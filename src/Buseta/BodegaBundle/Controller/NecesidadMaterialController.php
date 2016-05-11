@@ -118,6 +118,7 @@ class NecesidadMaterialController extends Controller
                     'Se ha completado la Necesidad Material de forma correcta.'
                 );
 
+                // Everything goes ok, so create associated PedidoCompra
                 // Transform NecesidadMaterial into PedidoCompra
                 $registroCompraManager = $this->get('buseta.bodega.pedidocompra.manager');
                 if ($registroCompra = $registroCompraManager->crear(
@@ -128,7 +129,7 @@ class NecesidadMaterialController extends Controller
                         sprintf(
                             'Se ha creado Registro de Compra %s para Necesidad Material completada.',
                             $registroCompra->getNumeroDocumento()
-                            )
+                        )
                     );
                 } else {
                     $this->get('session')->getFlashBag()->add(

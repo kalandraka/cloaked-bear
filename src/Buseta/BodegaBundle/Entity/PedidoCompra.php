@@ -4,6 +4,7 @@ namespace Buseta\BodegaBundle\Entity;
 
 use Buseta\BodegaBundle\Entity\Interfaces\PedidoCompraInterface;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
+use Buseta\BodegaBundle\Interfaces\DateTimeAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\PedidoCompraRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class PedidoCompra implements PedidoCompraInterface
+class PedidoCompra implements PedidoCompraInterface, DateTimeAwareInterface
 {
     /**
      * @var integer
@@ -30,7 +31,7 @@ class PedidoCompra implements PedidoCompraInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="numero_documento", type="string")
+     * @ORM\Column(name="numero_documento", type="string", nullable=true)
      * @Assert\NotBlank()
      */
     private $numero_documento;
@@ -161,7 +162,8 @@ class PedidoCompra implements PedidoCompraInterface
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\PedidoCompraLinea", mappedBy="pedidoCompra", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Buseta\BodegaBundle\Entity\PedidoCompraLinea", mappedBy="pedidoCompra",
+     *     cascade={"persist", "remove"}, fetch="EXTRA_LAZY")
      */
     private $pedidoCompraLineas;
 
@@ -626,7 +628,7 @@ class PedidoCompra implements PedidoCompraInterface
      *
      * @return PedidoCompra
      */
-    public function setCreated($created)
+    public function setCreated(\DateTime $created = null)
     {
         $this->created = $created;
 
@@ -650,7 +652,7 @@ class PedidoCompra implements PedidoCompraInterface
      *
      * @return PedidoCompra
      */
-    public function setUpdated($updated)
+    public function setUpdated(\DateTime $updated = null)
     {
         $this->updated = $updated;
 

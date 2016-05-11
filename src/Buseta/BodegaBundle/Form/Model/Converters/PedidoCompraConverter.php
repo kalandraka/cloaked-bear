@@ -76,6 +76,7 @@ final class PedidoCompraConverter
         $pedidoCompra->setImporteTotalLineas($necesidadMaterial->getImporteTotalLineas());
         $pedidoCompra->setImporteCompra($necesidadMaterial->getImporteCompra());
         $pedidoCompra->setImporteTotal($necesidadMaterial->getImporteTotal());
+        $pedidoCompra->setNecesidadMaterial($necesidadMaterial);
 
         if ($necesidadMaterial->getNecesidadMaterialLineas()->count() > 0) {
             foreach ($necesidadMaterial->getNecesidadMaterialLineas()->getIterator() as $linea) {
