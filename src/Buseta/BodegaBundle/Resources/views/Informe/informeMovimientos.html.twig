@@ -21,44 +21,43 @@
     <div id="busqueda_movimiento_div" class="panel panel-default" style="display: none">
         <div class="panel-body">
             <fieldset>
-                {{ form_start(movimiento) }}
-                <div class="row show-grid" style="padding-top: 0px">
-                    <div class="col-md-4">
-                        {{ form_row(movimiento.fechaInicio) }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ form_row(movimiento.fechaFin) }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ form_row(movimiento.categoriaProducto) }}
-                    </div>
-                </div>
-
-                <div class="row show-grid" style="padding-top: 0px">
-                    <div class="col-md-6">
-                        {{ form_row(movimiento.almacenOrigen) }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form_row(movimiento.almacenDestino) }}
-                    </div>
-                </div>
-
-                {{ form_end(movimiento) }}
-
-                <div class="row show-grid">
-                    <div class="col-md-6">
-                        <a id="filter_form_submit_btn" class="btn btn-success btn-small" onclick="setFilters()">
-                            <span class="glyphicon glyphicon-filter"></span> Filtrar
-                        </a>
-
-                        <div class="btn-group">
-                            <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
-                                <span class="glyphicon glyphicon-repeat"></span> Reiniciar
-                            </a>
+                <form id="filter_form" action="{{ path('movimiento_informe') }}" method="get">
+                    <div class="row show-grid" style="padding-top: 0px">
+                        <div class="col-md-4">
+                            {{ form_row(movimiento.fechaInicio) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_row(movimiento.fechaFin) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form_row(movimiento.categoriaProducto) }}
                         </div>
                     </div>
-                </div>
 
+                    <div class="row show-grid" style="padding-top: 0px">
+                        <div class="col-md-6">
+                            {{ form_row(movimiento.almacenOrigen) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(movimiento.almacenDestino) }}
+                        </div>
+                    </div>
+
+                </form>
+
+                    <div class="row show-grid">
+                        <div class="col-md-6">
+                            <a id="filter_form_submit_btn" class="btn btn-success btn-small" onclick="setFilters()">
+                                <span class="glyphicon glyphicon-filter"></span> Filtrar
+                            </a>
+
+                            <div class="btn-group">
+                                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
             </fieldset>
         </div>
@@ -99,6 +98,12 @@
             $('form').find('select').each(function () {
                 $(this).val(null);
             })
+        });
+
+        $('form#filter_form').find('select').on('keyup', function (event) {
+            if (event.keyCode == 13) {
+                $('form#filter_form').submit();
+            }
         });
 
         $(function () {

@@ -62,7 +62,7 @@ class OrdenTrabajoFilter extends AbstractType
                 'class' => 'BusetaBusesBundle:Autobus',
                 'placeholder' => '---Seleccione---',
                 'label' => 'Autobús',
-                'required' => true,
+                'required' => false,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('a')
                         ->select('a, filtro_aceite, filtro_agua, filtro_caja, filtro_diesel, filtro_hidraulico, filtro_transmision')

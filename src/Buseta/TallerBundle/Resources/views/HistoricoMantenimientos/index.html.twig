@@ -30,6 +30,8 @@
             </div>
             {{ form_widget(filter_form._token) }}
             <div class="filter-actions" style="margin-top: 8px;">
+                <input class="btn btn-success btn-small" style="position: absolute; left: -9999px; width: 1px; height: 1px;"
+                       tabindex="-1" type="submit" value="Filtrar" name="filtrar">
                 <a id="filter_form_submit_btn" class="btn btn-success btn-small"><span class="glyphicon glyphicon-filter"></span> Filtrar</a>
                 <a id="filter_form_reset_btn" class="btn btn-danger btn-small"><span class="glyphicon glyphicon-repeat"></span> Reiniciar</a>
             </div>
@@ -96,12 +98,6 @@
                 $('div#filter_form_component').slideToggle(500);
             });
 
-            $('form#filter_form input[id^=\'historicomantenimientos\']').keyup(function(e) {
-                if (e.keyCode == 13) {
-                    $('form#filter_form').submit();
-                }
-            });
-
             $('a#filter_form_submit_btn').click(function(){
                 $('form#filter_form').submit();
             });
@@ -114,6 +110,12 @@
                     $(this).val(null);
                 })
             });
+
+            $('form#filter_form').find('select').on('keyup', function (event) {
+                if (event.keyCode == 13) {
+                    $('form#filter_form').submit();
+                }
+            })
         });
     </script>
 {% endblock javascripts %}

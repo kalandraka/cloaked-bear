@@ -15,22 +15,26 @@ class ChoferFilter extends AbstractType
     {
         $builder
             ->add('nombres', 'text', array(
+                'required' => false,
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('apellidos', 'text', array(
+                'required' => false,
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('cedula', 'text', array(
+                'required' => false,
                 'label' => 'Cédula',
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('estadoCivil','entity',array(
+                'required' => false,
                 'class' => 'BusetaNomencladorBundle:EstadoCivil',
                 'placeholder' => '---Seleccione---',
                 'label' => 'Estado Civil',
@@ -39,6 +43,7 @@ class ChoferFilter extends AbstractType
                 )
             ))
             ->add('nacionalidad','entity',array(
+                'required' => false,
                 'class' => 'BusetaNomencladorBundle:Nacionalidad',
                 'placeholder' => '---Seleccione---',
                 'attr' => array(

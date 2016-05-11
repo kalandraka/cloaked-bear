@@ -22,7 +22,7 @@ class BodegaFilter extends AbstractType
                 )
             ))
             ->add('nombre', 'text', array(
-                'required' => true,
+                'required' => false,
                 'attr'   => array(
                     'class' => 'form-control',
                 )

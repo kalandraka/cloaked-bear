@@ -15,7 +15,7 @@ class ProveedorFilter extends AbstractType
     {
         $builder
             ->add('codigo', 'text', array(
-                'required' => true,
+                'required' => false,
                 'translation_domain' => 'BusetaBodegaBundle',
                 'label' => 'proveedor.codigo',
                 'attr' => array(
@@ -23,7 +23,7 @@ class ProveedorFilter extends AbstractType
                 ),
             ))
             ->add('alias', 'text', array(
-                'required' => true,
+                'required' => false,
                 'translation_domain' => 'BusetaBodegaBundle',
                 'label' => 'proveedor.alias',
                 'attr' => array(
@@ -31,7 +31,7 @@ class ProveedorFilter extends AbstractType
                 ),
             ))
             ->add('nombres', 'text', array(
-                'required' => true,
+                'required' => false,
                 'translation_domain' => 'BusetaBodegaBundle',
                 'label' => 'proveedor.nombres',
                 'attr' => array(
@@ -39,7 +39,7 @@ class ProveedorFilter extends AbstractType
                 ),
             ))
             ->add('apellidos', 'text', array(
-                'required' => true,
+                'required' => false,
                 'translation_domain' => 'BusetaBodegaBundle',
                 'label' => 'proveedor.apellidos',
                 'attr' => array(

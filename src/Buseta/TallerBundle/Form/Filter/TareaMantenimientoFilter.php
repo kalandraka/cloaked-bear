@@ -26,7 +26,7 @@ class TareaMantenimientoFilter extends AbstractType
                 'class' => 'BusetaNomencladorBundle:Tarea',
                 'placeholder' => '---Seleccione---',
                 'label' => 'Valor',
-                'required' => true,
+                'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 )
@@ -35,7 +35,7 @@ class TareaMantenimientoFilter extends AbstractType
                 'class' => 'BusetaNomencladorBundle:GarantiaTarea',
                 'placeholder' => '---Seleccione---',
                 'label' => 'Garantía',
-                'required' => true,
+                'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 )

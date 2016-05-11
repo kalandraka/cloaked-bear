@@ -9,7 +9,7 @@
     <div id="busqueda_informeCostos_div" class="panel panel-default" style="display: block;">
         <div class="panel-body">
             <fieldset>
-                <form action="{{ path('bodega_informe_costos') }}" method="post">
+                <form id="filter_form" action="{{ path('bodega_informe_costos') }}" method="post">
 
                     <div class="row show-grid" style="padding-top: 0px">
                         <div class="col-md-4">
@@ -113,6 +113,16 @@
 
 {% block javascripts %}
     {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('form#filter_form').find('select').on('keyup', function (event) {
+                if (event.keyCode == 13) {
+                    $('form#filter_form').submit();
+                }
+            })
+        });
+    </script>
 
     <script src="{{ asset('bundles/busetabodega/js/funciones_datetime.js') }}"></script>
 

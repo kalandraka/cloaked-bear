@@ -15,11 +15,13 @@ class GrupoBusesFilter extends AbstractType
     {
         $builder
             ->add('nombre', 'text', array(
+                'required' => false,
                 'attr'   => array(
                     'class' => 'form-control',
                 )
             ))
             ->add('color', 'text', array(
+                'required' => false,
                 'attr'   => array(
                     'class' => 'form-control',
                 )

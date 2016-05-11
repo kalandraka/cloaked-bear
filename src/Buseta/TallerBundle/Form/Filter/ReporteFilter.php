@@ -27,7 +27,7 @@ class ReporteFilter extends AbstractType
                 'class' => 'BusetaBusesBundle:Autobus',
                 'placeholder' => '---Seleccione---',
                 'label' => 'Autobús',
-                'required' => true,
+                'required' => false,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('a')
                         ->select('a, filtro_aceite, filtro_agua, filtro_caja, filtro_diesel, filtro_hidraulico, filtro_transmision')
@@ -41,10 +41,12 @@ class ReporteFilter extends AbstractType
                 }
             ))
             ->add('fechaInicio', 'date', array(
+                'required' => false,
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
             ))
             ->add('fechaFin', 'date', array(
+                'required' => false,
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
             ))

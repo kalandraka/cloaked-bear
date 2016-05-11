@@ -15,6 +15,7 @@ class ListaNegraCombustibleFilter extends AbstractType
     {
         $builder
             ->add('autobus','entity',array(
+                'required' => false,
                 'class' => 'BusetaBusesBundle:Autobus',
                 'placeholder' => '---Seleccione---',
                 'attr' => array(
@@ -22,6 +23,7 @@ class ListaNegraCombustibleFilter extends AbstractType
                 )
             ))
             ->add('fecha', 'date', array(
+                'required' => false,
                 'widget' => 'single_text',
                 'label' => 'Fecha en Lista Negra',
                 'format'  => 'dd/MM/yyyy',

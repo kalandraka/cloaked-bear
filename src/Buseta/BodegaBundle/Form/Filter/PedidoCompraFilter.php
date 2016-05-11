@@ -37,7 +37,7 @@ class PedidoCompraFilter extends AbstractType
                         ->where($qb->expr()->isNotNull('proveedor.id'));
                 },
                 'placeholder' => '---Seleccione---',
-                'required' => true,
+                'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 )
@@ -46,7 +46,7 @@ class PedidoCompraFilter extends AbstractType
                 'class' => 'BusetaBodegaBundle:Bodega',
                 'label' => 'Bodega',
                 'placeholder' => '---Seleccione---',
-                'required' => true,
+                'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 )
@@ -54,7 +54,7 @@ class PedidoCompraFilter extends AbstractType
             ->add('moneda','entity',array(
                 'class' => 'BusetaNomencladorBundle:Moneda',
                 'placeholder' => '---Seleccione---',
-                'required' => true,
+                'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 )
@@ -63,7 +63,7 @@ class PedidoCompraFilter extends AbstractType
                 'class' => 'BusetaNomencladorBundle:FormaPago',
                 'label' => 'Forma de Pago',
                 'placeholder' => '---Seleccione---',
-                'required' => true,
+                'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 )
@@ -72,7 +72,7 @@ class PedidoCompraFilter extends AbstractType
                 'class' => 'BusetaTallerBundle:CondicionesPago',
                 'label' => 'Condiciones de Pago',
                 'placeholder' => '---Seleccione---',
-                'required' => true,
+                'required' => false,
                 'attr' => array(
                     'class' => 'form-control',
                 )
