@@ -17,16 +17,14 @@ class ManteniminetoPreventivoControllerTest extends AbstractWebTestCase
 
     public function testShow()
     {
-        // Test search/list ManteniminetoPreventivo
+        // Test search/list Producto
         $crawler = $this->client->request('GET', '/mpreventivo/');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /mpreventivo/");
 
-
         // Check data in the index view
-        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'1\']')->count(), 'Missing elements/test cases');
-        $crawler = $this->client->click($crawler->filter('a[href$=\'1\']')->eq(0)->link());
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /mpreventivo/\\d+");
-
+        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'show\']')->count(), 'Missing elements/test cases');
+        $crawler = $this->client->click($crawler->filter('a[href$=\'show\']')->eq(0)->link());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /mpreventivo/\\d+/show");
 
         // Check buttons in show view
         //$this->checkFunctionalityButtons($crawler, array('Editar', 'Volver', 'Eliminar'), 'Edit');
