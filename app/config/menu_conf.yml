@@ -663,7 +663,7 @@ root:
             - ROLE_ADMIN
             - ROLE_SUPER_ADMIN
           type: folder
-          disabled: true
+          disabled: false
           attributes:
             icon: 'fa fa-envelope'
             color: bg-color-blue
