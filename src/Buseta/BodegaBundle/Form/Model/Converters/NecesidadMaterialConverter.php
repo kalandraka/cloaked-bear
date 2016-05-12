@@ -56,9 +56,7 @@ class NecesidadMaterialConverter
 
     static public function getEntity(NecesidadMaterialInterface $model, NecesidadMaterial &$necesidadMaterial = null)
     {
-        if ($necesidadMaterial === null) {
-            $necesidadMaterial = new NecesidadMaterial();
-        }
+        $necesidadMaterial !== null ?: $necesidadMaterial = new NecesidadMaterial();
 
         if ($model->getEstadoDocumento() === null && $necesidadMaterial->getEstadoDocumento() === null) {
             $necesidadMaterial->setEstadoDocumento(BusetaBodegaDocumentStatus::DOCUMENT_STATUS_DRAFT);

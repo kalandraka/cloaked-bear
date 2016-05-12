@@ -10,19 +10,63 @@ use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
 
 final class PedidoCompraConverter
 {
+    /**
+     * @param PedidoCompra $object
+     *
+     * @return PedidoCompraModel
+     */
     static public function getModel(PedidoCompraInterface $object)
     {
+        $model = new PedidoCompraModel();
 
+        $model->setId($object->getId());
+        $model->setNumeroReferencia($object->getNumeroReferencia());
+        $model->setNumeroDocumento($object->getNumeroDocumento());
+        $model->setEstadoDocumento($object->getEstadoDocumento());
+        $model->setFechaPedido($object->getFechaPedido());
+        $model->setImpuesto($object->getImpuesto());
+        $model->setImporteImpuesto($object->getImporteImpuesto());
+        $model->setDescuento($object->getDescuento());
+        $model->setImporteDescuento($object->getImporteDescuento());
+        $model->setImporteCompra($object->getImporteCompra());
+        $model->setImporteTotal($object->getImporteTotal());
+        $model->setImporteTotalLineas($object->getImporteTotalLineas());
+        $model->setObservaciones($object->getObservaciones());
+
+        if ($object->getTercero()) {
+            $model->setTercero($object->getTercero());
+        }
+        if ($object->getBodega()) {
+            $model->setBodega($object->getBodega());
+        }
+        if ($object->getMoneda()) {
+            $model->setMoneda($object->getMoneda());
+        }
+        if ($object->getFormaPago()) {
+            $model->setFormaPago($object->getFormaPago());
+        }
+        if ($object->getCondicionesPago()) {
+            $model->setCondicionesPago($object->getCondicionesPago());
+        }
+//        if ($object->getPedidoCompraLineas()->count() > 0) {
+//            foreach ($object->getPedidoCompraLineas()->getIterator() as $linea) {
+//                $model->addPedidoCompraLinea($linea);
+//            }
+//        }
+
+        return $model;
     }
 
     /**
      * @param PedidoCompraInterface $model
+     * @param PedidoCompra          $pedidoCompra
      *
      * @return PedidoCompra
      */
-    static public function getEntity(PedidoCompraInterface $model)
+    static public function getEntity(PedidoCompraInterface $model, PedidoCompra &$pedidoCompra = null)
     {
-        $pedidoCompra = new PedidoCompra();
+        $pedidoCompra !== null ?: $pedidoCompra = new PedidoCompra();
+
         if ($model->getNumeroDocumento() !== null){
             $pedidoCompra->setNumeroDocumento($model->getNumeroDocumento());
         }
@@ -45,11 +89,11 @@ final class PedidoCompraConverter
         $pedidoCompra->setDescuento($model->getDescuento());
         $pedidoCompra->setImpuesto($model->getImpuesto());
 
-        if ($model->getPedidoCompraLineas()->count() > 0) {
-            foreach ($model->getPedidoCompraLineas() as $lineas) {
-                $pedidoCompra->addPedidoCompraLinea($lineas);
-            }
-        }
+//        if ($model->getPedidoCompraLineas()->count() > 0) {
+//            foreach ($model->getPedidoCompraLineas() as $lineas) {
+//                $pedidoCompra->addPedidoCompraLinea($lineas);
+//            }
+//        }
 
         return $pedidoCompra;
     }

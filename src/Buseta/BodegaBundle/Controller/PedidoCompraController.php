@@ -10,6 +10,7 @@ use Buseta\BodegaBundle\Entity\Proveedor;
 use Buseta\BodegaBundle\Entity\Tercero;
 use Buseta\BodegaBundle\Form\Filter\PedidoCompraFilter;
 use Buseta\BodegaBundle\Form\Model\AlbaranModel;
+use Buseta\BodegaBundle\Form\Model\Converters\PedidoCompraConverter;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraFilterModel;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
 use Buseta\BodegaBundle\Form\Type\PedidoCompraLineaType;
@@ -80,11 +81,11 @@ class PedidoCompraController extends Controller
     }
 
     /**
-     * @param $id
+     * @param PedidoCompra $pedidoCompra
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *
-     * @Route("/{id}/procesarRegistro", name="procesarRegistro")
+     * @Route("/{id}/procesar", name="procesarRegistro")
      * @Method("GET")
      */
     public function procesarRegistroAction(PedidoCompra $pedidoCompra)
@@ -111,8 +112,8 @@ class PedidoCompraController extends Controller
      * @param PedidoCompra $pedidoCompra
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @internal param $id
-     * @Route("/{id}/completarRegistro", name="completarRegistro")
+
+     * @Route("/{id}/completar", name="completarRegistro")
      * @Method("GET")
      */
     public function completarRegistroAction(PedidoCompra $pedidoCompra)
@@ -203,7 +204,7 @@ class PedidoCompraController extends Controller
 
             if ($pedidoCompra = $pedidoCompraManager->crear($pedidoCompraModel)) {
                 // Creando nuevamente el formulario con los datos actualizados de la entidad
-                $form = $this->createEditForm(new PedidoCompraModel($pedidoCompra));
+                $form = $this->createEditForm(PedidoCompraConverter::getModel($pedidoCompra));
                 $renderView = $this->renderView('@BusetaBodega/PedidoCompra/form_template.html.twig', array(
                     'form'   => $form->createView(),
                 ));
@@ -255,33 +256,8 @@ class PedidoCompraController extends Controller
     {
         $form   = $this->createCreateForm(new PedidoCompraModel());
 
-        $em = $this->get('doctrine.orm.entity_manager');
-        $productos = $em->getRepository('BusetaBodegaBundle:Producto')
-            ->createQueryBuilder('p')
-            ->select('p,c')
-            ->innerJoin('p.costoProducto', 'c')
-            ->getQuery()
-            ->getResult();
-
-        $json = array();
-        $costoSalida = 0;
-
-        foreach ($productos as $p) {
-            foreach ($p->getCostoProducto() as $costo) {
-                if ($costo->getActivo()) {
-                    $costoSalida = ($costo->getCosto());
-                }
-            }
-
-            $json[$p->getId()] = array(
-                'nombre' => $p->getNombre(),
-                'precio_salida' => $costoSalida,
-            );
-        }
-
         return $this->render('@BusetaBodega/PedidoCompra/new.html.twig', array(
             'form'   => $form->createView(),
-            'json'   => json_encode($json),
         ));
     }
 
@@ -326,7 +302,7 @@ class PedidoCompraController extends Controller
             );
         }
 
-        $editForm = $this->createEditForm(new PedidoCompraModel($pedidocompra));
+        $editForm = $this->createEditForm(PedidoCompraConverter::getModel($pedidocompra));
         $deleteForm = $this->createDeleteForm($pedidocompra->getId());
 
         return $this->render('BusetaBodegaBundle:PedidoCompra:edit.html.twig', array(
@@ -362,7 +338,7 @@ class PedidoCompraController extends Controller
      */
     public function updateAction(Request $request, PedidoCompra $pedidocompra)
     {
-        $pedidocompraModel = new PedidoCompraModel($pedidocompra);
+        $pedidocompraModel = PedidoCompraConverter::getModel($pedidocompra);
         $editForm = $this->createEditForm($pedidocompraModel);
 
         $editForm->handleRequest($request);
@@ -372,7 +348,7 @@ class PedidoCompraController extends Controller
             $logger = $this->get('logger');
 
             try {
-                $pedidocompra->setModelData($pedidocompraModel);
+                PedidoCompraConverter::getEntity($pedidocompraModel, $pedidocompra);
                 $em->flush();
 
                 $editForm = $this->createEditForm(new PedidoCompraModel($pedidocompra));

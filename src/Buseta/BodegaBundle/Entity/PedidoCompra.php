@@ -566,7 +566,7 @@ class PedidoCompra implements PedidoCompraInterface, DateTimeAwareInterface
     /**
      * Get pedidoCompraLineas.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getPedidoCompraLineas()
     {
