@@ -18,15 +18,13 @@ class TareaManteniminetoControllerTest extends AbstractWebTestCase
     public function testShow()
     {
         // Test search/list TareaMantenimineto
-        $crawler = $this->client->request('GET', '/tareamantenimiento/');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /tareamantenimiento/");
-
+        $crawler = $this->client->request('GET', '/tareamantenimiento/tareamantenimiento');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /tareamantenimiento/tareamantenimiento");
 
         // Check data in the index view
-        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'1\']')->count(), 'Missing elements/test cases');
-        $crawler = $this->client->click($crawler->filter('a[href$=\'1\']')->eq(0)->link());
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /tareamantenimiento/\\d+");
-
+        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'show\']')->count(), 'Missing elements/test cases');
+        $crawler = $this->client->click($crawler->filter('a[href$=\'show\']')->eq(0)->link());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /tareamantenimiento/\\d+/show");
 
         // Check buttons in show view
         //$this->checkFunctionalityButtons($crawler, array('Editar', 'Volver', 'Eliminar'), 'Edit');
@@ -35,8 +33,8 @@ class TareaManteniminetoControllerTest extends AbstractWebTestCase
     public function testEdit()
     {
         // Test search/list TareaMantenimineto
-        $crawler = $this->client->request('GET', '/tareamantenimiento/');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /tareamantenimiento/");
+        $crawler = $this->client->request('GET', '/tareamantenimiento/tareamantenimiento');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /tareamantenimiento/tareamantenimiento");
 
         // Check data in the index view
         $this->assertGreaterThan(0, $crawler->filter('a[href$=\'edit\']')->count(), 'Missing elements/test cases');
