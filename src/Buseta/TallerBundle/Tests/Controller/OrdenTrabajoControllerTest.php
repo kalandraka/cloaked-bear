@@ -21,12 +21,10 @@ class OrdenTrabajoControllerTest extends AbstractWebTestCase
         $crawler = $this->client->request('GET', '/ordentrabajo/');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /ordentrabajo/");
 
-
         // Check data in the index view
-        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'1\']')->count(), 'Missing elements/test cases');
-        $crawler = $this->client->click($crawler->filter('a[href$=\'1\']')->eq(0)->link());
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /ordentrabajo/\\d+");
-
+        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'show\']')->count(), 'Missing elements/test cases');
+        $crawler = $this->client->click($crawler->filter('a[href$=\'show\']')->eq(0)->link());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /ordentrabajo/\\d+/show");
 
         // Check buttons in show view
         //$this->checkFunctionalityButtons($crawler, array('Editar', 'Volver', 'Eliminar'), 'Edit');
