@@ -1,4 +1,4 @@
-<div class="modal" id="form_noparte_modal" role="dialog" aria-labelledby="noparteForm"
+<div class="modal" id="form_conciliacion_modal" role="dialog" aria-labelledby="conciliacionForm"
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -6,15 +6,24 @@
                 <button id="closeModal" type="button" class="close" data-dismiss="modal"
                         aria-hidden="true">&times;</button>
                 <h4 class="modal-title"
-                    id="noparteForm">{{ 'accidente.no_parte'|trans({},'BusetaTransitoBundle') }}</h4>
+                    id="conciliacionForm">{{ 'accidente.conciliacion'|trans({},'BusetaTransitoBundle') }}</h4>
             </div>
 
             <div class="modal-body">
-                <form id="noparte_form" name="noparte_form" enctype="multipart/form-data">
-                    <div class="row">
+                <form id="conciliacion_form" name="conciliacion_form" enctype="multipart/form-data">
+                    <div id="row_conciliacion" class="row">
+                        <div class="col-md-12" style="padding-bottom: 10px;">
+                            <label class="control-label">Conciliación</label>
+                            <select id="buseta_transitobundle_accidente_conciliacion_conc" class="form-control">
+                                <option value="NOHUBO">No hubo conciliación
+                                <option value="HUBO">Hubo conciliación
+                            </select>
+                        </div>
+                    </div>
+                    <div id="row_responsable" class="row" style="display: none;">
                         <div class="col-md-12" style="padding-bottom: 10px;">
                             <label class="control-label">Responsable</label>
-                            <select id="buseta_transitobundle_accidente_responsable" class="form-control">
+                            <select id="buseta_transitobundle_accidente_responsable_conc" class="form-control">
                                 <option value="NOHUBO">No hubo
                                 <option value="CHOFER">Chofer
                                 <option value="EMPRESA">Empresa
@@ -22,10 +31,10 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row">
+                    <div id="row_solventa" class="row" style="display: none;">
                         <div class="col-md-12" style="padding-bottom: 10px;">
                             <label class="control-label">Quien solventa</label>
-                            <select id="buseta_transitobundle_accidente_quienPaga" class="form-control">
+                            <select id="buseta_transitobundle_accidente_quienPaga_conc" class="form-control">
                                 <option value="NADIE">Nadie
                                 <option value="CHOFER">Chofer
                                 <option value="EMPRESA">Empresa
@@ -40,10 +49,10 @@
             </div>
 
             <div class="modal-footer">
-                <a class="btn btn-default" id="btn_noparte_cancel" data-dismiss="modal"><span
+                <a class="btn btn-default" id="btn_conciliacion_cancel" data-dismiss="modal"><span
                             class="glyphicon glyphicon-chevron-left"></span>
                     {{ 'actions.cancel' | trans({}, 'BusetaTransitoBundle') }}</a>
-                <a id="btn_noparte_aceptar" class="btn btn-primary">
+                <a id="btn_conciliacion_aceptar" class="btn btn-primary">
                     <span class="glyphicon glyphicon-primary"></span>
                     {{ 'actions.confirm' | trans({}, 'BusetaTransitoBundle') }}
                 </a>
