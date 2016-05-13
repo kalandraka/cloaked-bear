@@ -10,6 +10,7 @@ use Buseta\BodegaBundle\Entity\Proveedor;
 use Buseta\BodegaBundle\Entity\Tercero;
 use Buseta\BodegaBundle\Form\Filter\PedidoCompraFilter;
 use Buseta\BodegaBundle\Form\Model\AlbaranModel;
+use Buseta\BodegaBundle\Form\Model\Converters\AlbaranConverter;
 use Buseta\BodegaBundle\Form\Model\Converters\PedidoCompraConverter;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraFilterModel;
 use Buseta\BodegaBundle\Form\Model\PedidoCompraModel;
@@ -119,68 +120,44 @@ class PedidoCompraController extends Controller
     public function completarRegistroAction(PedidoCompra $pedidoCompra)
     {
         $session = $this->get('session');
-        $error = false;
-
         $manager = $this->get('buseta.bodega.pedidocompra.manager');
 
         if (true === $result = $manager->completar($pedidoCompra)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
-                'Se ha completado el Pedido Compra de forma correcta.'
+                'Se ha completado el Registro de Compra de forma correcta.'
             );
-            if (!$error) {
-                $albaranManager = $this->get('buseta.bodega.albaran.manager');
 
-                $albaranModel = new AlbaranModel();
-                $albaranModel->setAlmacen($pedidoCompra->getAlmacen());
-                $albaranModel->setTercero($pedidoCompra->getTercero());
-                $albaranModel->setPedidoCompra($pedidoCompra);
-
-                foreach ($pedidoCompra->getPedidoCompraLineas() as $linea) {
-                    /** @var \Buseta\BodegaBundle\Entity\PedidoCompraLinea $linea */
-                    $albaranLinea = new AlbaranLinea();
-                    $albaranLinea->setAlmacen($pedidoCompra->getAlmacen());
-                    $albaranLinea->setProducto($linea->getProducto());
-                    $albaranLinea->setCantidadMovida($linea->getCantidadPedido());
-                    $albaranLinea->setUom($linea->getUom());
-
-                    $albaranModel->addAlbaranLinea($albaranLinea);
-                }
-
-                //registro los datos del nuevo albarán que se crear al procesar el pedido
-                if ($albaran = $albaranManager->crear($albaranModel)) {
-                    $session->getFlashBag()->add(
-                        'success',
-                        sprintf(
-                            'Se ha creado la Orden de Entrada "%s" para el Registro de Compra "%s".',
-                            $albaran->getNumeroDocumento(),
-                            $pedidoCompra->getNumeroDocumento()
-                        )
-                    );
-
-                } else {
-                    $session->getFlashBag()->add(
-                        'danger',
-                        sprintf(
-                            'Ha ocurrido un error intentando crear la Orden de Entrada para Registro de Compra "%s".',
-                            $pedidoCompra->getNumeroDocumento()
-                        )
-                    );
-
-                }
-
-                return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
-
+            // Everything goes ok, so create associated PedidoCompra
+            // Transform NecesidadMaterial into PedidoCompra
+            $albaranManager = $this->get('buseta.bodega.albaran.manager');
+            if ($albaran = $albaranManager->crear(
+                AlbaranConverter::convertFrom($pedidoCompra)
+            )) {
+                $session->getFlashBag()->add(
+                    'success',
+                    sprintf(
+                        'Se ha creado la Orden de Entrada "%s" para el Registro de Compra "%s".',
+                        $albaran->getNumeroDocumento(),
+                        $pedidoCompra->getNumeroDocumento()
+                    )
+                );
             } else {
                 $this->get('session')->getFlashBag()->add(
-                    'danger',
-                    sprintf('Ha ocurrido un error al completar el Pedido Compra.')
+                    'warning',
+                    'No se ha podido crear la Orden de Entrada asociada.'
                 );
-
-               }
             }
 
             return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                'danger',
+                sprintf('Ha ocurrido un error al completar el Registro de Compra.')
+            );
+        }
+
+        return $this->redirect($this->generateUrl('pedidocompra_show', array('id' => $pedidoCompra->getId())));
     }
 
     /**
@@ -215,7 +192,7 @@ class PedidoCompraController extends Controller
                 ), 201);
             } else {
                 return new JsonResponse(array(
-                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Pedido Compra'), 'BusetaBodegaBundle')
+                    'message' => $trans->trans('messages.create.error.%key%', array('key' => 'Registro de Compra'), 'BusetaBodegaBundle')
                 ), 500);
             }
         }
@@ -409,7 +386,7 @@ class PedidoCompraController extends Controller
                     $this->get('session')->getFlashBag()->add('success', $message);
                 }
             } catch (\Exception $e) {
-                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Pedido Compra'), 'BusetaTallerBundle');
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Registro de Compra'), 'BusetaTallerBundle');
                 $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
 
                 if($request->isXmlHttpRequest()) {
