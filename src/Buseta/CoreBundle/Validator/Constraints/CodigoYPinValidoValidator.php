@@ -56,10 +56,13 @@ class CodigoYPinValidoValidator extends ConstraintValidator
 
         //Validando por codigo de barras que coincidan el código del chofer con el código entrado
         if (!StringUtils::equals($choferCodigoBarras,'') && !StringUtils::equals('',$data->getCodigobarras())) {
-            if(StringUtils::equals($choferCodigoBarras, $data->getCodigobarras()))
+            if(StringUtils::equals($choferCodigoBarras, $data->getCodigobarras())) {
                 return;
-            else
-                $this->context->addViolationAt('codigobarras', $constraint->messageBarras, array());
+            } else {
+                $this->context->buildViolation($constraint->messageBarras)
+                    ->atPath('codigobarras')
+                    ->addViolation();
+            }
         }
 
         //Validando por pin, solo el chofer o un administrador del sistema
@@ -79,10 +82,16 @@ class CodigoYPinValidoValidator extends ConstraintValidator
                     ->setParameter('dataPin', $dataPin)
                     ->getQuery()
                     ->getResult();
-                if(!$admins)
-                    $this->context->addViolationAt('pin', $constraint->messagePin, array());
+
+                if(!$admins) {
+                    $this->context->buildViolation($constraint->messagePin)
+                        ->atPath('pin')
+                        ->addViolation();
+                }
             } catch (NoResultException $e) {
-                $this->context->addViolationAt('pin', $constraint->messagePin, array());
+                $this->context->buildViolation($constraint->messagePin)
+                    ->atPath('pin')
+                    ->addViolation();
             }
             return;
         }

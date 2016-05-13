@@ -58,11 +58,10 @@ class ValidarSerialValidator extends ConstraintValidator
         }
 
         if ($error) {
-            $this->context->addViolationAt(
-                'seriales',
-                $constraint->message,
-                array('%string%' => $error)
-            );
+            $this->context->buildValidation($constraint->message)
+                ->setParameter('%string%', $error)
+                ->atPath('seriales')
+                ->addViolation();
         }
 
     }

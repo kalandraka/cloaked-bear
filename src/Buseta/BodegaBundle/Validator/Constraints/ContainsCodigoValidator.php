@@ -50,11 +50,10 @@ class ContainsCodigoValidator extends ConstraintValidator
         $filas =  $consulta->getSingleScalarResult();
 
         if ($filas > 0) {
-            $this->context->addViolationAt(
-                'codigo',
-                $constraint->message,
-                array('%string%' => $entity->getCodigo())
-            );
+            $this->context->buildViolation($constraint->message)
+                ->atPath('codigo')
+                ->setParameter('%string%', $entity->getCodigo())
+                ->addViolation();
          }
     }
 }
