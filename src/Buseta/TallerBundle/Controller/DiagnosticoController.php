@@ -181,21 +181,13 @@ class DiagnosticoController extends Controller
      *
      * @Breadcrumb(title="Modificar Diagnóstico", routeName="diagnostico_edit", routeParameters={"id"})
      */
-    public function editAction($id)
+    public function editAction(Diagnostico $diagnostico)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BusetaTallerBundle:Diagnostico')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Diagnostico entity.');
-        }
-
-        $editForm = $this->createEditForm(new DiagnosticoModel());
-        $deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createEditForm(new DiagnosticoModel($diagnostico));
+        $deleteForm = $this->createDeleteForm($diagnostico->getId());
 
         return $this->render('BusetaTallerBundle:Diagnostico:edit.html.twig', array(
-            'entity' => $entity,
+            'entity' => $diagnostico,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -211,7 +203,7 @@ class DiagnosticoController extends Controller
      */
     private function createEditForm(DiagnosticoModel $entity)
     {
-        $form = $this->createForm(new DiagnosticoType(), $entity, array(
+        $form = $this->createForm('buseta_tallerbundle_diagnostico', $entity, array(
             'action' => $this->generateUrl('diagnostico_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
