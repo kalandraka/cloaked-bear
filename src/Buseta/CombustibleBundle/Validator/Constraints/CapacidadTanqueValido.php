@@ -1,6 +1,6 @@
 <?php
 
-namespace Buseta\BusesBundle\Validator\Constraints;
+namespace Buseta\CombustibleBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Buseta\BusesBundle\Validator\Constraints;
+namespace Buseta\CombustibleBundle\Validator\Constraints;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
@@ -31,7 +31,9 @@ class CapacidadTanqueValidoValidator extends ConstraintValidator
 
         //Validando que la capacidadTanque del Vehiculo sea mayor o igual la cantidadLibros entrada
         if ($capacidadCombustible <= $data->getCantidadLibros()) {
-            $this->context->buildViolation('cantidadLibros', $constraint->messageCantidadLibros, array());
+            $this->context->buildViolation($constraint->messageCantidadLibros)
+                ->atPath('cantidadLibros')
+                ->addViolation();
         }
 
         return;

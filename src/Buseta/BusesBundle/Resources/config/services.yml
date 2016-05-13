@@ -36,9 +36,3 @@ services:
         arguments: [@doctrine.orm.entity_manager, @service_container]
         tags:
             - {name: form.type, alias: 'buses_autobus_imagenes'}
-
-#VALIDATORS
-    buses.capacidad_tanque.validador:
-        class: Buseta\BusesBundle\Validator\Constraints\CapacidadTanqueValidoValidator
-        tags:
-            - {name: validator.constraint_validator, alias: capacidadTanque_validador}

@@ -42,6 +42,12 @@ services:
         tags:
             - {name: validator.constraint_validator, alias: combustible_marchamo2valido_validador }
 
+    buseta.combustible.capacidad_tanque.validador:
+        class: Buseta\CombustibleBundle\Validator\Constraints\CapacidadTanqueValidoValidator
+        tags:
+            - {name: validator.constraint_validator, alias: capacidadTanque_validador }
+
+
     #SUBSCRIBERS
     buses.combustible.servicio_combustible.subscriber:
         class: Buseta\CombustibleBundle\EventListener\ServicioCombustibleSubscriber
