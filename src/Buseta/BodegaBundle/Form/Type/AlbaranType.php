@@ -97,14 +97,6 @@ class AlbaranType extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
-            ->add('albaranLinea', 'collection', array(
-                'type' => new AlbaranLineaType(),
-                'label'  => false,
-                'required' => true,
-                'by_reference' => false,
-                'allow_add' => true,
-                'allow_delete' => true,
-            ))
         ;
     }
 

@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
+//!TODO: Eliminar campo tipoMovimiento.
+//!TODO: Cambiar campo almacen por bodega.
 /**
  * Albaran.
  *
@@ -37,7 +39,7 @@ class Albaran implements DateTimeAwareInterface, AlbaranInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="numeroDocumento", type="string")
+     * @ORM\Column(name="numeroDocumento", type="string", nullable=true)
      * @Assert\NotBlank()
      */
     private $numeroDocumento;
@@ -69,6 +71,8 @@ class Albaran implements DateTimeAwareInterface, AlbaranInterface
      * @var \Buseta\BodegaBundle\Entity\Bodega
      *
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="albaran")
+     *
+     * @deprecated Will be changed by bodega
      */
     private $almacen;
 
@@ -140,6 +144,8 @@ class Albaran implements DateTimeAwareInterface, AlbaranInterface
      *
      * @Assert\NotNull()
      * @Assert\Choice(choices={"C+","C-","D+","D-","I+","I-","M+","M-","P+","P-","V+","V-","W+","W-"})
+     *
+     * @deprecated Will be removed
      */
     private $tipoMovimiento;
 
@@ -166,7 +172,7 @@ class Albaran implements DateTimeAwareInterface, AlbaranInterface
     private $updated;
 
     /**
-     * HatueySoft\SecurityBundle\Entity\User
+     * @var \HatueySoft\SecurityBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      * @ORM\JoinColumn(name="updatedBy_id")
@@ -196,9 +202,12 @@ class Albaran implements DateTimeAwareInterface, AlbaranInterface
         $this->albaranLineas = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    //!TODO: Eliminar método setModelData
     /**
      * @param AlbaranModel $model
      * @return Albaran
+     *
+     * @deprecated Will be removed
      */
     public function setModelData(AlbaranModel $model)
     {
@@ -394,6 +403,8 @@ class Albaran implements DateTimeAwareInterface, AlbaranInterface
      * @param \Buseta\BodegaBundle\Entity\Bodega $almacen
      *
      * @return Albaran
+     *
+     * @deprecated Use setAlmacen() instead
      */
     public function setAlmacen(\Buseta\BodegaBundle\Entity\Bodega $almacen = null)
     {
@@ -406,6 +417,8 @@ class Albaran implements DateTimeAwareInterface, AlbaranInterface
      * Get almacen.
      *
      * @return \Buseta\BodegaBundle\Entity\Bodega
+     *
+     * @deprecated Use getBodega() instead
      */
     public function getAlmacen()
     {
@@ -413,7 +426,19 @@ class Albaran implements DateTimeAwareInterface, AlbaranInterface
     }
 
     /**
-     * @var \Buseta\BodegaBundle\Entity\Bodega
+     * @param Bodega $bodega
+     *
+     * @return Albaran
+     */
+    public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega)
+    {
+        $this->almacen = $bodega;
+
+        return $this;
+    }
+
+    /**
+     * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getBodega()
     {
@@ -605,6 +630,8 @@ class Albaran implements DateTimeAwareInterface, AlbaranInterface
      *
      * @param string $tipoMovimiento
      * @return Albaran
+     *
+     * @deprecated Will be removed
      */
     public function setTipoMovimiento($tipoMovimiento)
     {
@@ -617,6 +644,8 @@ class Albaran implements DateTimeAwareInterface, AlbaranInterface
      * Get tipoMovimiento
      *
      * @return string
+     *
+     * @deprecated Will be removed
      */
     public function getTipoMovimiento()
     {

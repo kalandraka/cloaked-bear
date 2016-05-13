@@ -6,6 +6,11 @@ namespace Buseta\BodegaBundle\Entity\Interfaces;
 interface AlbaranInterface
 {
     /**
+     * @return integer
+     */
+    public function getId();
+
+    /**
      * @return string
      */
     public function getNumeroReferencia();
@@ -34,6 +39,13 @@ interface AlbaranInterface
      * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getBodega();
+
+    /**
+     * @param \Buseta\BodegaBundle\Entity\Bodega $bodega
+     *
+     * @return AlbaranInterface
+     */
+    public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega);
 
     /**
      * @return string

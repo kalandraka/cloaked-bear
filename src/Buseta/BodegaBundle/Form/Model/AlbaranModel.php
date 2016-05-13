@@ -4,14 +4,20 @@ namespace Buseta\BodegaBundle\Form\Model;
 
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
+use Buseta\BodegaBundle\Entity\Interfaces\AlbaranInterface;
+use Buseta\BodegaBundle\Form\Model\Converters\AlbaranConverter;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
+//!TODO: Eliminar propiedad estadoDocumento
+//!TODO: Eliminar propiedad pedidoCompra
+//!TODO: Eliminar propiedad albaranLineas
 /**
  * Albaran Model
  *
  */
-class AlbaranModel
+class AlbaranModel implements AlbaranInterface
 {
     /**
      * @var integer
@@ -53,58 +59,72 @@ class AlbaranModel
     /**
      * @Assert\NotBlank()
      * @var \Buseta\BodegaBundle\Entity\Bodega
+     *
+     * @deprecated Will be removed
      */
     private $almacen;
 
     /**
      * @var string
      * @Assert\NotBlank()
+     *
+     * @deprecated Will be removed
      */
     private $estadoDocumento = 'BO';
 
     /**
      * @var \Buseta\BodegaBundle\Entity\PedidoCompra
+     *
+     * @deprecated Will be removed
      */
     private $pedidoCompra;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @deprecated Will be removed
      */
-    private $albaranLinea;
+    private $albaranLineas;
 
     /**
      * @var \DateTime
      *
+     * @deprecated Will be removed
      */
     private $created;
 
     /**
      * @var \HatueySoft\SecurityBundle\Entity\User
      *
+     * @deprecated Will be removed
      */
     private $createdby;
 
     /**
      * @var \DateTime
      *
+     * @deprecated Will be removed
      */
     private $updated;
 
     /**
      * @var \HatueySoft\SecurityBundle\Entity\User
      *
+     * @deprecated Will be removed
      */
     private $updatedby;
 
     /**
      * @var boolean
      *
+     * @deprecated Will be removed
      */
     private $deleted;
 
     /**
      * @var \HatueySoft\SecurityBundle\Entity\User
      *
+     * @deprecated Will be removed
      */
     private $deletedby;
 
@@ -113,41 +133,27 @@ class AlbaranModel
      */
     public function __construct(Albaran $albaran = null)
     {
-        $this->albaranLinea = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->albaranLineas = new \Doctrine\Common\Collections\ArrayCollection();
 
         if ($albaran !== null) {
-            $this->id = $albaran->getId();
-/*            $this->created = $albaran->getCreated();
-            $this->createdby = $albaran->getCreatedby();
-            $this->deleted = $albaran->getDeleted();
-            $this->deletedby = $albaran->getDeletedby();
-            $this->updated = $albaran->getUpdated();
-            $this->updatedby = $albaran->getUpdatedby();*/
-            $this->numeroDocumento = $albaran->getNumeroDocumento();
-            $this->numeroReferencia = $albaran->getNumeroReferencia();
-            $this->fechaMovimiento = $albaran->getFechaMovimiento();
-            $this->fechaContable = $albaran->getFechaContable();
-            $this->estadoDocumento = $albaran->getEstadoDocumento();
+            $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
-            if ($albaran->getTercero()) {
-                $this->tercero  = $albaran->getTercero();
-            }
-            if ($albaran->getAlmacen()) {
-                $this->almacen  = $albaran->getAlmacen();
-            }
-            if ($albaran->getPedidoCompra()) {
-                $this->pedidoCompra  = $albaran->getPedidoCompra();
-            }
-            if (!$albaran->getAlbaranLineas()->isEmpty()) {
-                $this->albaranLinea = $albaran->getAlbaranLineas();
-            } else {
-                $this->albaranLinea = new ArrayCollection();
+            $albaranModel = AlbaranConverter::getModel($albaran);
+            $properties = get_class_vars(__CLASS__);
+            foreach ($properties as $property => $value) {
+                $propertyAccessor->setValue(
+                    $this,
+                    $property,
+                    $propertyAccessor->getValue($albaranModel, $property)
+                );
             }
         }
     }
 
     /**
      * @return Albaran
+     *
+     * @deprecated Will be removed
      */
     public function getEntityData()
     {
@@ -174,8 +180,8 @@ class AlbaranModel
         if ($this->getPedidoCompra() !== null) {
             $albaran->setPedidoCompra($this->getPedidoCompra());
         }
-        if (!$this->getAlbaranLinea()->isEmpty()) {
-            foreach ($this->getAlbaranLinea() as $lineas) {
+        if (!$this->getAlbaranLineas()->isEmpty()) {
+            foreach ($this->getAlbaranLineas() as $lineas) {
                 $albaran->addAlbaranLinea($lineas);
             }
         }
@@ -185,22 +191,28 @@ class AlbaranModel
 
     /**
      * @return ArrayCollection
+     *
+     * @deprecated Will be removed
      */
-    public function getAlbaranLinea()
+    public function getAlbaranLineas()
     {
-        return $this->albaranLinea;
+        return $this->albaranLineas;
     }
 
     /**
      * @param ArrayCollection $albaranLinea
+     *
+     * @deprecated Will be removed
      */
-    public function setAlbaranLinea($albaranLinea)
+    public function setAlbaranLineas($albaranLinea)
     {
-        $this->albaranLinea = $albaranLinea;
+        $this->albaranLineas = $albaranLinea;
     }
 
     /**
      * @return \Buseta\BodegaBundle\Entity\Bodega
+     *
+     * @deprecated Will be removed
      */
     public function getAlmacen()
     {
@@ -209,10 +221,32 @@ class AlbaranModel
 
     /**
      * @param \Buseta\BodegaBundle\Entity\Bodega $almacen
+     *
+     * @deprecated Will be removed
      */
     public function setAlmacen($almacen)
     {
         $this->almacen = $almacen;
+    }
+
+    /**
+     * @param \Buseta\BodegaBundle\Entity\Bodega $bodega
+     *
+     * @return AlbaranModel
+     */
+    public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega)
+    {
+        $this->almacen = $bodega;
+
+        return $this;
+    }
+
+    /**
+     * @return \Buseta\BodegaBundle\Entity\Bodega
+     */
+    public function getBodega()
+    {
+        return $this->almacen;
     }
 
     /**
@@ -233,6 +267,8 @@ class AlbaranModel
 
     /**
      * @return \DateTime
+     *
+     * @deprecated Will be removed
      */
     public function getCreated()
     {
@@ -241,6 +277,8 @@ class AlbaranModel
 
     /**
      * @param \DateTime $created
+     *
+     * @deprecated Will be removed
      */
     public function setCreated($created)
     {
@@ -249,6 +287,8 @@ class AlbaranModel
 
     /**
      * @return \HatueySoft\SecurityBundle\Entity\User
+     *
+     * @deprecated Will be removed
      */
     public function getCreatedby()
     {
@@ -257,6 +297,8 @@ class AlbaranModel
 
     /**
      * @param \HatueySoft\SecurityBundle\Entity\User $createdby
+     *
+     * @deprecated Will be removed
      */
     public function setCreatedby($createdby)
     {
@@ -265,6 +307,8 @@ class AlbaranModel
 
     /**
      * @return boolean
+     *
+     * @deprecated Will be removed
      */
     public function getDeleted()
     {
@@ -273,6 +317,8 @@ class AlbaranModel
 
     /**
      * @param boolean $deleted
+     *
+     * @deprecated Will be removed
      */
     public function setDeleted($deleted)
     {
@@ -281,6 +327,8 @@ class AlbaranModel
 
     /**
      * @return \HatueySoft\SecurityBundle\Entity\User
+     *
+     * @deprecated Will be removed
      */
     public function getDeletedby()
     {
@@ -289,6 +337,8 @@ class AlbaranModel
 
     /**
      * @param \HatueySoft\SecurityBundle\Entity\User $deletedby
+     *
+     * @deprecated Will be removed
      */
     public function setDeletedby($deletedby)
     {
@@ -297,6 +347,8 @@ class AlbaranModel
 
     /**
      * @return string
+     *
+     * @deprecated Will be removed
      */
     public function getEstadoDocumento()
     {
@@ -305,6 +357,8 @@ class AlbaranModel
 
     /**
      * @param string $estadoDocumento
+     *
+     * @deprecated Will be removed
      */
     public function setEstadoDocumento($estadoDocumento)
     {
@@ -377,6 +431,8 @@ class AlbaranModel
 
     /**
      * @return \Buseta\BodegaBundle\Entity\PedidoCompra
+     *
+     * @deprecated Will be removed
      */
     public function getPedidoCompra()
     {
@@ -385,6 +441,8 @@ class AlbaranModel
 
     /**
      * @param \Buseta\BodegaBundle\Entity\PedidoCompra $pedidoCompra
+     *
+     * @deprecated Will be removed
      */
     public function setPedidoCompra($pedidoCompra)
     {
@@ -409,6 +467,8 @@ class AlbaranModel
 
     /**
      * @return \DateTime
+     *
+     * @deprecated Will be removed
      */
     public function getUpdated()
     {
@@ -417,6 +477,8 @@ class AlbaranModel
 
     /**
      * @param \DateTime $updated
+     *
+     * @deprecated Will be removed
      */
     public function setUpdated($updated)
     {
@@ -425,6 +487,8 @@ class AlbaranModel
 
     /**
      * @return \HatueySoft\SecurityBundle\Entity\User
+     *
+     * @deprecated Will be removed
      */
     public function getUpdatedby()
     {
@@ -433,6 +497,8 @@ class AlbaranModel
 
     /**
      * @param \HatueySoft\SecurityBundle\Entity\User $updatedby
+     *
+     * @deprecated Will be removed
      */
     public function setUpdatedby($updatedby)
     {
@@ -441,10 +507,12 @@ class AlbaranModel
 
     /**
      * @param AlbaranLinea $linea
+     *
+     * @deprecated Will be removed
      */
-    public function addAlbaranLinea(AlbaranLinea $linea)
+    public function addAlbaranLineas(AlbaranLinea $linea)
     {
-        $this->albaranLinea->add($linea);
+        $this->albaranLineas->add($linea);
     }
 
 }

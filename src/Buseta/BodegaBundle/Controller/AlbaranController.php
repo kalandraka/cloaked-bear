@@ -5,6 +5,7 @@ namespace Buseta\BodegaBundle\Controller;
 use Buseta\BodegaBundle\Form\Filter\AlbaranFilter;
 use Buseta\BodegaBundle\Form\Model\AlbaranFilterModel;
 use Buseta\BodegaBundle\Form\Model\AlbaranModel;
+use Buseta\BodegaBundle\Form\Model\Converters\AlbaranConverter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -285,7 +286,7 @@ class AlbaranController extends Controller
      */
     public function editAction(Albaran $albaran)
     {
-        $editForm = $this->createEditForm(new AlbaranModel($albaran));
+        $editForm = $this->createEditForm(AlbaranConverter::getModel($albaran));
         /*$deleteForm = $this->createDeleteForm($albaran->getId());*/
 
         return $this->render('BusetaBodegaBundle:Albaran:edit.html.twig', array(
@@ -322,7 +323,7 @@ class AlbaranController extends Controller
      */
     public function updateAction(Request $request, Albaran $albaran)
     {
-        $albaranModel = new AlbaranModel($albaran);
+        $albaranModel = AlbaranConverter::getModel($albaran);
         $editForm = $this->createEditForm($albaranModel);
 
         $editForm->handleRequest($request);
@@ -332,7 +333,8 @@ class AlbaranController extends Controller
             $logger = $this->get('logger');
 
             try {
-                $albaran->setModelData($albaranModel);
+                AlbaranConverter::getEntity($albaranModel, $albaran);
+
                 $em->flush();
 
                 $renderView = $this->renderView('@BusetaBodega/Albaran/form_template.html.twig', array(
@@ -382,7 +384,7 @@ class AlbaranController extends Controller
 
             if ($albaran = $albaranManager->crear($albaranModel)) {
                 // Creando nuevamente el formulario con los datos actualizados de la entidad
-                $form = $this->createEditForm(new AlbaranModel($albaran));
+                $form = $this->createEditForm(AlbaranConverter::getModel($albaran));
                 $renderView = $this->renderView('@BusetaBodega/Albaran/form_template.html.twig', array(
                     'form'   => $form->createView(),
                 ));
@@ -434,28 +436,8 @@ class AlbaranController extends Controller
     {
         $form   = $this->createCreateForm(new AlbaranModel());
 
-        $em = $this->getDoctrine()->getManager();
-        $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
-
-        $json = array();
-        $precioSalida = 0;
-
-        foreach ($productos as $p) {
-            foreach ($p->getPrecioProducto() as $precios) {
-                if ($precios->getActivo()) {
-                    $precioSalida = ($precios->getPrecio());
-                }
-            }
-
-            $json[$p->getId()] = array(
-                'nombre' => $p->getNombre(),
-                'precio_salida' => $precioSalida,
-            );
-        }
-
         return $this->render('@BusetaBodega/Albaran/new.html.twig', array(
             'form'   => $form->createView(),
-            'json'   => json_encode($json),
         ));
     }
 

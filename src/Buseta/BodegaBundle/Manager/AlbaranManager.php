@@ -5,9 +5,11 @@ namespace Buseta\BodegaBundle\Manager;
 use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\BusetaBodegaEvents;
 use Buseta\BodegaBundle\Entity\Albaran;
+use Buseta\BodegaBundle\Entity\Interfaces\AlbaranInterface;
 use Buseta\BodegaBundle\Event\FilterAlbaranEvent;
 use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 use Buseta\BodegaBundle\Form\Model\AlbaranModel;
+use Buseta\BodegaBundle\Form\Model\Converters\AlbaranConverter;
 
 /**
  * Class AlbaranManager
@@ -16,31 +18,13 @@ use Buseta\BodegaBundle\Form\Model\AlbaranModel;
  */
 class AlbaranManager extends AbstractBodegaManager
 {
-    public function crear(AlbaranModel $model)
+    public function crear(AlbaranInterface $object)
     {
         $error = false;
-        $albaran = new Albaran();
-
-        $albaran->setNumeroReferencia($model->getNumeroReferencia());
-        $albaran->setTercero($model->getTercero());
-        $albaran->setAlmacen($model->getAlmacen());
-        $albaran->setFechaMovimiento($model->getFechaMovimiento());
-        $albaran->setFechaContable($model->getFechaContable());
-
-        if ($model->getNumeroDocumento() !== null){
-            $albaran->setNumeroDocumento($model->getNumeroDocumento());
-        }
-
-        if ($model->getEstadoDocumento() !== null) {
-            $albaran->setEstadoDocumento($model->getEstadoDocumento());
-        }
-        if ($model->getPedidoCompra() !== null) {
-            $albaran->setPedidoCompra($model->getPedidoCompra());
-        }
-        if (!$model->getAlbaranLinea()->isEmpty()) {
-            foreach ($model->getAlbaranLinea() as $lineas) {
-                $albaran->addAlbaranLinea($lineas);
-            }
+        if ($object instanceof Albaran) {
+            $albaran = $object;
+        } else {
+            $albaran = AlbaranConverter::getEntity($object);
         }
 
         try {

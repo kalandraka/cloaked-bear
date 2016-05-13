@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Buseta\BodegaBundle\Validator\Constraints\ValidarSerial;
 
+//!TODO: Eliminar campo almacen y utilizar únicamente la bodega registrada en Albaran.
 /**
  * AlbaranLinea.
  * @ValidarSerial()
@@ -44,6 +45,8 @@ class AlbaranLinea implements GeneradorBitacoraInterface
      *
      * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="albaranLinea")
      * @Assert\NotBlank()
+     *
+     * @deprecated Will be removed
      */
     private $almacen;
 
@@ -165,6 +168,8 @@ class AlbaranLinea implements GeneradorBitacoraInterface
      * @param \Buseta\BodegaBundle\Entity\Bodega $almacen
      *
      * @return AlbaranLinea
+     *
+     * @deprecated Will be removed
      */
     public function setAlmacen(\Buseta\BodegaBundle\Entity\Bodega $almacen = null)
     {
@@ -177,8 +182,30 @@ class AlbaranLinea implements GeneradorBitacoraInterface
      * Get almacen.
      *
      * @return \Buseta\BodegaBundle\Entity\Bodega
+     *
+     * @deprecated Will be removed
      */
     public function getAlmacen()
+    {
+        return $this->almacen;
+    }
+
+    /**
+     * @param Bodega $bodega
+     *
+     * @return AlbaranLinea
+     */
+    public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega)
+    {
+        $this->almacen = $bodega;
+
+        return $this;
+    }
+
+    /**
+     * @return Bodega
+     */
+    public function getBodega()
     {
         return $this->almacen;
     }
