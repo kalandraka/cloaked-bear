@@ -15,6 +15,8 @@ accidente:
     title: Crear Nuevo Accidente
   no_parte:
     No hubo parte. Complete los datos.
+  conciliacion:
+    Conciliación. Complete los datos.
   responsable:
     NOHUBO: No hubo
     CHOFER: Chofer

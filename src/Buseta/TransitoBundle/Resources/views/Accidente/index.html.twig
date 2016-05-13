@@ -79,7 +79,7 @@
                         {#{% set amount_style = '' %}#}
                     {#{% endif %}#}
                     <td>{{ entity.importe }}</td>
-                    {% if entity.estado == 'PENAL' %}
+                    {% if entity.estado == 'PENAL' or  entity.estado == 'TRANSITO'%}
                         {% set badge = 'warning' %}
                         {% set text_color = 'warning' %}
                     {#{% elseif entity.estado == 'PA' or entity.estado == 'LS' %}#}

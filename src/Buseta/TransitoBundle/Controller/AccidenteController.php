@@ -256,22 +256,6 @@ class AccidenteController extends Controller
     }
 
     /**
-     * @Route("/{id}/cambiarParteAccidente/{state}", name="cambiarParteAccidente", options={"expose": true})
-     * @Breadcrumb(title="Cambiar parte accidente", routeName="cambiarParteAccidente", routeParameters={"id", "state"})
-     */
-    public function cambiarParteAccidenteAction($id, $state)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('BusetaTransitoBundle:Accidente')->find($id);
-        $entity->setEstado($state);
-        $entity->setParte($state);
-        $em->persist($entity);
-        $em->flush();
-
-        return $this->redirect($this->generateUrl('accidente_show', array('id' => $id)));
-    }
-
-    /**
      *
      * @param Request $request
      *
@@ -291,6 +275,41 @@ class AccidenteController extends Controller
         $entity->setParte('NOPARTE');
         $entity->setResponsable($responsable);
         $entity->setQuienPaga($quienPaga);
+        $em->persist($entity);
+        $em->flush();
+
+        return new Response(json_encode("success"), 200);
+    }
+
+    /**
+     *
+     * @param Request $request
+     *
+     * @Route("/accidente_conciliacion", name="accidente_conciliacion",
+     *   options={"expose": true})
+     * @return Response
+     */
+    public function accidenteConciliacionAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $id = $request->query->get('id');
+        $conciliacion = $request->query->get('conciliacion');
+        $responsable = $request->query->get('responsable');
+        $quienPaga = $request->query->get('quienPaga');
+
+        $entity = $em->getRepository('BusetaTransitoBundle:Accidente')->find($id);
+        $entity->setEstado('TRANSITO');
+        $entity->setParte('TRANSITO');
+        if($conciliacion == 'HUBO')
+        {
+            $entity->setConciliacion(true);
+            $entity->setResponsable($responsable);
+            $entity->setQuienPaga($quienPaga);
+        }
+        else
+        {
+            $entity->setConciliacion(false);
+        }
         $em->persist($entity);
         $em->flush();
 

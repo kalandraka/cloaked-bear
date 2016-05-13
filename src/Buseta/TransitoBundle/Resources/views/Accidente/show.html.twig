@@ -43,14 +43,20 @@
             <th>Importe</th>
             <td>{{ entity.importe }}</td>
         </tr>
-
-        {% if entity.estado == 'NOPARTE' %}
+        {% if entity.conciliacion %}
+            <tr>
+                <th>Se llegó a una conciliación</th>
+            </tr>
+        {% endif %}
+        {% if entity.responsable != '' %}
             <tr>
                 <th>Responsable</th>
                 <td>
                     {{ ('accidente.responsable.' ~ entity.responsable) | trans({}, 'BusetaTransitoBundle') }}</span>
                 </td>
             </tr>
+        {% endif %}
+        {% if entity.quienPaga != '' %}
             <tr>
                 <th>Quien solventa</th>
                 <td>
@@ -71,11 +77,8 @@
                href="#"> No hubo parte</a>
             <a id="penalAccidente" class="btn btn-primary"
                href="#"> Penal</a>
-            <a class="btn btn-primary"
-               href="{{ path('cambiarParteAccidente', { 'id': entity.id, 'state': 'TRANSITO' }) }}">
-                <span class="glyphicon glyphicon-primary"></span>
-                Tránsito
-            </a>
+            <a id="btnTransito" class="btn btn-primary"
+               href="#"> Tránsito</a>
         {% endif %}
     </div>
 
@@ -125,6 +128,7 @@
     <div class="modal" id="form_penal_modal"></div>
 
     {% include 'BusetaTransitoBundle:Accidente:no_parte_modal.html.twig' with {'entity': entity} %}
+    {% include 'BusetaTransitoBundle:Accidente:conciliacion_modal.html.twig' with {'entity': entity} %}
 
 {% endblock %}
 
@@ -138,10 +142,30 @@
     <script type="text/javascript">
         $('#penalAccidente').on('click', penalAccidente);
         $('#editPenalAccidente').on('click', penalAccidente);
+
         $('select#buseta_transitobundle_accidente_responsable').chosen();
         $('select#buseta_transitobundle_accidente_quienPaga').chosen();
         $('#btnNoParte').on('click', noParteLoad);
         $('#btn_noparte_aceptar').on('click', aceptarNoParte);
+
+        $('select#buseta_transitobundle_accidente_responsable_conc').chosen();
+        $('select#buseta_transitobundle_accidente_quienPaga_conc').chosen();
+        $('select#buseta_transitobundle_accidente_conciliacion_conc').chosen();
+        $('#btnTransito').on('click', conciliacionLoad);
+        $('#btn_conciliacion_aceptar').on('click', aceptarConciliacion);
+        $('select#buseta_transitobundle_accidente_conciliacion_conc').change(function () {
+            var val_ = $('select#buseta_transitobundle_accidente_conciliacion_conc').selected().val();
+            if(val_ == "NOHUBO")
+            {
+                $('#row_responsable').css({display: 'none'});
+                $('#row_solventa').css({display: 'none'});
+            }
+            else
+            {
+                $('#row_responsable').css({display: ''});
+                $('#row_solventa').css({display: ''});
+            }
+        });
 
         function penalAccidente(e) {
             if (e !== undefined) {
@@ -227,6 +251,32 @@
                 url: '{{ path("accidente_no_parte") }}',
                 data: {
                     id: {{ entity.id }},
+                    responsable: responsable,
+                    quienPaga: quienPaga,
+                },
+                success: function () {
+                    window.location = "{{ path('accidente_show', { 'id': entity.id }) }}";
+                }
+            });
+        }
+
+        function conciliacionLoad(e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+
+            $('div#form_conciliacion_modal').modal('show');
+        }
+
+        function aceptarConciliacion(e) {
+            var conciliacion = $('select#buseta_transitobundle_accidente_conciliacion_conc').selected().val();
+            var responsable = $('select#buseta_transitobundle_accidente_responsable_conc').selected().val();
+            var quienPaga = $('select#buseta_transitobundle_accidente_quienPaga_conc').selected().val();
+            $.ajax({
+                url: '{{ path("accidente_conciliacion") }}',
+                data: {
+                    id: {{ entity.id }},
+                    conciliacion: conciliacion,
                     responsable: responsable,
                     quienPaga: quienPaga,
                 },
