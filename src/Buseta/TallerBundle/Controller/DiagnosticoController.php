@@ -180,6 +180,8 @@ class DiagnosticoController extends Controller
      * @Route("/{id}/edit", name="diagnostico_edit")
      *
      * @Breadcrumb(title="Modificar Diagnóstico", routeName="diagnostico_edit", routeParameters={"id"})
+     *
+     * @Security("is_granted('EDIT', diagnostico)")
      */
     public function editAction(Diagnostico $diagnostico)
     {
