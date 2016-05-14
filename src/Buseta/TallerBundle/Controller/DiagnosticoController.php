@@ -14,6 +14,7 @@ use Buseta\TallerBundle\Form\Model\DiagnosticoModel;
 use Buseta\TallerBundle\Form\Model\OrdenTrabajoModel;
 use Buseta\TallerBundle\Form\Type\ObservacionDiagnosticoType;
 use Buseta\TallerBundle\Form\Type\TareaDiagnosticoType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\AbstractQuery;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -266,31 +267,44 @@ class DiagnosticoController extends Controller
 
         $deleteForm = $this->createDeleteForm($diagnostico->getId());
 
-        $tareasD = array();
-
-        foreach ($diagnostico->getTareaDiagnostico() as $tarea) {
-            $tareasD[] = $tarea;
+        $observacionesOld = new ArrayCollection();
+        foreach ($diagnostico->getObservaciones()->getIterator() as $obs) {
+            $observacionesOld->add($obs);
+        }
+        $tareasOld = new ArrayCollection();
+        foreach ($diagnostico->getTareaDiagnostico()->getIterator() as $tarea) {
+            $tareasOld->add($tarea);
         }
 
-        $editForm = $this->createEditForm($diagnostico);
+        $model = new DiagnosticoModel($diagnostico);
+        $editForm = $this->createEditForm($model);
         $editForm->handleRequest($request);
 
-        if ($editForm->isValid()) {
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $diagnostico->legacyUpdateEntityData($model);
 
-            // filtra $originalTags para que contenga las etiquetas
-            // que ya no están presentes
-            foreach ($diagnostico->getTareaDiagnostico() as $tarea) {
-                foreach ($tareasD as $key => $toDel) {
-                    if ($toDel->getId() === $tarea->getId()) {
-                        unset($tareasD[$key]);
-                    }
+            // filtra $tareasOld para eliminar las tareas que ya no están presentes.
+            foreach ($tareasOld as $old) {
+                /** @var \Buseta\TallerBundle\Entity\TareaDiagnostico $old */
+                if (false === $diagnostico->getTareaDiagnostico()->contains($old)) {
+                    $diagnostico->getTareaDiagnostico()->removeElement($old);
+
+                    $old->setDiagnostico(null);
+
+                    $em->remove($old);
                 }
             }
 
-            // Elimina la relación entre la etiqueta y la Tarea
-            foreach ($tareasD as $tarea) {
-                // Si deseas eliminar la etiqueta completamente, también lo puedes hacer
-                $em->remove($tarea);
+            // filtra $observacionesOld para que contenga las observaciones que ya no están presentes.
+            foreach ($observacionesOld as $old) {
+                /** @var \Buseta\TallerBundle\Entity\ObservacionDiagnostico $old */
+                if ($diagnostico->getObservaciones()->contains($old)) {
+                    $diagnostico->getObservaciones()->removeElement($old);
+
+                    $old->setDiagnostico(null);
+
+                    $em->remove($old);
+                }
             }
 
             $em->flush();

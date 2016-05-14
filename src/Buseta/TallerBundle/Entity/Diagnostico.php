@@ -2,6 +2,7 @@
 
 namespace Buseta\TallerBundle\Entity;
 
+use Buseta\TallerBundle\Form\Model\DiagnosticoModel;
 use HatueySoft\SecurityBundle\Doctrine\DateTimeAwareTrait;
 use HatueySoft\SecurityBundle\Interfaces\DateTimeAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -49,7 +50,7 @@ class Diagnostico implements DateTimeAwareInterface
     private $reporte;
 
     /**
-     *
+     * @var \Buseta\BusesBundle\Entity\Autobus
      *
      * @ORM\ManyToOne(targetEntity="Buseta\BusesBundle\Entity\Autobus")
      * @Assert\NotNull
@@ -99,6 +100,23 @@ class Diagnostico implements DateTimeAwareInterface
         $this->observaciones = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tareaDiagnostico = new \Doctrine\Common\Collections\ArrayCollection();
         $this->cancelado = false;
+    }
+
+    /**
+     * @param DiagnosticoModel $model
+     *
+     * @deprecated Will be removed
+     */
+    public function legacyUpdateEntityData(DiagnosticoModel $model)
+    {
+        @trigger_error(sprintf('Method %s will be removed. Use DiagnosticoConverter::getEntity() instead.', __METHOD__), E_DEPRECATED);
+
+        $this->numero = $model->getNumero();
+        $this->autobus = $model->getAutobus();
+        $this->prioridad = $model->getPrioridad();
+        $this->observaciones = $model->getObservaciones();
+        $this->estado = $model->getEstado();
+        $this->tareaDiagnostico = $model->getTareaDiagnostico();
     }
 
     /**

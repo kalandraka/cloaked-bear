@@ -62,18 +62,21 @@ class DiagnosticoModel
     /**
      * @var \DateTime
      *
+     * @deprecated Will be removed
      */
     private $created;
 
     /**
      * @var \DateTime
      *
+     * @deprecated Will be removed
      */
     private $updated;
 
     /**
      * @var boolean
      *
+     * @deprecated will be removed
      */
     private $deleted;
 
