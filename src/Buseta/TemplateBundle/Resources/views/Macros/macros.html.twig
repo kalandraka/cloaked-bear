@@ -4,10 +4,11 @@
     {% if state == 'COMPLETE' or state == 'CO' or
     state == 'CL' or state == 'WN' or state == 'NOPARTE'%}
         {% set badge = 'success' %}
-    {% elseif state == 'PROCESS' or state == 'PR' or state == 'AP' %}
+    {% elseif state == 'PROCESS' or state == 'PR' or state == 'AP'
+    or  state == 'TRANSITO'%}
         {% set badge = 'primary' %}
     {% elseif state == 'POSTED' or state == 'LS' or state == 'PA'
-     or state == 'PENAL' or  state == 'TRANSITO'%}
+    or state == 'PENAL'  %}
         {% set badge = 'warning' %}
     {% else %}
         {% set badge = 'danger' %}

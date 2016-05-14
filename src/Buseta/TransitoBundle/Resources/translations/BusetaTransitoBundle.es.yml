@@ -17,18 +17,6 @@ accidente:
     No hubo parte. Complete los datos.
   conciliacion:
     Conciliación. Complete los datos.
-  responsable:
-    NOHUBO: No hubo
-    CHOFER: Chofer
-    TERCERO: Tercero
-    EMPRESA: Empresa
-  quien_paga:
-    NADIE: Nadie
-    CHOFER: Chofer
-    TERCERO: Tercero
-    EMPRESA: Empresa
-    TALLER: Taller
-    SEGURO: Seguro
 
 penal_accidente:
   valor: Valor
@@ -37,6 +25,18 @@ penal_accidente:
     editar: Modificar Penal Accidente
   modal:
     title: Crear Nuevo Penal Accidente
+
+juicio:
+  valor: Valor
+  btn:
+    adicionar: Adicionar Juicio
+    editar: Modificar Juicio
+  modal:
+    title: Crear Nuevo Juicio
+  resultado:
+    NORESPONSABLE: No hubo responsable
+    RESPONSABLE: Responsable
+    EMPATE: Empate
 
 messages:
   no_results: No existen elementos que mostrar.
@@ -68,3 +68,18 @@ estado:
   NOPARTE: No hubo parte
   TRANSITO: Transito
   PENAL: Penal
+
+responsable:
+  NOHUBO: No hubo
+  CHOFER: Chofer
+  TERCERO: Tercero
+  EMPRESA: Empresa
+
+quien_paga:
+  NADIE: Nadie
+  CHOFER: Chofer
+  TERCERO: Tercero
+  EMPRESA: Empresa
+  TALLER: Taller
+  SEGURO: Seguro
+
