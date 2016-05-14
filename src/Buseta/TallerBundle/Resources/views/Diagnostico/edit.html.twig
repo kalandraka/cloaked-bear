@@ -171,7 +171,7 @@
                 var index = collectionHolder.data('index');
                 addTagForm(collectionHolder);
 
-                $('#buseta_tallerbundle_reporte_observaciones_' + index + '_valor').val();
+                $('#buseta_tallerbundle_diagnostico_observaciones_' + index + '_valor').val();
             }
 
         };
@@ -233,10 +233,10 @@
 
 
         function dinamicSelects(){
-            //Aqui es donde lleno el campo del kilometraje a partir de ajax
+            // Aqui es donde lleno el campo del kilometraje a partir de ajax
 
 
-            $('select[id^="buseta_tallerbundle_reporte_tareaDiagnostico_"][id$="_grupo"]').change(function(){
+            $('select[id^="buseta_tallerbundle_diagnostico_tareaDiagnostico_"][id$="_grupo"]').change(function(){
                 var $selectGroup = $(this);
                 var data = {
                     grupo_id: $(this).val()
@@ -249,7 +249,7 @@
                     success: function(data) {
                         var values = $.parseJSON(data);
 
-                        var $subgrupo_selector = $selectGroup.parent().parent().parent().find('select[id^="buseta_tallerbundle_reporte_tareaDiagnostico_"][id$="_subgrupo"]');
+                        var $subgrupo_selector = $selectGroup.parent().parent().parent().find('select[id^="buseta_tallerbundle_diagnostico_tareaDiagnostico_"][id$="_subgrupo"]');
 
                         $subgrupo_selector.html('<option>---Seleccione---</option>');
 
@@ -260,7 +260,7 @@
                 });
             });
 
-            $('select[id^="buseta_tallerbundle_reporte_tareaDiagnostico_"][id$="_subgrupo"]').change(function(){
+            $('select[id^="buseta_tallerbundle_diagnostico_tareaDiagnostico_"][id$="_subgrupo"]').change(function(){
                 var $selectGroup = $(this);
                 var data = {
                     subgrupo_id: $(this).val()
@@ -272,7 +272,7 @@
                     data: data,
                     success: function(data) {
                         var values = $.parseJSON(data),
-                            tarea_selector = $selectGroup.parent().parent().parent().find('select[id^="buseta_tallerbundle_reporte_tareaDiagnostico_"][id$="_tareamantenimiento"]');
+                            tarea_selector = $selectGroup.parent().parent().parent().find('select[id^="buseta_tallerbundle_diagnostico_tareaDiagnostico_"][id$="_tareamantenimiento"]');
 
                         tarea_selector.html('<option>---Seleccione---</option>');
 
@@ -365,12 +365,8 @@
 
                 addTagFormD(collectionHolderD);
 
-                $('#buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_grupo').val(tareadiagnostico_grupo.val());
-                $('#buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_subgrupo').val(tareadiagnostico_subgrupo.val());
-                $('#buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_tareamantenimiento').val(tareadiagnostico_tareamantenimiento.val());
-                $('#buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_descripcion').val(tareadiagnostico_descripcion.val());
-
-
+                $('#buseta_tallerbundle_diagnostico_tareaDiagnostico_' + index + '_grupo').val(tareadiagnostico_grupo.val());
+                $('#buseta_tallerbundle_diagnostico_tareaDiagnostico_' + index + '_descripcion').val(tareadiagnostico_descripcion.val());
 
                 //Actualiza los subgrupos a partir de los grupos en el listado de Tareas de diagnostico
                 //despues que son insertadas y estan en el area donde se muestran cada una por separado
@@ -379,51 +375,45 @@
                     url: '{{ path('tareamantenimiento_ajax_grupos_subgrupos') }}',
                     data: {
                         grupo_id: $(tareadiagnostico_grupo).val()
-                    },
-                    async: false
+                    }
                 }).done(function (data, textStatus, jqXHR) {
                     var values = $.parseJSON(data);
 
                     dinamicSelects();
 
-                    var subgrupo_selector = $('select[id="buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_subgrupo"]');
+                    var subgrupo_selector = $('select[id="buseta_tallerbundle_diagnostico_tareaDiagnostico_' + index + '_subgrupo"]');
                     subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
                     for (var i = 0, total = values.length; i < total; i++) {
                         subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
                     }
 
-                    $(subgrupo_selector).val(tareadiagnostico_subgrupo.val());
+                    $('#buseta_tallerbundle_diagnostico_tareaDiagnostico_' + index + '_subgrupo').val(tareadiagnostico_subgrupo.val());
+
+                    // Display the form in the page in an li, b
+                    // Actualiza las tareas a partir de los subgrupos en el listado de Tareas Adicionales
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ path('ajax_select_tarea_subgrupo') }}',
+                        data: {
+                            subgrupo_id: $(tareadiagnostico_subgrupo).val()
+                        },
+                        async: false
+                    }).done(function (data) {
+                        var values = $.parseJSON(data);
+                        var tarea_selector = $('#buseta_tallerbundle_diagnostico_tareaDiagnostico_' + index + '_tareamantenimiento');
+
+                        tarea_selector.html('<option>---Seleccione---</option>');
+                        for (var i = 0, len = values.length; i < len; i++) {
+                            tarea_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>')
+                        }
+
+                        $('#buseta_tallerbundle_diagnostico_tareaDiagnostico_' + index + '_tareamantenimiento').val(tareadiagnostico_tareamantenimiento.val());
+                    });
                 });
-
-            // Display the form in the page in an li, b
-                //Actualiza las tareas a partir de los subgrupos en el listado de Tareas Adicionales
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ path('ajax_select_tarea_subgrupo') }}',
-                    data: {
-                        subgrupo_id: $(tareadiagnostico_subgrupo).val()
-                    },
-                    async: false
-                }).done(function (data) {
-                    var values = $.parseJSON(data);
-                    var tarea_selector = $('#buseta_tallerbundle_reporte_tareaDiagnostico_' + index + '_tareamantenimiento');
-
-                    tarea_selector.html('<option>---Seleccione---</option>');
-                    for (var i = 0, len = values.length; i < len; i++) {
-                        tarea_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>')
-                    }
-
-                    $(tarea_selector).val(tareadiagnostico_tareamantenimiento.val());
-                });
-
-
             },
             _load: function () {
-
-
                 $('#buseta_tallerbundle_tareadiagnostico_grupo').on('change', tareaDiagnostico._update_subgrupos);
                 $('#buseta_tallerbundle_tareadiagnostico_subgrupo').on('change', tareaDiagnostico._update_tareas);
-
 
                 //Aqui es donde hago la insercion de los datos del modal a la orden de trabajo
                 $('a.add_tarea_link').on('click', tareaDiagnostico._insert_new);
