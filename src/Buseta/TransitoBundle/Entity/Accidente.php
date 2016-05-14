@@ -92,7 +92,7 @@ class Accidente
      * EMPRESA
      *
      * @ORM\Column(name="responsable", type="string")
-     * @Assert\Choice(choices={"NOHUBO", "CHOFER", "TERCERO", "EMPRESA"})
+     * @Assert\Choice(choices={"", "NOHUBO", "CHOFER", "TERCERO", "EMPRESA"})
      */
     private $responsable = "";
 
@@ -109,7 +109,7 @@ class Accidente
      * SEGURO
      *
      * @ORM\Column(name="quien_paga", type="string")
-     * @Assert\Choice(choices={"NADIE", "CHOFER", "TERCERO", "EMPRESA", "TALLER", "SEGURO"})
+     * @Assert\Choice(choices={"", "NADIE", "CHOFER", "TERCERO", "EMPRESA", "TALLER", "SEGURO"})
      */
     private $quienPaga = "";
 

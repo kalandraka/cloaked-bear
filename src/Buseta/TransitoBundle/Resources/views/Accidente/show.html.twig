@@ -14,11 +14,16 @@
 
 {% block area_trabajo %}
     <table class="table table-striped" style="font-size: 16px;">
-        {% if entity is defined and entity.parte == 'PENAL' %}
+        {% if entity is defined and entity.parte == 'PENAL'
+         or juicios|length > 0 %}
             <caption style="font-size: 22px;text-align: left;">Accidente</caption>
         {% endif %}
         <tbody>
-
+        {% if entity.conciliacion %}
+            <tr>
+                <th>Se llegó a una conciliación</th>
+            </tr>
+        {% endif %}
         <tr>
             <th>Descripción</th>
             <td>{{ entity.descripcion }}</td>
@@ -43,16 +48,12 @@
             <th>Importe</th>
             <td>{{ entity.importe }}</td>
         </tr>
-        {% if entity.conciliacion %}
-            <tr>
-                <th>Se llegó a una conciliación</th>
-            </tr>
-        {% endif %}
+
         {% if entity.responsable != '' %}
             <tr>
                 <th>Responsable</th>
                 <td>
-                    {{ ('accidente.responsable.' ~ entity.responsable) | trans({}, 'BusetaTransitoBundle') }}</span>
+                    {{ ('responsable.' ~ entity.responsable) | trans({}, 'BusetaTransitoBundle') }}</span>
                 </td>
             </tr>
         {% endif %}
@@ -60,7 +61,7 @@
             <tr>
                 <th>Quien solventa</th>
                 <td>
-                    {{ ('accidente.quien_paga.' ~ entity.quienPaga) | trans({}, 'BusetaTransitoBundle') }}</span>
+                    {{ ('quien_paga.' ~ entity.quienPaga) | trans({}, 'BusetaTransitoBundle') }}</span>
                 </td>
             </tr>
         {% endif %}
@@ -80,7 +81,59 @@
             <a id="btnTransito" class="btn btn-primary"
                href="#"> Tránsito</a>
         {% endif %}
+        {% if entity.estado == 'TRANSITO' and not entity.conciliacion %}
+            <a id="crearJuicio" class="btn btn-primary"
+               href="#"> Crear Juicio</a>
+        {% endif %}
     </div>
+
+    {% for juicio in juicios %}
+        <table class="table table-striped" style="font-size: 16px;margin-top:10px;">
+            <caption style="font-size: 22px;text-align: left;">Juicio</caption>
+            <tbody>
+            <tr>
+                <th>Descripción</th>
+                <td>{{ juicio.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Fecha Inicio</th>
+                <td>{{ juicio.fechaInicio|date('d/m/Y') }}</td>
+            </tr>
+            <tr>
+                <th>Fecha Fin</th>
+                <td>{{ juicio.fechaFin|date('d/m/Y') }}</td>
+            </tr>
+            <tr>
+                <th>Resultado</th>
+                <td>
+                    {{ ('juicio.resultado.' ~ juicio.resultado) | trans({}, 'BusetaTransitoBundle') }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Responsable</th>
+                <td>
+                    {{ ('responsable.' ~ juicio.responsable) | trans({}, 'BusetaTransitoBundle') }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Quien solventa</th>
+                <td>
+                    {{ ('quien_paga.' ~ juicio.quienPaga) | trans({}, 'BusetaTransitoBundle') }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Importe Abogado</th>
+                <td>{{ juicio.importeAbogado }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="form-actions">
+            <a id="editJuicio{{ juicio.id }}" class="btn btn-primary"
+               href="#editJuicio" name="{{ juicio.id }}" data-responsable="{{ juicio.responsable }}"
+               data-quienpaga="{{ juicio.quienPaga }}" data-resultado="{{ juicio.resultado }}"
+               ><i class="fa fa-edit"></i> Editar Juicio</a>
+        </div>
+    {% endfor %}
 
     {% if entity is defined and entity.parte == 'PENAL' %}
         <table class="table table-striped" style="font-size: 16px;margin-top:10px;">
@@ -126,6 +179,7 @@
     {% endif %}
 
     <div class="modal" id="form_penal_modal"></div>
+    <div class="modal" id="form_juicio_modal"></div>
 
     {% include 'BusetaTransitoBundle:Accidente:no_parte_modal.html.twig' with {'entity': entity} %}
     {% include 'BusetaTransitoBundle:Accidente:conciliacion_modal.html.twig' with {'entity': entity} %}
@@ -140,6 +194,11 @@
     {{ parent() }}
 
     <script type="text/javascript">
+        $('#crearJuicio').on('click', crearJuicio);
+        {% for juicio in juicios %}
+        $('#editJuicio'+'{{ juicio.id }}').on('click', editarJuicio);
+        {% endfor %}
+
         $('#penalAccidente').on('click', penalAccidente);
         $('#editPenalAccidente').on('click', penalAccidente);
 
@@ -155,17 +214,130 @@
         $('#btn_conciliacion_aceptar').on('click', aceptarConciliacion);
         $('select#buseta_transitobundle_accidente_conciliacion_conc').change(function () {
             var val_ = $('select#buseta_transitobundle_accidente_conciliacion_conc').selected().val();
-            if(val_ == "NOHUBO")
-            {
+            if (val_ == "NOHUBO") {
                 $('#row_responsable').css({display: 'none'});
                 $('#row_solventa').css({display: 'none'});
             }
-            else
-            {
+            else {
                 $('#row_responsable').css({display: ''});
                 $('#row_solventa').css({display: ''});
             }
         });
+
+        function editarJuicio(e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+
+            var url = Routing.generate('juicio_edit', {'id': this.name});
+            var resultado = this.dataset.resultado;
+            var responsable = this.dataset.responsable;
+            var quienPaga = this.dataset.quienpaga;
+            $.get(url)
+                    .done(function (response, textStatus, jqXHR) {
+                        $('div#form_juicio_modal').replaceWith($(response.view));
+
+                        $('a#btn_juicio_save').on('click', saveJuicioModal);
+                        $('a#btn_juicio_cancel').on('click', function () {
+                            $('div#form_juicio_modal').modal('hide');
+                        });
+                        $('input#transito_juicio_fechaInicio').datetimepicker({
+                            'format': 'DD/MM/YYYY'
+                        });
+                        $('input#transito_juicio_fechaFin').datetimepicker({
+                            'format': 'DD/MM/YYYY'
+                        });
+                        $('select#transito_juicio_resultado').chosen();
+                        $('select#transito_juicio_responsable').chosen();
+                        $('select#transito_juicio_quienPaga').chosen();
+                        $('select#transito_juicio_resultado').val(resultado);
+                        $('select#transito_juicio_resultado').trigger("chosen:updated");
+                        $('select#transito_juicio_responsable').val(responsable);
+                        $('select#transito_juicio_responsable').trigger("chosen:updated");
+                        $('select#transito_juicio_quienPaga').val(quienPaga);
+                        $('select#transito_juicio_quienPaga').trigger("chosen:updated");
+                        $('select#transito_juicio_resultado').change(function () {
+                            var val_ = $('select#transito_juicio_resultado').selected().val();
+                            if (val_ == "RESPONSABLE") {
+                                $('#div_resultados').css({display: ''});
+                            }
+                            else {
+                                $('#div_resultados').css({display: 'none'});
+                                $('select#transito_juicio_responsable').val('NOHUBO');
+                                $('select#transito_juicio_responsable').trigger("chosen:updated");
+                                $('select#transito_juicio_quienPaga').val('NADIE');
+                                $('select#transito_juicio_quienPaga').trigger("chosen:updated");
+                            }
+                        });
+                        $('div#form_juicio_modal').modal('show');
+                    }).fail(utils._fail).always(function () {
+            });
+        }
+
+        function crearJuicio(e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+
+            var url = Routing.generate('juicio_new', {'accidente': {{ entity.id }}});
+            $.get(url)
+                    .done(function (response, textStatus, jqXHR) {
+                        $('div#form_juicio_modal').replaceWith($(response.view));
+
+                        $('a#btn_juicio_save').on('click', saveJuicioModal);
+                        $('a#btn_juicio_cancel').on('click', function () {
+                            $('div#form_juicio_modal').modal('hide');
+                        });
+                        $('input#transito_juicio_fechaInicio').datetimepicker({
+                            'format': 'DD/MM/YYYY'
+                        });
+                        $('input#transito_juicio_fechaFin').datetimepicker({
+                            'format': 'DD/MM/YYYY'
+                        });
+                        $('select#transito_juicio_resultado').chosen();
+                        $('select#transito_juicio_responsable').chosen();
+                        $('select#transito_juicio_quienPaga').chosen();
+                        $('#div_resultados').css({display: 'none'});
+                        $('select#transito_juicio_resultado').change(function () {
+                            var val_ = $('select#transito_juicio_resultado').selected().val();
+                            if (val_ == "RESPONSABLE") {
+                                $('#div_resultados').css({display: ''});
+                            }
+                            else {
+                                $('#div_resultados').css({display: 'none'});
+                                $('select#transito_juicio_responsable').val('NOHUBO');
+                                $('select#transito_juicio_responsable').trigger("chosen:updated");
+                                $('select#transito_juicio_quienPaga').val('NADIE');
+                                $('select#transito_juicio_quienPaga').trigger("chosen:updated");
+                            }
+                        });
+                        $('div#form_juicio_modal').modal('show');
+                    }).fail(utils._fail).always(function () {
+            });
+        }
+
+        function saveJuicioModal(e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+
+            $('#btn_juicio_save').find('span')
+                    .removeClass('glyphicon')
+                    .removeClass('glyphicon-save')
+                    .addClass('fa')
+                    .addClass('fa-gear')
+                    .addClass('fa-spin');
+            var form_id = $('div#form_juicio_modal').find('form').attr('id');
+
+            $('form#' + form_id).ajaxSubmit({
+                success: utils._done_reload,
+                error: utils._fail,
+                beforeSubmit: function () {
+                    var tempo = '';
+                },
+                dataType: 'json'
+            });
+        }
 
         function penalAccidente(e) {
             if (e !== undefined) {
@@ -211,7 +383,7 @@
             var form_id = $('div#form_penal_modal').find('form').attr('id');
 
             $('form#' + form_id).ajaxSubmit({
-                success: utils._done_penal,
+                success: utils._done_reload,
                 error: utils._fail,
                 beforeSubmit: function () {
                     var tempo = '';
@@ -231,7 +403,7 @@
                     $btalerts.addDanger('{{ 'messages.unexpected_error' | trans({}, 'BusetaTransitoBundle') }}');
                 }
             },
-            _done_penal: function (response, textStatus, jqXHR) {
+            _done_reload: function (response, textStatus, jqXHR) {
                 window.location = "{{ path('accidente_show', { 'id': entity.id }) }}";
             },
         };

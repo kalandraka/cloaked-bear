@@ -150,6 +150,8 @@ class AccidenteController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('BusetaTransitoBundle:Accidente')->find($id);
+        $juicios = $em->getRepository('BusetaTransitoBundle:Juicio')->findByAccidente($entity);
+
         $penal = null;
         if ($entity->getParte() == 'PENAL') {
             $penal = $em->getRepository('BusetaTransitoBundle:PenalAccidente')->findOneByAccidente($entity);
@@ -163,6 +165,7 @@ class AccidenteController extends Controller
             array(
                 'entity' => $entity,
                 'penal' => $penal,
+                'juicios' => $juicios,
             )
         );
     }
@@ -309,6 +312,7 @@ class AccidenteController extends Controller
         else
         {
             $entity->setConciliacion(false);
+
         }
         $em->persist($entity);
         $em->flush();

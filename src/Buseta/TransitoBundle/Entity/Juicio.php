@@ -25,17 +25,39 @@ class Juicio
     /**
      * @var string
      *
+     * @ORM\Column(name="descripcion", type="string")
+     */
+    protected $descripcion;
+
+    /**
+     * @var string
+     *
+     * The allowed values for this are:
+     *
+     * NORESPONSABLE
+     * RESPONSABLE
+     * EMPATE
+     *
      * @ORM\Column(name="resultado", type="string")
+     * @Assert\Choice(choices={"NORESPONSABLE", "RESPONSABLE", "EMPATE"})
      */
     protected $resultado;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha", type="date")
+     * @ORM\Column(name="fecha_inicio", type="date")
      * @Assert\Date()
      */
-    private $fecha;
+    private $fechaInicio;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_fin", type="date")
+     * @Assert\Date()
+     */
+    private $fechaFin;
 
     /**
      * @var \Buseta\TransitoBundle\Entity\Accidente
@@ -50,6 +72,38 @@ class Juicio
      * @ORM\Column(name="importe_abogado", type="decimal", scale=2)
      */
     private $importeAbogado = 0;
+
+    /**
+     * @var string
+     *
+     * The allowed values for this are:
+     *
+     * NOHUBO
+     * CHOFER
+     * TERCERO
+     * EMPRESA
+     *
+     * @ORM\Column(name="responsable", type="string")
+     * @Assert\Choice(choices={"NOHUBO", "CHOFER", "TERCERO", "EMPRESA"})
+     */
+    private $responsable = "NOHUBO";
+
+    /**
+     * @var string
+     *
+     * The allowed values for this are:
+     *
+     * NADIE
+     * CHOFER
+     * TERCERO
+     * EMPRESA
+     * TALLER
+     * SEGURO
+     *
+     * @ORM\Column(name="quien_paga", type="string")
+     * @Assert\Choice(choices={"NADIE", "CHOFER", "TERCERO", "EMPRESA", "TALLER", "SEGURO"})
+     */
+    private $quienPaga = "NADIE";
 
     /**
      * Get id
@@ -83,30 +137,6 @@ class Juicio
     public function getResultado()
     {
         return $this->resultado;
-    }
-
-    /**
-     * Set fecha
-     *
-     * @param \DateTime $fecha
-     *
-     * @return Juicio
-     */
-    public function setFecha($fecha)
-    {
-        $this->fecha = $fecha;
-
-        return $this;
-    }
-
-    /**
-     * Get fecha
-     *
-     * @return \DateTime
-     */
-    public function getFecha()
-    {
-        return $this->fecha;
     }
 
     /**
@@ -155,5 +185,125 @@ class Juicio
     public function getAccidente()
     {
         return $this->accidente;
+    }
+
+    /**
+     * Set responsable
+     *
+     * @param string $responsable
+     *
+     * @return Juicio
+     */
+    public function setResponsable($responsable)
+    {
+        $this->responsable = $responsable;
+
+        return $this;
+    }
+
+    /**
+     * Get responsable
+     *
+     * @return string
+     */
+    public function getResponsable()
+    {
+        return $this->responsable;
+    }
+
+    /**
+     * Set quienPaga
+     *
+     * @param string $quienPaga
+     *
+     * @return Juicio
+     */
+    public function setQuienPaga($quienPaga)
+    {
+        $this->quienPaga = $quienPaga;
+
+        return $this;
+    }
+
+    /**
+     * Get quienPaga
+     *
+     * @return string
+     */
+    public function getQuienPaga()
+    {
+        return $this->quienPaga;
+    }
+
+    /**
+     * Set fechaInicio
+     *
+     * @param \DateTime $fechaInicio
+     *
+     * @return Juicio
+     */
+    public function setFechaInicio($fechaInicio)
+    {
+        $this->fechaInicio = $fechaInicio;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaInicio
+     *
+     * @return \DateTime
+     */
+    public function getFechaInicio()
+    {
+        return $this->fechaInicio;
+    }
+
+    /**
+     * Set fechaFin
+     *
+     * @param \DateTime $fechaFin
+     *
+     * @return Juicio
+     */
+    public function setFechaFin($fechaFin)
+    {
+        $this->fechaFin = $fechaFin;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaFin
+     *
+     * @return \DateTime
+     */
+    public function getFechaFin()
+    {
+        return $this->fechaFin;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     *
+     * @return Juicio
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
     }
 }

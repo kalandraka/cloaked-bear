@@ -1,57 +1,60 @@
-<div class="modal" id="form_penal_modal" tabindex="-1" role="dialog" aria-labelledby="createpenal" aria-hidden="true">
+<div class="modal" id="form_juicio_modal" tabindex="-1" role="dialog" aria-labelledby="editjuicio" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="createpenal">{{ 'penal_accidente.modal.title'|trans({},'BusetaTransitoBundle') }}</h4>
+                <h4 class="modal-title" id="editjuicio">{{ 'juicio.btn.editar'|trans({},'BusetaTransitoBundle') }}</h4>
             </div>
-
             <div class="modal-body">
-                <form name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" action="{{ form.vars.action }}"
+                <form name="{{ edit_form.vars.full_name }}" id="{{ edit_form.vars.id }}" action="{{ edit_form.vars.action }}"
                       method="post" enctype="multipart/form-data">
-                    {% if form.vars.method == 'PUT' %}
+                    {% if edit_form.vars.method == 'PUT' %}
                         <input type="hidden" name="_method" value="PUT"/>
                     {% endif %}
-                    {{ form_errors(form) }}
-                    {{ form_row(form._token) }}
+                    {{ form_errors(edit_form) }}
+                    {{ form_errors(edit_form) }}
+                    {{ form_row(edit_form._token) }}
                     <div class="row">
                         <div class="col-md-12">
-                            {{ form_row(form.nota) }}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            {{ form_row(form.adjunto) }}
-                        </div>
-                        <div class="col-md-6">
-                            {{ form_row(form.alerta) }}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            {{ form_row(form.fecha) }}
-                        </div>
-                        <div class="col-md-6">
-                            {{ form_row(form.fechaExpira) }}
+                            {{ form_row(edit_form.descripcion) }}
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            {{ form_row(form.costo) }}
+                            {{ form_row(edit_form.resultado) }}
                         </div>
                     </div>
 
-                    <br/>
+                    <div class="row" id="div_resultados">
+                        <div class="col-md-6">
+                            {{ form_row(edit_form.responsable) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(edit_form.quienPaga) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(edit_form.fechaInicio) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(edit_form.fechaFin) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ form_row(edit_form.importeAbogado) }}
+                        </div>
+                    </div>
                 </form>
             </div>
-
             <div class="modal-footer">
-                <a href="#" class="btn btn-default" id="btn_penal_cancel" data-dismiss="modal"><span class="glyphicon glyphicon-chevron-left"></span>
+                <a href="#" class="btn btn-default" id="btn_juicio_cancel" data-dismiss="modal"><span class="glyphicon glyphicon-chevron-left"></span>
                     {{ 'actions.cancel' | trans({}, 'BusetaTransitoBundle') }}</a>
-                <a href="#" class="btn btn-primary" id="btn_penal_save"><span class="glyphicon glyphicon-save"></span>
+                <a href="#" class="btn btn-primary" id="btn_juicio_save"><span class="glyphicon glyphicon-save"></span>
                     {{ 'actions.save' | trans({}, 'BusetaTransitoBundle') }}</a>
             </div>
         </div>
