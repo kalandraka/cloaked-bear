@@ -121,7 +121,7 @@
                 e.preventDefault();
 
                 // remove the li for the tag form
-                $(this).parent().parent().parent().parent().remove();
+                $(this).parent().parent().parent().remove();
 
                 updateView();
             });
@@ -145,7 +145,7 @@
                 var index = collectionHolder.data('index');
                 addTagForm(collectionHolder);
 
-                $('#buseta_tallerbundle_reporte_observaciones_' + index + '_valor').val();
+                $('#buseta_tallerbundle_diagnostico_observaciones_' + index + '_valor').val();
 
             }
 
@@ -185,7 +185,7 @@
                 e.preventDefault();
 
                 // remove the li for the tag form
-                $(this).parent().parent().parent().parent().remove();
+                $(this).parent().parent().parent().remove();
 
                 updateViewD();
             });
@@ -211,7 +211,7 @@
             //Aqui es donde lleno el campo del kilometraje a partir de ajax
 
 
-            $('select[id^="buseta_tallerbundle_reporte_tareaDiagnostico_"][id$="_grupo"]').change(function(){
+            $('select[id^="buseta_tallerbundle_diagnostico_tareaDiagnostico_"][id$="_grupo"]').change(function(){
                 var $selectGroup = $(this);
                 var data = {
                     grupo_id: $(this).val()
@@ -224,7 +224,7 @@
                     success: function(data) {
                         var values = $.parseJSON(data);
 
-                        var $subgrupo_selector = $selectGroup.parent().parent().parent().find('select[id^="buseta_tallerbundle_reporte_tareaDiagnostico_"][id$="_subgrupo"]');
+                        var $subgrupo_selector = $selectGroup.parent().parent().parent().find('select[id^="buseta_tallerbundle_diagnostico_tareaDiagnostico_"][id$="_subgrupo"]');
 
                         $subgrupo_selector.html('<option>---Seleccione---</option>');
 
@@ -235,7 +235,7 @@
                 });
             });
 
-            $('select[id^="buseta_tallerbundle_reporte_tareaDiagnostico_"][id$="_subgrupo"]').change(function(){
+            $('select[id^="buseta_tallerbundle_diagnostico_tareaDiagnostico_"][id$="_subgrupo"]').change(function(){
                 var $selectGroup = $(this);
                 var data = {
                     subgrupo_id: $(this).val()
@@ -248,7 +248,7 @@
                     success: function(data) {
                         var values = $.parseJSON(data);
 
-                        var $tarea_selector = $selectGroup.parent().parent().parent().find('select[id^="buseta_tallerbundle_reporte_tareaDiagnostico_"][id$="_tarea"]');
+                        var $tarea_selector = $selectGroup.parent().parent().parent().find('select[id^="buseta_tallerbundle_diagnostico_tareaDiagnostico_"][id$="_tarea"]');
 
                         $tarea_selector.html('<option>---Seleccione---</option>');
 
@@ -415,7 +415,7 @@
                 }).done(function (data, textStatus, jqXHR) {
                     var values = $.parseJSON(data);
 
-                    //dinamicSelects();
+                    dinamicSelects();
 
                     var subgrupo_selector = $('select[id="buseta_tallerbundle_diagnostico_tareaDiagnostico_' + index + '_subgrupo"]');
                     subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
