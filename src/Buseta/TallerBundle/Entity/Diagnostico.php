@@ -3,6 +3,7 @@
 namespace Buseta\TallerBundle\Entity;
 
 use Buseta\TallerBundle\Form\Model\DiagnosticoModel;
+use Doctrine\Common\Collections\ArrayCollection;
 use HatueySoft\SecurityBundle\Doctrine\DateTimeAwareTrait;
 use HatueySoft\SecurityBundle\Interfaces\DateTimeAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -88,7 +89,7 @@ class Diagnostico implements DateTimeAwareInterface
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\TareaDiagnostico", mappedBy="diagnostico", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Buseta\TallerBundle\Entity\TareaDiagnostico", mappedBy="diagnostico", cascade={"persist", "remove"})
      */
     private $tareaDiagnostico;
 
@@ -114,9 +115,19 @@ class Diagnostico implements DateTimeAwareInterface
         $this->numero = $model->getNumero();
         $this->autobus = $model->getAutobus();
         $this->prioridad = $model->getPrioridad();
-        $this->observaciones = $model->getObservaciones();
         $this->estado = $model->getEstado();
-        $this->tareaDiagnostico = $model->getTareaDiagnostico();
+        if ($model->getObservaciones()->count() > 0) {
+            $this->observaciones = new ArrayCollection();
+            foreach ($model->getObservaciones()->getIterator() as $obs) {
+                $this->addObservacione($obs);
+            }
+        }
+        if ($model->getTareaDiagnostico()->count() > 0) {
+            $this->tareaDiagnostico = new ArrayCollection();
+            foreach ($model->getTareaDiagnostico()->getIterator() as $tarea) {
+                $this->addTareaDiagnostico($tarea);
+            }
+        }
     }
 
     /**
@@ -161,6 +172,7 @@ class Diagnostico implements DateTimeAwareInterface
     public function addObservacione(\Buseta\TallerBundle\Entity\ObservacionDiagnostico $observaciones)
     {
         $observaciones->setDiagnostico($this);
+
         $this->observaciones[] = $observaciones;
 
         return $this;

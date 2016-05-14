@@ -298,7 +298,7 @@ class DiagnosticoController extends Controller
             // filtra $observacionesOld para que contenga las observaciones que ya no están presentes.
             foreach ($observacionesOld as $old) {
                 /** @var \Buseta\TallerBundle\Entity\ObservacionDiagnostico $old */
-                if ($diagnostico->getObservaciones()->contains($old)) {
+                if (false === $diagnostico->getObservaciones()->contains($old)) {
                     $diagnostico->getObservaciones()->removeElement($old);
 
                     $old->setDiagnostico(null);

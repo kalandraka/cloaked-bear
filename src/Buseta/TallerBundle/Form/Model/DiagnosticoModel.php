@@ -55,7 +55,7 @@ class DiagnosticoModel
     private $estado = 'BO';
 
     /**
-     * @var \Buseta\TallerBundle\Entity\ObservacionDiagnostico
+     * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $observaciones;
 
@@ -86,6 +86,7 @@ class DiagnosticoModel
     public function __construct(Diagnostico $diagnostico = null)
     {
         $this->tareaDiagnostico = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->observaciones = new \Doctrine\Common\Collections\ArrayCollection();
 
         if ($diagnostico !== null) {
             $this->id = $diagnostico->getId();
@@ -248,7 +249,7 @@ class DiagnosticoModel
     }
 
     /**
-     * @return string
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getObservaciones()
     {
@@ -256,11 +257,15 @@ class DiagnosticoModel
     }
 
     /**
-     * @param string $observaciones
+     * @param $observaciones
+     *
+     * @return DiagnosticoModel
      */
     public function setObservaciones($observaciones)
     {
         $this->observaciones = $observaciones;
+
+        return $this;
     }
 
     /**

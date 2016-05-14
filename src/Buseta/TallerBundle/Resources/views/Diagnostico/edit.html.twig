@@ -120,8 +120,6 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script src="{{ asset('bundles/busetataller/js/checkClick.js') }}"></script>
-
     <script type="text/javascript">
         function addTagForm(collectionHolder) {
             // Get the data-prototype explained earlier
@@ -149,7 +147,7 @@
                 e.preventDefault();
 
                 // remove the li for the tag form
-                $(this).parent().parent().parent().parent().remove();
+                $(this).parent().parent().parent().remove();
 
                 updateView();
             });
@@ -174,7 +172,6 @@
                 addTagForm(collectionHolder);
 
                 $('#buseta_tallerbundle_reporte_observaciones_' + index + '_valor').val();
-
             }
 
         };
@@ -291,10 +288,10 @@
 
 
     <script type="text/javascript">
-        var collectionHolder = $('div#buseta_tallerbundle_reporte_observaciones');
+        var collectionHolder = $('div#buseta_tallerbundle_diagnostico_observaciones');
         var $addTagLink = '';
 
-        var collectionHolderD = $('div#buseta_tallerbundle_reporte_tareaDiagnostico');
+        var collectionHolderD = $('div#buseta_tallerbundle_diagnostico_tareaDiagnostico');
         var $addTagLinkD = '';
 
         jQuery(document).ready(function () {
