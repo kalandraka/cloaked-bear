@@ -81,7 +81,7 @@ class ProductoTopeController extends Controller
      *
      * @Route("/create", name="productotope_create", options={"expose":true})
      * @Method("POST")
-     * @Breadcrumb(title="Crear Nuevo Producto Tope, routeName="productotope_create")
+     * @Breadcrumb(title="Crear Nuevo Producto Tope", routeName="productotope_create")
      */
     public function createAction(Request $request)
     {
@@ -91,6 +91,7 @@ class ProductoTopeController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
             $em->persist($entity);
             $em->flush();
 
