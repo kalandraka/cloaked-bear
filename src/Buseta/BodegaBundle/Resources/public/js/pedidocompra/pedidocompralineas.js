@@ -94,6 +94,7 @@ var
          * @private
          */
         _load_modal: function(event) {
+            $('a[href="#form_lineas_modal"]').addClass('disabled');
             if(event !== undefined) {
                 event.preventDefault();
             }
@@ -115,8 +116,11 @@ var
                     lineas.form_name = $('div#form_lineas_modal').find('form').attr('name');
 
                     $('div#form_lineas_modal').modal('show');
+                    $('a[href="#form_lineas_modal"]').removeClass('disabled');
                     lineas._modal_start_events();
-                }).fail(utils._fail).always(function(){});
+                }).fail(utils._fail).always(function(){
+                    $('a[href="#form_lineas_modal"]').removeClass('disabled');
+                });
         },
         /**
          * Actualiza los eventos para el modal de lineas
@@ -198,6 +202,7 @@ var
          * @private
          */
         _load_delete_modal: function(event) {
+            $('a[href="#delete"]').addClass('disabled');
             if(event !== undefined) {
                 event.preventDefault();
             }
@@ -218,7 +223,10 @@ var
                     });
 
                     $('div#form_pedidocompralinea_delete_modal').modal('show');
-                }).fail(utils._fail).always(function(){});
+                    $('a[href="#delete"]').removeClass('disabled');
+                }).fail(utils._fail).always(function(){
+                    $('a[href="#delete"]').removeClass('disabled');
+                });
         },
         /**
          * Salva el modal para crear/editar una linea
