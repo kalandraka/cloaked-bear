@@ -546,4 +546,42 @@ class ProductoController extends Controller
         $response = array("valor" => $serial);
         return new JsonResponse($response);
     }
+
+    /**
+     * @param Request $request
+     * @param String $cad
+     *
+     * @return JsonResponse
+     *
+     * @Route("/autocomplete_producto/{cad}", name="autocompletar_producto_ajax", options={"expose": true})
+     * @Method({"GET"})
+     */
+    public function autocompletarProductoAction(Request $request, $cad) {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY'))
+            return new \Symfony\Component\HttpFoundation\Response('Acceso Denegado', 403);
+
+        if (!$request->isXmlHttpRequest())
+            return new \Symfony\Component\HttpFoundation\Response('No es una petición Ajax', 500);
+
+        $em = $this->getDoctrine()->getManager();
+        $productos = $em->getRepository('BusetaBodegaBundle:Producto')->autocompletarProductosNombre($cad);
+        $json = array();
+        foreach($productos as $producto){
+            $codigoCostos = '';
+            $costos = $producto->getCostoProducto();
+            foreach($costos as $costo){
+                $codigoCostos = $codigoCostos.' '.$costo->getCodigoAlternativo();
+            }
+            $item = array(
+                'id' => $producto->getId(),
+                'nombre' => $producto->getNombre(),
+                'codigoATSA' => $producto->getCodigo(),
+                'codigoA' => $producto->getCodigoA(),
+                'codigoCostos' => $codigoCostos,
+            );
+            $json[] = $item;
+        }
+
+        return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
+    }
 }

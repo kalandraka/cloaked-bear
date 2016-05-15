@@ -87,6 +87,50 @@ var
 
             // Chosen
             $('#' + lineas.form_id + '_producto').chosen({ alt_search: true });
+
+            chosen_ajaxify(lineas.form_id + '_producto', 'autocompletar_producto_ajax');
+
+            function chosen_ajaxify(id, ajax_url){
+                $('div#' + id + '_chosen .chosen-search input').keyup(function(event){
+                    var keyword = $(this).val();
+                    var keyword_pattern = new RegExp(keyword, 'gi');
+                    if (keyword.length > 3 && event.keyCode != 13 && event.keyCode != 8 && event.keyCode != 27
+                        && event.keyCode > 33 && event.keyCode > 46){
+                        $('div#' + id + '_chosen ul.chosen-results').empty();
+                        $("#"+id).empty();
+                        $.ajax({
+                            url: Routing.generate(ajax_url, {'cad': keyword}),
+                            dataType: "json",
+                            success: function(response){
+                                // map, just as in functional programming :). Other way to say "foreach"
+                                $.map(response, function(item){
+                                    var alt_search = item.codigoATSA;
+                                    if (item.codigoA != null && item.codigoA != ''){
+                                        alt_search = alt_search + ' ' + item.codigoA;
+                                    }
+                                    if (item.codigoCostos != null && item.codigoCostos != ''){
+                                        alt_search = alt_search + ' ' + item.codigoCostos;
+                                    }
+                                    $('#'+id).append('<option data-alt-search="' + alt_search + '" value="' + item.id + '">' + '['+item.codigoATSA+'] ' + item.nombre + '</option>');
+                                });
+                                $("#"+id).trigger("chosen:updated");
+                                $('div#' + id + '_chosen').removeClass('chosen-container-single-nosearch');
+                                $('div#' + id + '_chosen .chosen-search input').val(keyword);
+                                $('div#' + id + '_chosen .chosen-search input').removeAttr('readonly');
+                                $('div#' + id + '_chosen .chosen-search input').focus();
+                                // put that underscores
+                                $('div#' + id + '_chosen .active-result').each(function(){
+                                    var html = $(this).html();
+                                    $(this).html(html.replace(keyword_pattern, function(matched){
+                                        return '<em>' + matched + '</em>';
+                                    }));
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+
             $('#' + lineas.form_id + '_almacen').chosen({ alt_search: true });
         },
         _load_delete_modal: function(event) {

@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Form\Type;
 
+use Buseta\BodegaBundle\Entity\Producto;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,8 +25,9 @@ class NecesidadMaterialLineaType extends AbstractType
             ))
             ->add('producto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Producto',
-                'placeholder' => '---Seleccione---',
+                'placeholder' => '---Filtrar por código o nombre---',
                 'required' => true,
+                'choices' => array(),
                 'attr' => array(
                     'class' => 'form-control',
                 ),

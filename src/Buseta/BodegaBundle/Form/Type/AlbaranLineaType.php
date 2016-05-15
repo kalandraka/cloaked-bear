@@ -21,7 +21,8 @@ class AlbaranLineaType extends AbstractType
         $builder
             ->add('producto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Producto',
-                'placeholder' => '---Seleccione producto---',
+                'placeholder' => '---Filtrar por código o nombre---',
+                'choices' => array(),
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',

@@ -28,7 +28,8 @@ class PedidoCompraLineaType extends AbstractType
             ))
             ->add('producto', 'entity', array(
                 'class' => 'BusetaBodegaBundle:Producto',
-                'placeholder' => '---Seleccione---',
+                'placeholder' => '---Filtrar por código o nombre---',
+                'choices' => array(),
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',

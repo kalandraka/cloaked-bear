@@ -16,6 +16,27 @@ use Doctrine\ORM\NoResultException;
  */
 class ProductoRepository extends EntityRepository
 {
+
+    public function autocompletarProductosNombre($cad)
+    {
+
+        $q = "SELECT p FROM BusetaBodegaBundle:Producto p INNER JOIN p.costoProducto cp
+              WHERE p.nombre LIKE :nombre OR p.codigo LIKE :codigo
+              OR p.codigoA LIKE :codigoA or cp.codigoAlternativo LIKE :codigoACosto";
+
+        $query = $this->_em->createQuery($q);
+        $query->setParameter('nombre', '%'.$cad.'%');
+        $query->setParameter('codigo', '%'.$cad.'%');
+        $query->setParameter('codigoA', '%'.$cad.'%');
+        $query->setParameter('codigoACosto', '%'.$cad.'%');
+
+        try {
+            return $query->getResult();
+        } catch (NoResultException $e) {
+            return false;
+        }
+    }
+
     public function filterProductos($filter)
     {
         $qb = $this->createQueryBuilder('p');
