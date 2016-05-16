@@ -6,15 +6,20 @@ use Buseta\BodegaBundle\Entity\Producto;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Doctrine\ORM\EntityRepository;
 
 class NecesidadMaterialLineaType extends AbstractType
 {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'preSubmit'));
         $builder
             ->add('linea', 'integer', array(
                 'required' => true,
@@ -104,5 +109,29 @@ class NecesidadMaterialLineaType extends AbstractType
     public function getName()
     {
         return 'buseta_bodegabundle_necesidad_material_linea';
+    }
+
+    public function preSubmit(FormEvent $formEvent)
+    {
+        $form = $formEvent->getForm();
+        $data = $formEvent->getData();
+        if ($data !== null) {
+            $id = $data['producto'];
+            $form->add('producto', 'entity', array(
+                'class' => 'BusetaBodegaBundle:Producto',
+                'placeholder' => '---Filtrar por código o nombre---',
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+                'query_builder' => function (EntityRepository $repository) use ($id) {
+                    $qb = $repository->createQueryBuilder('p');
+                    $qb->Where($qb->expr()->eq(':id', 'p.id'))
+                        ->setParameter('id', $id);
+
+                    return $qb;
+                },
+            ));
+        }
     }
 }

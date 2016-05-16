@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Class NecesidadMaterialLineaController
@@ -177,10 +178,27 @@ class NecesidadMaterialLineaController extends Controller
             );
         }
 
+        $form = $handler->getForm();
+        $id = $necesidadMaterialLinea->getProducto()->getId();
+        $form->add('producto', 'entity', array(
+            'class' => 'BusetaBodegaBundle:Producto',
+            'placeholder' => '---Filtrar por código o nombre---',
+            'required' => true,
+            'attr' => array(
+                'class' => 'form-control',
+            ),
+            'query_builder' => function (EntityRepository $repository) use ($id) {
+                $qb = $repository->createQueryBuilder('p');
+                $qb->Where($qb->expr()->eq(':id', 'p.id'))
+                    ->setParameter('id', $id);
+
+                return $qb;
+            },
+        ));
         $renderView = $this->renderView(
             '@BusetaBodega/NecesidadMaterial/Linea/modal_form.html.twig',
             array(
-                'form' => $handler->getForm()->createView(),
+                'form' => $form->createView(),
             )
         );
 

@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Class AlbaranLineaController
@@ -136,9 +137,29 @@ class AlbaranLineaController extends Controller
             ), 500);
         }
 
-        $renderView = $this->renderView('@BusetaBodega/Albaran/Linea/modal_form.html.twig', array(
-            'form' => $handler->getForm()->createView(),
+        $form = $handler->getForm();
+        $id = $albaranLinea->getProducto()->getId();
+        $form->add('producto', 'entity', array(
+            'class' => 'BusetaBodegaBundle:Producto',
+            'placeholder' => '---Filtrar por código o nombre---',
+            'required' => true,
+            'attr' => array(
+                'class' => 'form-control',
+            ),
+            'query_builder' => function (EntityRepository $repository) use ($id) {
+                $qb = $repository->createQueryBuilder('p');
+                $qb->Where($qb->expr()->eq(':id', 'p.id'))
+                    ->setParameter('id', $id);
+
+                return $qb;
+            },
         ));
+        $renderView = $this->renderView(
+            '@BusetaBodega/Albaran/Linea/modal_form.html.twig',
+            array(
+                'form' => $form->createView(),
+            )
+        );
 
         return new JsonResponse(array('view' => $renderView));
     }

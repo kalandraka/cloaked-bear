@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\ORM\EntityRepository;
 
 class PedidoCompraLineaType extends AbstractType
 {
@@ -17,6 +18,7 @@ class PedidoCompraLineaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPresetData'));
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'preSubmit'));
 
         $builder
             ->add('linea', 'integer', array(
@@ -99,6 +101,30 @@ class PedidoCompraLineaType extends AbstractType
                 'placeholder' => '---Seleccione unidad de medida---',
                 'required' => true,
                 'attr' => array('class' => 'form-control',),
+            ));
+        }
+    }
+
+    public function preSubmit(FormEvent $formEvent)
+    {
+        $form = $formEvent->getForm();
+        $data = $formEvent->getData();
+        if ($data !== null) {
+            $id = $data['producto'];
+            $form->add('producto', 'entity', array(
+                'class' => 'BusetaBodegaBundle:Producto',
+                'placeholder' => '---Filtrar por código o nombre---',
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                ),
+                'query_builder' => function (EntityRepository $repository) use ($id) {
+                    $qb = $repository->createQueryBuilder('p');
+                    $qb->Where($qb->expr()->eq(':id', 'p.id'))
+                        ->setParameter('id', $id);
+
+                    return $qb;
+                },
             ));
         }
     }
