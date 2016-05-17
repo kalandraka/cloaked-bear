@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Empleado
  *
- * @ORM\Table()
+ * @ORM\Table(name="d_empleado")
  * @ORM\Entity(repositoryClass="Buseta\EmpleadosBundle\Entity\Repository\EmpleadoRepository")
  */
 class Empleado
@@ -101,7 +101,7 @@ class Empleado
     /**
      * @var string
      *
-     * @ORM\Column(name="hhrr", type="string", length=20)
+     * @ORM\OneToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      */
     private $hhrr;
 
@@ -111,6 +111,7 @@ class Empleado
      * @ORM\ManyToOne(targetEntity="Buseta\EmpleadosBundle\Entity\TipoEmpleado")
      */
     private $tipoEmpleado;
+
 
     /**
      * Get id
@@ -387,30 +388,6 @@ class Empleado
     }
 
     /**
-     * Set hhrr
-     *
-     * @param string $hhrr
-     *
-     * @return Empleado
-     */
-    public function setHhrr($hhrr)
-    {
-        $this->hhrr = $hhrr;
-
-        return $this;
-    }
-
-    /**
-     * Get hhrr
-     *
-     * @return string
-     */
-    public function getHhrr()
-    {
-        return $this->hhrr;
-    }
-
-    /**
      * @return string
      */
     public function getTipoEmpleado()
@@ -427,6 +404,30 @@ class Empleado
     }
 
     /**
+     * Set hhrr
+     *
+     * @param \HatueySoft\SecurityBundle\Entity\User $hhrr
+     *
+     * @return Empleado
+     */
+    public function setHhrr(\HatueySoft\SecurityBundle\Entity\User $hhrr = null)
+    {
+        $this->hhrr = $hhrr;
+
+        return $this;
+    }
+
+    /**
+     * Get hhrr
+     *
+     * @return \HatueySoft\SecurityBundle\Entity\User
+     */
+    public function getHhrr()
+    {
+        return $this->hhrr;
+    }
+
+    /**
      * @return string
      */
     function __toString()
@@ -434,8 +435,11 @@ class Empleado
         return $this->nombres.' '.$this->apellidos;
     }
 
-    public function getNombreCompleto(){
-        return $this->nombres . ' ' . $this->apellidos;
+    /**
+     * @return string
+     */
+    public function getNombreCompleto()
+    {
+        return sprintf('%s %s', $this->nombres, $this->apellidos);
     }
 }
-

@@ -2,9 +2,10 @@
 
 namespace Buseta\EmpleadosBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EmpleadoType extends AbstractType
 {
@@ -17,73 +18,59 @@ class EmpleadoType extends AbstractType
         $builder
             ->add('nombres', 'text', array(
                 'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
             ))
             ->add('apellidos', 'text', array(
                 'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
             ))
             ->add('cedula', 'text', array(
                 'required' => true,
                 'label' => 'Cédula',
-                'attr' => array(
-                    'class' => 'form-control',
-                )
             ))
             ->add('genero', 'choice', array(
                 'label' => 'Género',
                 'choices' => array(
                     'm' => 'Masculino',
                     'f' => 'Femenino'
-                )
+                ),
+                'required' => true,
+                'placeholder' => '---Seleccione---',
             ))
             ->add('estadoCivil','entity',array(
                 'class' => 'BusetaNomencladorBundle:EstadoCivil',
                 'placeholder' => '---Seleccione---',
                 'label' => 'Estado Civil',
                 'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
             ))
             ->add('nacionalidad','entity',array(
                 'class' => 'BusetaNomencladorBundle:Nacionalidad',
                 'placeholder' => '---Seleccione---',
                 'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
             ))
             ->add('direccion', 'textarea', array(
-                'required' => true,
+                'required' => false,
                 'label' => 'Dirección',
-                'attr'   => array(
-                    'class' => 'form-control',
-                )
             ))
             ->add('telefono', 'text', array(
-                'required' => true,
+                'required' => false,
                 'label' => 'Teléfono',
-                'attr'   => array(
-                    'class' => 'form-control',
-                )
             ))
             ->add('fechaNacimiento', 'date', array(
                 'widget' => 'single_text',
                 'label' => 'Fecha de Nacimiento',
                 'required' => false,
                 'format'  => 'dd/MM/yyyy',
-                'attr'   => array(
-                    'class' => 'form-control',
-                ),
             ))
             ->add('pin')
             ->add('codigoBarras')
-            ->add('hhrr')
+            ->add('hhrr', 'entity', array(
+                'class' => 'HatueySoft\SecurityBundle\Entity\User',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('user')
+                        ->where('user.id NOT IN (SELECT u.id FROM HatueySoft\SecurityBundle\Entity\User u JOIN Buseta\EmpleadosBundle\Entity\Empleado e WITH e.hhrr = u.id WHERE e.hhrr IS NOT NULL)');
+                },
+                'required' => false,
+                'placeholder' => '---Seleccione---',
+            ))
             ->add('tipoEmpleado','entity',array(
                 'label'=>'Tipo de Empleado',
                 'class' => 'BusetaEmpleadosBundle:TipoEmpleado',
@@ -92,9 +79,9 @@ class EmpleadoType extends AbstractType
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Buseta\EmpleadosBundle\Entity\Empleado'
@@ -106,6 +93,6 @@ class EmpleadoType extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_empleadosbundle_empleado';
+        return 'busetaempleados_empleado_type';
     }
 }
