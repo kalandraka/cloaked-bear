@@ -73,7 +73,7 @@ class EmpleadoType extends AbstractType
             ))
             ->add('tipoEmpleado','entity',array(
                 'label'=>'Tipo de Empleado',
-                'class' => 'BusetaEmpleadosBundle:TipoEmpleado',
+                'class' => 'BusetaNomencladorBundle:TipoEmpleado',
                 'placeholder' => '---Seleccione---',
             ));
     }
