@@ -1,0 +1,29 @@
+actions:
+  confirm: Aceptar
+  save: Salvar
+  create: Crear
+  show: Ver
+  edit: Editar
+  delete: Eliminar
+  cancel: Cancelar
+  back: Volver
+  list: Listar
+  nuevo: Crear Nuevo
+
+messages:
+  no_results: No existen elementos que mostrar.
+  unexpected_error: Ha ocurrido un error inesperado.
+  create.success: Se han creado los datos de forma satisfactoria.
+  create.error.%key%: Ha ocurrido un error al crear una nueva entidad "key".
+  update.success: Se han actualizado los datos de forma satisfactoria.
+  update.error.%key%: Ha ocurrido un error al actualizar los datos de la entidad "key".
+  delete.success: Se ha eliminado la entidad de forma satisfactoria.
+  delete.error.%key%: Ha ocurrido un error intentando eliminar la entidad "key".
+  danger: Peligro
+
+sexo:
+  masculino: Masculino
+  femenino: Femenino
+  no_aplica: N/A
+
+select.placeholder: '.:: Seleccione ::.'

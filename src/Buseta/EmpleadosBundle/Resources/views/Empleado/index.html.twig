@@ -17,9 +17,7 @@
             <th>Nombre y Apellidos</th>
             <th>Cédula</th>
             <th>Nacionalidad</th>
-            <th>Pin</th>
-            <th>Codigobarras</th>
-            <th>Tipoempleado</th>
+            <th>Tipo Empleado</th>
             <th>Acciones</th>
         </tr>
         </thead>
@@ -30,8 +28,6 @@
                 <td>{{ entity.cedula }}</td>
                 <td>{{ entity.nacionalidad }}</td>
                 {# <td>{% if entity.fechaNacimiento %}{{ entity.fechaNacimiento|date('Y-m-d H:i:s') }}{% endif %}</td> #}
-                <td>{{ entity.pin }}</td>
-                <td>{{ entity.codigoBarras }}</td>
                 <td>{{ entity.tipoEmpleado }}</td>
                 <td style="text-align: center;">
                     <a class="btn btn-success btn-xs" href="{{ path('empleado_show', { 'id': entity.id }) }}">
@@ -40,6 +36,8 @@
                         <span class="glyphicon glyphicon-edit"> {{ 'Editar' }}</span></a>
                 </td>
             </tr>
+        {% else %}
+            <tr><td colspan="5">{{ 'messages.no_results'|trans({}, 'BusetaCoreBundle') }}</td></tr>
         {% endfor %}
         </tbody>
     </table>
