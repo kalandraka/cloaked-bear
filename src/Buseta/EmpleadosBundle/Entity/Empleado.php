@@ -106,9 +106,9 @@ class Empleado
     private $hhrr;
 
     /**
-     * @var string
+     * @var \Buseta\NomencladorBundle\Entity\TipoEmpleado
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\EmpleadosBundle\Entity\TipoEmpleado")
+     * @ORM\ManyToOne(targetEntity="Buseta\NomencladorBundle\Entity\TipoEmpleado")
      */
     private $tipoEmpleado;
 

@@ -234,6 +234,9 @@ easy_admin:
         tipoContacto:
             class: Buseta\NomencladorBundle\Entity\TipoContacto
             label: 'Tipo Contacto'
+        tipoEmpleado:
+            class: Buseta\NomencladorBundle\Entity\TipoEmpleado
+            label: 'Tipo Empleado'
         tarea:
             class: Buseta\NomencladorBundle\Entity\Tarea
             label: 'Tarea'

@@ -1,16 +1,16 @@
 <?php
 
-namespace Buseta\EmpleadosBundle\Entity;
+namespace Buseta\NomencladorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * TipoEmpleado
  *
- * @ORM\Table()
+ * @ORM\Table(name="n_tipo_empleado")
  * @ORM\Entity
  */
-class TipoEmpleado
+class TipoEmpleado extends BaseNomenclador
 {
     /**
      * @var integer
@@ -19,7 +19,7 @@ class TipoEmpleado
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string

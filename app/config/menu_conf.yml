@@ -724,32 +724,7 @@ root:
               route: empleado
               roles:
                 - ROLE_USER
-              type: folder
+              type: item
               disabled: false
               attributes:
                 icon: 'fa fa-user'
-              childrens:
-                menu_G_B:
-                  id: menu_G_A_A
-                  name: null
-                  label: 'Empleados'
-                  route: empleado
-                  roles:
-                    - ROLE_USER
-                  type: folder
-                  disabled: false
-                  attributes:
-                    icon: 'fa fa-user'
-                menu_G_C:
-                  id: menu_G_A_B
-                  name: null
-                  label: 'Tipo de Empleados'
-                  route: tipoempleado
-                  roles:
-                    - ROLE_USER
-                  type: folder
-                  disabled: false
-                  attributes:
-                    icon: 'fa fa-user'
-
-
