@@ -11,14 +11,10 @@
 {% endblock area_trabajo %}
 
 {% block javascripts %}
-    {{ parent() }}
-
+    <script type="text/javascript" src="{{ asset('bundles/busetaempleados/js/empleado.js') }}"></script>
     <script type="text/javascript">
-    $('#buseta_empleadosbundle_empleado_fechaNacimiento').datetimepicker({
-        'format': 'DD/MM/YYYY'
-    });
-
-
+        $(document).ready(function () {
+            var empleado = new TallerApp.Empleados.empleado('{{ form.vars.id }}');
+        });
     </script>
-
 {% endblock %}

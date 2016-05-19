@@ -66,40 +66,40 @@ class Empleado
     /**
      * @var string
      *
-     * @ORM\Column(name="direccion", type="text")
+     * @ORM\Column(name="direccion", type="text", nullable=true)
      */
     private $direccion;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono", type="string", length=25)
+     * @ORM\Column(name="telefono", type="string", length=25, nullable=true)
      */
     private $telefono;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechaNacimiento", type="date")
+     * @ORM\Column(name="fechaNacimiento", type="date", nullable=true)
      */
     private $fechaNacimiento;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="pin", type="string", length=15)
+     * @ORM\Column(name="pin", type="string", length=15, nullable=true)
      */
     private $pin;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="codigoBarras", type="string", length=50)
+     * @ORM\Column(name="codigoBarras", type="string", length=50, nullable=true)
      */
     private $codigoBarras;
 
     /**
-     * @var string
+     * @var \HatueySoft\SecurityBundle\Entity\User
      *
      * @ORM\OneToOne(targetEntity="HatueySoft\SecurityBundle\Entity\User")
      */

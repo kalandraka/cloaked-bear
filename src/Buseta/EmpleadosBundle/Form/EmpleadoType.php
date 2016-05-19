@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class EmpleadoType extends AbstractType
 {
@@ -60,8 +62,17 @@ class EmpleadoType extends AbstractType
                 'required' => false,
                 'format'  => 'dd/MM/yyyy',
             ))
-            ->add('pin')
-            ->add('codigoBarras')
+            ->add('pin', 'password', array(
+                'required' => false,
+                'constraints' => array(
+                    new Length(array('max' => 4, 'min' => 4)),
+                    new Regex(array('pattern'=> '/\d+/', 'message' => 'Este valor debe ser solo números.'))
+                )
+            ))
+            ->add('codigoBarras', 'password', array(
+                'label' => 'Código de Barras',
+                'required' => false,
+            ))
             ->add('hhrr', 'entity', array(
                 'class' => 'HatueySoft\SecurityBundle\Entity\User',
                 'query_builder' => function (EntityRepository $er) {
