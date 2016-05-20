@@ -21,8 +21,13 @@ class FechaSistemaExtension extends \Twig_Extension
 
     public function showFechaSistema()
     {
-        if($this->fechaSistemaManager->isActive())
-            return '<div class="dateChangeAlert">Activa fecha del sistema</div>';
+        if($this->fechaSistemaManager->isActive()) {
+            return sprintf(
+                '<div class="dateChangeAlert">%s "%s"</div>',
+                strtoupper('Activa fecha del sistema'),
+                date_format($this->fechaSistemaManager->getFechaSistema(), 'd/m/Y')
+            );
+        }
     }
 
     public function getName()

@@ -1,0 +1,45 @@
+/* --- Flotating text --- */
+.dateChangeAlert{
+    position:fixed;
+    left:35%;
+    top:0px;
+    padding:10px 10px;
+    display:inline-block;
+    background:red;
+    font-weight:bold;
+    font-size:14px;
+    z-index:1029;
+    line-height:20px;
+    transition:All 1s ease;
+    text-shadow:1px 1px 0 #900;
+    color: #fff;
+
+    -moz-border-radius: 0px 0px 15px 15px;
+    -webkit-border-radius: 0px 0px 15px 15px;
+    border-radius: 0px 0px 15px 15px;
+    /*IE 7 AND 8 DO NOT SUPPORT BORDER RADIUS*/
+    -moz-box-shadow: 0px 0px 25px #000000;
+    -webkit-box-shadow: 0px 0px 25px #000000;
+    box-shadow: 0px 0px 25px #000000;
+    /*IE 7 AND 8 DO NOT SUPPORT BLUR PROPERTY OF SHADOWS*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#ff4a1a', endColorstr = '#b83513');
+    /*INNER ELEMENTS MUST NOT BREAK THIS ELEMENTS BOUNDARIES*/
+    /*Element must have a height (not auto)*/
+    /*All filters must be placed together*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#ff4a1a', endColorstr = '#b83513')";
+    /*Element must have a height (not auto)*/
+    /*All filters must be placed together*/
+    background-image: -moz-linear-gradient(top, #ff4a1a, #b83513);
+    background-image: -ms-linear-gradient(top, #ff4a1a, #b83513);
+    background-image: -o-linear-gradient(top, #ff4a1a, #b83513);
+    background-image: -webkit-gradient(linear, center top, center bottom, from(#ff4a1a), to(#b83513));
+    background-image: -webkit-linear-gradient(top, #ff4a1a, #b83513);
+    background-image: linear-gradient(top, #ff4a1a, #b83513);
+    /*--IE9 DOES NOT SUPPORT CSS3 GRADIENT BACKGROUNDS--*/
+    opacity: 0.9;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity = 90);
+    /*-ms-filter must come before filter*/
+    filter: alpha(opacity = 90);
+    /*INNER ELEMENTS MUST NOT BREAK THIS ELEMENTS BOUNDARIES*/
+    /*All filters must be placed together*/
+}
