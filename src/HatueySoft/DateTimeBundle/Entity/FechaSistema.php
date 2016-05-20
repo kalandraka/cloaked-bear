@@ -24,7 +24,7 @@ class FechaSistema
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha", type="date")
+     * @ORM\Column(name="fecha", type="date", nullable=true)
      */
     private $fecha;
 
@@ -60,7 +60,7 @@ class FechaSistema
      *
      * @return FechaSistema
      */
-    public function setFecha($fecha)
+    public function setFecha(\DateTime $fecha = null)
     {
         $this->fecha = $fecha;
 
@@ -97,6 +97,14 @@ class FechaSistema
      * @return boolean
      */
     public function getActivo()
+    {
+        return $this->activo;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActivo()
     {
         return $this->activo;
     }

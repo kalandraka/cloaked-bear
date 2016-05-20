@@ -54,4 +54,4 @@ buseta_notificaciones:
 hatueysoft_datetime:
     resource: "@HatueySoftDateTimeBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /security

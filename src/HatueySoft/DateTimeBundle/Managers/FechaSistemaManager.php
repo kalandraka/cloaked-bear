@@ -3,6 +3,7 @@
 namespace HatueySoft\DateTimeBundle\Managers;
 
 use Doctrine\ORM\EntityManager;
+use HatueySoft\DateTimeBundle\Entity\FechaSistema;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Util\StringUtils;
 
@@ -55,13 +56,46 @@ class FechaSistemaManager
         //comprobando si existe fecha de sistema activa
         $fechaSistemaConfig = $this->em->getRepository('HatueySoftDateTimeBundle:FechaSistema')
             ->getUserConfig($username);
-        if ($fechaSistemaConfig && $fechaSistemaConfig->getActivo()) {
+        if ($fechaSistemaConfig && $fechaSistemaConfig->isActivo()) {
             $fechaSistema = $fechaSistemaConfig->getFecha();
         } else {
             $fechaSistema = new \DateTime();
         }
 
         return $fechaSistema;
+    }
+
+    public function setFechaSistema(\DateTime $date = null)
+    {
+        $username = $this->tokenStorage->getToken()->getUsername();
+        $fechaSistemaConfig = $this->em->getRepository('HatueySoftDateTimeBundle:FechaSistema')
+            ->getUserConfig($username);
+
+        if ($fechaSistemaConfig !== null && $fechaSistemaConfig !== false) {
+            if ($date === null) {
+                $fechaSistemaConfig->setActivo(false);
+                $fechaSistemaConfig->setFecha(null);
+            } else {
+                $fechaSistemaConfig->setActivo(true);
+                $fechaSistemaConfig->setFecha($date);
+            }
+
+            $this->em->flush();
+
+            return $fechaSistemaConfig;
+        } elseif ($date !== null) {
+            $fechaSistemaConfig = new FechaSistema();
+            $fechaSistemaConfig->setActivo(true);
+            $fechaSistemaConfig->setFecha($date);
+            $fechaSistemaConfig->setUsername($username);
+
+            $this->em->persist($fechaSistemaConfig);
+            $this->em->flush();
+
+            return $fechaSistemaConfig;
+        }
+
+        return false;
     }
 
     /**

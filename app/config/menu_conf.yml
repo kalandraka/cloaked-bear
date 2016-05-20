@@ -653,6 +653,18 @@ root:
               disabled: false
               attributes: {  }
               childrens: {  }
+            menu_F_G:
+              id: menu_F_G
+              name: null
+              label: 'Fecha de sistema'
+              route: hatueysoft_datetime_fechasistema
+              roles:
+                - ROLE_ADMIN
+                - ROLE_SUPER_ADMIN
+              type: item
+              disabled: false
+              attributes: {  }
+              childrens: {  }
         menu_N:
           id: menu_N
           name: menu_notificaciones

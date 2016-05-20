@@ -2,6 +2,7 @@
 
 namespace HatueySoft\DateTimeBundle\Controller;
 
+use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 use HatueySoft\DateTimeBundle\Entity\FechaSistema;
 use HatueySoft\DateTimeBundle\Form\Type\FechaSistemaType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,6 +19,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  *
  * @Route("/fechasistema")
  * @Security("has_role('ROLE_ADMIN')")
+ *
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo Seguridad", routeName="security_usuario")
+ * @Breadcrumb(title="Configuración Fecha de Sistema")
  */
 class FechaSistemaController extends Controller
 {
@@ -31,21 +36,19 @@ class FechaSistemaController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
+        $username = $this->get('security.token_storage')->getToken()->getUsername();
 
-        $fechaSistemaConfig = $em->getRepository('HatueySoftDateTimeBundle:FechaSistema')->findAll();
-        if(count($fechaSistemaConfig) == 1)
-            $fechaSistemaConfig = $fechaSistemaConfig[0];
-        elseif(count($fechaSistemaConfig) == 0)
-            $fechaSistemaConfig = new FechaSistema();
-        else
-            throw new \Exception('No pueden existir más de una configuración para fecha de sistema');
-
-        $form = $this->createForm(new FechaSistemaType(), $fechaSistemaConfig);
+        $fechaSistemaConfig = $em->getRepository('HatueySoftDateTimeBundle:FechaSistema')->getUserConfig($username);
+        if ($fechaSistemaConfig->isActivo()) {
+            $form = $this->createForm(new FechaSistemaType(), $fechaSistemaConfig);
+        } else {
+            $form = $this->createForm(new FechaSistemaType());
+        }
 
         return $this->render('@HatueySoftDateTime/FechaSistema/index.html.twig',array(
-                'form' => $form->createView(),
-                'entity' => $fechaSistemaConfig,
-            ));
+            'form' => $form->createView(),
+            'entity' => $fechaSistemaConfig,
+        ));
     }
 
     /**
@@ -59,51 +62,34 @@ class FechaSistemaController extends Controller
      */
     public function updateAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new FechaSistemaType());
 
-        $fechaSistemaConfig = $em->getRepository('HatueySoftDateTimeBundle:FechaSistema')->findAll();
-        if(count($fechaSistemaConfig) == 1)
-            $fechaSistemaConfig = $fechaSistemaConfig[0];
-        elseif(count($fechaSistemaConfig) == 0)
-            $fechaSistemaConfig = new FechaSistema();
-        else
-            throw new \Exception('No pueden existir más de una configuración para fecha de sistema');
-
-        $form = $this->createForm(new FechaSistemaType(), $fechaSistemaConfig);
         $form->submit($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $fechaSistemaManager = $this->get('hatueysoft.fecha_sistema.manager');
 
-        if($form->isValid()){
+            if ($form->get('activo')->getData()
+                && $fechaSistemaConfig = $fechaSistemaManager->setFechaSistema($form->get('fecha')->getData())
+            ) {
+                $this->get('session')->getFlashBag()->set('success', sprintf(
+                    'Se encuentra activa la fecha "%s" para el usuario "%s" en el sistema.',
+                    date_format($fechaSistemaConfig->getFecha(), 'd/m/Y'),
+                    $fechaSistemaConfig->getUsername()
+                ));
 
-            if($fechaSistemaConfig->getActivo() && ($fechaSistemaConfig->getFecha() == null || $fechaSistemaConfig->getFecha() == ''))
-            {
-                $form->addError(new FormError('No puede establecer como activa la configuración de fecha del sistema sin seleccionar una fecha'));
-            }
-            else
-            {
-                if($fechaSistemaConfig->getActivo())
-                {
-                    $msg = 'Se han salvado los cambios satisfactoriamente. La fecha se encuentra "Activa".';
-                }
-                else
-                {
-                    $fechaSistemaConfig->setFecha(null);
-                    $msg = 'Se han salvado los cambios satisfactoriamente. La fecha se encuentra "No activa".';
-                }
+                return $this->redirect($this->generateUrl('hatueysoft_datetime_fechasistema'));
+            } else {
+                $fechaSistemaManager->setFechaSistema(null);
 
-                //persisitiendo los datos
-                $em->persist($fechaSistemaConfig);
-                $em->flush();
-
-                $this->get('session')->getFlashBag()->set('success',$msg);
+                $this->get('session')->getFlashBag()->set('success', 'Se ha desactivado la fecha del sistema.');
 
                 return $this->redirect($this->generateUrl('hatueysoft_datetime_fechasistema'));
             }
         }
 
         return $this->render('@HatueySoftDateTime/FechaSistema/index.html.twig',array(
-                'form' => $form->createView(),
-                'entity' => $fechaSistemaConfig,
-            ));
+            'form' => $form->createView(),
+        ));
     }
 
 }

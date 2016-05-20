@@ -1,26 +1,24 @@
-{% extends "BusetaBusesBundle::layout.html.twig" %}
+{% extends "@HatueySoftSecurity/layout.html.twig" %}
 
 {% block title block('header') %}
 
 {% block header 'Cambio de Fecha del Sistema' %}
 
-{% block area_trabajo %}
-
+{% block content %}
     <form action="{{ path('hatueysoft_datetime_fechasistema_update') }}" method="post" enctype="multipart/form-data">
         {{ form_errors(form) }}
         {{ form_row(form._token) }}
 
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-3">
                 {{ form_row(form.fecha) }}
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-4">
                 {{ form_row(form.activo) }}
             </div>
         </div>
-
-        <br/>
-
         {# buttons group #}
         <div class="row">
             <div class="col-md-4">
@@ -29,24 +27,15 @@
         </div>
 
     </form>
-
-{% endblock area_trabajo %}
+{% endblock content %}
 
 {% block javascripts %}
-    {{ parent() }}
-
     <script type="text/javascript">
         $(document).ready(function(){
-
-            var horaSistema = $('#buseta_corebundle_fechasistematype_fecha').datetimepicker({
-                today: 'Hoy',
-                format: 'DD/MM/YYYY',
-                formatSubmit: 'DD/MM/YYYY'
+            $('#datetime_fechasistema_type_fecha').datetimepicker({
+                useCurrent: false,
+                format: 'DD/MM/YYYY'
             });
-
-            var horaSistema = $('#buseta_corebundle_fechasistematype_fecha').val();
-            $('input:hidden[name^="buseta_corebundle_fechasistematype[fecha]_submit"]').val(horaSistema);
-
         });
     </script>
 {% endblock %}
