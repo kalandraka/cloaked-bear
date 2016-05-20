@@ -271,4 +271,26 @@ class MultaController extends Controller
 
         return new Response(json_encode("success"), 200);
     }
+
+    /**
+     * Finds and displays a Flow Diagram for the Multa entity.
+     *
+     * @Route("/{id}/diagram", name="multa_diagram")
+     * @Method("GET")
+     * @Breadcrumb(title="Diagrama de Multa", routeName="multa_diagram", routeParameters={"id"})
+     */
+    public function diagramAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('BusetaTransitoBundle:Multa')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Multa entity.');
+        }
+
+        return $this->render('BusetaTransitoBundle:Multa:diagram.html.twig', array(
+            'entity'      => $entity
+        ));
+    }
 }

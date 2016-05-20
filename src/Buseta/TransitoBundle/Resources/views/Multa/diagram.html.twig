@@ -1,0 +1,207 @@
+{% extends "BusetaTransitoBundle::layout.html.twig" %}
+
+{% block title block('header') %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/busetatransito/third_party/jointjs/joint.min.css') }}"/>
+{% endblock %}
+
+{% block header 'Diagrama de flujo de multa' %}
+
+{% block header_right %}
+    {% from '@BusetaTemplate/Macros/macros.html.twig' import documentState %}
+
+    <h4 class="pull-right">
+        {{ documentState(entity.estado, 'BusetaTransitoBundle') }}
+    </h4>
+{% endblock %}
+
+{% block area_trabajo %}
+    <div class="graph-actions">
+        <a class="btn btn-primary" id="saveToSVG" href="#">
+            <i class="fa fa-image"></i> Mostrar SVG</a>
+        <a class="btn btn-primary" href="{{ path('multa_edit', { 'id': entity.id }) }}">
+            <i class="fa fa-edit"></i> Editar Multa</a>
+        <a class="btn btn-primary" href="{{ path('multa_show', { 'id': entity.id }) }}">
+            <i class="fa fa-search"></i> Mostrar Multa</a>
+        <a class="btn btn-primary" href="{{ path('multa') }}">
+            <i class="fa fa-list"></i> Listado de Multas</a>
+    </div>
+    <div id="multa_diagram"></div>
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/busetatransito/third_party/jointjs/lodash.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/busetatransito/third_party/jointjs/backbone-min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/busetatransito/third_party/jointjs/joint.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/busetatransito/third_party/jointjs/exporter.js') }}"></script>
+
+    <script type="text/javascript">
+
+        var graph = new joint.dia.Graph();
+
+        var paper = new joint.dia.Paper({
+            el: $('#multa_diagram'),
+            width: 800,
+            height: 600,
+            gridSize: 1,
+            model: graph,
+            perpendicularLinks: true,
+            restrictTranslate: true
+        });
+
+        var node = function (x, y, width, height, name, properties, background, stroke, textColor) {
+
+            textColor = textColor || "#000";
+            var text_ = name;
+            //text_ = text_ + "\n";
+            //text_ = text_ + "foo: bar";
+            var cell = new joint.shapes.basic.Rect({
+                position: {x: x, y: y},
+                size: {width: width, height: height},
+                attrs: {
+                    rect: {fill: background, rx: 5, ry: 5, 'stroke-width': 2, stroke: stroke},
+                    text: {
+                        text: text_, fill: textColor, 'font-size': 16,
+                        'font-weight': 'bold'
+                    }
+                }
+            });
+
+            graph.addCell(cell);
+            return cell;
+        };
+
+        function link(source, target, breakpoints) {
+
+            var cell = new joint.shapes.org.Arrow({
+                source: {id: source.id},
+                target: {id: target.id},
+                attrs: {
+                    '.connection': {
+                        'fill': 'none',
+                        'stroke-linejoin': 'round',
+                        'stroke-width': '2',
+                        'stroke': '#455D32',
+                    },
+                    '.marker-target': {
+                        fill: '#455D32', stroke: '#455D32', d: 'M 10 0 L 0 5 L 10 10 z'
+                    }
+                }
+
+            });
+            graph.addCell(cell);
+            return cell;
+        }
+
+        var start = new joint.shapes.basic.Circle({
+            position: {x: 310, y: 30},
+            size: {width: 30, height: 30},
+            attrs: {
+                circle: {
+                    fill: '#EDF0C1', 'stroke-width': 2, stroke: '#889D65',
+                    transform: 'translate(0, 50)',
+                },
+                text: {
+                    text: 'Inicio', fill: 'black', 'font-size': 16,
+                    'font-weight': 'bold',
+                }
+            }
+        });
+
+        graph.addCell(start);
+
+        var parte = node(250, 120, 150, 50, 'Parte', '', '#CCB9DA', '#4A325D');
+        var multa = node(250, 220, 150, 50, 'Multa', '', '#C7DAB9', '#325A5D');
+
+        {% if entity.estado == 'WN' %}
+        var apelada = node(250, 320, 150, 50, 'Se apeló', '', '#CCB9DA', '#4A325D');
+        var ganada = node(50, 320, 150, 50, 'Se ganó', '', '#C7DAB9', '#325A5D');
+        link(multa, apelada, []);
+        link(apelada, ganada, []);
+        var end = new joint.shapes.basic.Circle({
+            position: {x: 110, y: 440},
+            size: {width: 30, height: 30},
+            attrs: {
+                circle: {
+                    fill: '#FDD6D1', 'stroke-width': 2, stroke: '#6D1E24',
+                    transform: 'translate(0, -60)',
+                },
+                text: {
+                    text: 'Fin', fill: 'black', 'font-size': 16,
+                    'font-weight': 'bold',
+                }
+            }
+        });
+        graph.addCell(end);
+        link(ganada, end, []);
+        {% elseif entity.estado == 'PA' %}
+        var no_apelada = node(250, 320, 150, 50, 'No se apeló', '', '#CCB9DA', '#4A325D');
+        var pagada = node(450, 320, 150, 50, 'Se pagó', '', '#C7DAB9', '#325A5D');
+        link(multa, no_apelada, []);
+        link(no_apelada, pagada, []);
+        var end = new joint.shapes.basic.Circle({
+            position: {x: 510, y: 440},
+            size: {width: 30, height: 30},
+            attrs: {
+                circle: {
+                    fill: '#FDD6D1', 'stroke-width': 2, stroke: '#6D1E24',
+                    transform: 'translate(0, -60)',
+                },
+                text: {
+                    text: 'Fin', fill: 'black', 'font-size': 16,
+                    'font-weight': 'bold',
+                }
+            }
+        });
+        graph.addCell(end);
+        link(pagada, end, []);
+        {% elseif entity.estado == 'LS' %}
+        var apelada = node(250, 320, 150, 50, 'Se apeló', '', '#CCB9DA', '#4A325D');
+        var perdida = node(450, 320, 150, 50, 'Se perdió', '', '#C7DAB9', '#325A5D');
+        var pagada = node(450, 420, 150, 50, 'Se pagó', '', '#CCB9DA', '#4A325D');
+        link(multa, apelada, []);
+        link(apelada, perdida, []);
+        link(perdida, pagada, []);
+        var end = new joint.shapes.basic.Circle({
+            position: {x: 510, y: 530},
+            size: {width: 30, height: 30},
+            attrs: {
+                circle: {
+                    fill: '#FDD6D1', 'stroke-width': 2, stroke: '#6D1E24',
+                    transform: 'translate(0, -60)',
+                },
+                text: {
+                    text: 'Fin', fill: 'black', 'font-size': 16,
+                    'font-weight': 'bold',
+                }
+            }
+        });
+        graph.addCell(end);
+        link(pagada, end, []);
+        {% elseif entity.estado == 'AP' %}
+        var apelada = node(250, 320, 150, 50, 'Se apeló', '', '#CCB9DA', '#4A325D');
+        link(multa, apelada, []);
+        {% endif %}
+
+        link(start, parte, []);
+        link(parte, multa, []);
+
+        $('#saveToSVG').on('click', saveSVG);
+
+        function saveSVG(e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+            paper.openAsSVG();
+        }
+    </script>
+{% endblock %}

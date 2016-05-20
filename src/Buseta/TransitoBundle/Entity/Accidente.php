@@ -120,6 +120,12 @@ class Accidente
     private $conciliacion = false;
 
     /**
+     * @var boolean
+     * @ORM\Column(name="juicio", type="boolean")
+     */
+    private $juicio = false;
+
+    /**
      * Get id
      *
      * @return integer
@@ -367,5 +373,29 @@ class Accidente
     public function getVehiculo()
     {
         return $this->vehiculo;
+    }
+
+    /**
+     * Set juicio
+     *
+     * @param boolean $juicio
+     *
+     * @return Accidente
+     */
+    public function setJuicio($juicio)
+    {
+        $this->juicio = $juicio;
+
+        return $this;
+    }
+
+    /**
+     * Get juicio
+     *
+     * @return boolean
+     */
+    public function getJuicio()
+    {
+        return $this->juicio;
     }
 }

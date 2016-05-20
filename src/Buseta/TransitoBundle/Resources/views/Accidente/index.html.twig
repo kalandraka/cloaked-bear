@@ -97,7 +97,7 @@
                             Conciliación
                             </span>
                             {% endif %}
-                            {% if entity.estado == 'TRANSITO' and not entity.conciliacion %}
+                            {% if entity.estado == 'TRANSITO' and entity.juicio %}
                                 <span class="label label-{{ badge }}" style="margin-left:5px;">
                             Juicio
                             </span>
@@ -108,6 +108,11 @@
                                 <a class="btn btn-success btn-xs"
                                    href="{{ path('accidente_show', { 'id': entity.id }) }}"><span
                                             class="glyphicon glyphicon-search"> Mostrar</span></a>
+                            </div>
+                            <div class="btn-group">
+                                <a class="btn btn-primary btn-xs"
+                                   href="{{ path('accidente_diagram', { 'id': entity.id }) }}"><span
+                                            class="glyphicon glyphicon-picture"> Diagrama</span></a>
                             </div>
                             <div class="btn-group">
                                 <a class="btn btn-danger btn-xs"

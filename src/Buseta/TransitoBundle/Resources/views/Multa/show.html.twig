@@ -55,7 +55,7 @@
             {% endif %}
             <td style="{{ amount_style }}">{{ entity.importe }}</td>
         </tr>
-        {% if entity.estado == 'WN' or entity.estado == 'LS'%}
+        {% if entity.estado == 'WN' or entity.estado == 'LS' %}
             <tr>
                 <th>Importe Abogado</th>
                 <td>{{ entity.importeAbogado }}</td>
@@ -71,6 +71,8 @@
             <i class="fa fa-edit"></i> Editar</a>
         <a class="btn btn-primary" href="{{ path('multa') }}">
             <i class="fa fa-list"></i> Listado</a>
+        <a class="btn btn-primary" href="{{ path('multa_diagram', { 'id': entity.id }) }}">
+            <i class="fa fa-sitemap"></i> Diagrama</a>
         {% if entity is defined and entity.estado == 'BO' %}
             <a class="btn btn-primary" href="{{ path('cambiarEstadoMulta', { 'id': entity.id, 'state': 'AP' }) }}">
                 <span class="glyphicon glyphicon-primary"></span><i class="fa fa-legal"></i>

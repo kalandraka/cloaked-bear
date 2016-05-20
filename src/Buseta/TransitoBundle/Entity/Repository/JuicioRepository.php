@@ -10,4 +10,14 @@ namespace Buseta\TransitoBundle\Entity\Repository;
  */
 class JuicioRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByAccOrderedByDate($accidente)
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT j FROM BusetaTransitoBundle:Juicio j
+                 WHERE j.accidente = :accidente ORDER BY j.fechaFin DESC
+                '
+            )->setParameter('accidente', $accidente)
+            ->getResult();
+    }
 }

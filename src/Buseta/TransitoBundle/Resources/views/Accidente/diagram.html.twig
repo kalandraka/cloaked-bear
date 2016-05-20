@@ -1,0 +1,270 @@
+{% extends "BusetaTransitoBundle::layout.html.twig" %}
+
+{% block title block('header') %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/busetatransito/third_party/jointjs/joint.min.css') }}"/>
+{% endblock %}
+
+{% block header 'Diagrama de flujo de accidente' %}
+
+{% block header_right %}
+    {% from '@BusetaTemplate/Macros/macros.html.twig' import documentState %}
+
+    <h4 class="pull-right">
+        {{ documentState(entity.estado, 'BusetaTransitoBundle') }}
+    </h4>
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <div class="graph-actions">
+        <a class="btn btn-primary" id="saveToSVG" href="#">
+            <i class="fa fa-image"></i> Mostrar SVG</a>
+        <a class="btn btn-primary" href="{{ path('accidente_edit', { 'id': entity.id }) }}">
+            <i class="fa fa-edit"></i> Editar Accidente</a>
+        <a class="btn btn-primary" href="{{ path('accidente_show', { 'id': entity.id }) }}">
+            <i class="fa fa-search"></i> Mostrar Accidente</a>
+        <a class="btn btn-primary" href="{{ path('accidente') }}">
+            <i class="fa fa-list"></i> Listado de Accidentes</a>
+    </div>
+    <div id="accidente_diagram"></div>
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/busetatransito/third_party/jointjs/lodash.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/busetatransito/third_party/jointjs/backbone-min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/busetatransito/third_party/jointjs/joint.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/busetatransito/third_party/jointjs/exporter.js') }}"></script>
+
+    <script type="text/javascript">
+
+        var responsableNames = {
+            'NOHUBO': 'No hubo',
+            'CHOFER': 'Chofer',
+            'TERCERO': 'Tercero',
+            'EMPRESA': 'Empresa',
+        };
+
+        var quienPagaNames = {
+            'NADIE': 'Nadie',
+            'CHOFER': 'Chofer',
+            'TERCERO': 'Tercero',
+            'EMPRESA': 'Empresa',
+            'TALLER': 'Taller',
+            'SEGURO': 'Seguro',
+        };
+
+        var juicioResultadoNames = {
+            'NORESPONSABLE': 'No responsable',
+            'RESPONSABLE': 'Responsable',
+            'EMPATE': 'Empate',
+        };
+
+        var graph = new joint.dia.Graph();
+
+        var paper = new joint.dia.Paper({
+            el: $('#accidente_diagram'),
+            width: 800,
+            height: 800,
+            gridSize: 1,
+            model: graph,
+            perpendicularLinks: true,
+            restrictTranslate: true
+        });
+
+        var node = function (x, y, width, height, name, properties, background, stroke, textColor) {
+
+            textColor = textColor || "#000";
+            var text_ = name;
+            //text_ = text_ + "\n";
+            //text_ = text_ + "foo: bar";
+            var cell = new joint.shapes.basic.Rect({
+                position: {x: x, y: y},
+                size: {width: width, height: height},
+                attrs: {
+                    rect: {fill: background, rx: 5, ry: 5, 'stroke-width': 2, stroke: stroke},
+                    text: {
+                        text: text_, fill: textColor, 'font-size': 16,
+                        'font-weight': 'bold'
+                    }
+                }
+            });
+
+            graph.addCell(cell);
+            return cell;
+        };
+
+        function link(source, target, breakpoints) {
+
+            var cell = new joint.shapes.org.Arrow({
+                source: {id: source.id},
+                target: {id: target.id},
+                attrs: {
+                    '.connection': {
+                        'fill': 'none',
+                        'stroke-linejoin': 'round',
+                        'stroke-width': '2',
+                        'stroke': '#455D32',
+                    },
+                    '.marker-target': {
+                        fill: '#455D32', stroke: '#455D32', d: 'M 10 0 L 0 5 L 10 10 z'
+                    }
+                }
+
+            });
+            graph.addCell(cell);
+            return cell;
+        }
+
+        var start = new joint.shapes.basic.Circle({
+            position: {x: 310, y: 30},
+            size: {width: 30, height: 30},
+            attrs: {
+                circle: {
+                    fill: '#EDF0C1', 'stroke-width': 2, stroke: '#889D65',
+                    transform: 'translate(0, 50)',
+                },
+                text: {
+                    text: 'Inicio', fill: 'black', 'font-size': 16,
+                    'font-weight': 'bold',
+                }
+            }
+        });
+
+        graph.addCell(start);
+
+        var parte = node(250, 120, 150, 50, 'Parte', '', '#CCB9DA', '#4A325D');
+        var accidente = node(250, 220, 150, 50, 'Accidente', '', '#C7DAB9', '#325A5D');
+
+        link(start, parte, []);
+        link(parte, accidente, []);
+
+        {% if entity.estado == 'NOPARTE' %}
+        var noparte = node(250, 320, 150, 50, 'No hubo parte', '', '#CCB9DA', '#4A325D');
+        var responsable = node(450, 320, 200, 50,
+                'Responsable: ' + responsableNames['{{ entity.responsable }}'], '', '#C7DAB9', '#325A5D');
+        var quienPaga = node(450, 420, 200, 50,
+                'Paga: ' + quienPagaNames['{{ entity.quienPaga }}'], '', '#CCB9DA', '#4A325D');
+        link(accidente, noparte, []);
+        link(noparte, responsable, []);
+        link(responsable, quienPaga, []);
+        var end = new joint.shapes.basic.Circle({
+            position: {x: 535, y: 530},
+            size: {width: 30, height: 30},
+            attrs: {
+                circle: {
+                    fill: '#FDD6D1', 'stroke-width': 2, stroke: '#6D1E24',
+                    transform: 'translate(0, -60)',
+                },
+                text: {
+                    text: 'Fin', fill: 'black', 'font-size': 16,
+                    'font-weight': 'bold',
+                }
+            }
+        });
+        graph.addCell(end);
+        link(quienPaga, end, []);
+        {% elseif entity.estado == 'PENAL' %}
+        var huboparte = node(250, 320, 150, 50, 'Hubo parte', '', '#CCB9DA', '#4A325D');
+        var penal = node(50, 320, 150, 50, 'Penal', '', '#C7DAB9', '#325A5D');
+        link(accidente, huboparte, []);
+        link(huboparte, penal, []);
+        var end = new joint.shapes.basic.Circle({
+            position: {x: 110, y: 440},
+            size: {width: 30, height: 30},
+            attrs: {
+                circle: {
+                    fill: '#FDD6D1', 'stroke-width': 2, stroke: '#6D1E24',
+                    transform: 'translate(0, -60)',
+                },
+                text: {
+                    text: 'Fin', fill: 'black', 'font-size': 16,
+                    'font-weight': 'bold',
+                }
+            }
+        });
+        graph.addCell(end);
+        link(penal, end, []);
+        {% elseif entity.estado == 'TRANSITO' %}
+        var huboparte = node(250, 320, 150, 50, 'Hubo parte', '', '#CCB9DA', '#4A325D');
+        link(accidente, huboparte, []);
+        var transito = node(50, 320, 150, 50, 'Tránsito', '', '#C7DAB9', '#325A5D');
+        link(huboparte, transito, []);
+        {% if entity.conciliacion%}
+        var conciliacion = node(50, 420, 150, 50, 'Conciliación', '', '#CCB9DA', '#4A325D');
+        link(transito, conciliacion, []);
+        var responsable = node(250, 420, 200, 50,
+                'Responsable: ' + responsableNames['{{ entity.responsable }}'], '', '#C7DAB9', '#325A5D');
+        link(conciliacion, responsable, []);
+        var quienPaga = node(250, 520, 200, 50,
+                'Paga: ' + quienPagaNames['{{ entity.quienPaga }}'], '', '#CCB9DA', '#4A325D');
+        link(responsable, quienPaga, []);
+        var end = new joint.shapes.basic.Circle({
+            position: {x: 335, y: 630},
+            size: {width: 30, height: 30},
+            attrs: {
+                circle: {
+                    fill: '#FDD6D1', 'stroke-width': 2, stroke: '#6D1E24',
+                    transform: 'translate(0, -60)',
+                },
+                text: {
+                    text: 'Fin', fill: 'black', 'font-size': 16,
+                    'font-weight': 'bold',
+                }
+            }
+        });
+        graph.addCell(end);
+        link(quienPaga, end, []);
+        {% else %}
+        var noconciliacion = node(50, 420, 150, 50, 'No conciliación', '', '#CCB9DA', '#4A325D');
+        link(transito, noconciliacion, []);
+        {% if juicio != null %}
+        var juicio = node(270, 420, 150, 50, 'Juicio', '', '#C7DAB9', '#325A5D');
+        link(noconciliacion, juicio, []);
+        var resultado = node(250, 520, 220, 50,
+                'Resultado: ' + juicioResultadoNames['{{ juicio.resultado }}'], '', '#CCB9DA', '#4A325D');
+        link(juicio, resultado, []);
+        var responsable = node(255, 620, 200, 50,
+                'Responsable: ' + responsableNames['{{ juicio.responsable }}'], '', '#C7DAB9', '#325A5D');
+        link(resultado, responsable, []);
+        var quienPaga = node(500, 620, 200, 50,
+                'Paga: ' + quienPagaNames['{{ juicio.quienPaga }}'], '', '#CCB9DA', '#4A325D');
+        link(responsable, quienPaga, []);
+        var end = new joint.shapes.basic.Circle({
+            position: {x: 590, y: 730},
+            size: {width: 30, height: 30},
+            attrs: {
+                circle: {
+                    fill: '#FDD6D1', 'stroke-width': 2, stroke: '#6D1E24',
+                    transform: 'translate(0, -60)',
+                },
+                text: {
+                    text: 'Fin', fill: 'black', 'font-size': 16,
+                    'font-weight': 'bold',
+                }
+            }
+        });
+        graph.addCell(end);
+        link(quienPaga, end, []);
+        {% endif %}
+        {% endif %}
+        {% endif %}
+        $('#saveToSVG').on('click', saveSVG);
+
+        function saveSVG(e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+            paper.openAsSVG();
+        }
+    </script>
+{% endblock %}

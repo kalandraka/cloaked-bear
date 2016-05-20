@@ -37,7 +37,7 @@ class JuicioController extends Controller
         $entity->setAccidente($accidente);
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
+        $accidente->setJuicio(true);
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
             $trans = $this->get('translator');
