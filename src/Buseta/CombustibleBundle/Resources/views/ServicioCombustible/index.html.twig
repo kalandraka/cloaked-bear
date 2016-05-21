@@ -60,6 +60,7 @@
                 <th>Chofer</th>
                 <th>Vehículo</th>
                 <th>Cantidad de Libros</th>
+                <th>Fecha</th>
                 <th style="text-align: center">Acciones</th>
             </tr>
             </thead>
@@ -70,7 +71,7 @@
                     <td>{{ entity.chofer }}</td>
                     <td>{{ entity.vehiculo }}</td>
                     <td>{{ entity.cantidadLibros }}</td>
-
+                    <td>{{ entity.fecha is not null ? entity.fecha | date('d/m/Y h:i a') : '-' }}</td>
                     <td style="width: 24% !important; text-align: center;">
                         <div class="btn-group">
                             <a class="btn btn-success btn-xs"

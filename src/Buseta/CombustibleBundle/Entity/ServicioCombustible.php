@@ -77,6 +77,13 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
     /**
      * @var \DateTime
      *
+     * @ORM\Column(name="fecha", type="datetime")
+     */
+    private $fecha;
+
+    /**
+     * @var \DateTime
+     *
      * @ORM\Column(name="created", type="datetime", nullable=true)
      */
     private $created;
@@ -131,7 +138,8 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
      * Set createdby
      *
      * @param \HatueySoft\SecurityBundle\Entity\User $createdby
-     * @return Chofer
+     *
+     * @return ServicioCombustible
      */
     public function setCreatedby(\HatueySoft\SecurityBundle\Entity\User $createdby = null)
     {
@@ -154,7 +162,8 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
      * Set updatedby
      *
      * @param \HatueySoft\SecurityBundle\Entity\User $updatedby
-     * @return Chofer
+     *
+     * @return ServicioCombustible
      */
     public function setUpdatedby(\HatueySoft\SecurityBundle\Entity\User $updatedby = null)
     {
@@ -177,7 +186,8 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
      * Set deletedby
      *
      * @param \HatueySoft\SecurityBundle\Entity\User $deletedby
-     * @return Chofer
+     *
+     * @return ServicioCombustible
      */
     public function setDeletedby(\HatueySoft\SecurityBundle\Entity\User $deletedby = null)
     {
@@ -200,7 +210,8 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
      * Set created
      *
      * @param \DateTime $created
-     * @return Chofer
+     *
+     * @return ServicioCombustible
      */
     public function setCreated(\DateTime $created = null)
     {
@@ -223,7 +234,8 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
      * Set updated
      *
      * @param \DateTime $updated
-     * @return Chofer
+     *
+     * @return ServicioCombustible
      */
     public function setUpdated(\DateTime $updated = null)
     {
@@ -246,7 +258,7 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
      * Set deleted
      *
      * @param \DateTime $deleted
-     * @return Chofer
+     * @return ServicioCombustible
      */
     public function setDeleted($deleted)
     {
@@ -425,5 +437,29 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
     public function getBoleta()
     {
         return $this->boleta;
+    }
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     *
+     * @return ServicioCombustible
+     */
+    public function setFecha(\DateTime $fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
     }
 }

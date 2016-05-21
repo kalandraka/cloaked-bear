@@ -23,42 +23,42 @@ class Autobus extends Vehiculo
     /**
      * @var \HatueySoft\UploadBundle\Entity\UploadResources
      *
-     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"}, fetch="EXTRA_LAZY")
      */
     private $imagenFrontal;
 
     /**
      * @var \HatueySoft\UploadBundle\Entity\UploadResources
      *
-     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"}, fetch="EXTRA_LAZY")
      */
     private $imagenFrontalInterior;
 
     /**
      * @var \HatueySoft\UploadBundle\Entity\UploadResources
      *
-     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"}, fetch="EXTRA_LAZY")
      */
     private $imagenLateralD;
 
     /**
      * @var \HatueySoft\UploadBundle\Entity\UploadResources
      *
-     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"}, fetch="EXTRA_LAZY")
      */
     private $imagenLateralI;
 
     /**
      * @var \HatueySoft\UploadBundle\Entity\UploadResources
      *
-     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"}, fetch="EXTRA_LAZY")
      */
     private $imagenTrasera;
 
     /**
      * @var \HatueySoft\UploadBundle\Entity\UploadResources
      *
-     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="HatueySoft\UploadBundle\Entity\UploadResources", cascade={"all"}, fetch="EXTRA_LAZY")
      */
     private $imagenTraseraInterior;
 
@@ -100,32 +100,32 @@ class Autobus extends Vehiculo
     private $numeroMotor;
 
     /**
-     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroAceite", mappedBy="autobus", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroAceite", mappedBy="autobus", cascade={"all"}, fetch="EXTRA_LAZY")
      */
     private $filtroAceite;
 
     /**
-     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroAgua", mappedBy="autobus", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroAgua", mappedBy="autobus", cascade={"all"}, fetch="EXTRA_LAZY")
      */
     private $filtroAgua;
 
     /**
-     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroDiesel", mappedBy="autobus", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroDiesel", mappedBy="autobus", cascade={"all"}, fetch="EXTRA_LAZY")
      */
     private $filtroDiesel;
 
     /**
-     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroHidraulico", mappedBy="autobus", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroHidraulico", mappedBy="autobus", cascade={"all"}, fetch="EXTRA_LAZY")
      */
     private $filtroHidraulico;
 
     /**
-     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroTransmision", mappedBy="autobus", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroTransmision", mappedBy="autobus", cascade={"all"}, fetch="EXTRA_LAZY")
      */
     private $filtroTransmision;
 
     /**
-     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroCaja", mappedBy="autobus", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="Buseta\BusesBundle\Entity\FiltroCaja", mappedBy="autobus", cascade={"all"}, fetch="EXTRA_LAZY")
      */
     private $filtroCaja;
 

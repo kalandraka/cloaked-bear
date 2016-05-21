@@ -3,7 +3,6 @@
 namespace Buseta\CombustibleBundle\Form\Type;
 
 use Buseta\CombustibleBundle\Form\Type\ChoferInServicioCombustibleType;
-use HatueySoft\DateTimeBundle\Managers\CambioHoraSistemaManager;
 use HatueySoft\DateTimeBundle\Managers\FechaSistemaManager;
 use HatueySoft\DateTimeBundle\Twig\FechaSistemaExtension;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -31,19 +30,14 @@ class ServicioCombustibleType extends AbstractType
     /**
      * @var FechaSistemaManager
      */
-    private $fechaSistema;
+    private $fechaSistemaManager;
 
-    /**
-     * @var CambioHoraSistemaManager
-     */
-    private $horaSistema;
 
-    public function __construct(ObjectManager $em, Container $serviceContainer, FechaSistemaManager $fechaSistema, CambioHoraSistemaManager $horaSistema)
+    public function __construct(ObjectManager $em, Container $serviceContainer, FechaSistemaManager $fechaSistemaManager)
     {
         $this->em = $em;
         $this->serviceContainer = $serviceContainer;
-        $this->fechaSistema = $fechaSistema;
-        $this->horaSistema = $horaSistema;
+        $this->fechaSistemaManager = $fechaSistemaManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -65,32 +59,23 @@ class ServicioCombustibleType extends AbstractType
         ;
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'boletaPreSetData'));
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            $data = $event->getData();
             $form = $event->getForm();
 
-            //$hora = $this->horaSistema->getHoraCambio()->format('H:i:s');
-            $hora = explode(':', '00:00:00');
+            $fechaSistema = $this->fechaSistemaManager->getFechaSistema();
 
-//            $fechaActualInicial = $this->fechaSistema->getFechaSistema();
-            $fechaActualInicial = new \DateTime();
-            $fechaActualInicial->setTime($hora[0], $hora[1], $hora[2]);
-
-            $fechaActualFinal = new \DateTime();
-            $fechaActualFinal->modify('+1 days');
-
-            $fechaSistema = new \DateTime();
+            $fechaInicial = new \DateTime(date_format($fechaSistema, 'Y-m-d H:i:s'));
+            $fechaInicial->modify('-1 day');
 
             $form->add('vehiculo', 'entity', array(
                 'class' => 'BusetaBusesBundle:Vehiculo',
-                'query_builder' => function(EntityRepository $repository) use ($fechaActualInicial,$fechaActualFinal,$fechaSistema) {
+                'query_builder' => function(EntityRepository $repository) use ($fechaInicial, $fechaSistema) {
                     $qb = $repository->createQueryBuilder('vehiculo');
                     $qb
-                        ->where('NOT EXISTS(SELECT ln FROM BusetaCombustibleBundle:ListaNegraCombustible ln INNER JOIN ln.autobus a WHERE a=vehiculo AND ln.fechaInicio<=:fechaActual AND ln.fechaFinal>=:fechaActual )')
-                        ->andWhere('NOT EXISTS(SELECT s FROM BusetaCombustibleBundle:ServicioCombustible s INNER JOIN s.vehiculo v WHERE v=vehiculo AND s.created>:fechaActualInicial AND s.created<:fechaActualFinal)')
+                        ->where('NOT EXISTS(SELECT ln FROM BusetaCombustibleBundle:ListaNegraCombustible ln INNER JOIN ln.autobus a WHERE a=vehiculo AND ln.fechaInicio <= :fechaActual AND ln.fechaFinal >= :fechaActual )')
+                        ->andWhere('NOT EXISTS(SELECT s FROM BusetaCombustibleBundle:ServicioCombustible s INNER JOIN s.vehiculo v WHERE v=vehiculo AND s.fecha >= :fechaInicial AND s.fecha <= :fechaActual)')
                         ->orderBy('vehiculo.matricula')
                         ->setParameter('fechaActual', $fechaSistema)
-                        ->setParameter('fechaActualInicial', $fechaActualInicial)
-                        ->setParameter('fechaActualFinal', $fechaActualFinal)
+                        ->setParameter('fechaInicial', $fechaInicial)
                     ;
                     return $qb;
                 },

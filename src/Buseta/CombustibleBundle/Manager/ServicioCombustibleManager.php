@@ -10,6 +10,7 @@ use Buseta\CombustibleBundle\Event\FilterServicioCombustibleEvent;
 use Buseta\CombustibleBundle\Exception\ServicioCombustibleException;
 use Buseta\CombustibleBundle\Form\Model\ServicioCombustibleModel;
 use Doctrine\ORM\EntityManager;
+use HatueySoft\DateTimeBundle\Managers\FechaSistemaManager;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -37,6 +38,11 @@ class ServicioCombustibleManager
      */
     private $dispatcher;
 
+    /**
+     * @var \HatueySoft\DateTimeBundle\Managers\FechaSistemaManager
+     */
+    private $fechaSistemaManager;
+
 
     /**
      * ServicioCombustibleManager constructor.
@@ -44,12 +50,18 @@ class ServicioCombustibleManager
      * @param EntityManager             $em
      * @param Logger                    $logger
      * @param EventDispatcherInterface  $dispatcher
+     * @param FechaSistemaManager       $fechaSistemaManager
      */
-    public function __construct(EntityManager $em, Logger $logger, EventDispatcherInterface $dispatcher)
-    {
+    public function __construct(
+        EntityManager $em,
+        Logger $logger,
+        EventDispatcherInterface $dispatcher,
+        FechaSistemaManager $fechaSistemaManager
+    ) {
         $this->em = $em;
         $this->logger = $logger;
         $this->dispatcher = $dispatcher;
+        $this->fechaSistemaManager = $fechaSistemaManager;
     }
 
     /**
@@ -75,11 +87,13 @@ class ServicioCombustibleManager
 
         $fe = new FuncionesExtras();
         $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $bodega, $cantidadProducto, $this->em);
+        $fechaSistema = $this->fechaSistemaManager->getFechaSistema();
 
         $servicioCombustible = new ServicioCombustible();
         $servicioCombustible->setCantidadLibros($model->getCantidadLibros());
         $servicioCombustible->setMarchamo1($model->getMarchamo1());
         $servicioCombustible->setMarchamo2($model->getMarchamo2());
+        $servicioCombustible->setFecha($fechaSistema);
 
         if ($model->getCombustible() !== null) {
             $servicioCombustible->setCombustible($model->getCombustible());
