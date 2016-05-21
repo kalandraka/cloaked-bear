@@ -16,7 +16,7 @@
             src="{{ asset('bundles/busetacombustible/js/servicioCombustible/servicioCombustible.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            TallerApp.servicioCombustible.init();
+            var servicioCombustible = new TallerApp.Combustible.servicioCombustible('{{ form.vars.id }}', '{{ server.address }}');
 
             {#$.ajax({#}
                 {#type: 'GET',#}
@@ -34,44 +34,6 @@
                     {#}#}
                 {#}#}
             {#});#}
-
-            $('select#combustible_servicio_combustible_boleta').change(function () {
-                var boleta_id = $('select#combustible_servicio_combustible_boleta').val();
-                $.ajax({
-                    type: 'GET',
-                    url: 'http://{{ server.address }}/boleta/api/choferAndAutobusFromBoleta?identificador=' + boleta_id,
-                    success: function (data) {
-                        //var values = $.parseJSON(data);
-                        var values = data;
-                        var selectChofer = $('select#combustible_servicio_combustible_chofer_chofer');
-                        var selectVehiculo = $('select#combustible_servicio_combustible_vehiculo');
-
-                        var requestData = {
-                            cedula_chofer: values.chofer.cedula,
-                            numero_bus: values.autobus.identificador
-                        };
-
-                        $.ajax({
-                            type: 'GET',
-                            url: '{{ path("chofer_bus_ajax") }}',
-                            data: requestData,
-                            success: function (data) {
-                                //var values = $.parseJSON(data);
-                                var values = data;
-                                selectChofer
-                                        .val(values.chofer)
-                                        .trigger("chosen:updated")
-                                        .trigger("change");
-                                selectVehiculo
-                                        .val(values.autobus)
-                                        .trigger("chosen:updated")
-                                        .trigger('change');
-
-                            }
-                        });
-                    }
-                });
-            });
         });
     </script>
 {% endblock javascripts %}

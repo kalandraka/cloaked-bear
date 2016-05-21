@@ -71,8 +71,22 @@ class ServicioCombustibleType extends AbstractType
                 'query_builder' => function(EntityRepository $repository) use ($fechaInicial, $fechaSistema) {
                     $qb = $repository->createQueryBuilder('vehiculo');
                     $qb
-                        ->where('NOT EXISTS(SELECT ln FROM BusetaCombustibleBundle:ListaNegraCombustible ln INNER JOIN ln.autobus a WHERE a=vehiculo AND ln.fechaInicio <= :fechaActual AND ln.fechaFinal >= :fechaActual )')
-                        ->andWhere('NOT EXISTS(SELECT s FROM BusetaCombustibleBundle:ServicioCombustible s INNER JOIN s.vehiculo v WHERE v=vehiculo AND s.fecha >= :fechaInicial AND s.fecha <= :fechaActual)')
+                        ->where('NOT EXISTS (
+                            SELECT ln
+                            FROM BusetaCombustibleBundle:ListaNegraCombustible ln
+                            INNER JOIN ln.autobus a
+                            WHERE a=vehiculo
+                                AND ln.fechaInicio <= :fechaActual
+                                AND ln.fechaFinal >= :fechaActual
+                        )')
+                        ->andWhere('NOT EXISTS (
+                            SELECT s
+                            FROM BusetaCombustibleBundle:ServicioCombustible s
+                            INNER JOIN s.vehiculo v
+                            WHERE v=vehiculo
+                                AND s.fecha >= :fechaInicial
+                                AND s.fecha <= :fechaActual
+                        )')
                         ->orderBy('vehiculo.matricula')
                         ->setParameter('fechaActual', $fechaSistema)
                         ->setParameter('fechaInicial', $fechaInicial)
@@ -128,12 +142,13 @@ class ServicioCombustibleType extends AbstractType
      */
     public function boletaPreSetData(FormEvent $event)
     {
+        $fechaSistema = $this->fechaSistemaManager->getFechaSistema();
         $resource = curl_init();
         $serverApi = $this->serviceContainer->getParameter('buseta_combustible.server');
         $url = sprintf('http://%s/boleta/api/boletas', $serverApi['address']);
         curl_setopt_array($resource, array(
             CURLOPT_URL => $url. (strpos($url, '?') === FALSE ? '?' : ''). http_build_query(array(
-                    'fecha' => null
+                    'fecha' => date_format($fechaSistema, 'Y-m-d')
                 )),
             CURLOPT_HEADER => 0,
             CURLOPT_RETURNTRANSFER => TRUE,
@@ -145,7 +160,7 @@ class ServicioCombustibleType extends AbstractType
         curl_close($resource);
 
         $choices = array();
-        if ($boletasArray !== null) {
+        if ($boletasArray !== null && is_array($boletasArray)) {
             foreach ($boletasArray as $value) {
                 $choices[$value->identificador] = $value->identificador;
             }
