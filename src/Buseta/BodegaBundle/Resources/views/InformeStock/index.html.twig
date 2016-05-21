@@ -60,14 +60,13 @@
                                 {% set comprobar = '' %}
 
                                 {% for entity in entities %}
-
                                     {% if entity.almacen == almacen %}
                                         <tr>
                                             <td>{{ entity.producto }}</td>
                                             <td  style="text-align: center;">{{ entity.cantidad }}</td>
                                             <td style="width: 24% !important; text-align: center;">
                                                 <div class="btn-group" style="padding-bottom: 8px;">
-                                                    <a id="mostrarSeriales{{ entity.producto.id }}" prod_id="{{ entity.producto.id }}" data-toggle="modal" data-target="#showSerials" class="btn btn-primary" href="#"><i class="fa"></i>Ver seriales</a>
+                                                    <a id="mostrarSeriales" data-stock-id="{{ entity.almacen.id }}" data-product-id="{{ entity.producto.id }}" data-toggle="modal" data-target="#showSerials" class="btn btn-primary" href="#"><i class="fa"></i>Ver seriales</a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -122,9 +121,7 @@
             $('#data_busqueda_informe_stock_type_almacen').chosen();
             $('#data_busqueda_informe_stock_type_categoriaProducto').chosen();
 
-            {% for entity in entities %}
-            $('#mostrarSeriales{{ entity.producto.id }}').on('click', showSeriales);
-            {% endfor %}
+            $('a[data-product-id][data-stock-id]').on('click', showSeriales);
         });
 
         function paginatorEvents() {
@@ -166,8 +163,10 @@
 
         function showSeriales(e) {
             e.preventDefault();
-            var stock_id = $('select#data_busqueda_informe_stock_type_almacen').selected().val();
-            var prod_id_ = $(this).attr('prod_id');
+
+            var stock_id = $(this).data('stock-id');
+            var prod_id_ = $(this).data('product-id');
+
             var url = Routing.generate('seriales_modal_action', {'product': prod_id_, 'stock': stock_id});
             if ($(this).hasClass('paginator-link')) {
                 url = $(this).attr('href');

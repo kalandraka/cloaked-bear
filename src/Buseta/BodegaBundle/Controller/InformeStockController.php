@@ -108,7 +108,7 @@ class InformeStockController extends Controller
             $entities = $fune->getListaSerialesEntitiesEnAlmacenFilter($em, $filter);
         } else {
             $fune = new FuncionesExtras();
-            $entities = $fune->getListaSerialesEntitiesEnAlmacen($producto,$almacen, $em);
+            $entities = $fune->getListaSerialesEntitiesEnAlmacen($producto, $almacen, $em);
         }
 
         $paginator = $this->get('knp_paginator');

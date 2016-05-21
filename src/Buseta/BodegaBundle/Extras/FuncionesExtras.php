@@ -268,6 +268,7 @@ class FuncionesExtras
 
     public function getListaSerialesEntitiesEnAlmacen( $producto, $almacen, $em )
     {
+        //!TODO: Solucionar rendimiento para consulta de seriales por producto y bodega.
         /**@var \Doctrine\Common\Persistence\ObjectManager $em */
 
         $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraSerial')->findBy(array(
