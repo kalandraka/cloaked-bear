@@ -57,7 +57,11 @@ class FechaSistemaManager
         $fechaSistemaConfig = $this->em->getRepository('HatueySoftDateTimeBundle:FechaSistema')
             ->getUserConfig($username);
         if ($fechaSistemaConfig && $fechaSistemaConfig->isActivo()) {
-            $fechaSistema = $fechaSistemaConfig->getFecha();
+            $fechaSistema = date_create_from_format('Y-m-d H:i:s', sprintf(
+                '%s %s',
+                date_format($fechaSistemaConfig->getFecha(), 'Y-m-d'),
+                date_format(new \DateTime(), 'H:m:s')
+            ));
         } else {
             $fechaSistema = new \DateTime();
         }
