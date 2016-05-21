@@ -108,7 +108,7 @@ class ServicioCombustibleController extends Controller
     private function createCreateForm(ServicioCombustibleModel $entity)
     {
         $form = $this->createForm(
-            'combustible_servicio_combustible',
+            'combustible_servicio_combustible_type',
             $entity,
             array(
                 'action' => $this->generateUrl('servicioCombustible_create'),
@@ -319,7 +319,7 @@ class ServicioCombustibleController extends Controller
     private function createEditForm(ServicioCombustible $entity)
     {
         $form = $this->createForm(
-            new ServicioCombustibleType(),
+            'combustible_servicio_combustible_type',
             $entity,
             array(
                 'action' => $this->generateUrl('servicioCombustible_update', array('id' => $entity->getId())),

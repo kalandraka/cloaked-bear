@@ -56,28 +56,26 @@
             <thead>
             <tr>
                 {#<th>{{ knp_pagination_sortable(entities, 'Nacionalidad', 'a.nacionalidad') }}</th>#}
-                <th>Nomenclador de Combustible</th>
                 <th>Chofer</th>
                 <th>Vehículo</th>
+                <th>Combustible</th>
                 <th>Cantidad de Libros</th>
                 <th>Fecha</th>
-                <th style="text-align: center">Acciones</th>
+                <th style="text-align: center;">Acciones</th>
             </tr>
             </thead>
             <tbody>
             {% for entity in entities %}
                 <tr>
-                    <td>{{ entity.combustible }}</td>
                     <td>{{ entity.chofer }}</td>
                     <td>{{ entity.vehiculo }}</td>
+                    <td>{{ entity.combustible }}</td>
                     <td>{{ entity.cantidadLibros }}</td>
-                    <td>{{ entity.fecha is not null ? entity.fecha | date('d/m/Y h:i a') : '-' }}</td>
-                    <td style="width: 24% !important; text-align: center;">
-                        <div class="btn-group">
-                            <a class="btn btn-success btn-xs"
-                               href="{{ path('servicioCombustible_show', { 'id': entity.id }) }}"><span
-                                        class="glyphicon glyphicon-search"> Mostrar</span></a>
-                        </div>
+                    <td>{{ entity.fecha | date('d/m/Y h:i a') }}</td>
+                    <td style="width: 20% !important; text-align: center;">
+                        <a class="btn btn-success btn-xs"
+                           href="{{ path('servicioCombustible_show', { 'id': entity.id }) }}"><span
+                                    class="glyphicon glyphicon-search"> Mostrar</span></a>
                     </td>
                 </tr>
             {% else %}

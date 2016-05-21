@@ -46,7 +46,6 @@ class ServicioCombustibleType extends AbstractType
             ->add('chofer', new ChoferInServicioCombustibleType())
             ->add('combustible','entity',array(
                 'class' => 'BusetaCombustibleBundle:ConfiguracionCombustible',
-                'placeholder' => '---Seleccione---',
                 'label' => 'Nomenclador de Combustible',
                 'required' => true,
             ))
@@ -134,7 +133,7 @@ class ServicioCombustibleType extends AbstractType
 
     public function getName()
     {
-        return 'combustible_servicio_combustible';
+        return 'combustible_servicio_combustible_type';
     }
 
     /**

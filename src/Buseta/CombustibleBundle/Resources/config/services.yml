@@ -12,7 +12,7 @@ services:
         class: Buseta\CombustibleBundle\Form\Type\ServicioCombustibleType
         arguments: [@doctrine.orm.entity_manager, @service_container, @hatueysoft.fecha_sistema.manager, @hatueysoft.hora_sistema.manager]
         tags:
-            - {name: form.type, alias: 'combustible_servicio_combustible'}
+            - {name: form.type, alias: 'combustible_servicio_combustible_type'}
 
     buses.combustible_lista_negra_combustible.type:
         class: Buseta\CombustibleBundle\Form\Type\ListaNegraCombustibleType
@@ -56,6 +56,7 @@ services:
             - @doctrine.orm.entity_manager
             - @logger
             - @event_dispatcher
+            - @hatueysoft.fecha_sistema.manager
 
     buseta.twig.server_expose_extension:
             class: Buseta\CombustibleBundle\Twig\ServerExposeExtension
