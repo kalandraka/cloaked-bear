@@ -4,6 +4,18 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/busetatransito/third_party/jointjs/joint.min.css') }}"/>
+    <style type="text/css">
+        .ktooltip {
+            display: none;
+            position: absolute;
+            border: 1px solid #333;
+            background-color: #161616;
+            border-radius: 5px;
+            padding: 10px;
+            color: #fff;
+            font-size: 12px Arial;
+        }
+    </style>
 {% endblock %}
 
 {% block header 'Diagrama de flujo de multa' %}
@@ -58,14 +70,30 @@
             restrictTranslate: true
         });
 
-        var node = function (x, y, width, height, name, properties, background, stroke, textColor) {
+        var parteDiv = document.createElement('div');
+        parteDiv.appendChild(document.createTextNode("Descripción: {{ entity.descripcion }}"));
+        parteDiv.appendChild(document.createElement('br'));
+        parteDiv.appendChild(document.createTextNode("Fecha: {{ entity.fecha|date('d/m/Y') }}"));
+        parteDiv.appendChild(document.createElement('br'));
+        parteDiv.appendChild(document.createTextNode("Vehículo: {{ entity.vehiculo }}"));
+        parteDiv.appendChild(document.createElement('br'));
+        parteDiv.appendChild(document.createTextNode("Chofer: {{ entity.chofer }}"));
+        parteDiv.appendChild(document.createElement('br'));
 
+        var multaDiv = document.createElement('div');
+        multaDiv.appendChild(document.createTextNode("Boleta: {{ entity.numBoleta }}"));
+        multaDiv.appendChild(document.createElement('br'));
+        multaDiv.appendChild(document.createTextNode("Artículo: {{ entity.numArticulo }}"));
+        multaDiv.appendChild(document.createElement('br'));
+        multaDiv.appendChild(document.createTextNode("Importe: {{ entity.importe }}"));
+
+        var node = function (x, y, width, height, id, name, properties, background, stroke, textColor) {
             textColor = textColor || "#000";
             var text_ = name;
-            //text_ = text_ + "\n";
-            //text_ = text_ + "foo: bar";
             var cell = new joint.shapes.basic.Rect({
+                id: id,
                 position: {x: x, y: y},
+                el: $('#' + id),
                 size: {width: width, height: height},
                 attrs: {
                     rect: {fill: background, rx: 5, ry: 5, 'stroke-width': 2, stroke: stroke},
@@ -81,7 +109,6 @@
         };
 
         function link(source, target, breakpoints) {
-
             var cell = new joint.shapes.org.Arrow({
                 source: {id: source.id},
                 target: {id: target.id},
@@ -119,13 +146,21 @@
 
         graph.addCell(start);
 
-        var parte = node(250, 120, 150, 50, 'Parte', '', '#CCB9DA', '#4A325D');
-        var multa = node(250, 220, 150, 50, 'Multa', '', '#C7DAB9', '#325A5D');
+        var parte = node(250, 120, 150, 50, 'parte', 'Parte', '', '#CCB9DA', '#4A325D');
+        link(start, parte, []);
+
+        var multa = node(250, 220, 150, 50, 'multa', 'Multa', '', '#C7DAB9', '#325A5D');
+        link(parte, multa, []);
+
+        {% if entity.estado == 'WN' or entity.estado == 'LS'%}
+        var abogadoDiv = document.createElement('div');
+        abogadoDiv.appendChild(document.createTextNode("Importe abogado: {{ entity.importeAbogado }}"));
+        {% endif %}
 
         {% if entity.estado == 'WN' %}
-        var apelada = node(250, 320, 150, 50, 'Se apeló', '', '#CCB9DA', '#4A325D');
-        var ganada = node(50, 320, 150, 50, 'Se ganó', '', '#C7DAB9', '#325A5D');
+        var apelada = node(250, 320, 150, 50, 'apelo', 'Se apeló', '', '#CCB9DA', '#4A325D');
         link(multa, apelada, []);
+        var ganada = node(50, 320, 150, 50, 'gano', 'Se ganó', '', '#C7DAB9', '#325A5D');
         link(apelada, ganada, []);
         var end = new joint.shapes.basic.Circle({
             position: {x: 110, y: 440},
@@ -144,9 +179,9 @@
         graph.addCell(end);
         link(ganada, end, []);
         {% elseif entity.estado == 'PA' %}
-        var no_apelada = node(250, 320, 150, 50, 'No se apeló', '', '#CCB9DA', '#4A325D');
-        var pagada = node(450, 320, 150, 50, 'Se pagó', '', '#C7DAB9', '#325A5D');
+        var no_apelada = node(250, 320, 150, 50, 'noapelo', 'No se apeló', '', '#CCB9DA', '#4A325D');
         link(multa, no_apelada, []);
+        var pagada = node(450, 320, 150, 50, 'pago', 'Se pagó', '', '#C7DAB9', '#325A5D');
         link(no_apelada, pagada, []);
         var end = new joint.shapes.basic.Circle({
             position: {x: 510, y: 440},
@@ -165,11 +200,11 @@
         graph.addCell(end);
         link(pagada, end, []);
         {% elseif entity.estado == 'LS' %}
-        var apelada = node(250, 320, 150, 50, 'Se apeló', '', '#CCB9DA', '#4A325D');
-        var perdida = node(450, 320, 150, 50, 'Se perdió', '', '#C7DAB9', '#325A5D');
-        var pagada = node(450, 420, 150, 50, 'Se pagó', '', '#CCB9DA', '#4A325D');
+        var apelada = node(250, 320, 150, 50, 'apelo', 'Se apeló', '', '#CCB9DA', '#4A325D');
         link(multa, apelada, []);
+        var perdida = node(450, 320, 150, 50, 'perdio', 'Se perdió', '', '#C7DAB9', '#325A5D');
         link(apelada, perdida, []);
+        var pagada = node(450, 420, 150, 50, 'pago', 'Se pagó', '', '#CCB9DA', '#4A325D');
         link(perdida, pagada, []);
         var end = new joint.shapes.basic.Circle({
             position: {x: 510, y: 530},
@@ -188,12 +223,45 @@
         graph.addCell(end);
         link(pagada, end, []);
         {% elseif entity.estado == 'AP' %}
-        var apelada = node(250, 320, 150, 50, 'Se apeló', '', '#CCB9DA', '#4A325D');
+        var apelada = node(250, 320, 150, 50, 'apelo', 'Se apeló', '', '#CCB9DA', '#4A325D');
         link(multa, apelada, []);
         {% endif %}
 
-        link(start, parte, []);
-        link(parte, multa, []);
+        // -- graph events
+        paper.on('cell:mouseover', function (cellView, evt) {
+            var id_ = cellView.model.id;
+            if (id_ == 'parte') {
+                $('<div class="ktooltip"></div>')
+                        .append(parteDiv)
+                        .appendTo('body')
+                        .fadeIn('slow');
+            }
+            else if (id_ == 'multa') {
+                $('<div class="ktooltip"></div>')
+                        .append(multaDiv)
+                        .appendTo('body')
+                        .fadeIn('slow');
+            }
+            else if (id_ == 'gano' || id_ == 'perdio') {
+                $('<div class="ktooltip"></div>')
+                        .append(abogadoDiv)
+                        .appendTo('body')
+                        .fadeIn('slow');
+            }
+            var mousex = evt.pageX + 10; //Get X coordinates
+            var mousey = evt.pageY + 10; //Get Y coordinates
+            $('.ktooltip')
+                    .css({top: mousey, left: mousex})
+        });
+        paper.on('cell:mouseout', function (cellView, evt) {
+            $('.ktooltip').remove();
+        });
+        paper.on('cell:pointermove', function (cellView, evt, x, y) {
+            var mousex = evt.pageX + 10; //Get X coordinates
+            var mousey = evt.pageY + 10; //Get Y coordinates
+            $('.ktooltip')
+                    .css({top: mousey, left: mousex})
+        });
 
         $('#saveToSVG').on('click', saveSVG);
 
