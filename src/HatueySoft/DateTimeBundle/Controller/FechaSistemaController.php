@@ -39,7 +39,7 @@ class FechaSistemaController extends Controller
         $username = $this->get('security.token_storage')->getToken()->getUsername();
 
         $fechaSistemaConfig = $em->getRepository('HatueySoftDateTimeBundle:FechaSistema')->getUserConfig($username);
-        if ($fechaSistemaConfig->isActivo()) {
+        if ($fechaSistemaConfig !== null && $fechaSistemaConfig->isActivo()) {
             $form = $this->createForm(new FechaSistemaType(), $fechaSistemaConfig);
         } else {
             $form = $this->createForm(new FechaSistemaType());
