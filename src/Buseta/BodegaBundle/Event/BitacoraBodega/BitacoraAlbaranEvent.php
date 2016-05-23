@@ -37,7 +37,7 @@ class BitacoraAlbaranEvent extends AbstractBitacoraEvent
             foreach ($albaran->getAlbaranLineas() as $albaranLinea) {
                 /** @var AlbaranLinea $albaranLinea */
                 $bitacoraEvent = new BitacoraEventModel();
-                $bitacoraEvent->setWarehouse($albaranLinea->getAlmacen());
+                $bitacoraEvent->setWarehouse($albaran->getBodega());
                 $bitacoraEvent->setProduct($albaranLinea->getProducto());
                 $bitacoraEvent->setMovementQty($albaranLinea->getCantidadMovida());
                 $bitacoraEvent->setMovementDate(new \DateTime());
