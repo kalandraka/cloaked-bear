@@ -79,7 +79,7 @@
                             <td>{{ linea.producto.nombre }}</td>
                             <td>{{ linea.cantidadMovida }}</td>
                             <td>{{ linea.seriales }}</td>
-                            <td>{{ linea.almacen.nombre }}</td>
+                            <td>{{ linea.albaran.bodega is null ?:linea.albaran.bodega.nombre }}</td>
                             <td>{{ linea.uom.valor }}</td>
                             <td>{{ linea.valoratributos }}</td>
                         </tr>
