@@ -153,54 +153,6 @@ class AlbaranLinea implements GeneradorBitacoraInterface
     }
 
     /**
-     * Set almacen.
-     *
-     * @param \Buseta\BodegaBundle\Entity\Bodega $almacen
-     *
-     * @return AlbaranLinea
-     *
-     * @deprecated Will be removed
-     */
-    public function setAlmacen(\Buseta\BodegaBundle\Entity\Bodega $almacen = null)
-    {
-        $this->almacen = $almacen;
-
-        return $this;
-    }
-
-    /**
-     * Get almacen.
-     *
-     * @return \Buseta\BodegaBundle\Entity\Bodega
-     *
-     * @deprecated Will be removed
-     */
-    public function getAlmacen()
-    {
-        return $this->almacen;
-    }
-
-    /**
-     * @param Bodega $bodega
-     *
-     * @return AlbaranLinea
-     */
-    public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega)
-    {
-        $this->almacen = $bodega;
-
-        return $this;
-    }
-
-    /**
-     * @return Bodega
-     */
-    public function getBodega()
-    {
-        return $this->almacen;
-    }
-
-    /**
      * Set uom.
      *
      * @param \Buseta\NomencladorBundle\Entity\UOM $uom
