@@ -30,21 +30,6 @@ class ServicioCombustibleControllerTest extends AbstractWebTestCase
         //$this->checkFunctionalityButtons($crawler, array('Editar', 'Volver', 'Eliminar'), 'Edit');
     }
 
-    public function testEdit()
-    {
-        // Test search/list ServicioCombustible
-        $crawler = $this->client->request('GET', '/servicioCombustible/');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /servicioCombustible/");
-
-        // Check data in the index view
-        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'edit\']')->count(), 'Missing elements/test cases');
-        $crawler = $this->client->click($crawler->filter('a[href$=\'edit\']')->eq(0)->link());
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /servicioCombustible/\\d+/edit");
-
-        // Check buttons in edit view
-        //$this->checkFunctionalityButtons($crawler, array('Salvar', 'Volver'), 'Edit');
-    }
-
     public function testNew()
     {
         // Test create ServicioCombustible

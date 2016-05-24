@@ -6,45 +6,74 @@ use Buseta\BusesBundle\Tests\Controller\AbstractWebTestCase;
 
 class ReporteControllerTest extends AbstractWebTestCase
 {
-    public function testIndex()
+    public function testBOIndex()
     {
-        // Test search/list Reporte
-        $crawler = $this->client->request('GET', '/reporte/');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /reporte/");
+        // Test search/list Solicitud BO
+        $crawler = $this->client->request('GET', '/reporte/index?status=BO');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /reporte/index?status=BO");
 
-        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'new\']')->count(), 'Missing add new button');
+        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'new?status=BO\']')->count(), 'Missing add new button');
     }
 
-    public function testShow()
+    public function testPRIndex()
+    {
+        // Test search/list Solicitud PR
+        $crawler = $this->client->request('GET', '/reporte/index?status=PR');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /reporte/index?status=PR");
+
+    }
+
+    public function testCOIndex()
+    {
+        // Test search/list Solicitud CO
+        $crawler = $this->client->request('GET', '/reporte/index?status=CO');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /reporte/index?status=CO");
+
+    }
+
+    public function testBOShow()
     {
         // Test search/list Reporte
-        $crawler = $this->client->request('GET', '/reporte/');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /reporte/");
-
+        $crawler = $this->client->request('GET', '/reporte/index?status=BO');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /reporte/index?status=BO");
 
         // Check data in the index view
-        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'1\']')->count(), 'Missing elements/test cases');
-        $crawler = $this->client->click($crawler->filter('a[href$=\'1\']')->eq(0)->link());
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /reporte/\\d+");
-
+        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'/show?status=BO\']')->count(), 'Missing elements/test cases');
+        $crawler = $this->client->click($crawler->filter('a[href$=\'/show?status=BO\']')->eq(0)->link());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /reporte/\\d+//show?status=BO");
 
         // Check buttons in show view
         //$this->checkFunctionalityButtons($crawler, array('Editar', 'Volver', 'Eliminar'), 'Edit');
     }
 
-    public function testEdit()
+    public function testPRShow()
     {
         // Test search/list Reporte
-        $crawler = $this->client->request('GET', '/reporte/');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /reporte/");
+        $crawler = $this->client->request('GET', '/reporte/index?status=PR');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /reporte/index?status=PR");
 
         // Check data in the index view
-        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'edit\']')->count(), 'Missing elements/test cases');
-        $crawler = $this->client->click($crawler->filter('a[href$=\'edit\']')->eq(0)->link());
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /reporte/\\d+/edit");
+        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'/show?status=PR\']')->count(), 'Missing elements/test cases');
+        $crawler = $this->client->click($crawler->filter('a[href$=\'/show?status=PR\']')->eq(0)->link());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /reporte/\\d+//show?status=PR");
 
-        // Check buttons in edit view
-        //$this->checkFunctionalityButtons($crawler, array('Salvar', 'Volver'), 'Edit');
+        // Check buttons in show view
+        //$this->checkFunctionalityButtons($crawler, array('Editar', 'Volver', 'Eliminar'), 'Edit');
+    }
+
+    public function testCOShow()
+    {
+        // Test search/list Reporte
+        $crawler = $this->client->request('GET', '/reporte/index?status=CO');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /reporte/index?status=CO");
+
+        // Check data in the index view
+        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'/show?status=CO\']')->count(), 'Missing elements/test cases');
+        $crawler = $this->client->click($crawler->filter('a[href$=\'/show?status=CO\']')->eq(0)->link());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /reporte/\\d+//show?status=CO");
+
+        // Check buttons in show view
+        //$this->checkFunctionalityButtons($crawler, array('Editar', 'Volver', 'Eliminar'), 'Edit');
     }
 
     public function testNew()

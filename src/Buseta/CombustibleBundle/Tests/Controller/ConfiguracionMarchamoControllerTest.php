@@ -12,9 +12,7 @@ class ConfiguracionMarchamoControllerTest extends AbstractWebTestCase
         $crawler = $this->client->request('GET', '/configuracion/marchamo/');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /configuracion/marchamo/");
 
-        $this->assertGreaterThan(0, $crawler->filter('a[href$=\'new\']')->count(), 'Missing add new button');
     }
-
 
     private function checkFunctionalityButtons(\Symfony\Component\DomCrawler\Crawler $crawler, array $links, $view)
     {
