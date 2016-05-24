@@ -7,7 +7,7 @@
 {% block area_trabajo -%}
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
-    {% if (filter_form.vars.value.nombre is null or filter_form.vars.value.nombre is empty)
+    {% if (filter_form.vars.value.nombres is null or filter_form.vars.value.nombres is empty)
     and (filter_form.vars.value.alias is null or filter_form.vars.value.alias is empty)
     and (filter_form.vars.value.moneda is null or filter_form.vars.value.moneda is empty)
     and (filter_form.vars.value.cifnif is null or filter_form.vars.value.cifnif is empty)
@@ -25,7 +25,7 @@
     <div id="filter_form_component" style="{{ display }}">
         <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
             <div class="row">
-                <div class="col-lg-4">{{ form_row(filter_form.nombre) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.nombres) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.alias) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.moneda) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.cif_nif) }}</div>

@@ -32,6 +32,7 @@ class PedidoCompraControllerTest extends AbstractWebTestCase
 
     public function testEdit()
     {
+        //!TODO: Implementar test para cuando los botones se encuentren bloqueados(disabled).
         // Test search/list PedidoCompra
         $crawler = $this->client->request('GET', '/pedidocompra/');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /pedidocompra/");

@@ -32,6 +32,7 @@ class NecesidadMaterialControllerTest extends AbstractWebTestCase
 
     public function testEdit()
     {
+        //!TODO: Implementar test para cuando los botones se encuentren bloqueados(disabled).
         // Test search/list NecesidadMaterial
         $crawler = $this->client->request('GET', '/necesidadmaterial/');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /necesidadmaterial/");

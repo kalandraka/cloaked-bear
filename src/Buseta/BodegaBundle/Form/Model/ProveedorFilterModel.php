@@ -8,7 +8,7 @@ class ProveedorFilterModel
     /**
      * @var string
      */
-    private $nombre;
+    private $nombres;
 
     /**
      * @var string
@@ -28,17 +28,17 @@ class ProveedorFilterModel
     /**
      * @return string
      */
-    public function getNombre()
+    public function getNombres()
     {
-        return $this->nombre;
+        return $this->nombres;
     }
 
     /**
-     * @param string $nombre
+     * @param string $nombres
      */
-    public function setNombre($nombre)
+    public function setNombres($nombres)
     {
-        $this->nombre = $nombre;
+        $this->nombres = $nombres;
     }
 
     /**
@@ -89,4 +89,4 @@ class ProveedorFilterModel
         $this->moneda = $moneda;
     }
 
-} 
+}
