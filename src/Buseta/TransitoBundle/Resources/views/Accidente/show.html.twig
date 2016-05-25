@@ -73,6 +73,8 @@
             <i class="fa fa-edit"></i> Editar</a>
         <a class="btn btn-primary" href="{{ path('accidente') }}">
             <i class="fa fa-list"></i> Listado</a>
+        <a class="btn btn-primary" href="{{ path('accidente_diagram', { 'id': entity.id }) }}">
+            <i class="fa fa-sitemap"></i> Diagrama</a>
         {% if entity is defined and entity.estado == 'BO' %}
             <a id="btnNoParte" class="btn btn-primary"
                href="#"> No hubo parte</a>

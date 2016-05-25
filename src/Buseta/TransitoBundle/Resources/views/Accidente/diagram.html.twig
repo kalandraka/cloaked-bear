@@ -1,0 +1,351 @@
+{% extends "BusetaTransitoBundle::layout.html.twig" %}
+
+{% block title block('header') %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/busetatransito/third_party/jointjs/joint.min.css') }}"/>
+    <style type="text/css">
+        .ktooltip {
+            display: none;
+            position: absolute;
+            border: 1px solid #333;
+            background-color: #161616;
+            border-radius: 5px;
+            padding: 10px;
+            color: #fff;
+            font-size: 12px Arial;
+        }
+    </style>
+{% endblock %}
+
+{% block header 'Diagrama de flujo de accidente' %}
+
+{% block header_right %}
+    {% from '@BusetaTemplate/Macros/macros.html.twig' import documentState %}
+
+    <h4 class="pull-right">
+        {{ documentState(entity.estado, 'BusetaTransitoBundle') }}
+    </h4>
+{% endblock %}
+
+{% block area_trabajo %}
+
+    <div class="graph-actions">
+        <a class="btn btn-primary" id="saveToSVG" href="#">
+            <i class="fa fa-image"></i> Mostrar SVG</a>
+        <a class="btn btn-primary" href="{{ path('accidente_edit', { 'id': entity.id }) }}">
+            <i class="fa fa-edit"></i> Editar Accidente</a>
+        <a class="btn btn-primary" href="{{ path('accidente_show', { 'id': entity.id }) }}">
+            <i class="fa fa-search"></i> Mostrar Accidente</a>
+        <a class="btn btn-primary" href="{{ path('accidente') }}">
+            <i class="fa fa-list"></i> Listado de Accidentes</a>
+    </div>
+    <div id="accidente_diagram"></div>
+
+{% endblock %}
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/busetatransito/third_party/jointjs/lodash.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/busetatransito/third_party/jointjs/backbone-min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/busetatransito/third_party/jointjs/joint.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/busetatransito/third_party/jointjs/exporter.js') }}"></script>
+
+    <script type="text/javascript">
+
+        var parteDiv = document.createElement('div');
+        parteDiv.appendChild(document.createTextNode("Descripción: {{ entity.descripcion }}"));
+        parteDiv.appendChild(document.createElement('br'));
+        parteDiv.appendChild(document.createTextNode("Fecha: {{ entity.fecha|date('d/m/Y') }}"));
+        parteDiv.appendChild(document.createElement('br'));
+        parteDiv.appendChild(document.createTextNode("Vehículo: {{ entity.vehiculo }}"));
+        parteDiv.appendChild(document.createElement('br'));
+        parteDiv.appendChild(document.createTextNode("Chofer: {{ entity.chofer }}"));
+        parteDiv.appendChild(document.createElement('br'));
+
+        var accDiv = document.createElement('div');
+        accDiv.appendChild(document.createTextNode("Importe: {{ entity.importe }}"));
+
+        var graph = new joint.dia.Graph();
+
+        var paper = new joint.dia.Paper({
+            el: $('#accidente_diagram'),
+            width: 800,
+            height: 800,
+            gridSize: 1,
+            model: graph,
+            perpendicularLinks: true,
+            restrictTranslate: true
+        });
+
+        var node = function (x, y, width, height, id, name, properties, background, stroke, textColor) {
+            textColor = textColor || "#000";
+            var text_ = name;
+            //text_ = text_ + "\n";
+            //text_ = text_ + "foo: bar";
+            var cell = new joint.shapes.basic.Rect({
+                id: id,
+                position: {x: x, y: y},
+                el: $('#' + id),
+                size: {width: width, height: height},
+                attrs: {
+                    rect: {fill: background, rx: 5, ry: 5, 'stroke-width': 2, stroke: stroke},
+                    text: {
+                        text: text_, fill: textColor, 'font-size': 16,
+                        'font-weight': 'bold'
+                    }
+                }
+            });
+
+            graph.addCell(cell);
+            return cell;
+        };
+
+        function link(source, target, breakpoints) {
+            var cell = new joint.shapes.org.Arrow({
+                source: {id: source.id},
+                target: {id: target.id},
+                attrs: {
+                    '.connection': {
+                        'fill': 'none',
+                        'stroke-linejoin': 'round',
+                        'stroke-width': '2',
+                        'stroke': '#455D32',
+                    },
+                    '.marker-target': {
+                        fill: '#455D32', stroke: '#455D32', d: 'M 10 0 L 0 5 L 10 10 z'
+                    }
+                }
+
+            });
+            graph.addCell(cell);
+            return cell;
+        }
+
+        var start = new joint.shapes.basic.Circle({
+            position: {x: 310, y: 30},
+            size: {width: 30, height: 30},
+            attrs: {
+                circle: {
+                    fill: '#EDF0C1', 'stroke-width': 2, stroke: '#889D65',
+                    transform: 'translate(0, 50)',
+                },
+                text: {
+                    text: 'Inicio', fill: 'black', 'font-size': 16,
+                    'font-weight': 'bold',
+                }
+            }
+        });
+
+        graph.addCell(start);
+
+        var parte = node(250, 120, 150, 50, 'parte', 'Parte', '', '#CCB9DA', '#4A325D');
+        var accidente = node(250, 220, 150, 50, 'accidente', 'Accidente', '', '#C7DAB9', '#325A5D');
+
+        link(start, parte, []);
+        link(parte, accidente, []);
+
+        {% if entity.estado == 'NOPARTE' %}
+        var noparte = node(250, 320, 150, 50, 'noparte', 'No hubo parte', '', '#CCB9DA', '#4A325D');
+        var responsable = node(450, 320, 200, 50,
+                'Responsable: ' +
+                '{{ ('responsable.' ~ entity.responsable) | trans({}, 'BusetaTransitoBundle') }}',
+                '', '#C7DAB9', '#325A5D');
+        var quienPaga = node(450, 420, 200, 50, 'quienpaga',
+                'Paga: ' +
+                '{{ ('quien_paga.' ~ entity.quienPaga) | trans({}, 'BusetaTransitoBundle') }}',
+                '', '#CCB9DA', '#4A325D');
+        link(accidente, noparte, []);
+        link(noparte, responsable, []);
+        link(responsable, quienPaga, []);
+        var end = new joint.shapes.basic.Circle({
+            position: {x: 535, y: 530},
+            size: {width: 30, height: 30},
+            attrs: {
+                circle: {
+                    fill: '#FDD6D1', 'stroke-width': 2, stroke: '#6D1E24',
+                    transform: 'translate(0, -60)',
+                },
+                text: {
+                    text: 'Fin', fill: 'black', 'font-size': 16,
+                    'font-weight': 'bold',
+                }
+            }
+        });
+        graph.addCell(end);
+        link(quienPaga, end, []);
+        {% elseif entity.estado == 'PENAL' %}
+        var penalDiv = document.createElement('div');
+        penalDiv.appendChild(document.createTextNode("Nota: {{ penal.nota }}"));
+        penalDiv.appendChild(document.createElement('br'));
+        penalDiv.appendChild(document.createTextNode("Alerta: {{ penal.alerta }}"));
+        penalDiv.appendChild(document.createElement('br'));
+        penalDiv.appendChild(document.createTextNode("Adjunto: {{ penal.adjunto }}"));
+        penalDiv.appendChild(document.createElement('br'));
+        penalDiv.appendChild(document.createTextNode("Costo: {{ penal.costo }}"));
+        penalDiv.appendChild(document.createElement('br'));
+        penalDiv.appendChild(document.createTextNode("Fecha: {{ penal.fecha|date('d/m/Y') }}"));
+        penalDiv.appendChild(document.createElement('br'));
+        penalDiv.appendChild(document.createTextNode("Expira: {{ penal.fechaExpira|date('d/m/Y') }}"));
+
+        var huboparte = node(250, 320, 150, 50, 'huboparte', 'Hubo parte', '', '#CCB9DA', '#4A325D');
+        var penal = node(50, 320, 150, 50, 'penal', 'Penal', '', '#C7DAB9', '#325A5D');
+        link(accidente, huboparte, []);
+        link(huboparte, penal, []);
+        var end = new joint.shapes.basic.Circle({
+            position: {x: 110, y: 440},
+            size: {width: 30, height: 30},
+            attrs: {
+                circle: {
+                    fill: '#FDD6D1', 'stroke-width': 2, stroke: '#6D1E24',
+                    transform: 'translate(0, -60)',
+                },
+                text: {
+                    text: 'Fin', fill: 'black', 'font-size': 16,
+                    'font-weight': 'bold',
+                }
+            }
+        });
+        graph.addCell(end);
+        link(penal, end, []);
+        {% elseif entity.estado == 'TRANSITO' %}
+        var huboparte = node(250, 320, 150, 50, 'huboparte', 'Hubo parte', '', '#CCB9DA', '#4A325D');
+        link(accidente, huboparte, []);
+        var transito = node(50, 320, 150, 50, 'transito', 'Tránsito', '', '#C7DAB9', '#325A5D');
+        link(huboparte, transito, []);
+        {% if entity.conciliacion%}
+        var conciliacion = node(50, 420, 150, 50, 'conciliacion', 'Conciliación', '', '#CCB9DA', '#4A325D');
+        link(transito, conciliacion, []);
+        var responsable = node(250, 420, 200, 50, 'responsable',
+                'Responsable: ' +
+                '{{ ('responsable.' ~ entity.responsable) | trans({}, 'BusetaTransitoBundle') }}',
+                '', '#C7DAB9', '#325A5D');
+        link(conciliacion, responsable, []);
+        var quienPaga = node(250, 520, 200, 50, 'quienpaga',
+                'Paga: ' +
+                '{{ ('quien_paga.' ~ entity.quienPaga) | trans({}, 'BusetaTransitoBundle') }}',
+                '', '#CCB9DA', '#4A325D');
+        link(responsable, quienPaga, []);
+        var end = new joint.shapes.basic.Circle({
+            position: {x: 335, y: 630},
+            size: {width: 30, height: 30},
+            attrs: {
+                circle: {
+                    fill: '#FDD6D1', 'stroke-width': 2, stroke: '#6D1E24',
+                    transform: 'translate(0, -60)',
+                },
+                text: {
+                    text: 'Fin', fill: 'black', 'font-size': 16,
+                    'font-weight': 'bold',
+                }
+            }
+        });
+        graph.addCell(end);
+        link(quienPaga, end, []);
+        {% else %}
+        var noconciliacion = node(50, 420, 150, 50, 'noconciliacion', 'No conciliación', '', '#CCB9DA', '#4A325D');
+        link(transito, noconciliacion, []);
+        {% if juicio != null %}
+
+        var juicioDiv = document.createElement('div');
+        juicioDiv.appendChild(document.createTextNode("Descripción: {{ juicio.descripcion }}"));
+        juicioDiv.appendChild(document.createElement('br'));
+        juicioDiv.appendChild(document.createTextNode("Importe abogado: {{ juicio.importeAbogado }}"));
+        juicioDiv.appendChild(document.createElement('br'));
+        juicioDiv.appendChild(document.createTextNode("Fecha inicio: {{ juicio.fechaInicio|date('d/m/Y') }}"));
+        juicioDiv.appendChild(document.createElement('br'));
+        juicioDiv.appendChild(document.createTextNode("Fecha fin: {{ juicio.fechaFin|date('d/m/Y') }}"));
+
+        var juicio = node(270, 420, 150, 50, 'juicio', 'Juicio', '', '#C7DAB9', '#325A5D');
+        link(noconciliacion, juicio, []);
+        var resultado = node(230, 520, 260, 50, 'resultado',
+                'Resultado: ' +
+                '{{ ('juicio.resultado.' ~ juicio.resultado) | trans({}, 'BusetaTransitoBundle') }}',
+                '', '#CCB9DA', '#4A325D');
+        link(juicio, resultado, []);
+        var responsable = node(255, 620, 200, 50, 'responsable',
+                'Responsable: ' +
+                '{{ ('responsable.' ~ juicio.responsable) | trans({}, 'BusetaTransitoBundle') }}',
+                '', '#C7DAB9', '#325A5D');
+        link(resultado, responsable, []);
+        var quienPaga = node(500, 620, 200, 50, 'quienpaga',
+                'Paga: ' +
+                '{{ ('quien_paga.' ~ juicio.quienPaga) | trans({}, 'BusetaTransitoBundle') }}',
+                '', '#CCB9DA', '#4A325D');
+        link(responsable, quienPaga, []);
+        var end = new joint.shapes.basic.Circle({
+            position: {x: 590, y: 730},
+            size: {width: 30, height: 30},
+            attrs: {
+                circle: {
+                    fill: '#FDD6D1', 'stroke-width': 2, stroke: '#6D1E24',
+                    transform: 'translate(0, -60)',
+                },
+                text: {
+                    text: 'Fin', fill: 'black', 'font-size': 16,
+                    'font-weight': 'bold',
+                }
+            }
+        });
+        graph.addCell(end);
+        link(quienPaga, end, []);
+        {% endif %}
+        {% endif %}
+        {% endif %}
+        // -- graph events
+        paper.on('cell:mouseover', function (cellView, evt) {
+            var id_ = cellView.model.id;
+            if (id_ == 'parte') {
+                $('<div class="ktooltip"></div>')
+                        .append(parteDiv)
+                        .appendTo('body')
+                        .fadeIn('slow');
+            }
+            else if (id_ == 'accidente') {
+                $('<div class="ktooltip"></div>')
+                        .append(accDiv)
+                        .appendTo('body')
+                        .fadeIn('slow');
+            }
+            else if (id_ == 'penal') {
+                $('<div class="ktooltip"></div>')
+                        .append(penalDiv)
+                        .appendTo('body')
+                        .fadeIn('slow');
+            }
+            else if (id_ == 'juicio') {
+                $('<div class="ktooltip"></div>')
+                        .append(juicioDiv)
+                        .appendTo('body')
+                        .fadeIn('slow');
+            }
+            var mousex = evt.pageX + 10; //Get X coordinates
+            var mousey = evt.pageY + 10; //Get Y coordinates
+            $('.ktooltip')
+                    .css({top: mousey, left: mousex})
+        });
+        paper.on('cell:mouseout', function (cellView, evt) {
+            $('.ktooltip').remove();
+        });
+        paper.on('cell:pointermove', function (cellView, evt, x, y) {
+            var mousex = evt.pageX + 10; //Get X coordinates
+            var mousey = evt.pageY + 10; //Get Y coordinates
+            $('.ktooltip')
+                    .css({top: mousey, left: mousex})
+        });
+        $('#saveToSVG').on('click', saveSVG);
+
+        function saveSVG(e) {
+            if (e !== undefined) {
+                e.preventDefault();
+            }
+            paper.openAsSVG();
+        }
+    </script>
+{% endblock %}

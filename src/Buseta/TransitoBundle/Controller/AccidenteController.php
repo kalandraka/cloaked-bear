@@ -150,7 +150,7 @@ class AccidenteController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('BusetaTransitoBundle:Accidente')->find($id);
-        $juicios = $em->getRepository('BusetaTransitoBundle:Juicio')->findByAccidente($entity);
+        $juicios = $em->getRepository('BusetaTransitoBundle:Juicio')->findByAccOrderedByDate($entity);
 
         $penal = null;
         if ($entity->getParte() == 'PENAL') {
@@ -318,5 +318,37 @@ class AccidenteController extends Controller
         $em->flush();
 
         return new Response(json_encode("success"), 200);
+    }
+
+    /**
+     * Finds and displays a Flow Diagram for the Accidente entity.
+     *
+     * @Route("/{id}/diagram", name="accidente_diagram")
+     * @Method("GET")
+     * @Breadcrumb(title="Diagrama de Accidente", routeName="accidente_diagram", routeParameters={"id"})
+     */
+    public function diagramAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('BusetaTransitoBundle:Accidente')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Accidente entity.');
+        }
+        $juicios = $em->getRepository('BusetaTransitoBundle:Juicio')->findByAccOrderedByDate($entity);
+        $penal = null;
+        $juicio = null;
+        if(count($juicios) > 0)
+        {
+            $juicio = $juicios[0];
+        }
+        if ($entity->getParte() == 'PENAL') {
+            $penal = $em->getRepository('BusetaTransitoBundle:PenalAccidente')->findOneByAccidente($entity);
+        }
+        return $this->render('BusetaTransitoBundle:Accidente:diagram.html.twig', array(
+            'entity'      => $entity,
+            'penal' => $penal,
+            'juicio' => $juicio,
+        ));
     }
 }
