@@ -68,7 +68,7 @@ class ProveedorController extends Controller
     /**
      * Creates a new Proveedor entity.
      *
-     * @Route("/", name="proveedor_create", options={"expose":true})
+     * @Route("/create", name="proveedor_create", options={"expose":true})
      *
      * @Method("POST")
      * @Breadcrumb(title="Crear Nuevo Proveedor", routeName="proveedor_create")
@@ -129,7 +129,7 @@ class ProveedorController extends Controller
     /**
      * Finds and displays a Proveedor entity.
      *
-     * @Route("/{id}", name="proveedor_show")
+     * @Route("/{id}/show", name="proveedor_show")
      *
      * @Method("GET")
      * @Breadcrumb(title="Ver Datos de Proveedor", routeName="proveedor_show", routeParameters={"id"})
@@ -200,9 +200,9 @@ class ProveedorController extends Controller
     /**
      * Edits an existing Proveedor entity.
      *
-     * @Route("/{id}", name="proveedor_update", options={"expose":true})
+     * @Route("/{id}/update", name="proveedor_update", options={"expose":true})
      *
-     * @Method("PUT")
+     * @Method({"PUT", "POST"})
      * @Breadcrumb(title="Modificar Proveedor", routeName="proveedor_update", routeParameters={"id"})
      */
     public function updateAction(Request $request, $id)
@@ -236,7 +236,7 @@ class ProveedorController extends Controller
     /**
      * Deletes a Proveedor entity.
      *
-     * @Route("/{id}", name="proveedor_delete")
+     * @Route("/{id}/delete", name="proveedor_delete")
      *
      * @Method("DELETE")
      */
