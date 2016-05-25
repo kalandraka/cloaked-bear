@@ -25,7 +25,7 @@ class InventarioFisico
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="inventarioFisico")
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega")
      */
     private $almacen;
 

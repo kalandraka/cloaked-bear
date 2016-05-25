@@ -65,7 +65,7 @@ class NecesidadMaterial implements NecesidadMaterialInterface, DateTimeAwareInte
     private $fecha_pedido;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="necesidadMaterial")
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega")
      */
     private $almacen;
 

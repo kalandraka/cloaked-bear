@@ -70,7 +70,7 @@ class Albaran implements DateTimeAwareInterface, AlbaranInterface
     /**
      * @var \Buseta\BodegaBundle\Entity\Bodega
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="albaran")
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega")
      *
      * @deprecated Will be changed by bodega
      */

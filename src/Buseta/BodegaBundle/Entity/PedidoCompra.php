@@ -70,7 +70,7 @@ class PedidoCompra implements PedidoCompraInterface, DateTimeAwareInterface
     /**
      * @var \Buseta\BodegaBundle\Entity\Bodega
      *
-     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega", inversedBy="pedidoCompra")
+     * @ORM\ManyToOne(targetEntity="Buseta\BodegaBundle\Entity\Bodega")
      */
     private $almacen;
 
