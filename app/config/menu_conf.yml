@@ -737,28 +737,28 @@ root:
                   disabled: false
                   attributes: { icon: null }
                   childrens: {  }
-              menu_G_B:
-                id: menu_G_B
-                name: null
-                label: 'Gestión de accidentes'
-                route: null
-                roles:
-                  - ROLE_USER
-                type: folder
-                disabled: false
-                attributes:
-                  icon: 'fa fa-ambulance'
-                childrens:
-                  menu_G_B_A:
-                    id: menu_G_B_A
-                    name: null
-                    label: Accidentes
-                    route: accidente
-                    roles: [ROLE_USER]
-                    type: item
-                    disabled: false
-                    attributes: { icon: null }
-                    childrens: {  }
+            menu_G_B:
+              id: menu_G_B
+              name: null
+              label: 'Gestión de accidentes'
+              route: null
+              roles:
+                - ROLE_USER
+              type: folder
+              disabled: false
+              attributes:
+                icon: 'fa fa-ambulance'
+              childrens:
+                menu_G_B_A:
+                  id: menu_G_B_A
+                  name: null
+                  label: Accidentes
+                  route: accidente
+                  roles: [ROLE_USER]
+                  type: item
+                  disabled: false
+                  attributes: { icon: null }
+                  childrens: {  }
         menu_H:
           id: menu_H
           name: menu_empleados
@@ -774,7 +774,7 @@ root:
             icon: 'fa fa-user'
             color: bg-color-orange
           childrens:
-            menu_G_A:
+            menu_H_A:
               id: menu_H_A
               name: null
               label: 'Empleados'
