@@ -77,14 +77,20 @@
                     <td>{{ entity.combustible }}</td>
                     <td>{{ entity.cantidadLibros }}</td>
                     <td>{{ entity.fecha | date('d/m/Y h:i a') }}</td>
-                    {% if entity.estado == 'RV' %}
-                        {% set badge = 'success' %}
-                        {% set text_color = 'success' %}
-                    {% elseif entity.estado == 'SV' %}
+                    {% set text_color = 'default' %}
+                    {% set badge = 'default' %}
+                    {% if entity.estado == 'PR' %}
                         {% set badge = 'primary' %}
                         {% set text_color = 'primary' %}
+                    {% elseif entity.estado == 'CO' %}
+                        {% set badge = 'success' %}
+                        {% set text_color = 'success' %}
                     {% endif %}
-                    <td class="text-{{ text_color }}"><span class="label label-{{ badge }}">{{ ('estado.' ~entity.estado) | trans({}, 'BusetaCombustibleBundle') | upper }}</span></td>
+                    <td class="text-{{ text_color }}">
+                        <span class="label label-{{ badge }}">
+                            {{ ('estado.' ~ entity.estado) | trans({}, 'BusetaCombustibleBundle') | upper }}
+                        </span>
+                    </td>
                     <td style="width: 20% !important; text-align: center;">
                         <a class="btn btn-success btn-xs"
                            href="{{ path('servicioCombustible_show', { 'id': entity.id }) }}"><span
@@ -93,7 +99,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaCombustibleBundle') }}</td>
+                    <td colspan="7">{{ 'messages.no_results' | trans({}, 'BusetaCoreBundle') }}</td>
                 </tr>
             {% endfor %}
             </tbody>

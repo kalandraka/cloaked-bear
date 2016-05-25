@@ -9,6 +9,7 @@ use Buseta\CombustibleBundle\Entity\ServicioCombustible;
 use Buseta\CombustibleBundle\Event\FilterServicioCombustibleEvent;
 use Buseta\CombustibleBundle\Exception\ServicioCombustibleException;
 use Buseta\CombustibleBundle\Form\Model\ServicioCombustibleModel;
+use Buseta\CombustibleBundle\ServicioCombustibleStatus;
 use Doctrine\ORM\EntityManager;
 use HatueySoft\DateTimeBundle\Managers\FechaSistemaManager;
 use Symfony\Bridge\Monolog\Logger;
@@ -163,5 +164,101 @@ class ServicioCombustibleManager
         }
 
         return false;
+    }
+
+    public function completarServicio(ServicioCombustible $servicioCombustible)
+    {
+        $error = false;
+        $confMarchamo = $this->em->getRepository('BusetaCombustibleBundle:ConfiguracionMarchamo')
+            ->getActiveConfiguration();
+        if (!$confMarchamo) {
+            throw ServicioCombustibleException::UndefinedMarchamoConfiguration();
+        }
+
+        try {
+            if (self::USE_TRANSACTION) {
+                $this->em->beginTransaction();
+            }
+
+            if ($this->dispatcher->hasListeners(BusetaCombustibleEvents::SERVICIO_COMBUSTIBLE_PRE_COMPLETE)) {
+                $preComplete = new FilterServicioCombustibleEvent(
+                    $servicioCombustible,
+                    $servicioCombustible->getCombustible(),
+                    $confMarchamo
+                );
+                $this->dispatcher->dispatch(BusetaCombustibleEvents::SERVICIO_COMBUSTIBLE_PRE_COMPLETE, $preComplete);
+                if ($preComplete->getError()) {
+                    $error = $preComplete->getError();
+                }
+            }
+
+            $this->cambiarEstado(
+                $servicioCombustible,
+                ServicioCombustibleStatus::SERVICIO_COMBUSTIBLE_STATUS_COMPLETE,
+                $error
+            );
+
+            if ($this->dispatcher->hasListeners(BusetaCombustibleEvents::SERVICIO_COMBUSTIBLE_POST_COMPLETE)) {
+                $postComplete = new FilterServicioCombustibleEvent(
+                    $servicioCombustible,
+                    $servicioCombustible->getCombustible(),
+                    $confMarchamo
+                );
+                $this->dispatcher->dispatch(BusetaCombustibleEvents::SERVICIO_COMBUSTIBLE_POST_COMPLETE, $postComplete);
+                if ($postComplete->getError()) {
+                    $error = $postComplete->getError();
+                }
+            }
+
+            if (!$error) {
+                $this->em->flush();
+
+                if (self::USE_TRANSACTION) {
+                    $this->em->commit();
+                }
+
+                return $servicioCombustible;
+            }
+
+            $this->logger->warning(sprintf(
+                'No se pudo completar Servicio Combustible debido a errores previos: %s',
+                $error
+            ));
+        } catch (\Exception $e) {
+            $this->logger->addCritical(sprintf(
+                'Ha ocurrido un error al completar Servicio Combustible. Detalles: {message: %s, file: %s, line: %d}',
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine()
+            ));
+        }
+
+        if (self::USE_TRANSACTION) {
+            $this->em->rollback();
+        }
+
+        return false;
+    }
+
+    private function cambiarEstado(ServicioCombustible $servicioCombustible, $status, &$error)
+    {
+        try {
+            $servicioCombustible->setEstado($status);
+
+            $this->em->persist($servicioCombustible);
+
+            if (self::USE_TRANSACTION) {
+                $this->em->flush();
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            $this->logger->addCritical(sprintf(
+                'Ha ocurrido un error al cambiar estado para Servicio Combustible. Detalles: %s',
+                $e->getMessage()
+            ));
+
+            return false;
+        }
     }
 }

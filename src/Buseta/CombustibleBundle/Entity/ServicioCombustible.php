@@ -3,6 +3,7 @@
 namespace Buseta\CombustibleBundle\Entity;
 
 use Buseta\BodegaBundle\Interfaces\GeneradorBitacoraInterface;
+use Buseta\CombustibleBundle\ServicioCombustibleStatus;
 use Doctrine\ORM\Mapping as ORM;
 use HatueySoft\SecurityBundle\Interfaces\DateTimeAwareInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -41,16 +42,17 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
 
     /**
      * The allowed values for this list are:
-     * RV (Revisado)
-     * SV (Serviciado)
+     * DR (Abierto)
+     * PR (Revisado)
+     * CO (Serviciado)
      *
      * @var string
      *
      * @ORM\Column(name="estado", type="string", nullable=false)
-     * @Assert\Choice(choices={"SV","RV"})
+     * @Assert\Choice(choices={"DR", "PR", "CO"})
      *
      */
-    private $estado = 'SV';
+    private $estado;
 
     /**
      * @var integer
@@ -144,6 +146,14 @@ class ServicioCombustible implements GeneradorBitacoraInterface, DateTimeAwareIn
      */
     private $deletedby;
 
+
+    /**
+     * ServicioCombustible constructor.
+     */
+    public function __construct()
+    {
+        $this->estado = ServicioCombustibleStatus::SERVICIO_COMBUSTIBLE_STATUS_PROCESS;
+    }
 
     /**
      * Get id

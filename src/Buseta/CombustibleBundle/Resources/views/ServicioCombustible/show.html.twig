@@ -45,11 +45,15 @@
         </tbody>
     </table>
 
-        <div class="form-actions">
+    <div class="form-actions">
         <a class="btn btn-default" href="{{ path('servicioCombustible') }}">
             <i class="fa fa-chevron-left"></i> {{ 'actions.list' | trans }}</a>
+        {% if entity.estado == 'PR' %}
+        <a class="btn btn-primary" href="{{ path('combustible_serviciocombustible_serviciar', { 'id': entity.id }) }}">
+            <i class="fa fa-dashboard"></i> Serviciar
+        </a>
+        {% endif %}
     </div>
-
 {% endblock %}
 
 {% block contenido %}

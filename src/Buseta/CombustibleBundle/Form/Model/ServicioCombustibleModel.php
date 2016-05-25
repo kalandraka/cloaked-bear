@@ -5,6 +5,7 @@ namespace Buseta\CombustibleBundle\Form\Model;
 use Buseta\BusesBundle\Entity\Chofer;
 use Buseta\CombustibleBundle\Entity\ConfiguracionCombustible;
 use Buseta\CombustibleBundle\Entity\ServicioCombustible;
+use Buseta\CombustibleBundle\ServicioCombustibleStatus;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Buseta\CombustibleBundle\Validator\Constraints as CombustibleAssert;
@@ -38,7 +39,7 @@ class ServicioCombustibleModel
      * @var string
      * @Assert\NotBlank()
      */
-    private $estado = 'SV';
+    private $estado;
 
     /**
      * @var integer
@@ -80,8 +81,19 @@ class ServicioCombustibleModel
      */
     private $marchamo2;
 
+
+    /**
+     * ServicioCombustibleModel constructor.
+     */
+    public function __construct()
+    {
+        $this->estado = ServicioCombustibleStatus::SERVICIO_COMBUSTIBLE_STATUS_PROCESS;
+    }
+
     /**
      * @return ServicioCombustible
+     *
+     * @deprecated Will be removed
      */
     public function getEntityData()
     {

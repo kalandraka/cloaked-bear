@@ -4,9 +4,11 @@ namespace Buseta\CombustibleBundle\EventListener;
 
 
 use Buseta\BodegaBundle\BusetaBodegaEvents;
+use Buseta\BodegaBundle\Exceptions\NotValidStateException;
 use Buseta\CombustibleBundle\BusetaCombustibleEvents;
 use Buseta\CombustibleBundle\Event\BitacoraBodega\BitacoraServicioCombustibleEvent;
 use Buseta\CombustibleBundle\Event\FilterServicioCombustibleEvent;
+use Buseta\CombustibleBundle\ServicioCombustibleStatus;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -37,6 +39,8 @@ class ServicioCombustibleSubscriber implements EventSubscriberInterface
         return array(
             //BusetaCombustibleEvents::SERVICIO_COMBUSTIBLE_PRE_CREATE  => 'preCreate',
             BusetaCombustibleEvents::SERVICIO_COMBUSTIBLE_POST_CREATE => 'postCreate',
+            BusetaCombustibleEvents::SERVICIO_COMBUSTIBLE_PRE_COMPLETE => 'preComplete',
+            BusetaCombustibleEvents::SERVICIO_COMBUSTIBLE_POST_COMPLETE => 'postComplete',
         );
     }
 
@@ -46,6 +50,22 @@ class ServicioCombustibleSubscriber implements EventSubscriberInterface
     }
 
     public function postCreate(
+        FilterServicioCombustibleEvent $event,
+        $eventName=null,
+        EventDispatcherInterface $dispatcher=null
+    ) {
+
+    }
+
+    public function preComplete(FilterServiciocombustibleEvent $event)
+    {
+        $servicioCombustible = $event->getServicioCombustible();
+        if ($servicioCombustible->getEstado() !== ServicioCombustibleStatus::SERVICIO_COMBUSTIBLE_STATUS_PROCESS) {
+            throw new NotValidStateException();
+        }
+    }
+
+    public function postComplete(
         FilterServicioCombustibleEvent $event,
         $eventName=null,
         EventDispatcherInterface $dispatcher=null

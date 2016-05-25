@@ -33,6 +33,36 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
 class ServicioCombustibleController extends Controller
 {
     /**
+     * Cambia el estado de Servicio Combustible a serviciado.
+     *
+     * @param ServicioCombustible $servicioCombustible
+     *
+     * @return RedirectResponse
+     *
+     * @Route("/{id}/serviciar", name="combustible_serviciocombustible_serviciar")
+     * @Method("GET")
+     */
+    public function serviciarAction(ServicioCombustible $servicioCombustible)
+    {
+        $servicioCombustibleManager = $this->get('buseta.combustible.servicio_combustible.manager');
+        if ($result = $servicioCombustibleManager->completarServicio($servicioCombustible)) {
+            $this->get('session')->getFlashBag()
+                ->add('success', sprintf(
+                    'Se ha completado el Servicio Combustible para el chofer "%s" y vehículo "%s".',
+                    $servicioCombustible->getChofer()->__toString(),
+                    $servicioCombustible->getVehiculo()->__toString()
+                ));
+
+            return $this->redirect($this->generateUrl('servicioCombustible'));
+        } else {
+
+            return $this->redirect($this->generateUrl('servicioCombustible_show', array(
+                'id' => $servicioCombustible->getId()
+            )));
+        }
+    }
+
+    /**
      * Lists all ServicioCombustible entities.
      *
      * @Route("/", name="servicioCombustible")
@@ -410,5 +440,4 @@ class ServicioCombustibleController extends Controller
             )
         );
     }
-
 }
