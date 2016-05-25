@@ -15,9 +15,6 @@ class AlbaranManagerTest extends AbstractTestCase
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Doctrine\ORM\TransactionRequiredException
      *
-     * @covers AlbaranModel::__constructor
-     * @covers AlbaranModel::crear
-     *
      * @uses \Doctrine\DBAL\Connection
      * @uses \Doctrine\ORM\EntityManager
      * @uses \Symfony\Bridge\Monolog\Logger

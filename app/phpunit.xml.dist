@@ -14,9 +14,41 @@
     bootstrap                   = "bootstrap.php.cache" >
 
     <testsuites>
-        <testsuite name="Project Test Suite">
-            <directory>../src/*/*Bundle/Tests</directory>
-            <directory>../src/*/Bundle/*Bundle/Tests</directory>
+        <testsuite name="BusetaBodega Test Suite">
+            <directory>../src/Buseta/BodegaBundle/Tests</directory>
+        </testsuite>
+        <testsuite name="BusetaBuses Test Suite">
+            <directory>../src/Buseta/BusesBundle/Tests</directory>
+        </testsuite>
+        <testsuite name="BusetaCombustible Test Suite">
+            <directory>../src/Buseta/CombustibleBundle/Tests</directory>
+        </testsuite>
+        <testsuite name="BusetaCore Test Suite">
+            <directory>../src/Buseta/CoreBundle/Tests</directory>
+        </testsuite>
+        <testsuite name="BusetaNomenclador Test Suite">
+            <directory>../src/Buseta/NomencladorBundle/Tests</directory>
+        </testsuite>
+        <testsuite name="BusetaTaller Test Suite">
+            <directory>../src/Buseta/TallerBundle/Tests</directory>
+        </testsuite>
+        <testsuite name="BusetaTransito Test Suite">
+            <directory>../src/Buseta/BodegaBundle/Tests</directory>
+        </testsuite>
+        <testsuite name="HatueySoftDateTime Test Suite">
+            <directory>../src/HatueySoft/DateTimeBundle/Tests</directory>
+        </testsuite>
+        <testsuite name="HatueySoftMenu Test Suite">
+            <directory>../src/HatueySoft/MenuBundle/Tests</directory>
+        </testsuite>
+        <testsuite name="HatueySoftNotificaciones Test Suite">
+            <directory>../src/HatueySoft/NotificacionesBundle/Tests</directory>
+        </testsuite>
+        <testsuite name="HatueySoftSecurity Test Suite">
+            <directory>../src/HatueySoft/SecurityBundle/Tests</directory>
+        </testsuite>
+        <testsuite name="HatueySoftSequence Test Suite">
+            <directory>../src/HatueySoft/SequenceBundle/Tests</directory>
         </testsuite>
     </testsuites>
 
