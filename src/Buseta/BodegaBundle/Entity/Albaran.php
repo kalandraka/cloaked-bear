@@ -430,7 +430,7 @@ class Albaran implements DateTimeAwareInterface, AlbaranInterface
      *
      * @return Albaran
      */
-    public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega)
+    public function setBodega(\Buseta\BodegaBundle\Entity\Bodega $bodega = null)
     {
         $this->almacen = $bodega;
 
