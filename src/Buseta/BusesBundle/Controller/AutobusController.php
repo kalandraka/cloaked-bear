@@ -27,6 +27,7 @@ class AutobusController extends Controller
 {
     /**
      * Lists all Autobuses entities.
+     *
      * @Route("/", name="busetabuses_autobus")
      * @Breadcrumb(title="Listado de Autobuses", routeName="busetabuses_autobus")
      */
@@ -62,8 +63,10 @@ class AutobusController extends Controller
 
     /**
      * Creates a new Autobus entity.
-     * @Route("/create", name="autobuses_autobus_basicos_create", methods={"POST"}, options={"expose":true})
-     * @Breadcrumb(title="Crear Nuevo Autobus", routeName="autobuses_autobus_basicos_create")
+     *
+     * @Route("/create", name="busetabuses_autobus_create", options={"expose":true})
+     * @Method({"POST"})
+     * @Breadcrumb(title="Crear Nuevo Autobus", routeName="busetabuses_autobus_new")
      */
     public function createAction(Request $request)
     {
@@ -120,7 +123,7 @@ class AutobusController extends Controller
     private function createCreateForm(AutobusBasicoModel $entity)
     {
         $form = $this->createForm('buses_autobus_basico', $entity, array(
-            'action' => $this->generateUrl('autobuses_autobus_basicos_create'),
+            'action' => $this->generateUrl('busetabuses_autobus_create'),
             'method' => 'POST',
         ));
 
@@ -130,8 +133,9 @@ class AutobusController extends Controller
     /**
      * Displays a form to create a new Autobus entity.
      *
-     * @Route("/new", name="autobuses_autobus_basicos_new", methods={"GET"}, options={"expose":true})
-     * @Breadcrumb(title="Crear Nuevo Autobus", routeName="autobuses_autobus_basicos_create")
+     * @Route("/new", name="busetabuses_autobus_new")
+     * @Method("GET")
+     * @Breadcrumb(title="Crear Nuevo Autobus", routeName="busetabuses_autobus_new")
      */
     public function newAction()
     {
@@ -145,24 +149,16 @@ class AutobusController extends Controller
     /**
      * Finds and displays a Autobus entity.
      *
-     * @Route("/{id}/show", name="autobus_show")
+     * @Route("/{id}/show", name="busetabuses_autobus_show")
      * @Method("GET")
-     * @Breadcrumb(title="Ver Datos de Autobus", routeName="autobus_show", routeParameters={"id"})
+     * @Breadcrumb(title="Ver Datos de Autobus", routeName="busetabuses_autobus_show", routeParameters={"id"})
      */
-    public function showAction($id)
+    public function showAction(Autobus $autobus)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BusetaBusesBundle:Autobus')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Autobus entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($autobus->getId());
 
         return $this->render('BusetaBusesBundle:Autobus:show.html.twig', array(
-            'entity'      => $entity,
+            'entity'      => $autobus,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -174,9 +170,9 @@ class AutobusController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      *
-     * @Route("/{id}/edit", name="autobus_edit")
+     * @Route("/{id}/edit", name="busetabuses_autobus_edit")
      * @Method("GET")
-     * @Breadcrumb(title="Modificar Autobus", routeName="autobus_edit", routeParameters={"id"})
+     * @Breadcrumb(title="Modificar Autobus", routeName="busetabuses_autobus_edit", routeParameters={"id"})
      */
     public function editAction(Autobus $autobus)
     {
@@ -199,7 +195,7 @@ class AutobusController extends Controller
     private function createEditForm(AutobusBasicoModel $entity)
     {
         $form = $this->createForm('buses_autobus_basico', $entity, array(
-            'action' => $this->generateUrl('autobus_basico_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('busetabuses_autobus_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -209,9 +205,9 @@ class AutobusController extends Controller
     /**
      * Edits an existing Autobus entity.
      *
-     * @Route("/{id}/update", name="autobus_basico_update", options={"expose": true})
+     * @Route("/{id}/update", name="busetabuses_autobus_update", options={"expose": true})
      * @Method({"POST", "PUT"})
-     * @Breadcrumb(title="Modificar Autobus", routeName="autobus_basico_update", routeParameters={"id"})
+     * @Breadcrumb(title="Modificar Autobus", routeName="busetabuses_autobus_edit", routeParameters={"id"})
      */
     public function updateAction(Request $request, Autobus $autobus)
     {
@@ -259,7 +255,7 @@ class AutobusController extends Controller
     /**
      * Deletes a Autobus entity.
      *
-     * @Route("/{id}/delete", name="autobus_delete", options={"expose": true})
+     * @Route("/{id}/delete", name="busetabuses_autobus_delete", options={"expose": true})
      * @Method({"DELETE", "GET", "POST"})
      */
     public function deleteAction(Autobus $autobus, Request $request)
@@ -305,7 +301,7 @@ class AutobusController extends Controller
         if($request->isXmlHttpRequest()) {
             return new JsonResponse(array('view' => $renderView));
         }
-        return $this->redirect($this->generateUrl('autobus'));
+        return $this->redirect($this->generateUrl('busetabuses_autobus'));
     }
 
     /**
@@ -319,7 +315,7 @@ class AutobusController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('autobus_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('busetabuses_autobus_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->getForm()
             ;
@@ -331,7 +327,7 @@ class AutobusController extends Controller
      *
      * @return JsonResponse
      *
-     * @Route("/{id}/archivoAdjunto", name="autobus_archivoadjunto", options={"expose": true})
+     * @Route("/{id}/archivo-adjunto", name="busetabuses_autobus_archivoadjunto", options={"expose": true})
      * @Method({"GET", "POST"})
      */
     public function newArchivoAdjunto(Request $request, Autobus $autobus)
@@ -393,7 +389,8 @@ class AutobusController extends Controller
      *
      * @return JsonResponse
      *
-     * @Route("/{id}/archivoAdjunto/{archivo}/delete", name="autobus_archivoadjunto_delete", options={"expose": true})
+     * @Route("/{id}/archivo-adjunto/{archivo}/delete", name="busetabuses_autobus_archivoadjunto_delete",
+     *     options={"expose": true})
      * @Method("DELETE")
      * @ParamConverter("autobus")
      * @ParamConverter("archivoAdjunto", options={"mapping": {"archivo": "id"}})
@@ -413,6 +410,7 @@ class AutobusController extends Controller
             return new JsonResponse(array('message' => 'Se ha eliminado el Archivo Adjunto satisfactoriamente.'), 202);
         } catch (\Exception $e) {
             $logger->addCritical(sprintf('Ha ocurrido un error eliminando el Archivo Adjunto con id: %d. Detalles: %s', $archivoAdjunto->getId(), $e->getMessage()));
+
             return new JsonResponse(array('message' => 'Ha ocurrido un error eliminando el Archivo Adjunto.'), 202);
         }
     }

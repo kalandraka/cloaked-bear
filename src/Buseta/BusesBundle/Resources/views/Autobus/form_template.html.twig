@@ -192,9 +192,11 @@
     {# buttons group #}
     <div class="row">
         <div class="col-md-4">
-            <a class="btn btn-primary" id="btn_autobus_save" href="#"><span class="glyphicon glyphicon-save"></span>
+            <a class="btn btn-primary" id="btn_autobus_save" href="#">
+                <span class="glyphicon glyphicon-save"></span>
                 {{ 'actions.save' | trans({}, 'BusetaBusesBundle') }}</a>
-            <a class="btn btn-default" id="btn_autobus_cancel" href="{{ path('autobus') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+            <a class="btn btn-default" id="btn_autobus_cancel" href="{{ path('busetabuses_autobus') }}">
+                <span class="glyphicon glyphicon-chevron-left"></span>
                 {{ 'actions.list' | trans({}, 'BusetaBusesBundle') }}</a>
         </div>
     </div>

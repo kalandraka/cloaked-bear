@@ -21,10 +21,16 @@ abstract class AbstractWebTestCase extends WebTestCase
      */
     protected $client;
 
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Routing\Router
+     */
+    protected $router;
+
     public function setUp()
     {
         $this->client = static::createClient();
         $this->logIn();
+        $this->router = $this->client->getContainer()->get('router');
     }
 
     private function logIn()

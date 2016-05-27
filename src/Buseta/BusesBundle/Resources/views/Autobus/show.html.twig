@@ -434,9 +434,9 @@
     </div>
 
     <div class="form-actions">
-        <a class="btn btn-primary" href="{{ path('autobus_edit', { 'id': entity.id }) }}"> Editar</a>
-        <a class="btn btn-primary" href="{{ path('autobus') }}"> Listado</a>
-        <a href="#delete" data-href="{{ path('autobus_delete', {'id': entity.id}) }}" class="btn btn-danger">
+        <a class="btn btn-primary" href="{{ path('busetabuses_autobus_edit', { 'id': entity.id }) }}"> Editar</a>
+        <a class="btn btn-primary" href="{{ path('busetabuses_autobus') }}"> Listado</a>
+        <a href="#delete" data-href="{{ path('busetabuses_autobus_delete', {'id': entity.id}) }}" class="btn btn-danger">
             <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
     </div>
 
@@ -452,7 +452,7 @@
     {{ parent() }}
 
     <script type="text/javascript">
-        var deleteevent = new DeleteEvent('{{ path('autobus') }}', 'div#autobus_records_list', false);
+        var deleteevent = new DeleteEvent('{{ path('busetabuses_autobus') }}', 'div#autobus_records_list', false);
         deleteevent.start_events();
     </script>
 {% endblock %}
