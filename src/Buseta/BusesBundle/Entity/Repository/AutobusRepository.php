@@ -48,10 +48,6 @@ class AutobusRepository extends EntityRepository
 
         $query->orderBy('a.id', 'ASC');
 
-        try {
-            return $query->getQuery();
-        } catch (NoResultException $e) {
-            return array();
-        }
+        return $query->getQuery();
     }
 }

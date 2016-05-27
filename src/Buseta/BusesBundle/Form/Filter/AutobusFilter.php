@@ -81,6 +81,6 @@ class AutobusFilter extends AbstractType
      */
     public function getName()
     {
-        return 'buseta_autobus_filter';
+        return 'busetabuses_autobus_filter';
     }
 }
