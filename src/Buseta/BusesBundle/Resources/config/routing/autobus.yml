@@ -1,30 +1,3 @@
-autobus_show:
-    path:  /{id}/show
-    defaults: { _controller: "BusetaBusesBundle:Autobus:show" }
-
-autobus_new:
-    path:  /new
-    defaults: { _controller: "BusetaBusesBundle:Autobus:new" }
-
-autobus_create:
-    path:  /create
-    defaults: { _controller: "BusetaBusesBundle:Autobus:create" }
-    requirements: { methods: post }
-
-autobus_edit:
-    path:  /{id}/edit
-    defaults: { _controller: "BusetaBusesBundle:Autobus:edit" }
-
-autobus_update:
-    path:  /{id}/update
-    defaults: { _controller: "BusetaBusesBundle:Autobus:update" }
-    requirements: { methods: post|put }
-
-autobus_delete:
-    path:  /{id}/delete
-    defaults: { _controller: "BusetaBusesBundle:Autobus:delete" }
-    requirements: { methods: post|delete }
-
 autobus_ajax_modelos:
   path: /ajax/{idMarca}/modelos
   defaults: { _controller: "BusetaBusesBundle:Autobus:modelos" }

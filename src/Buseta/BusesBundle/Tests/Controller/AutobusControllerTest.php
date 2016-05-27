@@ -53,11 +53,6 @@ class AutobusControllerTest extends AbstractWebTestCase
         );
 
         $crawler = $this->client->request('GET', $path);
-        $this->assertEquals(
-            Response::HTTP_OK,
-            $this->client->getResponse()->getStatusCode(),
-            sprintf("Unexpected HTTP status code for %s %s.", 'GET', $path)
-        );
         $form = $crawler->selectButton('Filtrar')->form($formData);
         $this->client->submit($form);
 

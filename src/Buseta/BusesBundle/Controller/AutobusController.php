@@ -376,7 +376,7 @@ class AutobusController extends Controller
     {
         $form = $this->createForm(new ArchivoAdjuntoType(), $model, array(
             'method' => 'POST',
-            'action' => $this->generateUrl('autobus_archivoadjunto', array('id' => $model->getAutobus()->getId()))
+            'action' => $this->generateUrl('busetabuses_autobus_archivoadjunto', array('id' => $model->getAutobus()->getId()))
         ));
 
         return $form;
@@ -409,7 +409,11 @@ class AutobusController extends Controller
 
             return new JsonResponse(array('message' => 'Se ha eliminado el Archivo Adjunto satisfactoriamente.'), 202);
         } catch (\Exception $e) {
-            $logger->addCritical(sprintf('Ha ocurrido un error eliminando el Archivo Adjunto con id: %d. Detalles: %s', $archivoAdjunto->getId(), $e->getMessage()));
+            $logger->addCritical(sprintf(
+                'Ha ocurrido un error eliminando el Archivo Adjunto con id: %d. Detalles: %s',
+                $archivoAdjunto->getId(),
+                $e->getMessage()
+            ));
 
             return new JsonResponse(array('message' => 'Ha ocurrido un error eliminando el Archivo Adjunto.'), 202);
         }

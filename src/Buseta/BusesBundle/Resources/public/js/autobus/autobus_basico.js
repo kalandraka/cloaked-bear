@@ -64,9 +64,9 @@ var autobus = {
         autobus.id = $('input[id="' + autobus.form_id + '_id"]').val();
 
         var autobusesForm    = $('form#' + autobus.form_id),
-            url             = Routing.generate('autobuses_autobus_basicos_create',{});
+            url             = Routing.generate('busetabuses_autobus_create',{});
         if(autobus.id !== '' && autobus.id !== undefined) {
-            url = Routing.generate('autobus_basico_update', {'id': autobus.id});
+            url = Routing.generate('busetabuses_autobus_update', {'id': autobus.id});
         }
 
         autobusesForm.ajaxSubmit({

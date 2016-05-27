@@ -30,7 +30,7 @@ var archivoadjunto = {
         archivoadjunto.prototype = archivoadjunto.collectionHolder.data('prototype');
 
         $.ajax({
-            url: Routing.generate('autobus_archivoadjunto', {id: autobus.id}),
+            url: Routing.generate('busetabuses_autobus_archivoadjunto', {id: autobus.id}),
             dataType: 'JSON',
             method: 'GET'
         }).done(function (json, status, XHR) {
@@ -112,7 +112,7 @@ var archivoadjunto = {
             $('div#modal-delete-archivoadjunto').modal('show');
         } else if (event.data !== undefined && event.data.remove === true) {
             $.ajax({
-                url: Routing.generate('autobus_archivoadjunto_delete', {'id': autobus.id, archivo: event.data.archivo}),
+                url: Routing.generate('busetabuses_autobus_archivoadjunto_delete', {'id': autobus.id, archivo: event.data.archivo}),
                 dataType: 'JSON',
                 method: 'DELETE'
             }).done(function (json) {
