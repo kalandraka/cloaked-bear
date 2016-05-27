@@ -1,30 +1,31 @@
 BusetaBusesBundle_autobus:
         resource: "@BusetaBusesBundle/Resources/config/routing/autobus.yml"
         prefix:   /autobus
-BusetaBuses_homepage:
-    path:  /hello/{name}
-    defaults: { _controller: BusetaBusesBundle:Default:index }
-autobus_principal:
-    path:  /modulo/autobus
-    defaults: { _controller: "BusetaBusesBundle:Autobus:principal" }
+
 buseta_buses_autobus:
   resource: "@BusetaBusesBundle/Controller/AutobusController.php"
   type:     annotation
+
 buseta_buses_autobus_extra:
   resource: "@BusetaBusesBundle/Controller/AutobusExtraController.php"
   type:     annotation
+
 buseta_buses_autobus_filtro:
   resource: "@BusetaBusesBundle/Controller/AutobusFiltroController.php"
   type:     annotation
+
 buseta_buses_chofer:
   resource: "@BusetaBusesBundle/Controller/ChoferController.php"
   type:     annotation
+
 buseta_buses_autobus_imagen:
   resource: "@BusetaBusesBundle/Controller/AutobusImagenController.php"
   type:     annotation
+
 buseta_buses_vehiculo:
   resource: "@BusetaBusesBundle/Controller/VehiculoController.php"
   type:     annotation
+
 buseta_buses_autobus_grupobuses:
     resource: "@BusetaBusesBundle/Controller/GrupoBusesController.php"
     type:     annotation

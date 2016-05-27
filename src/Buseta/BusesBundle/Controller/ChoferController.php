@@ -18,7 +18,7 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
  *
  * @Route("/chofer")
  * @Breadcrumb(title="Inicio", routeName="core_homepage")
- * @Breadcrumb(title="Módulo de Vehículos", routeName="autobus_principal")
+ * @Breadcrumb(title="Módulo de Vehículos", routeName="busetabuses_dashboard")
  */
 class ChoferController extends Controller
 {

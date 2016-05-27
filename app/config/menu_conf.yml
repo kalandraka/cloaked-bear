@@ -24,7 +24,7 @@ root:
           id: menu_A
           name: menu_vehiculos
           label: Vehículos
-          route: autobus_principal
+          route: busetabuses_dashboard
           roles:
             - ROLE_ADMIN
             - ROLE_SUPER_ADMIN
@@ -51,7 +51,7 @@ root:
                   id: menu_A_A_A
                   name: null
                   label: Autobuses
-                  route: autobus
+                  route: busetabuses_autobus
                   roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN]
                   type: item
                   disabled: false
@@ -777,7 +777,7 @@ root:
             menu_H_A:
               id: menu_H_A
               name: null
-              label: 'Empleados'
+              label: Empleados
               route: empleado
               roles:
                 - ROLE_USER
@@ -785,3 +785,4 @@ root:
               disabled: false
               attributes:
                 icon: 'fa fa-user'
+              childrens: {  }

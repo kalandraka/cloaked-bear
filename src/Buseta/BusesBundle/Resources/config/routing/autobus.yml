@@ -1,7 +1,3 @@
-autobus:
-    path:  /
-    defaults: { _controller: "BusetaBusesBundle:Autobus:index" }
-
 autobus_show:
     path:  /{id}/show
     defaults: { _controller: "BusetaBusesBundle:Autobus:show" }

@@ -21,29 +21,21 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
  *
  * @Route("/autobus")
  * @Breadcrumb(title="Inicio", routeName="core_homepage")
- * @Breadcrumb(title="Módulo de Vehículos", routeName="autobus_principal")
+ * @Breadcrumb(title="Módulo de Vehículos", routeName="busetabuses_dashboard")
  */
 class AutobusController extends Controller
 {
     /**
-     * Module Buses entity.
-     */
-    public function principalAction()
-    {
-        return $this->render('BusetaBusesBundle:Default:principal.html.twig');
-    }
-
-    /**
      * Lists all Autobuses entities.
-     * @Route("/autobus")
-     * @Breadcrumb(title="Listado de Autobuses", routeName="autobus")
+     * @Route("/", name="busetabuses_autobus")
+     * @Breadcrumb(title="Listado de Autobuses", routeName="busetabuses_autobus")
      */
     public function indexAction(Request $request)
     {
         $filter = new AutobusFilterModel();
 
         $form = $this->createForm(new AutobusFilter(), $filter, array(
-            'action' => $this->generateUrl('autobus'),
+            'action' => $this->generateUrl('busetabuses_autobus'),
         ));
 
         $form->handleRequest($request);
