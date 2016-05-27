@@ -24,8 +24,9 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->arrayNode('server')
             ->children()
-            ->scalarNode('address')->end()
-            ->scalarNode('port')->end()
+                ->scalarNode('address')->end()
+                ->scalarNode('port')->end()
+                ->scalarNode('alias')->end()
             ->end()
             ->end()// server
             ->end();

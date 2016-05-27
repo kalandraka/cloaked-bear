@@ -343,5 +343,6 @@ services:
 
 buseta_combustible:
     server:
-        address: localhost
-        port: 80
+        address: "%recaudadora.boletas_api_server_hostname%"
+        port: "%recaudadora.boletas_api_server_port%"
+        alias: "%recaudadora.boletas_api_server_alias%"
