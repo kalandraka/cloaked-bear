@@ -25,7 +25,7 @@ class Multa
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=128)
+     * @ORM\Column(name="descripcion", type="string", length=128, nullable=true)
      */
     protected $descripcion;
 

@@ -119,6 +119,8 @@
                                    href="{{ path('accidente_edit', { 'id': entity.id }) }}"><span
                                             class="glyphicon glyphicon-edit"> Editar</span></a>
                             </div>
+                            <a href="#delete" data-href="{{ path('accidente_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
+                                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaTransitoBundle') }}</a>
                         </td>
                     </tr>
                 {% else %}
@@ -230,6 +232,9 @@
         });
         $('select#buseta_accidente_filter_vehiculo').chosen();
         $('select#buseta_accidente_filter_chofer').chosen();
+
+        var deleteevent = new DeleteEvent('{{ path('accidente') }}', 'div#records_list');
+        deleteevent.start_events();
     </script>
 
 {% endblock javascripts %}

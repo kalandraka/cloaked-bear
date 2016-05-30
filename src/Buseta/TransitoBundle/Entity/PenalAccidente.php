@@ -63,6 +63,9 @@ class PenalAccidente
      * @var \Buseta\TransitoBundle\Entity\Accidente
      *
      * @ORM\ManyToOne(targetEntity="Buseta\TransitoBundle\Entity\Accidente")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="accidente_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
      */
     private $accidente;
 

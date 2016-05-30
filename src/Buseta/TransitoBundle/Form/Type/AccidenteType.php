@@ -11,13 +11,6 @@ class AccidenteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('descripcion', 'text', array(
-                'required' => true,
-                'label' => 'Descripción',
-                'attr'   => array(
-                    'class' => 'form-control',
-                )
-            ))
             ->add('vehiculo','entity',array(
                 'class' => 'BusetaBusesBundle:Vehiculo',
                 'placeholder' => '---Seleccione---',
@@ -80,6 +73,13 @@ class AccidenteType extends AbstractType
                 'attr'   => array(
                     'class' => 'form-control',
                 ),
+            ))
+            ->add('descripcion', 'textarea', array(
+                'required' => false,
+                'label' => 'Descripción',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
             ))
         ;
     }

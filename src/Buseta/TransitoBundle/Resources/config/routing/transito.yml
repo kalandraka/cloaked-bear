@@ -1,3 +1,0 @@
-transito:
-    path:  /
-    defaults: { _controller: "BusetaTransitoBundle:Transito:principal" }

@@ -3,7 +3,7 @@
 {% block title block('header') %}
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/busetatransito/third_party/jointjs/joint.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('vendors/jointjs/joint.min.css') }}"/>
     <style type="text/css">
         .ktooltip {
             display: none;
@@ -30,14 +30,14 @@
 
 {% block area_trabajo %}
     <div class="graph-actions">
-        <a class="btn btn-primary" id="saveToSVG" href="#">
-            <i class="fa fa-image"></i> Mostrar SVG</a>
         <a class="btn btn-primary" href="{{ path('multa_edit', { 'id': entity.id }) }}">
             <i class="fa fa-edit"></i> Editar Multa</a>
-        <a class="btn btn-primary" href="{{ path('multa_show', { 'id': entity.id }) }}">
+        <a class="btn btn-default" id="saveToSVG" href="#">
+            <i class="fa fa-image"></i> Mostrar SVG</a>
+        <a class="btn btn-default" href="{{ path('multa_show', { 'id': entity.id }) }}">
             <i class="fa fa-search"></i> Mostrar Multa</a>
-        <a class="btn btn-primary" href="{{ path('multa') }}">
-            <i class="fa fa-list"></i> Listado de Multas</a>
+        <a class="btn btn-default" href="{{ path('multa') }}">
+            <span class="glyphicon glyphicon-chevron-left"></span> Listado de Multas</a>
     </div>
     <div id="multa_diagram"></div>
 
@@ -49,12 +49,12 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('bundles/busetatransito/third_party/jointjs/lodash.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendors/jointjs/lodash.js') }}"></script>
     <script type="text/javascript"
-            src="{{ asset('bundles/busetatransito/third_party/jointjs/backbone-min.js') }}"></script>
+            src="{{ asset('vendors/jointjs/backbone-min.js') }}"></script>
     <script type="text/javascript"
-            src="{{ asset('bundles/busetatransito/third_party/jointjs/joint.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/busetatransito/third_party/jointjs/exporter.js') }}"></script>
+            src="{{ asset('vendors/jointjs/joint.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendors/jointjs/exporter.js') }}"></script>
 
     <script type="text/javascript">
 

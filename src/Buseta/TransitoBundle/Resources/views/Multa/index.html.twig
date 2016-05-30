@@ -117,6 +117,8 @@
                                href="{{ path('multa_edit', { 'id': entity.id }) }}"><span
                                         class="glyphicon glyphicon-edit"> Editar</span></a>
                         </div>
+                        <a href="#delete" data-href="{{ path('multa_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaTransitoBundle') }}</a>
                     </td>
                 </tr>
             {% else %}
@@ -158,6 +160,8 @@
                 $('form#filter_form').submit();
             });
 
+            $('a[href="#btn_multas_delete"]').on('click', multas._load_delete_modal);
+
             $('a#filter_form_reset_btn').click(function () {
                 $('form#filter_form').find('input').each(function () {
                     $(this).val(null);
@@ -172,7 +176,7 @@
     <script type="text/javascript">
         var multas = {
             activeblock: false,
-            _start_events: function (){
+            start_events: function (){
                 // Paginator sort
                 $('table.multas_records_list').find('a.sortable, a.asc, a.desc').on('click', multas._load);
                 // Paginator navigation
@@ -191,7 +195,7 @@
                     multas.toggle();
                     $('div#multas_results_container').replaceWith($(response).find('div#multas_results_container'));
 
-                    multas._start_events();
+                    multas.start_events();
                 }).fail(utils._fail).always(function(){
                     //on complete function
                 });
@@ -204,7 +208,7 @@
                     $('div#multas_results_container').block();
                     multas.activeblock = true;
                 }
-            }
+            },
         };
 
         var utils = {
@@ -228,6 +232,9 @@
         $('select#buseta_multa_filter_vehiculo').chosen();
         $('select#buseta_multa_filter_numArticulo').chosen();
         $('select#buseta_multa_filter_chofer').chosen();
+
+        var deleteevent = new DeleteEvent('{{ path('multa') }}', 'div#records_list');
+        deleteevent.start_events();
     </script>
 
 {% endblock javascripts %}

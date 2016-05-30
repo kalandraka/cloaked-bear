@@ -69,9 +69,9 @@
     <div class="form-actions">
         <a class="btn btn-primary" href="{{ path('multa_edit', { 'id': entity.id }) }}">
             <i class="fa fa-edit"></i> Editar</a>
-        <a class="btn btn-primary" href="{{ path('multa') }}">
-            <i class="fa fa-list"></i> Listado</a>
-        <a class="btn btn-primary" href="{{ path('multa_diagram', { 'id': entity.id }) }}">
+        <a class="btn btn-default" href="{{ path('multa') }}">
+            <span class="glyphicon glyphicon-chevron-left"></span> Listado</a>
+        <a class="btn btn-default" href="{{ path('multa_diagram', { 'id': entity.id }) }}">
             <i class="fa fa-sitemap"></i> Diagrama</a>
         {% if entity is defined and entity.estado == 'BO' %}
             <a class="btn btn-primary" href="{{ path('cambiarEstadoMulta', { 'id': entity.id, 'state': 'AP' }) }}">

@@ -11,13 +11,6 @@ class MultaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('descripcion', 'text', array(
-                'required' => true,
-                'label' => 'Descripción',
-                'attr'   => array(
-                    'class' => 'form-control',
-                )
-            ))
             ->add('numArticulo','entity',array(
                 'class' => 'BusetaNomencladorBundle:Articulo',
                 'placeholder' => '---Seleccione---',
@@ -69,7 +62,13 @@ class MultaType extends AbstractType
                 'required' => false,
                 'label' => 'Importe Abogado',
             ))
-
+            ->add('descripcion', 'textarea', array(
+                'required' => false,
+                'label' => 'Descripción',
+                'attr'   => array(
+                    'class' => 'form-control',
+                )
+            ))
         ;
     }
 

@@ -19,8 +19,6 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
  * Multa controller.
  *
  * @Route("/multa")
- * @Breadcrumb(title="Inicio", routeName="core_homepage")
- * @Breadcrumb(title="Módulo de Tránsito", routeName="transito_principal")
  */
 class MultaController extends Controller
 {
@@ -292,5 +290,74 @@ class MultaController extends Controller
         return $this->render('BusetaTransitoBundle:Multa:diagram.html.twig', array(
             'entity'      => $entity
         ));
+    }
+
+    /**
+     * Deletes a Multa entity.
+     *
+     * @Route("/{id}/delete", name="multa_delete", options={"expose": true})
+     * @Method({"DELETE", "GET", "POST"})
+     */
+    public function deleteAction(Multa $multa, Request $request)
+    {
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($multa->getId());
+
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+            try {
+                $em = $this->get('doctrine.orm.entity_manager');
+
+                $em->remove($multa);
+                $em->flush();
+
+                $message = $trans->trans('messages.delete.success', array(), 'BusetaTransitoBundle');
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 202);
+                }
+                else {
+                    $this->get('session')->getFlashBag()->add('success', $message);
+                }
+            } catch (\Exception $e) {
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Multa'), 'BusetaTransitoBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
+            }
+        }
+
+        $renderView =  $this->renderView('@BusetaTransito/Multa/delete_modal.html.twig', array(
+            'entity' => $multa,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
+        return $this->redirect($this->generateUrl('multa'));
+    }
+
+    /**
+     * Creates a form to delete a Multa entity by id.
+     *
+     * @param mixed $id The entity id
+     *
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('multa_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->getForm()
+            ;
     }
 }

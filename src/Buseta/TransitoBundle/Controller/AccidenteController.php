@@ -19,8 +19,6 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
  * Accidente controller.
  *
  * @Route("/accidente")
- * @Breadcrumb(title="Inicio", routeName="core_homepage")
- * @Breadcrumb(title="Módulo de Tránsito", routeName="transito_principal")
  */
 class AccidenteController extends Controller
 {
@@ -350,5 +348,74 @@ class AccidenteController extends Controller
             'penal' => $penal,
             'juicio' => $juicio,
         ));
+    }
+
+    /**
+     * Deletes a Accidente entity.
+     *
+     * @Route("/{id}/delete", name="accidente_delete", options={"expose": true})
+     * @Method({"DELETE", "GET", "POST"})
+     */
+    public function deleteAction(Accidente $accidente, Request $request)
+    {
+        $trans = $this->get('translator');
+        $deleteForm = $this->createDeleteForm($accidente->getId());
+
+        $deleteForm->handleRequest($request);
+        if($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+            try {
+                $em = $this->get('doctrine.orm.entity_manager');
+
+                $em->remove($accidente);
+                $em->flush();
+
+                $message = $trans->trans('messages.delete.success', array(), 'BusetaTransitoBundle');
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 202);
+                }
+                else {
+                    $this->get('session')->getFlashBag()->add('success', $message);
+                }
+            } catch (\Exception $e) {
+                $message = $trans->trans('messages.delete.error.%key%', array('key' => 'Accidente'), 'BusetaTransitoBundle');
+                $this->get('logger')->addCritical(sprintf($message.' Detalles: %s', $e->getMessage()));
+
+                if($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array(
+                        'message' => $message,
+                    ), 500);
+                }
+            }
+        }
+
+        $renderView =  $this->renderView('@BusetaTransito/Accidente/delete_modal.html.twig', array(
+            'entity' => $accidente,
+            'form' => $deleteForm->createView(),
+        ));
+
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array('view' => $renderView));
+        }
+        return $this->redirect($this->generateUrl('accidente'));
+    }
+
+    /**
+     * Creates a form to delete a Accidente entity by id.
+     *
+     * @param mixed $id The entity id
+     *
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('accidente_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->getForm()
+            ;
     }
 }

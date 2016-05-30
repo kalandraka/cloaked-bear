@@ -25,7 +25,7 @@ class Accidente
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string")
+     * @ORM\Column(name="descripcion", type="string", nullable=true)
      */
     protected $descripcion;
 

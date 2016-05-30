@@ -1,0 +1,25 @@
+<div id="modal-danger" class="modal fade" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header clearfix" style="color: #d73d32;">
+                <i class="glyphicon glyphicon-fire pull-left" style="font-size: 25px; margin-top: 10px;"></i>
+                <div class="modal-title pull-left"><h3 style="margin: 10px;">{{ 'messages.danger' | trans({}, 'BusetaTransitoBundle') }}</h3></div>
+            </div>
+
+            <div class="modal-body" style="color: #737373;">
+                <p>Usted está tratando de eliminar la Multa de <strong>"{{ entity.chofer }}"</strong> con el Vehículo <strong>"{{ entity.vehiculo }}"</strong>.
+                    Al aceptar la acción se eliminarán los datos de forma permanente. <strong>¿Está seguro que desea continuar?</strong></p>
+            </div>
+            <div class="modal-footer">
+                <form name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" action="{{ form.vars.action }}"
+                      method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    {{ form_widget(form) }}
+                </form>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-chevron-left"></span>{{ 'actions.cancel' | trans({}, 'BusetaTransitoBundle') }}</button>
+                <button type="button" class="btn btn-danger"><i class="fa fa-remove"></i> {{ 'actions.confirm' | trans({}, 'BusetaTransitoBundle') }}</button>
+            </div>
+        </div> <!-- / .modal-content -->
+    </div> <!-- / .modal-dialog -->
+</div>
