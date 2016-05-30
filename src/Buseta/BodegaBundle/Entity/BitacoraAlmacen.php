@@ -85,6 +85,13 @@ class BitacoraAlmacen implements DateTimeAwareInterface
     /**
      * @var integer
      *
+     * @ORM\Column(name="qty", type="integer", nullable=true)
+     */
+    private $cantidad;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="quantity_order", type="integer", nullable=true)
      */
     private $cantidadOrden;
@@ -571,5 +578,29 @@ class BitacoraAlmacen implements DateTimeAwareInterface
     public function getProduccionLinea()
     {
         return $this->produccionLinea;
+    }
+
+    /**
+     * Set cantidad
+     *
+     * @param integer $cantidad
+     *
+     * @return BitacoraAlmacen
+     */
+    public function setCantidad($cantidad)
+    {
+        $this->cantidad = $cantidad;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidad
+     *
+     * @return integer
+     */
+    public function getCantidad()
+    {
+        return $this->cantidad;
     }
 }

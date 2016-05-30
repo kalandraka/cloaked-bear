@@ -9,7 +9,7 @@ use Buseta\BodegaBundle\Interfaces\DateTimeAwareInterface;
 /**
  * BitacoraSeriales.
  *
- * @ORM\Table(name="d_bitacora_serial")
+ * @ORM\Table(name="d_bitacora_serial", indexes={@ORM\Index(name="serial_idx", columns={"serial"})})
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\BitacoraSerialRepository")
  */
 class BitacoraSerial implements DateTimeAwareInterface
@@ -42,7 +42,7 @@ class BitacoraSerial implements DateTimeAwareInterface
      *
      * @var string
      *
-     * @ORM\Column(name="movement_type", type="string")
+     * @ORM\Column(name="movement_type", type="string", length=2)
      *
      * @Assert\NotNull()
      * @Assert\Choice(choices={"C+","C-","D+","D-","I+","I-","M+","M-","P+","P-","V+","V-","W+","W-"})
@@ -89,6 +89,13 @@ class BitacoraSerial implements DateTimeAwareInterface
      * @ORM\Column(name="movement_qty", type="integer", nullable=true)
      */
     private $cantidadMovida;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="qty", type="smallint", nullable=true)
+     */
+     private $cantidad;
 
     /**
      * @var \Buseta\BodegaBundle\Entity\InventarioFisicoLinea
@@ -152,7 +159,7 @@ class BitacoraSerial implements DateTimeAwareInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="serial", type="string", nullable=true)
+     * @ORM\Column(name="serial", type="string", length=32, nullable=true)
      */
     private $serial;
 
@@ -507,5 +514,29 @@ class BitacoraSerial implements DateTimeAwareInterface
         $this->serial = $serial;
 
         return $this;
+    }
+
+    /**
+     * Set cantidad
+     *
+     * @param integer $cantidad
+     *
+     * @return BitacoraSerial
+     */
+    public function setCantidad($cantidad)
+    {
+        $this->cantidad = $cantidad;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidad
+     *
+     * @return integer
+     */
+    public function getCantidad()
+    {
+        return $this->cantidad;
     }
 }
