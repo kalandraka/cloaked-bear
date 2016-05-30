@@ -54,6 +54,16 @@ class NecesidadMaterialFilterModel
     private $importe_total;
 
     /**
+     * @var date
+     */
+    private $fechaInicio;
+
+    /**
+     * @var date
+     */
+    private $fechaFin;
+
+    /**
      * @return \Buseta\BodegaBundle\Entity\Bodega
      */
     public function getAlmacen()
@@ -211,6 +221,38 @@ class NecesidadMaterialFilterModel
     public function setTercero($tercero)
     {
         $this->tercero = $tercero;
+    }
+
+    /**
+     * @return date
+     */
+    public function getFechaInicio()
+    {
+        return $this->fechaInicio;
+    }
+
+    /**
+     * @param date $fechaInicio
+     */
+    public function setFechaInicio($fechaInicio)
+    {
+        $this->fechaInicio = $fechaInicio;
+    }
+
+    /**
+     * @return date
+     */
+    public function getFechaFin()
+    {
+        return $this->fechaFin;
+    }
+
+    /**
+     * @param date $fechaFin
+     */
+    public function setFechaFin($fechaFin)
+    {
+        $this->fechaFin = $fechaFin;
     }
 
 } 

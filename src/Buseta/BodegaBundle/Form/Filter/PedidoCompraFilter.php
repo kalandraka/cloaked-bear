@@ -104,6 +104,24 @@ class PedidoCompraFilter extends AbstractType
                     'class' => 'form-control',
                 ),
             ))
+            ->add('fechaInicio', 'date', array(
+                'widget' => 'single_text',
+                'label'  => 'Desde',
+                'format'  => 'dd/MM/yyyy',
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
+            ->add('fechaFin', 'date', array(
+                'widget' => 'single_text',
+                'label'  => 'Hasta',
+                'format'  => 'dd/MM/yyyy',
+                'required' => false,
+                'attr'   => array(
+                    'class' => 'form-control',
+                ),
+            ))
         ;
     }
 

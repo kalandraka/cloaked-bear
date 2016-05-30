@@ -10,6 +10,8 @@
     {% set display = '' %}
     {% set headericon = 'glyphicon-chevron-down' %}
     {% if (filter_form.vars.value.numerodocumento is null or filter_form.vars.value.numerodocumento is empty)
+    and (filter_form.vars.value.fechaInicio is null or filter_form.vars.value.fechaInicio is empty)
+    and (filter_form.vars.value.fechaFin is null or filter_form.vars.value.fechaFin is empty)
     and (filter_form.vars.value.numeroreferencia is null or filter_form.vars.value.numeroreferencia is empty)
     and (filter_form.vars.value.tercero is null or filter_form.vars.value.tercero is empty)
     and (filter_form.vars.value.almacen is null or filter_form.vars.value.almacen is empty)
@@ -43,6 +45,8 @@
                 <div class="col-lg-4">{{ form_row(filter_form.importe_total_lineas) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.importe_total) }}</div>
                 <div class="col-lg-4">{{ form_row(filter_form.estado_documento) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.fechaInicio) }}</div>
+                <div class="col-lg-4">{{ form_row(filter_form.fechaFin) }}</div>
             </div>
             {{ form_widget(filter_form._token) }}
 
@@ -182,7 +186,12 @@
                 $('div#filter_form_component').slideToggle(500);
             });
             $('select#buseta_registro_compra_filter_almacen').chosen();
-
+            $('input#buseta_registro_compra_filter_fechaInicio').datetimepicker({
+                'format': 'DD/MM/YYYY'
+            });
+            $('input#buseta_registro_compra_filter_fechaFin').datetimepicker({
+                'format': 'DD/MM/YYYY'
+            });
             $('a#filter_form_submit_btn').click(function () {
                 $('form#filter_form').submit();
             });

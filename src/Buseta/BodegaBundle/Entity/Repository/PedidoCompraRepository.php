@@ -21,6 +21,14 @@ class PedidoCompraRepository extends EntityRepository
         $query = $qb->where($qb->expr()->eq(true,true));
 
         if($filter) {
+            if ($filter->getFechaInicio() !== null && $filter->getFechaInicio() !== '') {
+                $query->andWhere($qb->expr()->gte('r.fecha_pedido',':fechaInicio'))
+                    ->setParameter('fechaInicio', $filter->getFechaInicio());
+            }
+            if ($filter->getFechaFin() !== null && $filter->getFechaFin() !== '') {
+                $query->andWhere($qb->expr()->lte('r.fecha_pedido',':fechaFin'))
+                    ->setParameter('fechaFin', $filter->getFechaFin());
+            }
             if ($filter->getNumeroDocumento() !== null && $filter->getNumeroDocumento() !== '') {
                 $query->andWhere($qb->expr()->like('r.numero_documento',':numero_documento'))
                     ->setParameter('numero_documento', '%' . $filter->getNumeroDocumento() . '%');
