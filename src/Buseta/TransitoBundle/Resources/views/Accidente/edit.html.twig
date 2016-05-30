@@ -40,7 +40,9 @@
             $('select#transito_accidente_responsable').trigger("chosen:updated");
             $('select#transito_accidente_quienPaga').val('{{ entity.quienPaga }}');
             $('select#transito_accidente_quienPaga').trigger("chosen:updated");
-
+            $('a#save_accidente_form_submit_btn').click(function () {
+                $('form#accidente_form').submit();
+            });
         });
     </script>
 

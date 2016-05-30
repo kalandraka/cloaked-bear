@@ -21,7 +21,9 @@
         $('select#transito_multa_numArticulo').chosen();
         $('select#transito_multa_vehiculo').chosen();
         $('select#transito_multa_chofer').chosen();
-
+        $('a#save_multa_form_submit_btn').click(function () {
+            $('form#multa_form').submit();
+        });
         $('input#transito_multa_numBoleta').change(function () {
             var boleta_id = $('input#transito_multa_numBoleta').val();
             $.ajax({

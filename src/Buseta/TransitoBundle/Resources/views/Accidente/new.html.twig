@@ -20,7 +20,9 @@
         });
         $('select#transito_accidente_vehiculo').chosen();
         $('select#transito_accidente_chofer').chosen();
-
+        $('a#save_accidente_form_submit_btn').click(function () {
+            $('form#accidente_form').submit();
+        });
     </script>
 
 {% endblock %}

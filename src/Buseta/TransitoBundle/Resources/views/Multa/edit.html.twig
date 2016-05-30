@@ -22,6 +22,9 @@
     {{ parent() }}
 
     <script type="text/javascript">
+        $('a#save_multa_form_submit_btn').click(function () {
+            $('form#multa_form').submit();
+        });
         $('input#transito_multa_fecha').datetimepicker({
             'format': 'DD/MM/YYYY'
         });
