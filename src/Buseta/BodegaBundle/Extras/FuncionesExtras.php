@@ -3,9 +3,14 @@
 namespace Buseta\BodegaBundle\Extras;
 
 use Buseta\BodegaBundle\BusetaBodegaMovementTypes;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class FuncionesExtras
 {
@@ -99,7 +104,7 @@ class FuncionesExtras
 
     //HACE LO MISMO QUE EL DE ARRIBA , pero aqui debería consultar la tabla (BusetaBodegaBundle:InformeStock)
     //pues esa tabla tiene todo lo necesario, si es necesario el algoritmo es idem al de arriba
-    public function generarInformeStock($bitacoras, EntityManager $em)
+    public function generarInformeStockLegacy($bitacoras, EntityManager $em)
     {
         $almacenes = $em->getRepository('BusetaBodegaBundle:Bodega')->findAll();
         $productos = $em->getRepository('BusetaBodegaBundle:Producto')->findAll();
@@ -145,6 +150,43 @@ class FuncionesExtras
         return $almacenesArray;
     }
 
+    public function generarInformeStock($filter, EntityManager $em)
+    {
+        $qb = $em->createQueryBuilder();
+        $qb->select('product.id as producto_id,
+            product.nombre as producto_nombre,
+            product.tieneNroSerie as producto_seriado,
+            warehouse.id as almacen_id,
+            warehouse.nombre as almacen_nombre,
+            SUM(bitacora.cantidad) as cant
+        ')
+            ->from('BusetaBodegaBundle:BitacoraAlmacen', 'bitacora')
+            ->innerJoin('bitacora.producto', 'product')
+            ->innerJoin('bitacora.almacen', 'warehouse')
+            ->groupBy('bitacora.almacen, bitacora.producto')
+            ->having('cant > 0');
+
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        if (isset($filter['almacen']) && $filter['almacen'] !== null) {
+            $qb->andWhere($qb->expr()->eq('warehouse.id', ':almacen'))
+            ->setParameter('almacen', $propertyAccessor->getValue($filter['almacen'], 'id'));
+        }
+        if (isset($filter['categoriaProducto']) && $filter['categoriaProducto'] !== null) {
+            $qb->andWhere($qb->expr()->eq('product.categoriaProducto', ':categoriaProducto'))
+                ->setParameter('categoriaProducto', $propertyAccessor->getValue($filter['categoriaProducto'], 'id'));
+        }
+        if (isset($filter['fecha']) && $filter['fecha'] !== null) {
+            $qb->andWhere($qb->expr()->lte('bitacora.fechaMovimiento', ':fechaMovimiento'))
+                ->setParameter('fechaMovimiento', date_format($filter['fecha'], 'Y-m-d'));
+        }
+
+        try {
+            return $qb->getQuery()
+                ->getArrayResult();
+        } catch (NoResultException $e) {
+            return array();
+        }
+    }
 
     //OKOKOKOK YA ESTA
     public function comprobarCantProductoAlmacen($producto, $almacen, $cantidad, EntityManager $em)
@@ -168,7 +210,7 @@ class FuncionesExtras
         $serial_nro = $serial;
 
         $qb = $em->createQueryBuilder();
-        $query = $qb->select('sum(bs.cantidad) as existencia')
+        $query = $qb->select('sum(bs.qty) as existencia')
             ->from('BusetaBodegaBundle:BitacoraSerial', 'bs')
             ->where(
                 $qb->expr()->andX(
@@ -216,7 +258,7 @@ class FuncionesExtras
         $serial_nro = $serial;
 
         $qb = $em->createQueryBuilder();
-        $query = $qb->select('sum(bs.cantidad) as existencia')
+        $query = $qb->select('sum(bs.qty) as existencia')
             ->from('BusetaBodegaBundle:BitacoraSerial', 'bs')
             ->where(
                 $qb->expr()->andX(
@@ -458,7 +500,7 @@ class FuncionesExtras
 
          try {
         $qb = $em->createQueryBuilder();
-        $query = $qb->select('sum(b.cantidad) as existencia')
+        $query = $qb->select('sum(b.qty) as existencia')
             ->from('BusetaBodegaBundle:BitacoraAlmacen', 'b')
             ->where(
                 $qb->expr()->andX(

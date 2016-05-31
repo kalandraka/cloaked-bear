@@ -44,12 +44,12 @@ class BusquedaInformeStockType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-                'csrf_protection' => false,
-            ));
+            'csrf_protection' => false,
+        ));
     }
 
     public function getName()
     {
-        return 'data_busqueda_informe_stock_type';
+        return 'busetabodega_informestock_type';
     }
 }

@@ -45,19 +45,19 @@ class InformeStockController extends Controller
         $informeStock = $this->createForm(new BusquedaInformeStockType());
 
         $informeStock->handleRequest($request);
-        if ($informeStock->isValid()) {
+        if ($informeStock->isSubmitted() && $informeStock->isValid()) {
             //Se obtienen todas las bitacoras que cumplieron con el filtro de búsqueda
-            $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->busquedaBitacoraAlmacen($informeStock);
+            //$bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->busquedaBitacoraAlmacen($informeStock);
             $almacenes = $em->getRepository('BusetaBodegaBundle:Bodega')->findAll();
 
             $funcionesExtras = new FuncionesExtras();
-            $almacenesArray = $funcionesExtras->generarInformeStock($bitacoras, $em);
-            $almacenesFinal = null;
-            $pos = 0;
+            $almacenesArray = $funcionesExtras->generarInformeStock($informeStock->getData(), $em);
 
+            $almacenesFinal = array();
+            $pos = 0;
             foreach ($almacenes as $almacen) {
                 foreach ($almacenesArray as $almacenArray) {
-                    if ($almacen == $almacenArray['almacen']) {
+                    if ($almacen->getId() == $almacenArray['almacen_id']) {
                         $almacenesFinal[$pos] = $almacen;
                         $pos++;
                         break;
