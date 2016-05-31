@@ -90,6 +90,8 @@ class InformeStockController extends Controller
             $filter->setAlmacen($almacen);
 
         }
+
+
         if($request->get('product') != null) {
             $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($request->get('product'));
             $filter->setProducto($producto);
@@ -102,12 +104,16 @@ class InformeStockController extends Controller
             )),
         ));
 
+        $fune = new FuncionesExtras();
+
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $fune = new FuncionesExtras();
-            $entities = $fune->getListaSerialesEntitiesEnAlmacenFilter($em, $filter);
+            $producto = $filter->getProducto();
+            $almacen = $filter->getAlmacen();
+
+            $entities = $fune->getListaSerialesTeoricoEnAlmacen($producto,$almacen, $em);
         } else {
-            $fune = new FuncionesExtras();
+            $entities = $fune->getListaSerialesTeoricoEnAlmacen($producto,$almacen, $em);
             $entities = $fune->getListaSerialesEntitiesEnAlmacen($producto, $almacen, $em);
         }
 
