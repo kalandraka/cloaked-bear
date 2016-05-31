@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Buseta\BodegaBundle\Interfaces\DateTimeAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="d_bitacora_almacen")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\BitacoraAlmacenRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class BitacoraAlmacen implements DateTimeAwareInterface
 {
@@ -602,5 +604,17 @@ class BitacoraAlmacen implements DateTimeAwareInterface
     public function getCantidad()
     {
         return $this->cantidad;
+    }
+
+    /**
+     * @ORM\PreFlush()
+     */
+    public function preFlush()
+    {
+        if (FuncionesExtras::movementTypeComparePlus($this->tipoMovimiento)) {
+            $this->cantidad = $this->cantidadMovida;
+        } else {
+            $this->cantidad = -1 * $this->cantidadMovida;
+        }
     }
 }

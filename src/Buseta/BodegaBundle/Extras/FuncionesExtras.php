@@ -63,10 +63,10 @@ class FuncionesExtras
                     /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacora */
                     if ($producto == $bitacora->getProducto()) {
                         //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                        if ($this->movementTypeComparePlus($bitacora->getTipoMovimiento())) {
+                        if (self::movementTypeComparePlus($bitacora->getTipoMovimiento())) {
                             $cantidadPedido += $bitacora->getCantidadMovida();
                         }
-                        if ($this->movementTypeCompareMinus($bitacora->getTipoMovimiento())) {
+                        if (self::movementTypeCompareMinus($bitacora->getTipoMovimiento())) {
                             $cantidadPedido -= $bitacora->getCantidadMovida();
                         }
                     }
@@ -125,10 +125,10 @@ class FuncionesExtras
                     /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacora */
                     if ($producto == $bitacora->getProducto() && $bitacora->getAlmacen() == $almacen) {
                         //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                        if ($this->movementTypeComparePlus($bitacora->getTipoMovimiento())) {
+                        if (self::movementTypeComparePlus($bitacora->getTipoMovimiento())) {
                             $cantidadPedido += $bitacora->getCantidadMovida();
                         }
-                        if ($this->movementTypeCompareMinus($bitacora->getTipoMovimiento())) {
+                        if (self::movementTypeCompareMinus($bitacora->getTipoMovimiento())) {
                             $cantidadPedido -= $bitacora->getCantidadMovida();
                         }
                     }
@@ -460,10 +460,10 @@ class FuncionesExtras
                     /** @var \Buseta\BodegaBundle\Entity\BitacoraAlmacen $bitacora */
                     if ($producto == $bitacora->getProducto() && $bitacora->getAlmacen() == $almacen) {
                         //Identifico el tipoMovimiento (NO SE HA IMPLEMENTADO COMPLETAMENTE AÚN)
-                        if ($this->movementTypeComparePlus($bitacora->getTipoMovimiento())) {
+                        if (self::movementTypeComparePlus($bitacora->getTipoMovimiento())) {
                             $cantidadPedido += $bitacora->getCantidadMovida();
                         }
-                        if ($this->movementTypeCompareMinus($bitacora->getTipoMovimiento())) {
+                        if (self::movementTypeCompareMinus($bitacora->getTipoMovimiento())) {
                             $cantidadPedido -= $bitacora->getCantidadMovida();
                         }
 
@@ -564,7 +564,7 @@ class FuncionesExtras
      *
      * @return bool
      */
-    private function movementTypeComparePlus($tipoMovimiento)
+    static public function movementTypeComparePlus($tipoMovimiento)
     {
         return $tipoMovimiento === BusetaBodegaMovementTypes::VENDOR_RECEIPTS
         || $tipoMovimiento === BusetaBodegaMovementTypes::MOVEMENT_TO
@@ -580,7 +580,7 @@ class FuncionesExtras
      *
      * @return bool
      */
-    private function movementTypeCompareMinus($tipoMovimiento)
+    static public function movementTypeCompareMinus($tipoMovimiento)
     {
         return $tipoMovimiento === BusetaBodegaMovementTypes::VENDOR_RETURNS
         || $tipoMovimiento === BusetaBodegaMovementTypes::MOVEMENT_FROM

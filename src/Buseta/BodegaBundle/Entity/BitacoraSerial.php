@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Buseta\BodegaBundle\Interfaces\DateTimeAwareInterface;
@@ -11,6 +12,7 @@ use Buseta\BodegaBundle\Interfaces\DateTimeAwareInterface;
  *
  * @ORM\Table(name="d_bitacora_serial", indexes={@ORM\Index(name="serial_idx", columns={"serial"})})
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\BitacoraSerialRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class BitacoraSerial implements DateTimeAwareInterface
 {
@@ -538,5 +540,17 @@ class BitacoraSerial implements DateTimeAwareInterface
     public function getCantidad()
     {
         return $this->cantidad;
+    }
+
+    /**
+     * @ORM\PreFlush()
+     */
+    public function preFlush()
+    {
+        if (FuncionesExtras::movementTypeComparePlus($this->tipoMovimiento)) {
+            $this->cantidad = $this->cantidadMovida;
+        } else {
+            $this->cantidad = -1 * $this->cantidadMovida;
+        }
     }
 }

@@ -36,11 +36,9 @@ class ValidarMaxMinValidator extends ConstraintValidator
         $max = $entity->getMax();
 
         if ($min > $max) {
-            $this->context->addViolationAt(
-                'max',
-                $constraint->message,
-                array('%string%' => 'El valor maximo debe ser mayor que el minimo')
-            );
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('%string%', 'El valor maximo debe ser mayor que el minimo')
+                ->atPath('max');
          }
     }
 }
