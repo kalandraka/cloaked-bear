@@ -88,9 +88,7 @@ class InformeStockController extends Controller
         if($request->get('stock') != null) {
             $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($request->get('stock'));
             $filter->setAlmacen($almacen);
-
         }
-
 
         if($request->get('product') != null) {
             $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($request->get('product'));
@@ -114,7 +112,7 @@ class InformeStockController extends Controller
             $entities = $fune->getListaSerialesTeoricoEnAlmacen($producto,$almacen, $em);
         } else {
             $entities = $fune->getListaSerialesTeoricoEnAlmacen($producto,$almacen, $em);
-            $entities = $fune->getListaSerialesEntitiesEnAlmacen($producto, $almacen, $em);
+            //$entities = $fune->getListaSerialesEntitiesEnAlmacen($producto, $almacen, $em);
         }
 
         $paginator = $this->get('knp_paginator');

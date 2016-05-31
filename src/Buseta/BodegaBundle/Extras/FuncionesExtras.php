@@ -304,7 +304,7 @@ class FuncionesExtras
      *
      * @return array|mixed
      */
-    public function getListaSerialesTeoricoEnAlmacen($producto, $almacen, EntityManager $em)
+    public function     getListaSerialesTeoricoEnAlmacen($producto, $almacen, EntityManager $em)
     {
         $warehouse_id = $almacen ; // 31;
         $product_id = $producto; // 5337;
@@ -312,6 +312,7 @@ class FuncionesExtras
         $rsm = new ResultSetMapping();
 
         $rsm->addScalarResult('serial', 'serial');
+        $rsm->addScalarResult('id', 'id');
 
         $q = $em->createNativeQuery(
             "CALL sp_GetSerialesProductoEnAlmacenPlus (:warehouse_id, :product_id)",
