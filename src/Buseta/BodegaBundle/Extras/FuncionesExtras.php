@@ -201,7 +201,6 @@ class FuncionesExtras
         }
     }
 
-
     //OKOKOKOKOKO YA ESTA
     public function comprobarCantProductoSeriadoAlmacen($producto, $serial, $almacen, EntityManager $em)
     {
@@ -210,7 +209,7 @@ class FuncionesExtras
         $serial_nro = $serial;
 
         $qb = $em->createQueryBuilder();
-        $query = $qb->select('sum(bs.qty) as existencia')
+        $query = $qb->select('sum(bs.cantidad) as existencia')
             ->from('BusetaBodegaBundle:BitacoraSerial', 'bs')
             ->where(
                 $qb->expr()->andX(
@@ -258,7 +257,7 @@ class FuncionesExtras
         $serial_nro = $serial;
 
         $qb = $em->createQueryBuilder();
-        $query = $qb->select('sum(bs.qty) as existencia')
+        $query = $qb->select('sum(bs.cantidad) as existencia')
             ->from('BusetaBodegaBundle:BitacoraSerial', 'bs')
             ->where(
                 $qb->expr()->andX(
@@ -498,30 +497,27 @@ class FuncionesExtras
     //OKOKOKOKOKOKOK YA ESTA
     public function obtenerCantidadProductosAlmancen($producto, $almacen, EntityManager $em)
     {
+        try {
+            $qb = $em->createQueryBuilder();
+            $query = $qb->select('sum(b.cantidad) as existencia')
+                ->from('BusetaBodegaBundle:BitacoraAlmacen', 'b')
+                ->where(
+                    $qb->expr()->andX(
+                        $qb->expr()->eq('b.almacen', ':almacen'),
+                        $qb->expr()->eq('b.producto', ':producto')
+                    )
+                )->setParameters(array(
+                    'almacen' =>  $almacen ,
+                    'producto' => $producto
+                ));
 
-         try {
-        $qb = $em->createQueryBuilder();
-        $query = $qb->select('sum(b.qty) as existencia')
-            ->from('BusetaBodegaBundle:BitacoraAlmacen', 'b')
-            ->where(
-                $qb->expr()->andX(
-                    $qb->expr()->eq('b.almacen', ':almacen'),
-                    $qb->expr()->eq('b.producto', ':producto')
-                )
-            )->setParameters(array(
-                'almacen' =>  $almacen ,
-                'producto' => $producto
-            ));
-
-        return $query->getQuery()->getSingleScalarResult();
-
+            return $query->getQuery()->getSingleScalarResult();
         } catch ( NoResultException $e) {
             return 0;
         } catch ( \Exception $e) {
-             // hay que ver
-             return 0;
-         }
-
+            // hay que ver
+            return 0;
+        }
 
         //Antigua vía
         /*$rsm = new ResultSetMapping();
