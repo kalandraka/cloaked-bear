@@ -4,7 +4,7 @@ TallerApp.Combustible.servicioCombustible = (function (App, $) {
     "use strict";
 
     var
-        form, selectBoleta, selectVehiculo, selectChofer, marchamo1, marchamo2, boletaApiServerAddress,
+        form, selectBoleta, selectVehiculo, selectChofer, marchamo1, marchamo2, boletaApiServerAddress, fecha,
 
         Constr = function (form_id, _boletaApiServerAddress) {
             form = form_id;
@@ -13,6 +13,7 @@ TallerApp.Combustible.servicioCombustible = (function (App, $) {
             selectChofer = 'select#' + form + '_chofer_chofer';
             marchamo1 = 'input#' + form + '_marchamo1, label[for="' + form + '_marchamo1"]';
             marchamo2 = 'input#' + form + '_marchamo2, label[for="' + form + '_marchamo2"]';
+            fecha = 'input#' + form + '_fecha';
             boletaApiServerAddress = _boletaApiServerAddress;
 
             init();
@@ -86,6 +87,10 @@ TallerApp.Combustible.servicioCombustible = (function (App, $) {
             $(selectChofer).chosen();
             $(selectChofer).on('change', function (e) {
                 checkChoferVehiculo();
+            });
+
+            $(fecha).datetimepicker({
+                'format': 'DD/MM/YYYY'
             });
 
             checkChoferVehiculo();

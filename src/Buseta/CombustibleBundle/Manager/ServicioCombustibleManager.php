@@ -87,13 +87,12 @@ class ServicioCombustibleManager
 
         $fe = new FuncionesExtras();
         $cantidadDisponible = $fe->comprobarCantProductoAlmacen($producto, $bodega, $cantidadProducto, $this->em);
-        $fechaSistema = $this->fechaSistemaManager->getFechaSistema();
 
         $servicioCombustible = new ServicioCombustible();
         $servicioCombustible->setCantidadLibros($model->getCantidadLibros());
         $servicioCombustible->setMarchamo1($model->getMarchamo1());
         $servicioCombustible->setMarchamo2($model->getMarchamo2());
-        $servicioCombustible->setFecha($fechaSistema);
+        $servicioCombustible->setFecha($model->getFecha());
 
         if ($model->getCombustible() !== null) {
             $servicioCombustible->setCombustible($model->getCombustible());

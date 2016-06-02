@@ -26,6 +26,8 @@ class ServicioCombustibleModel
 
     /**
      * @var ConfiguracionCombustible
+     *
+     * @Assert\NotNull()
      */
     private $combustible;
 
@@ -71,27 +73,12 @@ class ServicioCombustibleModel
 
     /**
      * @return ServicioCombustible
+     *
+     * @Assert\Date()
      */
-    public function getEntityData()
-    {
-        $servicioCombustible = new ServicioCombustible();
-        $servicioCombustible->setCantidadLibros($this->getCantidadLibros());
-        $servicioCombustible->setBoleta($this->getBoleta());
-        $servicioCombustible->setMarchamo1($this->getMarchamo1());
-        $servicioCombustible->setMarchamo2($this->getMarchamo2());
+    private $fecha;
 
-        if ($this->getCombustible() !== null) {
-            $servicioCombustible->setCombustible($this->getCombustible());
-        }
-        if ($this->getChofer() !== null) {
-            $servicioCombustible->setChofer($this->getChofer()->getChofer());
-        }
-        if ($this->getVehiculo() !== null) {
-            $servicioCombustible->setVehiculo($this->getVehiculo());
-        }
 
-        return $servicioCombustible;
-    }
 
     /**
      * @return int
@@ -225,5 +212,21 @@ class ServicioCombustibleModel
     public function getBoleta()
     {
         return $this->boleta;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * @param mixed $fecha
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
     }
 }
