@@ -464,4 +464,29 @@ class VehiculoController extends Controller
 
         return new \Symfony\Component\HttpFoundation\Response(json_encode($json), 200);
     }
+
+    /**
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @Route("/ajax_vehiculo_list", name="ajax_vehiculo_list",
+     *   options={"expose": true})
+     * @Method({"GET"})
+     */
+    public function ajaxVehiculoListAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entities = $em->getRepository('BusetaBusesBundle:Vehiculo')->findAll();
+        $json = array();
+        foreach ($entities as $entity) {
+            $json[] = array(
+                'id' => $entity->getId(),
+                'value' => $entity->__toString(),
+            );
+        }
+
+        return new Response(json_encode($json), 200);
+    }
 }

@@ -294,4 +294,29 @@ class ChoferController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
+
+    /**
+     *
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @Route("/ajax_chofer_list", name="ajax_chofer_list",
+     *   options={"expose": true})
+     * @Method({"GET"})
+     */
+    public function ajaxChoferListAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $choferes = $em->getRepository('BusetaBusesBundle:Chofer')->findAll();
+        $json = array();
+        foreach ($choferes as $chofer) {
+            $json[] = array(
+                'id' => $chofer->getId(),
+                'value' => $chofer->getNombreCompleto(),
+            );
+        }
+
+        return new Response(json_encode($json), 200);
+    }
 }

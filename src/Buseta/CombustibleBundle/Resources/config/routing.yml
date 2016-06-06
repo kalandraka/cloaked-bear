@@ -13,3 +13,7 @@ buseta_buses_servicio_combustible:
 buseta_buses_lista_negra_combustible:
   resource: "@BusetaCombustibleBundle/Controller/ListaNegraCombustibleController.php"
   type:     annotation
+
+buseta_buses_combustible_reportes:
+  resource: "@BusetaCombustibleBundle/Controller/CombustibleReporteController.php"
+  type:     annotation

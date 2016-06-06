@@ -526,6 +526,38 @@ root:
                   disabled: false
                   attributes: {  }
                   childrens: {  }
+            menu_D_C:
+                  id: menu_D_C
+                  name: null
+                  label: 'Reportes'
+                  route: null
+                  roles:
+                    - ROLE_USER
+                  type: folder
+                  disabled: false
+                  attributes:
+                    icon: 'fa fa-file'
+                  childrens:
+                    menu_D_C_A:
+                      id: menu_D_C_A
+                      name: null
+                      label: 'Combustible por Chofer'
+                      route: combustible_by_chofer
+                      roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN]
+                      type: item
+                      disabled: false
+                      attributes: {  }
+                      childrens: {  }
+                    menu_D_C_B:
+                      id: menu_D_C_B
+                      name: null
+                      label: 'Combustible por Chofer y Vehículo'
+                      route: comb_by_chofer_and_vehic
+                      roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN]
+                      type: item
+                      disabled: false
+                      attributes: {  }
+                      childrens: {  }
             menu_D_B:
               id: menu_D_B
               name: null

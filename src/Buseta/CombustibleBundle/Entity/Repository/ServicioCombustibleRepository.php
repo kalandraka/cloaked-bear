@@ -2,6 +2,7 @@
 
 namespace Buseta\CombustibleBundle\Entity\Repository;
 
+use Buseta\BusesBundle\Entity\Chofer;
 use Buseta\CombustibleBundle\Form\Model\ServicioCombustibleFilterModel;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
@@ -17,9 +18,9 @@ class ServicioCombustibleRepository extends EntityRepository
     public function filter(ServicioCombustibleFilterModel $filter = null)
     {
         $qb = $this->createQueryBuilder('s');
-        $query = $qb->where($qb->expr()->eq(true,true));
+        $query = $qb->where($qb->expr()->eq(true, true));
 
-        if($filter) {
+        if ($filter) {
 
             if ($filter->getCombustible() !== null && $filter->getCombustible() !== '') {
                 $query->andWhere($query->expr()->eq('s.combustible', ':combustible'))
@@ -39,6 +40,62 @@ class ServicioCombustibleRepository extends EntityRepository
 
         try {
             return $query->getQuery();
+        } catch (NoResultException $e) {
+            return array();
+        }
+    }
+
+    public function reportsFilter($em, $fechaIni, $fechaFin, $chofer, $vehiculo)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $query = $qb->where($qb->expr()->eq(true, true));
+        if ($fechaIni !== null && $fechaIni !== '') {
+            $query->andWhere($qb->expr()->gte('s.fecha', ':fechaInicio'))
+                ->setParameter('fechaInicio', $fechaIni);
+        }
+        if ($fechaFin !== null && $fechaFin !== '') {
+            $query->andWhere($qb->expr()->lte('s.fecha', ':fechaFin'))
+                ->setParameter('fechaFin', $fechaFin);
+        }
+        if ($chofer !== null && $chofer !== '') {
+            $chofer_entity = $em
+                ->getRepository('BusetaBusesBundle:Chofer')
+                ->findOneById($chofer);
+            $query->andWhere($query->expr()->eq('s.chofer', ':chofer'))
+                ->setParameter('chofer', $chofer_entity);
+        }
+        if ($vehiculo !== null && $vehiculo !== '' && $vehiculo !== 'no') {
+            $vehiculo_entity = $em
+                ->getRepository('BusetaBusesBundle:Vehiculo')
+                ->findOneById($vehiculo);
+            $query->andWhere($query->expr()->eq('s.vehiculo', ':vehiculo'))
+                ->setParameter('vehiculo', $vehiculo_entity);
+        }
+        $query->andWhere($query->expr()->eq('s.estado', "'CO'"));
+        if ($vehiculo == 'no') {
+            if ($chofer !== null && $chofer !== '') {
+                $query->orderBy('s.combustible,s.fecha');
+            } else {
+                $query->orderBy('s.chofer,s.combustible,s.fecha');
+            }
+        } else {
+            if ($vehiculo !== null && $vehiculo !== '') {
+                if ($chofer !== null && $chofer !== '') {
+                    $query->orderBy('s.combustible,s.fecha');
+                } else {
+                    $query->orderBy('s.chofer,s.combustible,s.fecha');
+                }
+            } else {
+                if ($chofer !== null && $chofer !== '') {
+                    $query->orderBy('s.vehiculo,s.combustible,s.fecha');
+                } else {
+                    $query->orderBy('s.chofer,s.combustible,s.fecha');
+                }
+            }
+        }
+
+        try {
+            return $query->getQuery()->getResult();
         } catch (NoResultException $e) {
             return array();
         }

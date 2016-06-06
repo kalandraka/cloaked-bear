@@ -1,0 +1,661 @@
+{% extends "BusetaCombustibleBundle::layout.html.twig" %}
+
+{% block title block('header') %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        /* DataTables Overrides for header color */
+
+        table.dataTable thead .sorting,
+        table.dataTable thead .sorting_asc:after,
+        table.dataTable thead .sorting_desc,
+        table.dataTable thead .sorting_asc_disabled,
+        table.dataTable thead .sorting_desc_disabled {
+            background: #3498DB;
+        }
+    </style>
+{% endblock %}
+{% block header 'Reporte de Combustible por Chofer y Vehículo' %}
+
+{% block area_trabajo %}
+    <h4>
+        <a id="filter_form_header">
+            Filtros
+        </a>
+    </h4>
+    <div id="filter_form_component">
+        <form id="filter_form">
+            <div class="row">
+                <div class="col-md-4" style="padding-bottom: 10px;">
+                    <label class="control-label">Fecha inicial</label>
+                    <input id="filter_fecha_desde" class="form-control">
+                </div>
+                <div class="col-md-4" style="padding-bottom: 10px;">
+                    <label class="control-label">Fecha final</label>
+                    <input id="filter_fecha_hasta" class="form-control">
+                </div>
+                <div class="col-md-4" style="padding-bottom: 10px;">
+                    <label class="control-label">Chofer</label>
+                    <select id="filter_chofer" class="form-control">
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4" style="padding-bottom: 10px;">
+                    <label class="control-label">Vehículo</label>
+                    <select id="filter_vehiculo" class="form-control">
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter-actions" style="margin-top: 8px;">
+                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                    <span class="glyphicon glyphicon-search"></span> Buscar
+                </a>
+                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <hr/>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tabladatos" data-toggle="tab">Tabla</a></li>
+        <li><a href="#grafica_container" id='graph_tab_item' data-toggle="tab">Gráfica</a></li>
+    </ul>
+
+    {# Tab panes #}
+    <div class="tab-content" style="padding-top: 20px;">
+        <!-- TAB TABLA-->
+        <div class="tab-pane fade in active" id="tabladatos">
+            <div class="export-actions" style="margin-bottom: 10px;margin-top: -10px;">
+                <a id="excel_btn" class="btn btn-primary btn-small">
+                    <span class="glyphicon glyphicon-print"></span> Excel
+                </a>
+            </div>
+            <table class="servicioCombustibles_records_list table table-striped table-bordered table-condensed table-hover"
+                   id="report_table">
+                <thead>
+                <tr>
+                    <th>Chofer</th>
+                    <th>Vehículo</th>
+                    <th>Combustible</th>
+                    <th>Litros</th>
+                    <th>Fecha</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TAB GRAFICA-->
+        <div class="tab-pane fade" id="grafica_container">
+            <div id="grafica_internal">
+                <div class="col-md-4" style="padding-bottom: 10px;">
+                    <label class="control-label">Tipo de gráfica</label>
+                    <select id="grafico_tipo" class="form-control">
+                        <option value="spline" selected>Líneas
+                        <option value="column">Barras
+                        <option value="area">Área
+                    </select>
+                </div>
+                <div id="grafica">
+                </div>
+            </div>
+            <div id="nografica" style="display:none" class="alert alert-info"><span class="icon icon-info-sign"></span>
+                Los datos no pueden ser visualizados en el formato de gráfica, sí en formato de tablas, para visualizar
+                en formato de gráfica seleccione un chofer o un vehículo de la lista.
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        var report_table = $('#report_table').DataTable({
+            "columnDefs": [
+                {"visible": false, "targets": 0},
+                {
+                    targets: [0],
+                    orderData: [0, 1]
+                }, {
+                    targets: [1],
+                    orderData: [0, 1]
+                }, {
+                    targets: [2],
+                    orderData: [0, 2]
+                }, {
+                    targets: [3],
+                    orderData: [0, 3]
+                }, {
+                    targets: [4],
+                    orderData: [0, 4]
+                }
+            ],
+            "displayLength": 25,
+            "language": $language,
+            "drawCallback": function (settings) {
+                var api = this.api();
+                var rows = api.rows({page: 'current'}).nodes();
+                var last = null;
+
+                api.column(0, {page: 'current'}).data().each(function (group, i) {
+                    if (last !== group) {
+                        $(rows).eq(i).before(
+                                '<tr class="group"><td colspan="5">' + group + '</td></tr>'
+                        );
+
+                        last = group;
+                    }
+                });
+            }
+        });
+        //modificacion de los selectores de fecha
+        var fechaInicio = $('input#filter_fecha_desde'),
+                fechaFin = $('input#filter_fecha_hasta');
+        fechaInicio.datetimepicker({
+            format: 'DD/MM/YYYY',
+            useCurrent: false
+        });
+        fechaFin.datetimepicker({
+            format: 'DD/MM/YYYY',
+            useCurrent: false
+        });
+        fechaInicio.on('dp.change', function (e) {
+            fechaFin.data("DateTimePicker").minDate(e.date);
+        });
+        fechaFin.on('dp.change', function (e) {
+            fechaInicio.data("DateTimePicker").maxDate(e.date);
+        });
+        $('select#filter_chofer').chosen();
+        $('select#filter_vehiculo').chosen();
+        $.ajax({
+            type: 'GET',
+            url: '{{ path("ajax_chofer_list") }}',
+            success: function (data) {
+                var values = $.parseJSON(data);
+                $('select#filter_chofer').html('<option></option>');
+                $('select#filter_chofer').append(
+                        $('<option></option>')
+                                .val("")
+                                .html("--- Todos ---")
+                );
+                for (var i = 0, total = values.length; i < total; i++) {
+                    $('select#filter_chofer').append(
+                            $('<option></option>')
+                                    .val(values[i].id)
+                                    .html(values[i].value)
+                    );
+                    $('select#filter_chofer').trigger("chosen:updated");
+                }
+            }
+        });
+        $.ajax({
+            type: 'GET',
+            url: '{{ path("ajax_vehiculo_list") }}',
+            success: function (data) {
+                var values = $.parseJSON(data);
+                $('select#filter_vehiculo').html('<option></option>');
+                $('select#filter_vehiculo').append(
+                        $('<option></option>')
+                                .val("")
+                                .html("--- Todos ---")
+                );
+                for (var i = 0, total = values.length; i < total; i++) {
+                    $('select#filter_vehiculo').append(
+                            $('<option></option>')
+                                    .val(values[i].id)
+                                    .html(values[i].value)
+                    );
+                    $('select#filter_vehiculo').trigger("chosen:updated");
+                }
+            }
+        });
+
+        $('a#filter_form_submit_btn').click(filterCombByChoferAndVehic);
+
+        $('a#filter_form_reset_btn').click(function () {
+            $('form#filter_form').find('input').each(function () {
+                $(this).val(null);
+            });
+            $('form#filter_form').find('select').each(function () {
+                $(this).val('');
+            })
+        });
+
+        $('a#graph_tab_item').click(function () {
+            setTimeout(function () {
+                if (json_ != {}) {
+                    $('div#grafica_internal').hide();
+                    $('div#nografica').hide();
+                    if (json_.chofer != null && json_.chofer != '') {
+                        if (json_.vehiculo != null && json_.vehiculo != '') {
+                            // -- Hay vehiculo y chofer
+                            $('div#grafica_internal').show();
+                            createByChoferAndVehicGraph(json_.table_data, 'spline');
+                        }
+                        else
+                        {
+                            // -- Hay chofer pero no vehiculo
+                            $('div#grafica_internal').show();
+                            createByChoferGraph(json_.table_data, 'spline');
+                        }
+                    }
+                    else if (json_.vehiculo != null && json_.vehiculo != '') {
+                        // -- Hay vehiculo pero no chofer
+                        $('div#grafica_internal').show();
+                        createByVehicleGraph(json_.table_data, 'spline');
+                    }
+                    else {
+                        // -- No hay ni vehiculo ni chofer
+                        $('div#nografica').show();
+                    }
+                }
+            }, 200);
+        });
+
+        $('a#excel_btn').click(exportToExcel);
+        var json_ = {};
+        function filterCombByChoferAndVehic() {
+            var paramData = {
+                fechaIni: $('input#filter_fecha_desde').val(),
+                fechaFin: $('input#filter_fecha_hasta').val(),
+                chofer: $('select#filter_chofer').selected().val(),
+                vehiculo: $('select#filter_vehiculo').selected().val(),
+            };
+            report_table.clear().draw(false);
+            $.ajax({
+                type: 'GET',
+                url: '{{ path("ajax_comb_by_chofer_and_vehic") }}',
+                data: paramData,
+                success: function (data) {
+                    json_ = $.parseJSON(data);
+                    var values = json_.table_data;
+                    for (var i = 0, total = values.length; i < total; i++) {
+                        report_table.row.add([
+                            values[i].chofer,
+                            values[i].vehiculo,
+                            values[i].combustible,
+                            values[i].litros,
+                            values[i].fecha
+                        ]).draw(false);
+                    }
+                    if (json_ != {}) {
+                        $('div#grafica_internal').hide();
+                        $('div#nografica').hide();
+                        if (json_.chofer != null && json_.chofer != '') {
+                            if (json_.vehiculo != null && json_.vehiculo != '') {
+                                // -- Hay vehiculo y chofer
+                                $('div#grafica_internal').show();
+                                createByChoferAndVehicGraph(json_.table_data, 'spline');
+                            }
+                            else
+                            {
+                                // -- Hay chofer pero no vehiculo
+                                $('div#grafica_internal').show();
+                                createByChoferGraph(json_.table_data, 'spline');
+                            }
+                        }
+                        else if (json_.vehiculo != null && json_.vehiculo != '') {
+                            // -- Hay vehiculo pero no chofer
+                            $('div#grafica_internal').show();
+                            createByVehicleGraph(json_.table_data, 'spline');
+                        }
+                        else {
+                            // -- No hay ni vehiculo ni chofer
+                            $('div#nografica').show();
+                        }
+                    }
+                }
+            });
+        }
+
+        function exportToExcel() {
+            var paramData = {
+                fechaIni: $('input#filter_fecha_desde').val(),
+                fechaFin: $('input#filter_fecha_hasta').val(),
+                chofer: $('select#filter_chofer').selected().val(),
+                vehiculo: $('select#filter_vehiculo').selected().val(),
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ path("excel_comb_by_chofer_and_vehic") }}',
+                data: paramData,
+                success: function (data) {
+                    var values = $.parseJSON(data);
+                    var win = window.open('', 'printgrid');
+                    win.location.href = '{{asset("bundles/busetacombustible/reports/")}}' + values.file_;
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            filterCombByChoferAndVehic();
+        });
+
+        function createByChoferGraph(values, graphType) {
+            var combust_list = [];
+            var series_data = [];
+            var series_to_graph = [];
+            var vehiculo_cats = [];
+            var curr_vehiculo = '';
+            var curr_chofer = '';
+            var curr_combust = '';
+            var curr_combust_qty = 0;
+            for (var i = 0, total = values.length; i < total; i++) {
+                if (curr_vehiculo == '') {
+                    curr_vehiculo = values[i].vehiculo;
+                    vehiculo_cats.push(values[i].vehiculo);
+                }
+                if (curr_combust == '') {
+                    curr_combust = values[i].combustible;
+                }
+                if (curr_vehiculo != values[i].vehiculo) {
+                    vehiculo_cats.push(values[i].vehiculo);
+                }
+                if (curr_combust != values[i].combustible || curr_vehiculo != values[i].vehiculo) {
+                    var comb_found = false;
+                    for (var ci = 0, total_comb = combust_list.length; ci < total_comb; ci++) {
+                        if (combust_list[ci] == values[i - 1].combustible) {
+                            comb_found = true;
+                        }
+                    }
+                    if (!comb_found) {
+                        combust_list.push(values[i - 1].combustible);
+                        series_data[values[i - 1].combustible] = [];
+                    }
+                    series_data[values[i - 1].combustible].push(curr_combust_qty);
+                    curr_combust_qty = 0;
+                }
+                curr_combust = values[i].combustible;
+                curr_combust_qty += values[i].litros;
+                curr_vehiculo = values[i].vehiculo;
+                if (i == total - 1) {
+                    var comb_found = false;
+                    for (var ci = 0, total_comb = combust_list.length; ci < total_comb; ci++) {
+                        if (combust_list[ci] == values[i - 1].combustible) {
+                            comb_found = true;
+                        }
+                    }
+                    if (!comb_found) {
+                        combust_list.push(values[i].combustible);
+                        series_data[values[i].combustible] = [];
+                    }
+                    series_data[values[i].combustible].push(curr_combust_qty);
+                }
+                curr_chofer = values[i].chofer;
+            }
+            for (var ci = 0, total_comb = combust_list.length; ci < total_comb; ci++) {
+                series_to_graph.push(
+                        {
+                            name: combust_list[ci],
+                            data: series_data[combust_list[ci]]
+                        }
+                );
+            }
+            // -- Gráfica
+            $('#grafica').highcharts({
+                chart: {
+                    type: graphType
+                },
+                title: {
+                    text: 'Combustible por vehículo del chofer'
+                },
+                subtitle: {
+                    text: curr_chofer
+                },
+                xAxis: {
+                    categories: vehiculo_cats,
+                    title: {
+                        text: 'Vehículo'
+                    },
+                },
+                yAxis: {
+                    title: {
+                        text: 'Cantidad de combustible (litros)'
+                    },
+                    labels: {
+                        formatter: function () {
+                            return this.value + 'L';
+                        }
+                    }
+                },
+                tooltip: {
+                    crosshairs: true,
+                    shared: true,
+                    pointFormat: '{point.y:.2f} Litros'
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
+                        }
+                    }
+                },
+                series: series_to_graph
+            });
+        }
+        function createByVehicleGraph(values, graphType) {
+            var combust_list = [];
+            var series_data = [];
+            var series_to_graph = [];
+            var chofer_cats = [];
+            var curr_vehicle = '';
+            var curr_chofer = '';
+            var curr_combust = '';
+            var curr_combust_qty = 0;
+            for (var i = 0, total = values.length; i < total; i++) {
+                if (curr_chofer == '') {
+                    curr_chofer = values[i].chofer;
+                    chofer_cats.push(values[i].chofer);
+                }
+                if (curr_combust == '') {
+                    curr_combust = values[i].combustible;
+                }
+                if (curr_chofer != values[i].chofer) {
+                    chofer_cats.push(values[i].chofer);
+                }
+                if (curr_combust != values[i].combustible || curr_chofer != values[i].chofer) {
+                    var comb_found = false;
+                    for (var ci = 0, total_comb = combust_list.length; ci < total_comb; ci++) {
+                        if (combust_list[ci] == values[i - 1].combustible) {
+                            comb_found = true;
+                        }
+                    }
+                    if (!comb_found) {
+                        combust_list.push(values[i - 1].combustible);
+                        series_data[values[i - 1].combustible] = [];
+                    }
+                    series_data[values[i - 1].combustible].push(curr_combust_qty);
+                    curr_combust_qty = 0;
+                }
+                curr_combust = values[i].combustible;
+                curr_combust_qty += values[i].litros;
+                curr_chofer = values[i].chofer;
+                if (i == total - 1) {
+                    var comb_found = false;
+                    for (var ci = 0, total_comb = combust_list.length; ci < total_comb; ci++) {
+                        if (combust_list[ci] == values[i - 1].combustible) {
+                            comb_found = true;
+                        }
+                    }
+                    if (!comb_found) {
+                        combust_list.push(values[i].combustible);
+                        series_data[values[i].combustible] = [];
+                    }
+                    series_data[values[i].combustible].push(curr_combust_qty);
+                }
+                curr_vehicle = values[i].vehiculo;
+            }
+            for (var ci = 0, total_comb = combust_list.length; ci < total_comb; ci++) {
+                series_to_graph.push(
+                        {
+                            name: combust_list[ci],
+                            data: series_data[combust_list[ci]]
+                        }
+                );
+            }
+            // -- Gráfica
+            $('#grafica').highcharts({
+                chart: {
+                    type: graphType
+                },
+                title: {
+                    text: 'Combustible por chofer del vehículo'
+                },
+                subtitle: {
+                    text: curr_vehicle
+                },
+                xAxis: {
+                    categories: chofer_cats,
+                    title: {
+                        text: 'Chofer'
+                    },
+                },
+                yAxis: {
+                    title: {
+                        text: 'Cantidad de combustible (litros)'
+                    },
+                    labels: {
+                        formatter: function () {
+                            return this.value + 'L';
+                        }
+                    }
+                },
+                tooltip: {
+                    crosshairs: true,
+                    shared: true,
+                    pointFormat: '{point.y:.2f} Litros'
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
+                        }
+                    }
+                },
+                series: series_to_graph
+            });
+        }
+        function createByChoferAndVehicGraph(values, graphType) {
+            var series_data = [];
+            var curr_chofer = '';
+            var curr_vehiculo = '';
+            var curr_combust = '';
+            var curr_combust_data = [];
+            for (var i = 0, total = values.length; i < total; i++) {
+                if (curr_combust == '') {
+                    curr_combust = values[i].combustible;
+                }
+                if (curr_combust != values[i].combustible) {
+                    series_data.push(
+                            {
+                                name: values[i - 1].combustible,
+                                data: curr_combust_data
+                            }
+                    )
+                    curr_combust_data = [];
+                }
+                curr_combust = values[i].combustible;
+                var date_ = new Date(values[i].fechaToGraph);
+
+                curr_combust_data.push(
+                        [date_.getTime(), values[i].litros]
+                );
+                if (i == total - 1) {
+                    series_data.push(
+                            {
+                                name: values[i].combustible,
+                                data: curr_combust_data
+                            }
+                    )
+                }
+                curr_chofer = values[i].chofer;
+                curr_vehiculo = values[i].vehiculo;
+            }
+            // -- Gráfica
+            $('#grafica').highcharts({
+                chart: {
+                    type: graphType
+                },
+                title: {
+                    text: 'Combustible por chofer y vehículo'
+                },
+                subtitle: {
+                    text: 'Chofer: ' + curr_chofer + ' Vehículo: ' + curr_vehiculo
+                },
+                xAxis: {
+                    type: 'datetime',
+                    crosshair: true,
+                    minTickInterval: 2,
+                    title: {
+                        text: 'Fecha'
+                    },
+                    labels: {
+                        formatter: function() {
+                            return moment(this.value).format("DD/MM/YYYY");
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Cantidad de combustible (litros)'
+                    },
+                    min: 0
+                },
+                tooltip: {
+                    headerFormat: '<b>{series.name}</b><br>',
+                    pointFormat: '{point.x:%e. %b}: {point.y:.2f} Litros'
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            enabled: true
+                        }
+                    }
+                },
+                series: series_data
+            });
+        }
+        $('select#grafico_tipo').chosen();
+        $('select#grafico_tipo').change(function () {
+            var val_ = $('select#grafico_tipo').selected().val();
+            if (json_ != {}) {
+                $('div#grafica_internal').hide();
+                $('div#nografica').hide();
+                if (json_.chofer != null && json_.chofer != '') {
+                    if (json_.vehiculo != null && json_.vehiculo != '') {
+                        // -- Hay vehiculo y chofer
+                        $('div#grafica_internal').show();
+                        createByChoferAndVehicGraph(json_.table_data, val_);
+                    }
+                    else
+                    {
+                        // -- Hay chofer pero no vehiculo
+                        $('div#grafica_internal').show();
+                        createByChoferGraph(json_.table_data, val_);
+                    }
+                }
+                else if (json_.vehiculo != null && json_.vehiculo != '') {
+                    // -- Hay vehiculo pero no chofer
+                    $('div#grafica_internal').show();
+                    createByVehicleGraph(json_.table_data, val_);
+                }
+                else {
+                    // -- No hay ni vehiculo ni chofer
+                    $('div#nografica').show();
+                }
+            }
+        });
+    </script>
+{% endblock javascripts %}
