@@ -37,6 +37,8 @@
                 {{ form_widget(filter_form._token) }}
 
                 <div class="filter-actions" style="margin-top: 8px;">
+                    <input class="btn btn-success btn-small" style="position: absolute; left: -9999px; width: 1px; height: 1px;"
+                           tabindex="-1" type="submit" value="Filtrar" name="filtrar">
                     <a id="filter_form_submit_btn" class="btn btn-success btn-small">
                         <span class="glyphicon glyphicon-filter"></span> Filtrar
                     </a>
@@ -224,16 +226,27 @@
     </script>
 
     <script type="text/javascript">
-        $('input#buseta_accidente_filter_fechaInicio').datetimepicker({
-            'format': 'DD/MM/YYYY'
+        //modificacion de los selectores de fecha
+        var fechaInicio = $('input#buseta_accidente_filter_fechaInicio'),
+                fechaFin = $('input#buseta_accidente_filter_fechaFin');
+        fechaInicio.datetimepicker({
+            format: 'DD/MM/YYYY',
+            useCurrent: false
         });
-        $('input#buseta_accidente_filter_fechaFin').datetimepicker({
-            'format': 'DD/MM/YYYY'
+        fechaFin.datetimepicker({
+            format: 'DD/MM/YYYY',
+            useCurrent: false
+        });
+        fechaInicio.on('dp.change', function (e) {
+            fechaFin.data("DateTimePicker").minDate(e.date);
+        });
+        fechaFin.on('dp.change', function (e) {
+            fechaInicio.data("DateTimePicker").maxDate(e.date);
         });
         $('select#buseta_accidente_filter_vehiculo').chosen();
         $('select#buseta_accidente_filter_chofer').chosen();
 
-        var deleteevent = new DeleteEvent('{{ path('accidente') }}', 'div#records_list');
+        var deleteevent = new DeleteEvent('{{ path('accidente') }}', 'div#accidentes_results_container');
         deleteevent.start_events();
     </script>
 

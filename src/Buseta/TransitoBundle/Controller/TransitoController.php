@@ -14,7 +14,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  * Transito controller.
  *
  * @Route("/transito")
- *
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Tránsito", routeName="transito")
  */
 class TransitoController extends Controller
 {

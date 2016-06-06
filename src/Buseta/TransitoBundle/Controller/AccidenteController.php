@@ -19,6 +19,8 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
  * Accidente controller.
  *
  * @Route("/accidente")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Tránsito", routeName="transito")
  */
 class AccidenteController extends Controller
 {

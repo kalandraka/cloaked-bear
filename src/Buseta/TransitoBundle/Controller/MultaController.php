@@ -19,6 +19,8 @@ use APY\BreadcrumbTrailBundle\Annotation\Breadcrumb;
  * Multa controller.
  *
  * @Route("/multa")
+ * @Breadcrumb(title="Inicio", routeName="core_homepage")
+ * @Breadcrumb(title="Módulo de Tránsito", routeName="transito")
  */
 class MultaController extends Controller
 {
