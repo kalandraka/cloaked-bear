@@ -201,11 +201,22 @@
 
                 $('#buseta_necesidad_material_filter_tercero').chosen();
                 $('#buseta_necesidad_material_filter_almacen').chosen();
-                $('input#buseta_necesidad_material_filter_fechaInicio').datetimepicker({
-                    'format': 'DD/MM/YYYY'
+                //modificacion de los selectores de fecha
+                var fechaInicio = $('input#buseta_necesidad_material_filter_fechaInicio'),
+                        fechaFin = $('input#buseta_necesidad_material_filter_fechaFin');
+                fechaInicio.datetimepicker({
+                    format: 'DD/MM/YYYY',
+                    useCurrent: false
                 });
-                $('input#buseta_necesidad_material_filter_fechaFin').datetimepicker({
-                    'format': 'DD/MM/YYYY'
+                fechaFin.datetimepicker({
+                    format: 'DD/MM/YYYY',
+                    useCurrent: false
+                });
+                fechaInicio.on('dp.change', function (e) {
+                    fechaFin.data("DateTimePicker").minDate(e.date);
+                });
+                fechaFin.on('dp.change', function (e) {
+                    fechaInicio.data("DateTimePicker").maxDate(e.date);
                 });
             }
         };
