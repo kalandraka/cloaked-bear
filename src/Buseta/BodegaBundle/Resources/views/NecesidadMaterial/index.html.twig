@@ -51,7 +51,8 @@
                 {{ form_widget(filter_form._token) }}
 
                 <div class="filter-actions" style="margin-top: 8px;">
-                    <input class="btn btn-success btn-small" style="position: absolute; left: -9999px; width: 1px; height: 1px;"
+                    <input class="btn btn-success btn-small"
+                           style="position: absolute; left: -9999px; width: 1px; height: 1px;"
                            tabindex="-1" type="submit" value="Filtrar" name="filtrar">
                     <a id="filter_form_submit_btn" class="btn btn-success btn-small">
                         <span class="glyphicon glyphicon-filter"></span> Filtrar
@@ -78,12 +79,14 @@
             <table class="table_records_list table table-striped table-bordered table-condensed table-hover">
                 <thead>
                 <tr>
-                    <th>No.Documento{#{{ knp_pagination_sortable(entities, 'No.Documento', 't.numero_documento') }}#}</th>
+                    <th>
+                        No.Documento{#{{ knp_pagination_sortable(entities, 'No.Documento', 't.numero_documento') }}#}</th>
                     <th>Nombre del Proveedor{#{{ knp_pagination_sortable(entities, 'Tercero', 't.tercero') }}#}</th>
                     <th>Bodega{#{{ knp_pagination_sortable(entities, 'Almacén', 't.almacen') }}#}</th>
                     <th>Moneda{#{{ knp_pagination_sortable(entities, 'Moneda', 't.moneda') }}#}</th>
                     <th>Forma de Pago{#{{ knp_pagination_sortable(entities, 'Forma de Pago', 't.forma_pago') }}#}</th>
-                    <th>Importe Total{#{{ knp_pagination_sortable(entities, 'Importe Total', 't.importe_total') }}#}</th>
+                    <th>Importe
+                        Total{#{{ knp_pagination_sortable(entities, 'Importe Total', 't.importe_total') }}#}</th>
                     <th>Estado{#{{ knp_pagination_sortable(entities, 'Importe Total', 't.importe_total') }}#}</th>
                     <th style="text-align: center">Acciones</th>
                 </tr>
@@ -157,7 +160,8 @@
     </div>
 
     <!-- Delete modal -->
-    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;"
+    <div id="modal-danger" data-keyboard="false" data-backdrop="static" class="modal modal-message modal-danger fade"
+         style="display: none;"
          aria-hidden="true"></div>
 {% endblock area_trabajo %}
 

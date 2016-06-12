@@ -6,110 +6,116 @@
 
 {% block area_trabajo %}
 
-<div id="records_list">
-    {% set display = '' %}
-    {% set headericon = 'glyphicon-chevron-down' %}
-    {% if (filter_form.vars.value.nombres is null or filter_form.vars.value.nombres is empty)
-    and (filter_form.vars.value.apellidos is null or filter_form.vars.value.apellidos is empty)
-    and (filter_form.vars.value.cedula is null or filter_form.vars.value.cedula is empty)
-    and (filter_form.vars.value.estadoCivil is null or filter_form.vars.value.estadoCivil is empty)
-    and (filter_form.vars.value.nacionalidad is null or filter_form.vars.value.nacionalidad is empty)
-    %}
-        {% set display = 'display: none;' %}
-        {% set headericon = 'glyphicon-chevron-right' %}
-    {% endif %}
+    <div id="records_list">
+        {% set display = '' %}
+        {% set headericon = 'glyphicon-chevron-down' %}
+        {% if (filter_form.vars.value.nombres is null or filter_form.vars.value.nombres is empty)
+        and (filter_form.vars.value.apellidos is null or filter_form.vars.value.apellidos is empty)
+        and (filter_form.vars.value.cedula is null or filter_form.vars.value.cedula is empty)
+        and (filter_form.vars.value.estadoCivil is null or filter_form.vars.value.estadoCivil is empty)
+        and (filter_form.vars.value.nacionalidad is null or filter_form.vars.value.nacionalidad is empty) %}
+            {% set display = 'display: none;' %}
+            {% set headericon = 'glyphicon-chevron-right' %}
+        {% endif %}
 
-    <h4>
-        <a id="filter_form_header" style="cursor: pointer;">
-            <span class="glyphicon {{ headericon }}"></span>
-            Búsqueda
-        </a>
-    </h4>
-    <div id="filter_form_component" style="{{ display }}">
-        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+        <h4>
+            <a id="filter_form_header" style="cursor: pointer;">
+                <span class="glyphicon {{ headericon }}"></span>
+                Búsqueda
+            </a>
+        </h4>
+
+        <div id="filter_form_component" style="{{ display }}">
+            <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+                <div class="row">
+                    <div class="col-lg-4">{{ form_row(filter_form.nombres) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.apellidos) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.cedula) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.estadoCivil) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.nacionalidad) }}</div>
+                </div>
+                {{ form_widget(filter_form._token) }}
+
+                <div class="filter-actions" style="margin-top: 8px;">
+                    <input class="btn btn-success btn-small"
+                           style="position: absolute; left: -9999px; width: 1px; height: 1px;"
+                           tabindex="-1" type="submit" value="Filtrar" name="filtrar">
+                    <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                        <span class="glyphicon glyphicon-filter"></span> Filtrar
+                    </a>
+                    <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                        <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <hr/>
+        <div class="btn-group" style="margin-bottom: 8px;">
+            <a class="btn btn-primary" href="{{ path('chofer_new') }}">
+                <span class="glyphicon glyphicon-plus-sign"></span> {{ 'chofer.btn.adicionar'|trans({}, 'BusetaBusesBundle') }}
+            </a>
+        </div>
+
+        <div id="choferes_results_container">
             <div class="row">
-                <div class="col-lg-4">{{ form_row(filter_form.nombres) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.apellidos) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.cedula) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.estadoCivil) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.nacionalidad) }}</div>
+                <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
             </div>
-            {{ form_widget(filter_form._token) }}
+            <table class="choferes_records_list table table-striped table-bordered table-condensed table-hover">
+                <thead>
+                <tr>
+                    {#<th>{{ knp_pagination_sortable(entities, 'Nacionalidad', 'a.nacionalidad') }}</th>#}
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Cédula</th>
+                    <th>Estado Civil</th>
+                    <th>Nacionalidad</th>
+                    <th style="text-align: center">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td>{{ entity.nombres }}</td>
+                        <td>{{ entity.apellidos }}</td>
+                        <td>{{ entity.cedula }}</td>
+                        <td>{{ entity.estadoCivil }}</td>
+                        <td>{{ entity.nacionalidad }}</td>
 
-            <div class="filter-actions" style="margin-top: 8px;">
-                <input class="btn btn-success btn-small" style="position: absolute; left: -9999px; width: 1px; height: 1px;"
-                       tabindex="-1" type="submit" value="Filtrar" name="filtrar">
-                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
-                    <span class="glyphicon glyphicon-filter"></span> Filtrar
-                </a>
-                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
-                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
-                </a>
+                        <td style="width: 24% !important; text-align: center;">
+                            <div class="btn-group">
+                                <a class="btn btn-success btn-xs"
+                                   href="{{ path('chofer_show', { 'id': entity.id }) }}"><span
+                                            class="glyphicon glyphicon-search"> Mostrar</span></a>
+                            </div>
+                            <div class="btn-group">
+                                <a class="btn btn-danger btn-xs"
+                                   href="{{ path('chofer_edit', { 'id': entity.id }) }}"><span
+                                            class="glyphicon glyphicon-edit"> Editar</span></a>
+                            </div>
+                            <a href="#delete" data-href="{{ path('chofer_delete', {'id': entity.id}) }}"
+                               class="btn btn-danger btn-xs">
+                                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaBusesBundle') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="choferes-paginator row">
+                <div class="col-lg-12 text-center">{{ knp_pagination_render(entities) }}</div>
             </div>
-        </form>
-    </div>
-
-    <hr/>
-    <div class="btn-group" style="margin-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('chofer_new') }}">
-            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'chofer.btn.adicionar'|trans({}, 'BusetaBusesBundle') }}
-        </a>
-    </div>
-
-    <div id="choferes_results_container">
-        <div class="row"><div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div></div>
-        <table class="choferes_records_list table table-striped table-bordered table-condensed table-hover">
-            <thead>
-            <tr>
-                {#<th>{{ knp_pagination_sortable(entities, 'Nacionalidad', 'a.nacionalidad') }}</th>#}
-                <th>Nombres</th>
-                <th>Apellidos</th>
-                <th>Cédula</th>
-                <th>Estado Civil</th>
-                <th>Nacionalidad</th>
-                <th style="text-align: center">Acciones</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for entity in entities %}
-                <tr>
-                    <td>{{ entity.nombres }}</td>
-                    <td>{{ entity.apellidos }}</td>
-                    <td>{{ entity.cedula }}</td>
-                    <td>{{ entity.estadoCivil }}</td>
-                    <td>{{ entity.nacionalidad }}</td>
-
-                    <td style="width: 24% !important; text-align: center;">
-                        <div class="btn-group">
-                            <a class="btn btn-success btn-xs"
-                               href="{{ path('chofer_show', { 'id': entity.id }) }}"><span
-                                        class="glyphicon glyphicon-search"> Mostrar</span></a>
-                        </div>
-                        <div class="btn-group">
-                            <a class="btn btn-danger btn-xs"
-                               href="{{ path('chofer_edit', { 'id': entity.id }) }}"><span
-                                        class="glyphicon glyphicon-edit"> Editar</span></a>
-                        </div>
-                        <a href="#delete" data-href="{{ path('chofer_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
-                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaBusesBundle') }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
-        <div class="choferes-paginator row">
-            <div class="col-lg-12 text-center">{{ knp_pagination_render(entities) }}</div>
         </div>
     </div>
-</div>
 
     <!-- Delete modal -->
-    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
+    <div id="modal-danger" data-keyboard="false" data-backdrop="static" class="modal modal-message modal-danger fade"
+         style="display: none;" aria-hidden="true"></div>
 {% endblock %}
 
 {% block javascripts %}
@@ -153,14 +159,14 @@
     <script type="text/javascript">
         var choferes = {
             activeblock: false,
-            _start_events: function (){
+            _start_events: function () {
                 // Paginator sort
                 $('table.choferes_records_list').find('a.sortable, a.asc, a.desc').on('click', choferes._load);
                 // Paginator navigation
                 $('div.choferes-paginator.row ul.pagination').find('a.paginator-link').on('click', choferes._load);
             },
-            _load: function(event) {
-                if(event !== undefined) {
+            _load: function (event) {
+                if (event !== undefined) {
                     event.preventDefault();
                 }
 
@@ -173,12 +179,12 @@
                     $('div#choferes_results_container').replaceWith($(response).find('div#choferes_results_container'));
 
                     choferes._start_events();
-                }).fail(utils._fail).always(function(){
+                }).fail(utils._fail).always(function () {
                     //on complete function
                 });
             },
-            toggle: function() {
-                if(choferes.activeblock) {
+            toggle: function () {
+                if (choferes.activeblock) {
                     $('div#choferes_results_container').unblock();
                     choferes.activeblock = false;
                 } else {
@@ -190,7 +196,7 @@
 
         var utils = {
             _fail: function (jqXHR, textStatus, errorThrown) {
-                if(jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
+                if (jqXHR.status == 500 && jqXHR.responseText.message != undefined) {
                     $btalerts.addDanger(jqXHR.responseText.message);
                 } else {
                     $btalerts.addDanger('{{ 'messages.unexpected_error' | trans({}, 'BusetaBusesBundle') }}');

@@ -52,7 +52,8 @@
     <div class="row show-grid">
         <div class="col-md-4">
             <div class="btn-group" style="padding-bottom: 8px;">
-                <a data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar línea</a>
+                <a data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i
+                            class="fa fa-plus-circle"></i> Adicionar línea</a>
             </div>
         </div>
     </div>
@@ -109,6 +110,7 @@
     <div class="row show-grid">
         <div class="col-md-4">
             <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+
             <div class="btn-group">
                 <a class="btn btn-primary" href="{{ path('compra') }}"> Cancelar</a>
             </div>
@@ -120,7 +122,8 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="newLinea" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div data-keyboard="false" data-backdrop="static" class="modal fade" id="newLinea" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content" style="width: 850px;">
                 <div class="modal-header">
@@ -180,7 +183,8 @@
 
                         <div class="modal-footer">
                             <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
-                            <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#">
+                            <a data-dismiss="modal" class="btn btn-primary add_tag_link"
+                               style="margin: 0px 0px 20px 20px;" href="#">
                                 <span class="fa fa-plus-circle"> Adicionar</span>
                             </a>
 
@@ -207,283 +211,282 @@
 
     <script type="text/javascript">
 
-    $(function(){
+        $(function () {
 
-        $('#{{ linea.grupos.vars.id }}').change(function(){
-            var data = {
-                grupo_id: $(this).val()
-            };
+            $('#{{ linea.grupos.vars.id }}').change(function () {
+                var data = {
+                    grupo_id: $(this).val()
+                };
 
-            $.ajax({
-                type: 'GET',
-                url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
-                data: data,
-                success: function(data) {
-                    var values = $.parseJSON(data);
-                    var $subgrupo_selector = $('#{{ linea.subgrupos.vars.id }}');
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
+                    data: data,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+                        var $subgrupo_selector = $('#{{ linea.subgrupos.vars.id }}');
 
-                    $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
+                        $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
 
-                    for (var i=0, total = values.length; i < total; i++) {
-                        $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                        for (var i = 0, total = values.length; i < total; i++) {
+                            $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                        }
                     }
-                }
+                });
             });
-        });
 
-        $('#{{ linea.subgrupos.vars.id }}').change(function(){
-            var data = {
-                subgrupo_id: $(this).val()
-            };
+            $('#{{ linea.subgrupos.vars.id }}').change(function () {
+                var data = {
+                    subgrupo_id: $(this).val()
+                };
 
-            $.ajax({
-                type: 'GET',
-                url: '{{ path("tareamantenimiento_ajax_subgrupos_productos") }}',
-                data: data,
-                success: function(data) {
-                    var values = $.parseJSON(data);
-                    var $producto_selector = $('#{{ linea.productos.vars.id }}');
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("tareamantenimiento_ajax_subgrupos_productos") }}',
+                    data: data,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+                        var $producto_selector = $('#{{ linea.productos.vars.id }}');
 
-                    $producto_selector.html('<option>---Seleccione un producto---</option>');
+                        $producto_selector.html('<option>---Seleccione un producto---</option>');
 
-                    for (var i=0, total = values.length; i < total; i++) {
-                        $producto_selector.append('<option value="' + values[i].id + '">' + values[i].nombre + '</option>');
+                        for (var i = 0, total = values.length; i < total; i++) {
+                            $producto_selector.append('<option value="' + values[i].id + '">' + values[i].nombre + '</option>');
+                        }
                     }
-                }
+                });
+            });
+
+            $('#{{ linea.productos.vars.id }}').change(function () {
+                var data = {
+                    producto_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("producto_ajax_productos_all") }}',
+                    data: data,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+                        var precio_text = $('#{{ linea.precio_producto.vars.id }}');
+
+                        //console.log(values);
+
+                        precio_text.val(values.precio);
+                    }
+                });
             });
         });
 
-        $('#{{ linea.productos.vars.id }}').change(function(){
-            var data = {
-                producto_id: $(this).val()
-            };
+        var collectionHolder = $('div#taller_compra_lineas');
+        var $addTagLink = $('a.add_tag_link');
 
-            $.ajax({
-                type: 'GET',
-                url: '{{ path("producto_ajax_productos_all") }}',
-                data: data,
-                success: function(data) {
-                    var values = $.parseJSON(data);
-                    var precio_text = $('#{{ linea.precio_producto.vars.id }}');
+        jQuery(document).ready(function () {
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
 
-                    //console.log(values);
-
-                    precio_text.val(values.precio);
-                }
-            });
-        });
-    });
-
-    var collectionHolder = $('div#taller_compra_lineas');
-    var $addTagLink = $('a.add_tag_link');
-
-    jQuery(document).ready(function() {
-        // count the current form inputs we have (e.g. 2), use that as the new
-        // index when inserting a new item (e.g. 2)
-        collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
-
-        updateDeleteLink();
-        updateView();
-
-        function addTagForm(collectionHolder) {
-            // Get the data-prototype explained earlier
-            var prototype = collectionHolder.data('prototype');
-
-            // get the new index
-            var index = collectionHolder.data('index');
-
-            // Replace '__name__' in the prototype's HTML to
-            // instead be a number based on how many items we have
-            var newForm = prototype.replace(/__name__/g, index);
-
-            // increase the index with one for the next item
-            collectionHolder.data('index', index + 1);
-
-            // Display the form in the page in an li, before the "Add a tag" link li
-            var $newFormDiv = $('<div></div>').append(newForm);
-            collectionHolder.find('#tbody').append($newFormDiv);
             updateDeleteLink();
             updateView();
-        }
 
-        function updateDeleteLink(){
-            $('a.delete_tag_link').on('click', function(e) {
+            function addTagForm(collectionHolder) {
+                // Get the data-prototype explained earlier
+                var prototype = collectionHolder.data('prototype');
+
+                // get the new index
+                var index = collectionHolder.data('index');
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = prototype.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                collectionHolder.data('index', index + 1);
+
+                // Display the form in the page in an li, before the "Add a tag" link li
+                var $newFormDiv = $('<div></div>').append(newForm);
+                collectionHolder.find('#tbody').append($newFormDiv);
+                updateDeleteLink();
+                updateView();
+            }
+
+            function updateDeleteLink() {
+                $('a.delete_tag_link').on('click', function (e) {
+                    // prevent the link from creating a "#" on the URL
+                    e.preventDefault();
+
+                    // remove the li for the tag form
+                    $(this).parent().parent().remove();
+
+                    actualizarMontoTotal();
+
+                    updateView();
+                });
+            }
+
+            function updateView() {
+                counter = collectionHolder.find('a.delete_tag_link').length;
+                if (counter == 0) {
+                    $('div#no-elements-tr').show();
+                } else {
+                    $('div#no-elements-tr').hide();
+                }
+            }
+
+            function actualizarMontoTotal() {
+                //Obtener cada valor de las lineas y sumarlas a una variable
+                var montototal = 0;
+                var precioTotal = 0;
+
+                $('[id^="taller_compra_lineas_"][id$="_monto"]').each(function (key, value) {
+                    montototal += parseInt($(value).val());
+                });
+
+                $('[id^="taller_compra_lineas_"][id$="_precio_producto"]').each(function (key, value) {
+                    precioTotal += parseInt($(value).val());
+                });
+
+                //Actualizar el valor del precio y monto de todas las lineas
+                $('#taller_compra_importe_general').val(montototal);
+                $('#taller_compra_importe_con_impuesto').val(montototal);
+                $('#taller_compra_importe_libre_impuesto').val(montototal);
+
+                $('#taller_compra_precio_general').val(precioTotal);
+            }
+
+            $addTagLink.on('click', function (e) {
                 // prevent the link from creating a "#" on the URL
                 e.preventDefault();
 
-                // remove the li for the tag form
-                $(this).parent().parent().remove();
+                var modal = $('#newLinea');
 
-                actualizarMontoTotal();
+                // captura de valores del modal
+                var linea_numero = modal.find('#buseta_tallerbundle_linea_numero');
+                var linea_tipo = modal.find('#buseta_tallerbundle_linea_tipo');
+                var linea_condicion = modal.find('#buseta_tallerbundle_linea_condicion');
 
-                updateView();
-            });
-        }
+                var linea_grupo = modal.find('#buseta_tallerbundle_linea_grupos');
+                var linea_subgrupo = modal.find('#buseta_tallerbundle_linea_subgrupos');
+                var linea_producto = modal.find('#buseta_tallerbundle_linea_productos');
 
-        function updateView(){
-            counter = collectionHolder.find('a.delete_tag_link').length;
-            if(counter == 0){
-                $('div#no-elements-tr').show();
-            }else{
-                $('div#no-elements-tr').hide();
-            }
-        }
+                var linea_precio_producto = modal.find('#buseta_tallerbundle_linea_precio_producto');
+                var linea_cantidad_pedido = modal.find('#buseta_tallerbundle_linea_cantidad_pedido');
+                var linea_impuesto = modal.find('#buseta_tallerbundle_linea_impuesto');
+                var linea_monto = modal.find('#buseta_tallerbundle_linea_monto');
 
-        function actualizarMontoTotal(){
-            //Obtener cada valor de las lineas y sumarlas a una variable
-            var montototal = 0;
-            var precioTotal = 0;
+                var dataA = {
+                    grupo_id: $(linea_grupo).val()
+                };
 
-            $('[id^="taller_compra_lineas_"][id$="_monto"]').each(function(key, value){
-                montototal += parseInt($(value).val());
-            });
-
-            $('[id^="taller_compra_lineas_"][id$="_precio_producto"]').each(function(key, value){
-                precioTotal += parseInt($(value).val());
-            });
-
-            //Actualizar el valor del precio y monto de todas las lineas
-            $('#taller_compra_importe_general').val(montototal);
-            $('#taller_compra_importe_con_impuesto').val(montototal);
-            $('#taller_compra_importe_libre_impuesto').val(montototal);
-
-            $('#taller_compra_precio_general').val(precioTotal);
-        }
-
-        $addTagLink.on('click', function(e) {
-            // prevent the link from creating a "#" on the URL
-            e.preventDefault();
-
-            var modal = $('#newLinea');
-
-            // captura de valores del modal
-            var linea_numero      = modal.find('#buseta_tallerbundle_linea_numero');
-            var linea_tipo        = modal.find('#buseta_tallerbundle_linea_tipo');
-            var linea_condicion   = modal.find('#buseta_tallerbundle_linea_condicion');
-
-            var linea_grupo   = modal.find('#buseta_tallerbundle_linea_grupos');
-            var linea_subgrupo   = modal.find('#buseta_tallerbundle_linea_subgrupos');
-            var linea_producto = modal.find('#buseta_tallerbundle_linea_productos');
-
-            var linea_precio_producto = modal.find('#buseta_tallerbundle_linea_precio_producto');
-            var linea_cantidad_pedido = modal.find('#buseta_tallerbundle_linea_cantidad_pedido');
-            var linea_impuesto = modal.find('#buseta_tallerbundle_linea_impuesto');
-            var linea_monto = modal.find('#buseta_tallerbundle_linea_monto');
-
-            var dataA = {
-                grupo_id: $(linea_grupo).val()
-            };
-
-            var dataB = {
-                subgrupo_id: $(linea_subgrupo).val()
-            };
+                var dataB = {
+                    subgrupo_id: $(linea_subgrupo).val()
+                };
 
 
-            $.when(
-                    $.ajax({
-                        type: 'GET',
-                        url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
-                        data: dataA
-                    }),
-                    $.ajax({
-                        type: 'GET',
-                        url: '{{ path("tareamantenimiento_ajax_subgrupos_productos") }}',
-                        data: dataB
-                    })
-            ).done(function(respuestaA, respuestaB){
+                $.when(
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
+                            data: dataA
+                        }),
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ path("tareamantenimiento_ajax_subgrupos_productos") }}',
+                            data: dataB
+                        })
+                ).done(function (respuestaA, respuestaB) {
 
-                        var valorA = $.parseJSON(respuestaA[0]);
-                        var valorB = $.parseJSON(respuestaB[0]);
+                    var valorA = $.parseJSON(respuestaA[0]);
+                    var valorB = $.parseJSON(respuestaB[0]);
 
-                        var index = collectionHolder.data('index');
+                    var index = collectionHolder.data('index');
 
-                        addTagForm(collectionHolder);
+                    addTagForm(collectionHolder);
 
-                        dinamicSelects();
+                    dinamicSelects();
 
-                        var $subgrupo_selector = $('select[id="taller_compra_lineas_' + index + '_subgrupos"]');
-                        var $producto_selector = $('select[id="taller_compra_lineas_' + index + '_productos"]');
+                    var $subgrupo_selector = $('select[id="taller_compra_lineas_' + index + '_subgrupos"]');
+                    var $producto_selector = $('select[id="taller_compra_lineas_' + index + '_productos"]');
 
-                        $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
-                        $producto_selector.html('<option>---Seleccione un producto---</option>');
+                    $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
+                    $producto_selector.html('<option>---Seleccione un producto---</option>');
 
 
-                        for (var i=0, total = valorA.length; i < total; i++) {
-                            $subgrupo_selector.append('<option value="' + valorA[i].id + '">' + valorA[i].valor + '</option>');
+                    for (var i = 0, total = valorA.length; i < total; i++) {
+                        $subgrupo_selector.append('<option value="' + valorA[i].id + '">' + valorA[i].valor + '</option>');
+                    }
+
+                    for (var i = 0, total = valorB.length; i < total; i++) {
+                        $producto_selector.append('<option value="' + valorB[i].id + '">' + valorB[i].nombre + '</option>');
+                    }
+
+                    $('#taller_compra_lineas_' + index + '_numero').val(linea_numero.val()).prop('readonly', 'readonly');
+                    $('#taller_compra_lineas_' + index + '_tipo').val(linea_tipo.val()).prop('readonly', 'readonly');
+                    $('#taller_compra_lineas_' + index + '_condicion').val(linea_condicion.val()).prop('readonly', 'readonly');
+
+                    $('#taller_compra_lineas_' + index + '_grupos').val(linea_grupo.val());
+                    $('#taller_compra_lineas_' + index + '_subgrupos').val(linea_subgrupo.val());
+                    $('#taller_compra_lineas_' + index + '_productos').val(linea_producto.val());
+
+                    $('#taller_compra_lineas_' + index + '_precio_producto').val(linea_precio_producto.val()).prop('readonly', 'readonly');
+                    $('#taller_compra_lineas_' + index + '_cantidad_pedido').val(linea_cantidad_pedido.val()).prop('readonly', 'readonly');
+                    $('#taller_compra_lineas_' + index + '_monto').val(linea_monto.val()).prop('readonly', 'readonly');
+                    $('#taller_compra_lineas_' + index + '_impuesto').val(linea_impuesto.val()).prop;
+
+
+                    var json = {{ json|raw }};
+                    //console.log(json);
+
+                    $.each(json, function (key, value) {
+                        if (key == linea_producto.val()) {
+                            var monto = value.precio_salida * linea_cantidad_pedido.val();
+                            $('#taller_compra_lineas_' + index + '_monto').val(monto);
                         }
+                    });
 
-                        for (var i=0, total = valorB.length; i < total; i++) {
-                            $producto_selector.append('<option value="' + valorB[i].id + '">' + valorB[i].nombre + '</option>');
-                        }
-
-                        $('#taller_compra_lineas_' + index + '_numero').val(linea_numero.val()).prop('readonly','readonly');
-                        $('#taller_compra_lineas_' + index + '_tipo').val(linea_tipo.val()).prop('readonly','readonly');
-                        $('#taller_compra_lineas_' + index + '_condicion').val(linea_condicion.val()).prop('readonly','readonly');
-
-                        $('#taller_compra_lineas_' + index + '_grupos').val(linea_grupo.val());
-                        $('#taller_compra_lineas_' + index + '_subgrupos').val(linea_subgrupo.val());
-                        $('#taller_compra_lineas_' + index + '_productos').val(linea_producto.val());
-
-                        $('#taller_compra_lineas_' + index + '_precio_producto').val(linea_precio_producto.val()).prop('readonly','readonly');
-                        $('#taller_compra_lineas_' + index + '_cantidad_pedido').val(linea_cantidad_pedido.val()).prop('readonly','readonly');
-                        $('#taller_compra_lineas_' + index + '_monto').val(linea_monto.val()).prop('readonly','readonly');
-                        $('#taller_compra_lineas_' + index + '_impuesto').val(linea_impuesto.val()).prop;
+                    /*Obtener cada valor de las lineas y sumarlas a una variable*/
+                    actualizarMontoTotal();
 
 
-
-                        var json = {{ json|raw }};
-                        //console.log(json);
-
-                        $.each(json, function(key,value){
-                            if(key == linea_producto.val()){
-                                var monto = value.precio_salida * linea_cantidad_pedido.val();
-                                $('#taller_compra_lineas_' + index + '_monto').val(monto);
-                            }
-                        });
-
-                        /*Obtener cada valor de las lineas y sumarlas a una variable*/
-                        actualizarMontoTotal();
+                })
 
 
-                    })
+                /*var index = collectionHolder.data('index');
 
+                 addTagForm(collectionHolder);*/
 
-            /*var index = collectionHolder.data('index');
+            });
 
-             addTagForm(collectionHolder);*/
 
         });
 
+        dinamicSelects();
 
-    });
+        function dinamicSelects() {
+            $('select[id^="taller_compra_lineas_"][id$="_grupos"]').change(function () {
+                var $selectGroup = $(this);
+                var data = {
+                    grupo_id: $(this).val()
+                };
 
-    dinamicSelects();
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
+                    data: data,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
 
-    function dinamicSelects(){
-        $('select[id^="taller_compra_lineas_"][id$="_grupos"]').change(function(){
-            var $selectGroup = $(this);
-            var data = {
-                grupo_id: $(this).val()
-            };
+                        var $subgrupo_selector = $selectGroup.parent().parent().find('select[id^="taller_compra_lineas_"][id$="_subgrupos"]');
 
-            $.ajax({
-                type: 'GET',
-                url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
-                data: data,
-                success: function(data) {
-                    var values = $.parseJSON(data);
+                        $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
 
-                    var $subgrupo_selector = $selectGroup.parent().parent().find('select[id^="taller_compra_lineas_"][id$="_subgrupos"]');
-
-                    $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
-
-                    for (var i=0, total = values.length; i < total; i++) {
-                        $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                        for (var i = 0, total = values.length; i < total; i++) {
+                            $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                        }
                     }
-                }
-            });
-        })
-    }
+                });
+            })
+        }
 
     </script>
 

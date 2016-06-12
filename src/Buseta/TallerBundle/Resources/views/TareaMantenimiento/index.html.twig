@@ -11,8 +11,7 @@
     {% if (filter_form.vars.value.valor is null or filter_form.vars.value.valor is empty)
     and (filter_form.vars.value.grupo is null or filter_form.vars.value.grupo is empty)
     and (filter_form.vars.value.subgrupo is null or filter_form.vars.value.subgrupo is empty)
-    and (filter_form.vars.value.garantia is null or filter_form.vars.value.garantia is empty)
-    %}
+    and (filter_form.vars.value.garantia is null or filter_form.vars.value.garantia is empty) %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
     {% endif %}
@@ -35,7 +34,8 @@
             {{ form_widget(filter_form._token) }}
 
             <div class="filter-actions" style="margin-top: 8px;">
-                <input class="btn btn-success btn-small" style="position: absolute; left: -9999px; width: 1px; height: 1px;"
+                <input class="btn btn-success btn-small"
+                       style="position: absolute; left: -9999px; width: 1px; height: 1px;"
                        tabindex="-1" type="submit" value="Filtrar" name="filtrar">
                 <a id="filter_form_submit_btn" class="btn btn-success btn-small">
                     <span class="glyphicon glyphicon-filter"></span> Filtrar
@@ -50,7 +50,8 @@
     <hr/>
 
     <div class="btn-group" style="padding-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('tareamantenimiento_new') }}"><i class="fa fa-plus-circle"></i> Adicionar tarea de mantenimiento</a>
+        <a class="btn btn-primary" href="{{ path('tareamantenimiento_new') }}"><i class="fa fa-plus-circle"></i>
+            Adicionar tarea de mantenimiento</a>
     </div>
 
     <div id="records_list">
@@ -76,16 +77,22 @@
                     <td>{{ entity.garantia }}</td>
                     <td>{{ entity.kilometros }}</td>
                     <td>{{ entity.horas }}</td>
-                    <td  style="width: 24% !important; text-align: center;">
+                    <td style="width: 24% !important; text-align: center;">
                         <div class="btn-group">
-                            <a class="btn btn-success btn-xs" href="{{ path('tareamantenimiento_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
+                            <a class="btn btn-success btn-xs"
+                               href="{{ path('tareamantenimiento_show', { 'id': entity.id }) }}"><i
+                                        class="fa fa-search"> Mostrar</i></a>
                         </div>
 
                         <div class="btn-group">
-                            <a class="btn btn-danger btn-xs" href="{{ path('tareamantenimiento_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
+                            <a class="btn btn-danger btn-xs"
+                               href="{{ path('tareamantenimiento_edit', { 'id': entity.id }) }}"><i class="fa fa-edit">
+                                    Editar</i></a>
                         </div>
-                        <a href="#delete" data-href="{{ path('tareamantenimiento_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
-                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+                        <a href="#delete" data-href="{{ path('tareamantenimiento_delete', {'id': entity.id}) }}"
+                           class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}
+                        </a>
                     </td>
                     </td>
                 </tr>
@@ -106,70 +113,71 @@
     </div>
 
     <!-- Delete modal -->
-    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
+    <div id="modal-danger" data-keyboard="false" data-backdrop="static" class="modal modal-message modal-danger fade"
+         style="display: none;" aria-hidden="true"></div>
 
 {% endblock %}
 
 {% block javascripts %}
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('a#filter_form_header').click(function () {
-            if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
-                $('a#filter_form_header span')
-                        .removeClass('glyphicon-chevron-right')
-                        .addClass('glyphicon-chevron-down');
-            } else {
-                $('a#filter_form_header span')
-                        .removeClass('glyphicon-chevron-down')
-                        .addClass('glyphicon-chevron-right');
-            }
-
-            $('div#filter_form_component').slideToggle(500);
-        });
-
-        $('a#filter_form_submit_btn').click(function () {
-            $('form#filter_form').submit();
-        });
-
-        $('a#filter_form_reset_btn').click(function () {
-            $('form#filter_form').find('input').each(function () {
-                $(this).val(null);
-            });
-            $('form#filter_form').find('select').each(function () {
-                $(this).val(null);
-            })
-        });
-
-        $('form#filter_form').find('select').on('keyup', function (event) {
-            if (event.keyCode == 13) {
-                $('form#filter_form').submit();
-            }
-        })
-
-        $('#{{ filter_form.grupo.vars.id }}').change(function () {
-            var data = {
-                grupo_id: $(this).val()
-            };
-
-            $.ajax({
-                type: 'GET',
-                url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
-                data: data,
-                success: function (data) {
-                    var values = $.parseJSON(data);
-                    var $subgrupo_selector = $('#{{ filter_form.subgrupo.vars.id }}');
-
-                    $subgrupo_selector.html('<option>---Seleccione---</option>');
-
-                    for (var i = 0, total = values.length; i < total; i++) {
-                        $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
-                    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('a#filter_form_header').click(function () {
+                if ($('a#filter_form_header span').hasClass('glyphicon-chevron-right')) {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-right')
+                            .addClass('glyphicon-chevron-down');
+                } else {
+                    $('a#filter_form_header span')
+                            .removeClass('glyphicon-chevron-down')
+                            .addClass('glyphicon-chevron-right');
                 }
+
+                $('div#filter_form_component').slideToggle(500);
+            });
+
+            $('a#filter_form_submit_btn').click(function () {
+                $('form#filter_form').submit();
+            });
+
+            $('a#filter_form_reset_btn').click(function () {
+                $('form#filter_form').find('input').each(function () {
+                    $(this).val(null);
+                });
+                $('form#filter_form').find('select').each(function () {
+                    $(this).val(null);
+                })
+            });
+
+            $('form#filter_form').find('select').on('keyup', function (event) {
+                if (event.keyCode == 13) {
+                    $('form#filter_form').submit();
+                }
+            })
+
+            $('#{{ filter_form.grupo.vars.id }}').change(function () {
+                var data = {
+                    grupo_id: $(this).val()
+                };
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
+                    data: data,
+                    success: function (data) {
+                        var values = $.parseJSON(data);
+                        var $subgrupo_selector = $('#{{ filter_form.subgrupo.vars.id }}');
+
+                        $subgrupo_selector.html('<option>---Seleccione---</option>');
+
+                        for (var i = 0, total = values.length; i < total; i++) {
+                            $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
+                        }
+                    }
+                });
             });
         });
-    });
 
-    var deleteevent = new DeleteEvent('{{ path('tareamantenimiento') }}', 'div#records_list');
-    deleteevent.start_events();
-</script>
+        var deleteevent = new DeleteEvent('{{ path('tareamantenimiento') }}', 'div#records_list');
+        deleteevent.start_events();
+    </script>
 {% endblock javascripts %}

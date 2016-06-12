@@ -1,13 +1,17 @@
-<div class="modal fade" id="form_observacion_delete_modal" tabindex="-1" role="dialog" aria-labelledby="deleteObservacion" aria-hidden="true">
+<div data-keyboard="false" data-backdrop="static" class="modal fade" id="form_observacion_delete_modal" tabindex="-1"
+     role="dialog" aria-labelledby="deleteObservacion" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="createObservacion">{{ 'observacion.modal.delete'|trans({},'BusetaTallerBundle') }}</h4>
+                <h4 class="modal-title"
+                    id="createObservacion">{{ 'observacion.modal.delete'|trans({},'BusetaTallerBundle') }}</h4>
             </div>
             <div class="modal-body">
                 <p>Usted está tratando de eliminar la observación <strong>"{{ entity.valor }}"</strong>.
-                    Al aceptar la acción se eliminarán los datos de forma permanente. <strong>¿Está seguro que desea continuar?</strong></p>
+                    Al aceptar la acción se eliminarán los datos de forma permanente. <strong>¿Está seguro que desea
+                        continuar?</strong></p>
+
                 <form name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" action="{{ form.vars.action }}"
                       method="post" enctype="multipart/form-data">
                     {% if form.vars.method == 'DELETE' %}
@@ -17,9 +21,11 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <a href="#" class="btn btn-default" id="btn_observacion_cancel" data-dismiss="modal"><span class="glyphicon glyphicon-chevron-left"></span>
+                <a href="#" class="btn btn-default" id="btn_observacion_cancel" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-chevron-left"></span>
                     {{ 'actions.cancel' | trans({}, 'BusetaTallerBundle') }}</a>
-                <a href="#" class="btn btn-danger" id="btn_observacion_delete"><span class="glyphicon glyphicon-trash"></span>
+                <a href="#" class="btn btn-danger" id="btn_observacion_delete"><span
+                            class="glyphicon glyphicon-trash"></span>
                     {{ 'actions.confirm' | trans({}, 'BusetaTallerBundle') }}</a>
             </div>
         </div>

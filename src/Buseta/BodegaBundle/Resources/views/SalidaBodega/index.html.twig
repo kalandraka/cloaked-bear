@@ -6,149 +6,158 @@
 
 {% block area_trabajo %}
 
-<div id="records_list">
-    {% set display = '' %}
-    {% set headericon = 'glyphicon-chevron-down' %}
-    {% if (filter_form.vars.value.almacenOrigen is null or filter_form.vars.value.almacenOrigen is empty)
-    and (filter_form.vars.value.almacenDestino is null or filter_form.vars.value.almacenDestino is empty)
-    and (filter_form.vars.value.centroCosto is null or filter_form.vars.value.centroCosto is empty)
-    and (filter_form.vars.value.fechaInicio is null or filter_form.vars.value.fechaInicio is empty)
-    and (filter_form.vars.value.fechaFin is null or filter_form.vars.value.fechaFin is empty)
-    and (filter_form.vars.value.responsable is null or filter_form.vars.value.responsable is empty)
-    and (filter_form.vars.value.ordenTrabajo is null or filter_form.vars.value.ordenTrabajo is empty)
-    %}
-        {% set display = 'display: none;' %}
-        {% set headericon = 'glyphicon-chevron-right' %}
-    {% endif %}
+    <div id="records_list">
+        {% set display = '' %}
+        {% set headericon = 'glyphicon-chevron-down' %}
+        {% if (filter_form.vars.value.almacenOrigen is null or filter_form.vars.value.almacenOrigen is empty)
+        and (filter_form.vars.value.almacenDestino is null or filter_form.vars.value.almacenDestino is empty)
+        and (filter_form.vars.value.centroCosto is null or filter_form.vars.value.centroCosto is empty)
+        and (filter_form.vars.value.fechaInicio is null or filter_form.vars.value.fechaInicio is empty)
+        and (filter_form.vars.value.fechaFin is null or filter_form.vars.value.fechaFin is empty)
+        and (filter_form.vars.value.responsable is null or filter_form.vars.value.responsable is empty)
+        and (filter_form.vars.value.ordenTrabajo is null or filter_form.vars.value.ordenTrabajo is empty) %}
+            {% set display = 'display: none;' %}
+            {% set headericon = 'glyphicon-chevron-right' %}
+        {% endif %}
 
-    <h4>
-        <a id="filter_form_header" style="cursor: pointer;">
-            <span class="glyphicon {{ headericon }}"></span>
-            Búsqueda
-        </a>
-    </h4>
-    <div id="filter_form_component" style="{{ display }}">
-        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
-            <div class="row">
-                <div class="col-lg-4">{{ form_row(filter_form.almacenOrigen) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.almacenDestino) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.centroCosto) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.estado) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.producto) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.fechaInicio) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.fechaFin) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.responsable) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.ordenTrabajo) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.estado) }}</div>
-            </div>
-            {{ form_widget(filter_form._token) }}
+        <h4>
+            <a id="filter_form_header" style="cursor: pointer;">
+                <span class="glyphicon {{ headericon }}"></span>
+                Búsqueda
+            </a>
+        </h4>
 
-            <div class="filter-actions" style="margin-top: 8px;">
-                <input class="btn btn-success btn-small" style="position: absolute; left: -9999px; width: 1px; height: 1px;"
-                       tabindex="-1" type="submit" value="Filtrar" name="filtrar">
-                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
-                    <span class="glyphicon glyphicon-filter"></span> Filtrar
-                </a>
-                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
-                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
-                </a>
-            </div>
-        </form>
-    </div>
+        <div id="filter_form_component" style="{{ display }}">
+            <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+                <div class="row">
+                    <div class="col-lg-4">{{ form_row(filter_form.almacenOrigen) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.almacenDestino) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.centroCosto) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.estado) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.producto) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.fechaInicio) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.fechaFin) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.responsable) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.ordenTrabajo) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.estado) }}</div>
+                </div>
+                {{ form_widget(filter_form._token) }}
 
-    <hr/>
-    {% if is_granted('create', 'Buseta\\BodegaBundle\\Entity\\SalidaBodega') %}
-        <div class="btn-group" style="padding-bottom: 8px;">
-            <a class="btn btn-primary" href="{{ path('salidabodega_new') }}"><i class="fa fa-plus-circle"></i> Realizar Salida de Bodega</a>
+                <div class="filter-actions" style="margin-top: 8px;">
+                    <input class="btn btn-success btn-small"
+                           style="position: absolute; left: -9999px; width: 1px; height: 1px;"
+                           tabindex="-1" type="submit" value="Filtrar" name="filtrar">
+                    <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                        <span class="glyphicon glyphicon-filter"></span> Filtrar
+                    </a>
+                    <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                        <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                    </a>
+                </div>
+            </form>
         </div>
-    {% endif %}
-    <table class="records_list table table-striped table-bordered table-condensed table-hover">
-        <thead>
-        <tr>
-            <th>Fecha de Salida</th>
-            <th>Centro de Costo</th>
-            <th>Bodega Origen</th>
-            <th>Bodega Destino</th>
-            <th>Responsable</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
+
+        <hr/>
+        {% if is_granted('create', 'Buseta\\BodegaBundle\\Entity\\SalidaBodega') %}
+            <div class="btn-group" style="padding-bottom: 8px;">
+                <a class="btn btn-primary" href="{{ path('salidabodega_new') }}"><i class="fa fa-plus-circle"></i>
+                    Realizar Salida de Bodega</a>
+            </div>
+        {% endif %}
+        <table class="records_list table table-striped table-bordered table-condensed table-hover">
+            <thead>
             <tr>
-                <td>{{ entity.created|date('d/m/Y') }}</td>
-                <td>{{ entity.centroCosto }}</td>
-                <td>{{ entity.almacenOrigen }}</td>
-                <td>{{ entity.almacenDestino }}</td>
-                <td>{{ entity.responsable }}</td>
-                {% if entity.estadodocumento == 'CO' %}
-                    {% set badge = 'success' %}
-                    {% set text_color = 'success' %}
-                {% elseif entity.estadodocumento == 'PR' %}
-                    {% set badge = 'primary' %}
-                    {% set text_color = 'primary' %}
-                {% else %}
-                    {% set badge = 'danger' %}
-                    {% set text_color = 'danger' %}
-                {% endif %}
-                <td class="text-{{ text_color }}"><span
-                            class="label label-{{ badge }}">{{ ('estado.' ~entity.estadodocumento) | trans({}, 'BusetaBodegaBundle') | upper }}</span>
-                </td>
-                <td  style="width: 24% !important; text-align: center;">
-                    {% if is_granted('show', entity) %}
-                        <div class="btn-group">
-                            <a class="btn btn-success btn-xs" href="{{ path('salidabodega_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
-                        </div>
-                    {% endif %}
-                    {% if entity.estadodocumento == 'BO' %}
-                        {% if is_granted('edit', entity) %}
-                            <div class="btn-group">
-                                <a class="btn btn-danger btn-xs"
-                                   href="{{ path('salidabodega_edit', { 'id': entity.id }) }}"><span
-                                            class="glyphicon glyphicon-edit"> Editar</span></a>
-                            </div>
-                        {% endif %}
-                        {% if is_granted('delete', entity) %}
-                            <a href="#delete" data-href="{{ path('salidabodega_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
-                                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
-                        {% endif %}
+                <th>Fecha de Salida</th>
+                <th>Centro de Costo</th>
+                <th>Bodega Origen</th>
+                <th>Bodega Destino</th>
+                <th>Responsable</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.created|date('d/m/Y') }}</td>
+                    <td>{{ entity.centroCosto }}</td>
+                    <td>{{ entity.almacenOrigen }}</td>
+                    <td>{{ entity.almacenDestino }}</td>
+                    <td>{{ entity.responsable }}</td>
+                    {% if entity.estadodocumento == 'CO' %}
+                        {% set badge = 'success' %}
+                        {% set text_color = 'success' %}
+                    {% elseif entity.estadodocumento == 'PR' %}
+                        {% set badge = 'primary' %}
+                        {% set text_color = 'primary' %}
                     {% else %}
-                        {% if is_granted('edit', entity) %}
+                        {% set badge = 'danger' %}
+                        {% set text_color = 'danger' %}
+                    {% endif %}
+                    <td class="text-{{ text_color }}"><span
+                                class="label label-{{ badge }}">{{ ('estado.' ~entity.estadodocumento) | trans({}, 'BusetaBodegaBundle') | upper }}</span>
+                    </td>
+                    <td style="width: 24% !important; text-align: center;">
+                        {% if is_granted('show', entity) %}
                             <div class="btn-group">
-                                <a class="btn btn-danger btn-xs disabled"
-                                   href="{{ path('salidabodega_edit', { 'id': entity.id }) }}"><span
-                                            class="glyphicon glyphicon-edit"> Editar</span></a>
+                                <a class="btn btn-success btn-xs"
+                                   href="{{ path('salidabodega_show', { 'id': entity.id }) }}"><i class="fa fa-search">
+                                        Mostrar</i></a>
                             </div>
                         {% endif %}
-                        {% if is_granted('delete', entity) %}
-                            <a href="#delete" data-href="{{ path('salidabodega_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs disabled">
-                                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+                        {% if entity.estadodocumento == 'BO' %}
+                            {% if is_granted('edit', entity) %}
+                                <div class="btn-group">
+                                    <a class="btn btn-danger btn-xs"
+                                       href="{{ path('salidabodega_edit', { 'id': entity.id }) }}"><span
+                                                class="glyphicon glyphicon-edit"> Editar</span></a>
+                                </div>
+                            {% endif %}
+                            {% if is_granted('delete', entity) %}
+                                <a href="#delete" data-href="{{ path('salidabodega_delete', {'id': entity.id}) }}"
+                                   class="btn btn-danger btn-xs">
+                                    <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            {% if is_granted('edit', entity) %}
+                                <div class="btn-group">
+                                    <a class="btn btn-danger btn-xs disabled"
+                                       href="{{ path('salidabodega_edit', { 'id': entity.id }) }}"><span
+                                                class="glyphicon glyphicon-edit"> Editar</span></a>
+                                </div>
+                            {% endif %}
+                            {% if is_granted('delete', entity) %}
+                                <a href="#delete" data-href="{{ path('salidabodega_delete', {'id': entity.id}) }}"
+                                   class="btn btn-danger btn-xs disabled">
+                                    <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}
+                                </a>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">No se encontraron registros de salidas de bodegas en el sistema.</td>
-            </tr>
-        {% endfor %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="12">No se encontraron registros de salidas de bodegas en el sistema.</td>
+                </tr>
+            {% endfor %}
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                {{ knp_pagination_render(entities) }}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    {{ knp_pagination_render(entities) }}
+                </div>
             </div>
         </div>
-    </div>
 
-</div>
+    </div>
 
     <!-- Delete modal -->
-    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
+    <div id="modal-danger" data-keyboard="false" data-backdrop="static" class="modal modal-message modal-danger fade"
+         style="display: none;" aria-hidden="true"></div>
 
 {% endblock %}
 

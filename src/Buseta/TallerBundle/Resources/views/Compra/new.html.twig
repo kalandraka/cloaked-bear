@@ -10,143 +10,145 @@
 
 
     <div class="row">
-    <div class="col-lg-12">
-    <div class="panel panel-default">
-    <!-- /.panel-heading -->
-    <div class="panel-body">
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs">
-        <li class="active">
-            <a href="#basicos" data-toggle="tab">Datos básicos</a>
-        </li>
-        <li>
-            <a id="tab_lineas" href="#lineas" data-toggle="tab">Líneas</a>
-        </li>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#basicos" data-toggle="tab">Datos básicos</a>
+                        </li>
+                        <li>
+                            <a id="tab_lineas" href="#lineas" data-toggle="tab">Líneas</a>
+                        </li>
 
-    </ul>
+                    </ul>
 
-    <!-- Tab panes -->
-    <div class="tab-content">
+                    <!-- Tab panes -->
+                    <div class="tab-content">
 
-    <div class="tab-pane fade in active" id="basicos">
-        {{ form_start(form) }}
-            <div class="row show-grid">
-                <div class="col-md-4">
-                    {{ form_row(form.numero) }}
+                        <div class="tab-pane fade in active" id="basicos">
+                            {{ form_start(form) }}
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(form.numero) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.consecutivo_compra) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.tercero) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-12">
+                                    {{ form_row(form.descripcion) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(form.numero_factura_proveedor) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.fecha_pedido) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.centro_costo) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(form.forma_pago) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.condiciones_pago) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.moneda) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(form.importe_libre_impuesto) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.importe_con_impuesto) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.importe_general) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(form.orden_prioridad) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.mecanico_solicita) }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    {{ form_row(form.estado) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    {{ form_row(form.precio_general) }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- TAB LINEAS-->
+                        <div class="tab-pane fade" id="lineas">
+
+                            <div class="row show-grid">
+                                <div class="col-md-12">
+                                    {{ form_row(form.lineas) }}
+                                </div>
+                            </div>
+
+                            <div class="row show-grid">
+                                <div class="col-md-4">
+                                    <div class="btn-group" style="padding-bottom: 8px;">
+                                        <a data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i
+                                                    class="fa fa-plus-circle"></i> Adicionar línea</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
-
-                <div class="col-md-4">
-                    {{ form_row(form.consecutivo_compra) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(form.tercero) }}
-                </div>
+                <!-- /.panel-body -->
             </div>
+            <!-- /.panel -->
 
-            <div class="row show-grid">
-                <div class="col-md-12">
-                    {{ form_row(form.descripcion) }}
-                </div>
-            </div>
 
-            <div class="row show-grid">
-                <div class="col-md-4">
-                    {{ form_row(form.numero_factura_proveedor) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(form.fecha_pedido) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(form.centro_costo) }}
-                </div>
-            </div>
-
-            <div class="row show-grid">
-                <div class="col-md-4">
-                    {{ form_row(form.forma_pago) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(form.condiciones_pago) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(form.moneda) }}
-                </div>
-            </div>
-
-            <div class="row show-grid">
-                <div class="col-md-4">
-                    {{ form_row(form.importe_libre_impuesto) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(form.importe_con_impuesto) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(form.importe_general) }}
-                </div>
-            </div>
-
-            <div class="row show-grid">
-                <div class="col-md-4">
-                    {{ form_row(form.orden_prioridad) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(form.mecanico_solicita) }}
-                </div>
-
-                <div class="col-md-4">
-                    {{ form_row(form.estado) }}
-                </div>
-            </div>
-
-            <div class="row show-grid">
-                <div class="col-md-4">
-                    {{ form_row(form.precio_general) }}
-                </div>
-
-            </div>
-
-    </div>
-
-    <!-- TAB LINEAS-->
-    <div class="tab-pane fade" id="lineas">
-
-        <div class="row show-grid">
-            <div class="col-md-12">
-                {{ form_row(form.lineas) }}
-            </div>
         </div>
-
-        <div class="row show-grid">
-            <div class="col-md-4">
-                <div class="btn-group" style="padding-bottom: 8px;">
-                    <a data-toggle="modal" data-target="#newLinea" class="btn btn-primary" href="#"><i class="fa fa-plus-circle"></i> Adicionar línea</a>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    </div>
-
-    </div>
-    <!-- /.panel-body -->
-    </div>
-    <!-- /.panel -->
-
-
-    </div>
-    <!-- /.col-lg-6 -->
+        <!-- /.col-lg-6 -->
         <div class="row show-grid">
             <div class="col-md-4">
                 <input id="guardarPedido" class="btn btn-primary" style="height: 34px" type="button" value="Guardar">
+
                 <div class="btn-group">
                     <a class="btn btn-primary" href="{{ path('compra') }}"> Cancelar</a>
                 </div>
@@ -158,7 +160,8 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="newLinea" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div data-keyboard="false" data-backdrop="static" class="modal fade" id="newLinea" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content" style="width: 850px;">
                 <div class="modal-header">
@@ -197,7 +200,7 @@
 
                         <div class="row show-grid">
                             {#<div class="col-md-4">#}
-                                {#{{ form_row(linea.bodegas) }}#}
+                            {#{{ form_row(linea.bodegas) }}#}
                             {#</div>#}
 
                             <div class="col-md-4">
@@ -221,7 +224,8 @@
                 </div>
                 <div class="modal-footer">
                     <!-- <input class="btn btn-primary add_tag_link" style="height: 34px" type="submit" value="Guardar cambios"> !-->
-                    <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;" href="#"><span class="fa fa-plus-circle">Adicionar</i></a>
+                    <a data-dismiss="modal" class="btn btn-primary add_tag_link" style="margin: 0px 0px 20px 20px;"
+                       href="#"><span class="fa fa-plus-circle">Adicionar</i></a>
 
                 </div>
                 {{ form_rest(linea) }}
@@ -245,26 +249,26 @@
 
     <script type="text/javascript">
 
-        $(function(){
+        $(function () {
             $('#tab_lineas').fadeOut(100);
 
 
-            $('#guardarPedido').click(function(){
+            $('#guardarPedido').click(function () {
                 var data = {
-                    numero:                     $('#{{ form.numero.vars.id }}').val(),
-                    consecutivo_compra:         $('#{{ form.consecutivo_compra.vars.id }}').val(),
-                    tercero:                    $('#{{ form.tercero.vars.id }}').val(),
-                    descripcion:                $('#{{ form.descripcion.vars.id }}').val(),
-                    numero_factura_proveedor:   $('#{{ form.numero_factura_proveedor.vars.id }}').val(),
-                    fecha_pedido:               $('#{{ form.fecha_pedido.vars.id }}').val(),
-                    centro_costo:               $('#{{ form.centro_costo.vars.id }}').val(),
+                    numero: $('#{{ form.numero.vars.id }}').val(),
+                    consecutivo_compra: $('#{{ form.consecutivo_compra.vars.id }}').val(),
+                    tercero: $('#{{ form.tercero.vars.id }}').val(),
+                    descripcion: $('#{{ form.descripcion.vars.id }}').val(),
+                    numero_factura_proveedor: $('#{{ form.numero_factura_proveedor.vars.id }}').val(),
+                    fecha_pedido: $('#{{ form.fecha_pedido.vars.id }}').val(),
+                    centro_costo: $('#{{ form.centro_costo.vars.id }}').val(),
                 };
 
                 $.ajax({
                     type: 'GET',
                     url: '{{ path("guardarPedido") }}',
                     data: data,
-                    success: function(data) {
+                    success: function (data) {
                         var values = $.parseJSON(data);
                         $('#tab_lineas').fadeIn(100);
                         console.log(values);
@@ -272,7 +276,7 @@
                 });
             });
 
-            $('#{{ linea.grupos.vars.id }}').change(function(){
+            $('#{{ linea.grupos.vars.id }}').change(function () {
                 var data = {
                     grupo_id: $(this).val()
                 };
@@ -281,20 +285,20 @@
                     type: 'GET',
                     url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
                     data: data,
-                    success: function(data) {
+                    success: function (data) {
                         var values = $.parseJSON(data);
                         var $subgrupo_selector = $('#{{ linea.subgrupos.vars.id }}');
 
                         $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
 
-                        for (var i=0, total = values.length; i < total; i++) {
+                        for (var i = 0, total = values.length; i < total; i++) {
                             $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
                         }
                     }
                 });
             });
 
-            $('#{{ linea.subgrupos.vars.id }}').change(function(){
+            $('#{{ linea.subgrupos.vars.id }}').change(function () {
                 var data = {
                     subgrupo_id: $(this).val()
                 };
@@ -303,20 +307,20 @@
                     type: 'GET',
                     url: '{{ path("tareamantenimiento_ajax_subgrupos_productos") }}',
                     data: data,
-                    success: function(data) {
+                    success: function (data) {
                         var values = $.parseJSON(data);
                         var $producto_selector = $('#{{ linea.productos.vars.id }}');
 
                         $producto_selector.html('<option>---Seleccione un producto---</option>');
 
-                        for (var i=0, total = values.length; i < total; i++) {
+                        for (var i = 0, total = values.length; i < total; i++) {
                             $producto_selector.append('<option value="' + values[i].id + '">' + values[i].nombre + '</option>');
                         }
                     }
                 });
             });
 
-            $('#{{ linea.productos.vars.id }}').change(function(){
+            $('#{{ linea.productos.vars.id }}').change(function () {
                 var data = {
                     producto_id: $(this).val()
                 };
@@ -325,7 +329,7 @@
                     type: 'GET',
                     url: '{{ path("producto_ajax_productos_all") }}',
                     data: data,
-                    success: function(data) {
+                    success: function (data) {
                         var values = $.parseJSON(data);
                         var precio_text = $('#{{ linea.precio_producto.vars.id }}');
 
@@ -340,7 +344,7 @@
         var collectionHolder = $('div#taller_compra_lineas');
         var $addTagLink = $('a.add_tag_link');
 
-        jQuery(document).ready(function() {
+        jQuery(document).ready(function () {
             // count the current form inputs we have (e.g. 2), use that as the new
             // index when inserting a new item (e.g. 2)
             collectionHolder.data('index', collectionHolder.find('a.delete_tag_link').length);
@@ -369,8 +373,8 @@
                 updateView();
             }
 
-            function updateDeleteLink(){
-                $('a.delete_tag_link').on('click', function(e) {
+            function updateDeleteLink() {
+                $('a.delete_tag_link').on('click', function (e) {
                     // prevent the link from creating a "#" on the URL
                     e.preventDefault();
 
@@ -383,25 +387,25 @@
                 });
             }
 
-            function updateView(){
+            function updateView() {
                 counter = collectionHolder.find('a.delete_tag_link').length;
-                if(counter == 0){
+                if (counter == 0) {
                     $('div#no-elements-tr').show();
-                }else{
+                } else {
                     $('div#no-elements-tr').hide();
                 }
             }
 
-            function actualizarMontoTotal(){
+            function actualizarMontoTotal() {
                 //Obtener cada valor de las lineas y sumarlas a una variable
                 var montototal = 0;
                 var precioTotal = 0;
 
-                $('[id^="taller_compra_lineas_"][id$="_monto"]').each(function(key, value){
+                $('[id^="taller_compra_lineas_"][id$="_monto"]').each(function (key, value) {
                     montototal += parseInt($(value).val());
                 });
 
-                $('[id^="taller_compra_lineas_"][id$="_precio_producto"]').each(function(key, value){
+                $('[id^="taller_compra_lineas_"][id$="_precio_producto"]').each(function (key, value) {
                     precioTotal += parseInt($(value).val());
                 });
 
@@ -413,19 +417,19 @@
                 $('#taller_compra_precio_general').val(precioTotal);
             }
 
-            $addTagLink.on('click', function(e) {
+            $addTagLink.on('click', function (e) {
                 // prevent the link from creating a "#" on the URL
                 e.preventDefault();
 
                 var modal = $('#newLinea');
 
                 // captura de valores del modal
-                var linea_numero      = modal.find('#buseta_tallerbundle_linea_numero');
-                var linea_tipo        = modal.find('#buseta_tallerbundle_linea_tipo');
-                var linea_condicion   = modal.find('#buseta_tallerbundle_linea_condicion');
+                var linea_numero = modal.find('#buseta_tallerbundle_linea_numero');
+                var linea_tipo = modal.find('#buseta_tallerbundle_linea_tipo');
+                var linea_condicion = modal.find('#buseta_tallerbundle_linea_condicion');
 
-                var linea_grupo   = modal.find('#buseta_tallerbundle_linea_grupos');
-                var linea_subgrupo   = modal.find('#buseta_tallerbundle_linea_subgrupos');
+                var linea_grupo = modal.find('#buseta_tallerbundle_linea_grupos');
+                var linea_subgrupo = modal.find('#buseta_tallerbundle_linea_subgrupos');
                 var linea_producto = modal.find('#buseta_tallerbundle_linea_productos');
 
                 var linea_precio_producto = modal.find('#buseta_tallerbundle_linea_precio_producto');
@@ -454,68 +458,67 @@
                             url: '{{ path("tareamantenimiento_ajax_subgrupos_productos") }}',
                             data: dataB
                         })
-                ).done(function(respuestaA, respuestaB){
+                ).done(function (respuestaA, respuestaB) {
 
-                            var valorA = $.parseJSON(respuestaA[0]);
-                            var valorB = $.parseJSON(respuestaB[0]);
+                    var valorA = $.parseJSON(respuestaA[0]);
+                    var valorB = $.parseJSON(respuestaB[0]);
 
-                            var index = collectionHolder.data('index');
+                    var index = collectionHolder.data('index');
 
-                            addTagForm(collectionHolder);
+                    addTagForm(collectionHolder);
 
-                            dinamicSelects();
+                    dinamicSelects();
 
-                            var $subgrupo_selector = $('select[id="taller_compra_lineas_' + index + '_subgrupos"]');
-                            var $producto_selector = $('select[id="taller_compra_lineas_' + index + '_productos"]');
+                    var $subgrupo_selector = $('select[id="taller_compra_lineas_' + index + '_subgrupos"]');
+                    var $producto_selector = $('select[id="taller_compra_lineas_' + index + '_productos"]');
 
-                            $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
-                            $producto_selector.html('<option>---Seleccione un producto---</option>');
+                    $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
+                    $producto_selector.html('<option>---Seleccione un producto---</option>');
 
 
-                            for (var i=0, total = valorA.length; i < total; i++) {
-                                $subgrupo_selector.append('<option value="' + valorA[i].id + '">' + valorA[i].valor + '</option>');
-                            }
+                    for (var i = 0, total = valorA.length; i < total; i++) {
+                        $subgrupo_selector.append('<option value="' + valorA[i].id + '">' + valorA[i].valor + '</option>');
+                    }
 
-                            for (var i=0, total = valorB.length; i < total; i++) {
-                                $producto_selector.append('<option value="' + valorB[i].id + '">' + valorB[i].nombre + '</option>');
-                            }
+                    for (var i = 0, total = valorB.length; i < total; i++) {
+                        $producto_selector.append('<option value="' + valorB[i].id + '">' + valorB[i].nombre + '</option>');
+                    }
 
-                            $('#taller_compra_lineas_' + index + '_numero').val(linea_numero.val()).prop('readonly','readonly');
-                            $('#taller_compra_lineas_' + index + '_tipo').val(linea_tipo.val()).prop('readonly','readonly');
-                            $('#taller_compra_lineas_' + index + '_condicion').val(linea_condicion.val()).prop('readonly','readonly');
+                    $('#taller_compra_lineas_' + index + '_numero').val(linea_numero.val()).prop('readonly', 'readonly');
+                    $('#taller_compra_lineas_' + index + '_tipo').val(linea_tipo.val()).prop('readonly', 'readonly');
+                    $('#taller_compra_lineas_' + index + '_condicion').val(linea_condicion.val()).prop('readonly', 'readonly');
 
-                            $('#taller_compra_lineas_' + index + '_grupos').val(linea_grupo.val());
-                            $('#taller_compra_lineas_' + index + '_subgrupos').val(linea_subgrupo.val());
-                            $('#taller_compra_lineas_' + index + '_productos').val(linea_producto.val());
+                    $('#taller_compra_lineas_' + index + '_grupos').val(linea_grupo.val());
+                    $('#taller_compra_lineas_' + index + '_subgrupos').val(linea_subgrupo.val());
+                    $('#taller_compra_lineas_' + index + '_productos').val(linea_producto.val());
 
-                            $('#taller_compra_lineas_' + index + '_precio_producto').val(linea_precio_producto.val()).prop('readonly','readonly');
-                            $('#taller_compra_lineas_' + index + '_cantidad_pedido').val(linea_cantidad_pedido.val()).prop('readonly','readonly');
-                            $('#taller_compra_lineas_' + index + '_monto').val(linea_monto.val()).prop('readonly','readonly');
-                            $('#taller_compra_lineas_' + index + '_impuesto').val(linea_impuesto.val()).prop;
+                    $('#taller_compra_lineas_' + index + '_precio_producto').val(linea_precio_producto.val()).prop('readonly', 'readonly');
+                    $('#taller_compra_lineas_' + index + '_cantidad_pedido').val(linea_cantidad_pedido.val()).prop('readonly', 'readonly');
+                    $('#taller_compra_lineas_' + index + '_monto').val(linea_monto.val()).prop('readonly', 'readonly');
+                    $('#taller_compra_lineas_' + index + '_impuesto').val(linea_impuesto.val()).prop;
 //                            $('#taller_compra_lineas_' + index + '_bodegas').val(linea_bodega.val()).prop;
 
 
+                    var json = {{ json|raw }};
+                    //console.log(json);
 
-                            var json = {{ json|raw }};
-                            //console.log(json);
+                    $.each(json, function (key, value) {
+                        if (key == linea_producto.val()) {
+                            var monto = value.precio_salida * linea_cantidad_pedido.val();
+                            $('#taller_compra_lineas_' + index + '_monto').val(monto);
+                        }
+                    });
 
-                            $.each(json, function(key,value){
-                                if(key == linea_producto.val()){
-                                    var monto = value.precio_salida * linea_cantidad_pedido.val();
-                                    $('#taller_compra_lineas_' + index + '_monto').val(monto);
-                                }
-                            });
-
-                            /*Obtener cada valor de las lineas y sumarlas a una variable*/
-                            actualizarMontoTotal();
+                    /*Obtener cada valor de las lineas y sumarlas a una variable*/
+                    actualizarMontoTotal();
 
 
-                        })
+                })
 
 
                 /*var index = collectionHolder.data('index');
 
-                addTagForm(collectionHolder);*/
+                 addTagForm(collectionHolder);*/
 
             });
 
@@ -524,8 +527,8 @@
 
         dinamicSelects();
 
-        function dinamicSelects(){
-            $('select[id^="taller_compra_lineas_"][id$="_grupos"]').change(function(){
+        function dinamicSelects() {
+            $('select[id^="taller_compra_lineas_"][id$="_grupos"]').change(function () {
                 var $selectGroup = $(this);
                 var data = {
                     grupo_id: $(this).val()
@@ -535,20 +538,20 @@
                     type: 'GET',
                     url: '{{ path("tareamantenimiento_ajax_grupos_subgrupos") }}',
                     data: data,
-                    success: function(data) {
+                    success: function (data) {
                         var values = $.parseJSON(data);
 
                         var $subgrupo_selector = $selectGroup.parent().parent().find('select[id^="taller_compra_lineas_"][id$="_subgrupos"]');
 
                         $subgrupo_selector.html('<option>---Seleccione un subgrupo---</option>');
 
-                        for (var i=0, total = values.length; i < total; i++) {
+                        for (var i = 0, total = values.length; i < total; i++) {
                             $subgrupo_selector.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
                         }
                     }
                 });
             })
-       }
+        }
 
     </script>
 

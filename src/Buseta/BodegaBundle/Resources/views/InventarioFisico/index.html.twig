@@ -13,8 +13,7 @@
         and (filter_form.vars.value.almacen is null or filter_form.vars.value.almacen is empty)
         and (filter_form.vars.value.fechaInicio is null or filter_form.vars.value.fechaInicio is empty)
         and (filter_form.vars.value.fechaFin is null or filter_form.vars.value.fechaFin is empty)
-        and (filter_form.vars.value.estado is null or filter_form.vars.value.estado is empty)
-        %}
+        and (filter_form.vars.value.estado is null or filter_form.vars.value.estado is empty) %}
             {% set display = 'display: none;' %}
             {% set headericon = 'glyphicon-chevron-right' %}
         {% endif %}
@@ -25,6 +24,7 @@
                 Búsqueda
             </a>
         </h4>
+
         <div id="filter_form_component" style="{{ display }}">
             <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
                 <div class="row">
@@ -38,7 +38,8 @@
                 {{ form_widget(filter_form._token) }}
 
                 <div class="filter-actions" style="margin-top: 8px;">
-                    <input class="btn btn-success btn-small" style="position: absolute; left: -9999px; width: 1px; height: 1px;"
+                    <input class="btn btn-success btn-small"
+                           style="position: absolute; left: -9999px; width: 1px; height: 1px;"
                            tabindex="-1" type="submit" value="Filtrar" name="filtrar">
                     <a id="filter_form_submit_btn" class="btn btn-success btn-small">
                         <span class="glyphicon glyphicon-filter"></span> Filtrar
@@ -64,70 +65,74 @@
 
 
         <table class="records_list table table-striped table-bordered table-condensed table-hover">
-        <thead>
-        <tr>
-            <th>Nombre{#{{ knp_pagination_sortable(entities, 'No.Documento', 't.numero_documento') }}#}</th>
-            <th>Bodega{#{{ knp_pagination_sortable(entities, 'Tercero', 't.tercero') }}#}</th>
-            <th>Fecha{#{{ knp_pagination_sortable(entities, 'Almacén', 't.almacen') }}#}</th>
-            <th>Estado{#{{ knp_pagination_sortable(entities, 'Moneda', 't.moneda') }}#}</th>
-            <th style="text-align: center">Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
+            <thead>
             <tr>
-                <td>{{ entity.nombre }}</td>
-                <td>{{ entity.almacen }}</td>
-                <td>{{ entity.fecha | date('d/m/Y') }}</td>
-                {% if entity.estado == 'CO' %}
-                    {% set badge = 'success' %}
-                    {% set text_color = 'success' %}
-                {% elseif entity.estado == 'PR' %}
-                    {% set badge = 'primary' %}
-                    {% set text_color = 'primary' %}
-                {% else %}
-                    {% set badge = 'danger' %}
-                    {% set text_color = 'danger' %}
-                {% endif %}
-                <td class="text-{{ text_color }}"><span
-                            class="label label-{{ badge }}">{{ ('estado.' ~entity.estado) | trans({}, 'BusetaBodegaBundle') | upper }}</span>
-                </td>
-
-                <td style="width: 24% !important; text-align: center;">
-                    {% if is_granted('show', entity) %}
-                        <div class="btn-group">
-                            <a class="btn btn-success btn-xs"
-                               href="{{ path('inventariofisico_show', { 'id': entity.id }) }}"><span
-                                        class="glyphicon glyphicon-search"> Mostrar</span></a>
-                        </div>
-                    {% endif %}
-                    {% if entity.estado == 'BO' %}
-                        {% if is_granted('edit', entity) %}
-                            <div class="btn-group">
-                                <a class="btn btn-danger btn-xs"
-                                   href="{{ path('inventariofisicos_inventariofisico_edit', { 'id': entity.id }) }}"><span
-                                            class="glyphicon glyphicon-edit"> Editar</span></a>
-                            </div>
-                        {% endif %}
-                        {% if is_granted('delete', entity) %}
-                            <a href="#delete" data-href="{{ path('inventariofisico_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
-                                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
-                        {% endif %}
-                    {% else %}
-                        {% if is_granted('edit', entity) %}
-                            <div class="btn-group">
-                                <a class="btn btn-danger btn-xs disabled"
-                                   href="{{ path('inventariofisicos_inventariofisico_edit', { 'id': entity.id }) }}"><span
-                                            class="glyphicon glyphicon-edit"> Editar</span></a>
-                            </div>
-                        {% endif %}
-                        {% if is_granted('delete', entity) %}
-                            <a href="#delete" data-href="{{ path('inventariofisico_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs disabled">
-                                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
-                        {% endif %}
-                    {% endif %}
-                </td>
+                <th>Nombre{#{{ knp_pagination_sortable(entities, 'No.Documento', 't.numero_documento') }}#}</th>
+                <th>Bodega{#{{ knp_pagination_sortable(entities, 'Tercero', 't.tercero') }}#}</th>
+                <th>Fecha{#{{ knp_pagination_sortable(entities, 'Almacén', 't.almacen') }}#}</th>
+                <th>Estado{#{{ knp_pagination_sortable(entities, 'Moneda', 't.moneda') }}#}</th>
+                <th style="text-align: center">Acciones</th>
             </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.nombre }}</td>
+                    <td>{{ entity.almacen }}</td>
+                    <td>{{ entity.fecha | date('d/m/Y') }}</td>
+                    {% if entity.estado == 'CO' %}
+                        {% set badge = 'success' %}
+                        {% set text_color = 'success' %}
+                    {% elseif entity.estado == 'PR' %}
+                        {% set badge = 'primary' %}
+                        {% set text_color = 'primary' %}
+                    {% else %}
+                        {% set badge = 'danger' %}
+                        {% set text_color = 'danger' %}
+                    {% endif %}
+                    <td class="text-{{ text_color }}"><span
+                                class="label label-{{ badge }}">{{ ('estado.' ~entity.estado) | trans({}, 'BusetaBodegaBundle') | upper }}</span>
+                    </td>
+
+                    <td style="width: 24% !important; text-align: center;">
+                        {% if is_granted('show', entity) %}
+                            <div class="btn-group">
+                                <a class="btn btn-success btn-xs"
+                                   href="{{ path('inventariofisico_show', { 'id': entity.id }) }}"><span
+                                            class="glyphicon glyphicon-search"> Mostrar</span></a>
+                            </div>
+                        {% endif %}
+                        {% if entity.estado == 'BO' %}
+                            {% if is_granted('edit', entity) %}
+                                <div class="btn-group">
+                                    <a class="btn btn-danger btn-xs"
+                                       href="{{ path('inventariofisicos_inventariofisico_edit', { 'id': entity.id }) }}"><span
+                                                class="glyphicon glyphicon-edit"> Editar</span></a>
+                                </div>
+                            {% endif %}
+                            {% if is_granted('delete', entity) %}
+                                <a href="#delete" data-href="{{ path('inventariofisico_delete', {'id': entity.id}) }}"
+                                   class="btn btn-danger btn-xs">
+                                    <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            {% if is_granted('edit', entity) %}
+                                <div class="btn-group">
+                                    <a class="btn btn-danger btn-xs disabled"
+                                       href="{{ path('inventariofisicos_inventariofisico_edit', { 'id': entity.id }) }}"><span
+                                                class="glyphicon glyphicon-edit"> Editar</span></a>
+                                </div>
+                            {% endif %}
+                            {% if is_granted('delete', entity) %}
+                                <a href="#delete" data-href="{{ path('inventariofisico_delete', {'id': entity.id}) }}"
+                                   class="btn btn-danger btn-xs disabled">
+                                    <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
             {% else %}
                 <tr>
                     <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaBodegaBundle') }}</td>
@@ -144,7 +149,8 @@
 
 
     <!-- Delete modal -->
-    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
+    <div id="modal-danger" data-keyboard="false" data-backdrop="static" class="modal modal-message modal-danger fade"
+         style="display: none;" aria-hidden="true"></div>
 
 {% endblock area_trabajo %}
 
@@ -196,7 +202,7 @@
                 format: 'DD/MM/YYYY',
                 useCurrent: false
             });
-            fechaInicio.on('dp.change', function(e){
+            fechaInicio.on('dp.change', function (e) {
                 fechaFin.data("DateTimePicker").minDate(e.date);
             });
             fechaFin.on('dp.change', function (e) {

@@ -39,7 +39,8 @@
                 {{ form_widget(filter_form._token) }}
 
                 <div class="filter-actions" style="margin-top: 8px;">
-                    <input class="btn btn-success btn-small" style="position: absolute; left: -9999px; width: 1px; height: 1px;"
+                    <input class="btn btn-success btn-small"
+                           style="position: absolute; left: -9999px; width: 1px; height: 1px;"
                            tabindex="-1" type="submit" value="Filtrar" name="filtrar">
                     <a id="filter_form_submit_btn" class="btn btn-success btn-small">
                         <span class="glyphicon glyphicon-filter"></span> Filtrar
@@ -142,7 +143,8 @@
     </div>
 
     <!-- Delete modal -->
-    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;"
+    <div id="modal-danger" data-keyboard="false" data-backdrop="static" class="modal modal-message modal-danger fade"
+         style="display: none;"
          aria-hidden="true"></div>
 {% endblock %}
 

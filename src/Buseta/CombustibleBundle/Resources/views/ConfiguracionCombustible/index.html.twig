@@ -6,58 +6,62 @@
 
 {% block area_trabajo %}
 
-<div id="records_list">
-    <div class="btn-group" style="margin-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('configuracion_combustible_new') }}">
-            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'configuracion_combustible.btn.adicionar'|trans({}, 'BusetaCombustibleBundle') }}
-        </a>
-    </div>
+    <div id="records_list">
+        <div class="btn-group" style="margin-bottom: 8px;">
+            <a class="btn btn-primary" href="{{ path('configuracion_combustible_new') }}">
+                <span class="glyphicon glyphicon-plus-sign"></span> {{ 'configuracion_combustible.btn.adicionar'|trans({}, 'BusetaCombustibleBundle') }}
+            </a>
+        </div>
 
-    <div id="autobuses_results_container">
-        <table class="autobuses_records_list table table-striped table-bordered table-condensed table-hover">
-            <thead>
+        <div id="autobuses_results_container">
+            <table class="autobuses_records_list table table-striped table-bordered table-condensed table-hover">
+                <thead>
                 <tr>
                     <th>Combustible</th>
                     <th>Bodega</th>
                     <th>Producto</th>
                     <th style="text-align: center">Acciones</th>
                 </tr>
-            </thead>
-            <tbody>
-            {% for entity in entities %}
-                <tr>
-                    <td>{{ entity.combustible }}</td>
-                    <td>{{ entity.bodega }}</td>
-                    <td>{{ entity.producto }}</td>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td>{{ entity.combustible }}</td>
+                        <td>{{ entity.bodega }}</td>
+                        <td>{{ entity.producto }}</td>
 
-                    <td style="width: 24% !important; text-align: center;">
-                        <div class="btn-group">
-                            <a class="btn btn-success btn-xs"
-                               href="{{ path('configuracion_combustible_show', { 'id': entity.id }) }}"><span
-                                        class="glyphicon glyphicon-search"> Mostrar</span></a>
-                        </div>
-                        <div class="btn-group">
-                            <a class="btn btn-danger btn-xs"
-                               href="{{ path('configuracion_combustible_edit', { 'id': entity.id }) }}"><span
-                                        class="glyphicon glyphicon-edit"> Editar</span></a>
-                        </div>
-                        <a href="#delete" data-href="{{ path('configuracion_combustible_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
-                            <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaCombustibleBundle') }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                        <td style="width: 24% !important; text-align: center;">
+                            <div class="btn-group">
+                                <a class="btn btn-success btn-xs"
+                                   href="{{ path('configuracion_combustible_show', { 'id': entity.id }) }}"><span
+                                            class="glyphicon glyphicon-search"> Mostrar</span></a>
+                            </div>
+                            <div class="btn-group">
+                                <a class="btn btn-danger btn-xs"
+                                   href="{{ path('configuracion_combustible_edit', { 'id': entity.id }) }}"><span
+                                            class="glyphicon glyphicon-edit"> Editar</span></a>
+                            </div>
+                            <a href="#delete"
+                               data-href="{{ path('configuracion_combustible_delete', {'id': entity.id}) }}"
+                               class="btn btn-danger btn-xs">
+                                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaCombustibleBundle') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
+        </div>
     </div>
-</div>
 
     <!-- Delete modal -->
-    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
+    <div id="modal-danger" data-keyboard="false" data-backdrop="static" class="modal modal-message modal-danger fade"
+         style="display: none;" aria-hidden="true"></div>
 {% endblock %}
 
 {% block javascripts %}

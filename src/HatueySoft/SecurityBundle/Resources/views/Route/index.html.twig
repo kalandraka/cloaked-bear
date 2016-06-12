@@ -10,10 +10,11 @@
 
 {% block content -%}
     <div class="control-group table">
-    <a class="btn btn-primary" data-toggle="modal" href="#modaldiv">
-        <span class="glyphicon glyphicon-plus"></span> Adicionar Ruta</a>
-    <button class="btn btn-primary delete-rol">
-        <span class="glyphicon glyphicon-plus"></span> Eliminar Ruta</button>
+        <a class="btn btn-primary" data-toggle="modal" href="#modaldiv">
+            <span class="glyphicon glyphicon-plus"></span> Adicionar Ruta</a>
+        <button class="btn btn-primary delete-rol">
+            <span class="glyphicon glyphicon-plus"></span> Eliminar Ruta
+        </button>
     </div>
     <table class="records_list table table-hover table-striped table-bordered table-condensed">
         <thead>
@@ -30,19 +31,24 @@
                     <input type="checkbox" class="to-delete" id="{{ entity.path }}" {{ block('checkPath') }}></td>
                 <td class="hidden-phone">{{ entity.path }}</td>
                 <td class="hidden-phone">
-                    <button class="btn btn-primary doAdd" title="Editar Roles" data-path="{{ entity.path }}" {{ block('checkPath') }}>
+                    <button class="btn btn-primary doAdd" title="Editar Roles"
+                            data-path="{{ entity.path }}" {{ block('checkPath') }}>
                         <span class="glyphicon glyphicon-pencil"></span></button>
-                    <button class="btn btn-primary doRemove" title="Remover Roles" data-path="{{ entity.path }}" {{ block('checkPath') }}>
+                    <button class="btn btn-primary doRemove" title="Remover Roles"
+                            data-path="{{ entity.path }}" {{ block('checkPath') }}>
                         <span class="glyphicon glyphicon-trash"></span></button>
                 </td>
             </tr>
         {% else %}
-            <tr><td colspan="8">No se encontraron elementos que mostrar.</td></tr>
+            <tr>
+                <td colspan="8">No se encontraron elementos que mostrar.</td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>
-<!-- Modal-->
-    <div class="modal fade" id="modaldiv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- Modal-->
+    <div data-keyboard="false" data-backdrop="static" class="modal fade" id="modaldiv" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -55,13 +61,14 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-stacked">
-                        <label  for="role">Ruta</label>
+                        <label for="role">Ruta</label>
                         <input type="text" class="route form-control" id="route"/>
                         <br>
                         <label for="jerarquia">Seleccione roles</label>
                         <fieldset id="jerarquia">
                             {% for rol in roles %}
-                                <input type="checkbox" id="{{ rol }}" class="result-selected" /><label for="{{ rol }}"><span>{{ rol }}</span></label>
+                                <input type="checkbox" id="{{ rol }}" class="result-selected"/><label
+                                    for="{{ rol }}"><span>{{ rol }}</span></label>
                                 <br>
                             {% endfor %}
                         </fieldset>
@@ -69,155 +76,211 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary doaction" >Aceptar</button>
+                    <button type="button" class="btn btn-primary doaction">Aceptar</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-<!--Dialogs-->
-<div class="modal fade" id="modaldialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <div class="alert">
-                    <a class="close" data-dismiss="alert" href="#" aria-hidden="true"></a>
-                    <span class="msg"></span>
+    <!--Dialogs-->
+    <div class="modal fade" id="modaldialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <div class="alert">
+                        <a class="close" data-dismiss="alert" href="#" aria-hidden="true"></a>
+                        <span class="msg"></span>
+                    </div>
+                    <h4 class="modal-title">Adicionar Roles</h4>
                 </div>
-                <h4 class="modal-title">Adicionar Roles</h4>
-            </div>
-            <div class="modal-body">
-                <fieldset id="jerarquia">
+                <div class="modal-body">
+                    <fieldset id="jerarquia">
 
 
-                </fieldset>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary doUpdate" data-new="yes">Aceptar</button>
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary doUpdate" data-new="yes">Aceptar</button>
+                </div>
+
             </div>
 
         </div>
-
     </div>
-</div>
 
 
 {% endblock %}
 {% block javascripts %}
-<script type="text/javascript" >
-    $(function(){
-        //Asignar roles
-        $('.btn.btn-primary.doaction').click(function(){
-            var $check =  $('.result-selected:checked');
-            var ruta = $('#route').val();
+    <script type="text/javascript">
+        $(function () {
+            //Asignar roles
+            $('.btn.btn-primary.doaction').click(function () {
+                var $check = $('.result-selected:checked');
+                var ruta = $('#route').val();
 
-            if($check.length>0 && ruta !="")
-            {
-                var $div = $('<div class="confirma"></div>');
-                var $p = $('<p>Esta acción provocará  cierre de sesión. ¿Desea continuar?</p>');
+                if ($check.length > 0 && ruta != "") {
+                    var $div = $('<div class="confirma"></div>');
+                    var $p = $('<p>Esta acción provocará  cierre de sesión. ¿Desea continuar?</p>');
 
-                //Botones
-                var $acept = $('<button class="btn btn-primary acept">Aceptar</button>');
-                $acept.click(function(){
+                    //Botones
+                    var $acept = $('<button class="btn btn-primary acept">Aceptar</button>');
+                    $acept.click(function () {
 
-                    setTimeout(function(){
-                        document.location.reload();
-                    },600);
+                        setTimeout(function () {
+                            document.location.reload();
+                        }, 600);
 
-                    var data = {
-                        route : ruta,
-                        roles : []
-                    };
+                        var data = {
+                            route: ruta,
+                            roles: []
+                        };
 
-                    $check.each(function(){
-                        data.roles.push({"name":$(this).attr('id')});
+                        $check.each(function () {
+                            data.roles.push({"name": $(this).attr('id')});
+                        });
+
+                        /*Preparando los parámetros*/
+                        var parameters = [
+                            {
+                                'name': 'data',
+                                'value': JSON.stringify(data)
+                            }
+                        ];
+
+                        $.get(
+                                "{{ path('role_route_add') }}",
+                                $.param(parameters, true),
+                                function (response) {
+
+                                },
+                                "json"
+                        );
+                    });
+                    var $cancel = $('<button class="btn btn-primary cancel" data-dismiss="modal">Cancelar</button>');
+                    $cancel.click(function () {
+                        $('#confirma').remove();
                     });
 
-                    /*Preparando los parámetros*/
-                    var parameters = [
-                        {
-                            'name':'data',
-                            'value': JSON.stringify(data)
-                        }
-                    ];
+                    //Preparando
+                    $div.append($p).append('<br/>').append($acept).append($cancel);
 
-                    $.get(
-                            "{{ path('role_route_add') }}",
-                            $.param(parameters,true) ,
-                            function(response)
+                    //Adicionando el mensaje
+                    $('#modaldiv').find('.modal-title').parent().append($div);
+
+
+                }
+                else {
+                    alert('Hay datos vacíos');
+                }
+            });
+
+
+            //Eliminar rutas múltiple
+
+            $('.btn.btn-primary.delete-rol').click(function () {
+                var $delete = $('.to-delete:checked');
+
+                if ($delete.length > 0) {
+
+                    var $div = $('<div class="confirma"></div>');
+                    var $p = $('<p>Esta acción provocará  cierre de sesión. ¿Desea continuar?</p>');
+
+                    //Botones
+                    var $acept = $('<button class="btn btn-primary acept" data-dismiss="modal">Aceptar</button>');
+                    $acept.click(function () {
+
+                        var data = {
+                            route: []
+                        };
+
+                        $delete.each(function () {
+                            data.route.push({"name": $(this).attr('id')});
+                        });
+
+                        /*Preparando los parámetros*/
+                        var parameters = [
                             {
+                                'name': 'data',
+                                'value': JSON.stringify(data)
+                            }
+                        ];
+                        setTimeout(function () {
+                            document.location.reload()
+                        }, 500);
 
-                            },
-                            "json"
+                        $.get(
+                                "{{ path('route_delete') }}",
+                                $.param(parameters, true),
+                                function (response) {
 
-                    );
-                });
-                var $cancel = $('<button class="btn btn-primary cancel" data-dismiss="modal">Cancelar</button>');
-                $cancel.click(function(){
-                    $('#confirma').remove();
-                });
+                                },
+                                "json"
+                        );
+                    });
+                    var $cancel = $('<button class="btn btn-primary cancel" data-dismiss="modal">Cancelar</button>');
+                    $cancel.click(function () {
+                        $('#confirma').remove();
+                    });
 
-                //Preparando
-                $div.append($p).append('<br/>').append($acept).append($cancel);
+                    //Preparando
+                    $div.append($p).append('<br/>').append($acept).append($cancel);
 
-                //Adicionando el mensaje
-                $('#modaldiv').find('.modal-title').parent().append($div);
+                    //Adicionando el mensaje
+                    var $ventana = $('<div data-keyboard="false" data-backdrop="static" class="modal fade" id="jModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">Modal title</h4></div><div class="modal-body"></div><div class="modal-footer"></div></div></div></div>');
+                    $($ventana).find('h4.modal-title').text('Información');
+                    $($ventana).find('div.modal-body').text('Esta acción provocará el cierre de sesión. ¿Desea Continuar?');
+                    $($ventana).find('div.modal-footer').append($acept).append($cancel);
+
+                    $($ventana).modal('show');
+
+                }
+                else {
+                    alert('debe seleccionar al menos uno');
+                }
+            });
 
 
-            }
-            else
-            {
-                alert('Hay datos vacíos');
-            }
-        });
+            //Eliminar por las opciones
+            $('.doRemove').click(function (event) {
 
-
-        //Eliminar rutas múltiple
-
-        $('.btn.btn-primary.delete-rol').click(function(){
-            var $delete =  $('.to-delete:checked');
-
-            if($delete.length>0)
-            {
-
+                var $this = $(this);
                 var $div = $('<div class="confirma"></div>');
                 var $p = $('<p>Esta acción provocará  cierre de sesión. ¿Desea continuar?</p>');
 
                 //Botones
                 var $acept = $('<button class="btn btn-primary acept" data-dismiss="modal">Aceptar</button>');
-                $acept.click(function(){
+                $acept.click(function () {
 
                     var data = {
-                        route : []
+                        route: []
                     };
 
-                    $delete.each(function(){
-                        data.route.push({"name":$(this).attr('id')});
-                    });
+                    data.route.push({"name": $($this).attr('data-path')});
 
                     /*Preparando los parámetros*/
                     var parameters = [
                         {
-                            'name':'data',
+                            'name': 'data',
                             'value': JSON.stringify(data)
                         }
                     ];
-                    setTimeout(function(){document.location.reload()},500);
+                    setTimeout(function () {
+                        document.location.reload()
+                    }, 500);
 
                     $.get(
                             "{{ path('route_delete') }}",
-                            $.param(parameters,true) ,
-                            function(response)
-                            {
+                            $.param(parameters, true),
+                            function (response) {
 
                             },
                             "json"
-
                     );
                 });
                 var $cancel = $('<button class="btn btn-primary cancel" data-dismiss="modal">Cancelar</button>');
-                $cancel.click(function(){
+                $cancel.click(function () {
                     $('#confirma').remove();
                 });
 
@@ -232,225 +295,152 @@
 
                 $($ventana).modal('show');
 
-            }
-            else
-            {
-                alert('debe seleccionar al menos uno');
-            }
-        });
+            });
 
+            //Editar Opciones(Adiciona o elimina roles en la ruta)
+            $('.doAdd').click(function (event) {
 
-        //Eliminar por las opciones
-        $('.doRemove').click(function(event){
+                event.preventDefault();
 
-            var $this = $(this);
-            var $div = $('<div class="confirma"></div>');
-            var $p = $('<p>Esta acción provocará  cierre de sesión. ¿Desea continuar?</p>');
-
-            //Botones
-            var $acept = $('<button class="btn btn-primary acept" data-dismiss="modal">Aceptar</button>');
-            $acept.click(function(){
-
-                var data = {
-                    route : []
-                };
-
-                data.route.push({"name":$($this).attr('data-path')});
-
-                /*Preparando los parámetros*/
-                var parameters = [
-                    {
-                        'name':'data',
-                        'value': JSON.stringify(data)
-                    }
-                ];
-                setTimeout(function(){document.location.reload()},500);
+                var ruta = $(this).data('path');
 
                 $.get(
-                        "{{ path('route_delete') }}",
-                        $.param(parameters,true) ,
-                        function(response)
+                        "{{ path('fetch_route_role') }}",
                         {
+                            route: ruta
+                        },
+                        function (response) {
+                            var roles = response.listaRoles;
+                            var $fieldset = $('#modaldialog').find('fieldset');
+                            $fieldset.empty();
+                            $fieldset.attr('data-path', ruta);
+                            var $fn = function (item) {
+                                var $input = $('<input type="checkbox" class="routes-selected" />');
+                                $input.attr('id', item);
+                                $input.val(item);
+                                var $label = $('<label></label>');
+                                var $span = $('<span></span>');
+                                $span.text(item);
+                                $label.attr('for', item).append($span);
+                                $fieldset.append($input).append($label).append('<br/>');
+
+                            };
+
+                            roles.forEach($fn);
+                            var asignados = response.roles;
+
+                            var $checkin = function (item) {
+                                $('.routes-selected').each(function () {
+                                    var $cinput = $(this);
+                                    if ($cinput.val() == item) {
+                                        $cinput.attr('checked', 'checked');
+                                    }
+                                });
+                            };
+
+                            asignados.forEach($checkin);
+                            global_route = ruta;
+                            $('#modaldialog').modal('show');
+
 
                         },
                         "json"
-
                 );
+
+
             });
-            var $cancel = $('<button class="btn btn-primary cancel" data-dismiss="modal">Cancelar</button>');
-            $cancel.click(function(){
-                $('#confirma').remove();
-            });
+            //General Flush
+            $('.doUpdate').click(function () {
+                var $roles = $('.routes-selected:checked');
+                $('.modal-header').find('.confirm').remove();
+                var ruta = global_route;
+                var data = {
+                    route: ruta,
+                    roles: []
+                }
 
-            //Preparando
-            $div.append($p).append('<br/>').append($acept).append($cancel);
+                if ($roles.length > 0) {
 
-            //Adicionando el mensaje
-            var $ventana = $('<div class="modal fade" id="jModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">Modal title</h4></div><div class="modal-body"></div><div class="modal-footer"></div></div></div></div>');
-            $($ventana).find('h4.modal-title').text('Información');
-            $($ventana).find('div.modal-body').text('Esta acción provocará el cierre de sesión. ¿Desea Continuar?');
-            $($ventana).find('div.modal-footer').append($acept).append($cancel);
+                    $roles.each(function () {
+                        data.roles.push({"name": $(this).attr('id')});
+                    });
 
-            $($ventana).modal('show');
-
-        });
-
-        //Editar Opciones(Adiciona o elimina roles en la ruta)
-        $('.doAdd').click(function(event){
-
-            event.preventDefault();
-
-            var ruta = $(this).data('path');
-
-            $.get(
-                    "{{ path('fetch_route_role') }}",
-                    {
-                        route:ruta
-                    },
-                    function(response)
-                    {
-                        var roles = response.listaRoles;
-                        var $fieldset = $('#modaldialog').find('fieldset');
-                        $fieldset.empty();
-                        $fieldset.attr('data-path',ruta);
-                        var $fn = function(item)
+                    /*Preparando los parámetros*/
+                    var parameters = [
                         {
-                            var $input = $('<input type="checkbox" class="routes-selected" />');
-                            $input.attr('id',item);
-                            $input.val(item);
-                            var $label = $('<label></label>');
-                            var $span = $('<span></span>');
-                            $span.text(item);
-                            $label.attr('for',item).append($span);
-                            $fieldset.append($input).append($label).append('<br/>');
+                            'name': 'data',
+                            'value': JSON.stringify(data)
+                        }
+                    ];
 
-                        };
+                    //Confirmación
+                    $div = $('<div class="confirm"></div>');
+                    var $aceptar = $('<button class="btn btn-primary acept" data-dismiss="modal">Aceptar</button>');
+                    $aceptar.click(function () {
+                        $.get(
+                                "{{ path('flush_route') }}",
+                                $.param(parameters, true),
+                                function (response) {
+                                    document.location.reload();
 
-                        roles.forEach($fn);
-                        var asignados = response.roles;
+                                },
+                                "json"
+                        );
 
-                        var $checkin = function(item){
-                            $('.routes-selected').each(function(){
-                                var $cinput = $(this);
-                                if($cinput.val()==item)
-                                {
-                                    $cinput.attr('checked','checked');
-                                }
-                            });
-                        };
+                        setTimeout(function () {
+                            document.location.reload()
+                        }, 500);
+                    });
 
-                        asignados.forEach($checkin);
-                        global_route = ruta;
-                        $('#modaldialog').modal('show');
+                    var $cancelar = $('<button class="btn btn-primary cancel" data-dismiss="modal">Cancelar</button>');
+
+                    $div.append('<span>Esta Acción provocará cierre de sesión</span>').append($aceptar).append($cancelar);
+
+                    $('.modal-header').append($div);
+                }
+                else {
+                    alert('Seleccione al menos uno.');
+                }
+
+            });
 
 
+            //dataTables
+            var oTable = $('.records_list.table.table-hover.table-striped.table-bordered.table-condensed').dataTable({
+                "oLanguage": $language,
+                "bLengthChange": false,
+                "bSort": false
 
-                    },
-                    "json"
+            });
 
-            );
+            //Dibujando el input para el cambio de página
+            $label = $('<label class="labelNumber"></label>').append('<input type="text" placeholder="página" class="pageNumber"/>');
+            $('.dataTables_filter').append($label);
+            $('.labelNumber .pageNumber').on('change', function () {
+                var oSettings = oTable.fnSettings();
+                if ($(this).val() == "" || isNaN($(this).val())) {
+                    oTable.fnPageChange('first');
 
+                }
+                else {
+                    var iPage = (parseInt($("input.pageNumber").val()) - 1) * oSettings._iDisplayLength;
+                    oSettings._iDisplayStart = iPage;
+
+                    // Redraw table
+                    $(oSettings.oInstance).trigger('page', oSettings);
+                    oSettings.oApi._fnCalculateEnd(oSettings);
+                    oSettings.oApi._fnDraw(oSettings);
+                }
+
+            });
+
+            $('#modaldiv').on('hidden.bs.modal', function () {
+                document.location.reload();
+            })
 
 
         });
-        //General Flush
-        $('.doUpdate').click(function(){
-            var $roles =$('.routes-selected:checked');
-            $('.modal-header').find('.confirm').remove();
-            var ruta = global_route;
-            var data = {
-                route: ruta ,
-                roles:[]
-            }
-
-            if($roles.length>0)
-            {
-
-                $roles.each(function(){
-                    data.roles.push({"name":$(this).attr('id')});
-                });
-
-                /*Preparando los parámetros*/
-                var parameters = [
-                    {
-                        'name':'data',
-                        'value': JSON.stringify(data)
-                    }
-                ];
-
-                //Confirmación
-                $div = $('<div class="confirm"></div>');
-                var $aceptar = $('<button class="btn btn-primary acept" data-dismiss="modal">Aceptar</button>');
-                $aceptar.click(function(){
-                    $.get(
-                            "{{ path('flush_route') }}",
-                            $.param(parameters,true) ,
-                            function(response)
-                            {
-                                document.location.reload();
-
-                            },
-                            "json"
-
-                    );
-
-                    setTimeout(function(){document.location.reload()},500);
-                });
-
-                var $cancelar = $('<button class="btn btn-primary cancel" data-dismiss="modal">Cancelar</button>');
-
-                $div.append('<span>Esta Acción provocará cierre de sesión</span>').append($aceptar).append($cancelar);
-
-                $('.modal-header').append($div);
-            }
-            else
-            {
-                alert('Seleccione al menos uno.');
-            }
-
-        });
-
-
-
-
-        //dataTables
-        var oTable = $('.records_list.table.table-hover.table-striped.table-bordered.table-condensed').dataTable({
-            "oLanguage" : $language,
-            "bLengthChange": false,
-            "bSort":false
-
-        });
-
-        //Dibujando el input para el cambio de página
-        $label = $('<label class="labelNumber"></label>').append('<input type="text" placeholder="página" class="pageNumber"/>');
-        $('.dataTables_filter').append($label);
-        $('.labelNumber .pageNumber').on('change',function(){
-            var oSettings = oTable.fnSettings();
-            if($(this).val()=="" || isNaN($(this).val()))
-            {
-                 oTable.fnPageChange( 'first' );
-
-            }
-            else
-            {
-                var iPage = (parseInt($("input.pageNumber").val()) - 1) * oSettings._iDisplayLength;
-                oSettings._iDisplayStart = iPage;
-
-                // Redraw table
-                $(oSettings.oInstance).trigger('page', oSettings);
-                oSettings.oApi._fnCalculateEnd( oSettings );
-                oSettings.oApi._fnDraw( oSettings );
-            }
-
-        });
-
-        $('#modaldiv').on('hidden.bs.modal', function () {
-            document.location.reload();
-        })
-
-
-    });
-</script>
+    </script>
 
 {% endblock %}
 

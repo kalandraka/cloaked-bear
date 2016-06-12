@@ -1,14 +1,18 @@
-<div id="form_costos_delete_modal" class="modal modal-darkorange fade" style="display: none;" aria-hidden="true">
+<div id="form_costos_delete_modal" data-keyboard="false" data-backdrop="static" class="modal modal-darkorange fade"
+     style="display: none;" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header clearfix" style="color: #d73d32;">
                 <i class="glyphicon glyphicon-fire pull-left" style="font-size: 25px; margin-top: 10px;"></i>
-                <div class="modal-title pull-left"><h3 style="margin: 10px;">{{ 'messages.danger' | trans({}, 'BusetaBodegaBundle') }}</h3></div>
+
+                <div class="modal-title pull-left"><h3
+                            style="margin: 10px;">{{ 'messages.danger' | trans({}, 'BusetaBodegaBundle') }}</h3></div>
             </div>
 
             <div class="modal-body" style="color: #737373;">
                 <p>Usted está tratando de eliminar el Costo seleccionado.
-                    Al aceptar la acción se eliminarán los datos de forma permanente. <strong>¿Está seguro que desea continuar?</strong></p>
+                    Al aceptar la acción se eliminarán los datos de forma permanente. <strong>¿Está seguro que desea
+                        continuar?</strong></p>
             </div>
             <div class="modal-footer">
                 <form name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" action="{{ form.vars.action }}"
@@ -16,8 +20,10 @@
                     <input type="hidden" name="_method" value="DELETE"/>
                     {{ form_widget(form) }}
                 </form>
-                <a id="btn_costos_cancel" class="btn btn-default" data-dismiss="modal">{{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
-                <a id="btn_costos_delete" class="btn btn-danger"><i class="fa fa-remove"></i> {{ 'actions.confirm' | trans({}, 'BusetaBodegaBundle') }}</a>
+                <a id="btn_costos_cancel" class="btn btn-default"
+                   data-dismiss="modal">{{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+                <a id="btn_costos_delete" class="btn btn-danger"><i
+                            class="fa fa-remove"></i> {{ 'actions.confirm' | trans({}, 'BusetaBodegaBundle') }}</a>
             </div>
         </div> <!-- / .modal-content -->
     </div> <!-- / .modal-dialog -->

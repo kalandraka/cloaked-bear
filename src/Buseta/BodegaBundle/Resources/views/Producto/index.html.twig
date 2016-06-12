@@ -5,126 +5,131 @@
 {% block header 'Listado de Productos' %}
 
 {% block area_trabajo %}
-<div id="records_list">
-    {% set display = '' %}
-    {% set headericon = 'glyphicon-chevron-down' %}
-    {% if (filter_form.vars.value.codigo is null or filter_form.vars.value.codigo is empty)
-    and (filter_form.vars.value.codigoAlternativo is null or filter_form.vars.value.codigoAlternativo is empty)
-    and (filter_form.vars.value.nombre is null or filter_form.vars.value.nombre is empty)
-    and (filter_form.vars.value.grupo is null or filter_form.vars.value.grupo is empty)
-    and (filter_form.vars.value.subgrupo is null or filter_form.vars.value.subgrupo is empty)
-    and (filter_form.vars.value.condicion is null or filter_form.vars.value.condicion is empty)
-    and (filter_form.vars.value.proveedor is null or filter_form.vars.value.proveedor is empty)
-    %}
-        {% set display = 'display: none;' %}
-        {% set headericon = 'glyphicon-chevron-right' %}
-    {% endif %}
+    <div id="records_list">
+        {% set display = '' %}
+        {% set headericon = 'glyphicon-chevron-down' %}
+        {% if (filter_form.vars.value.codigo is null or filter_form.vars.value.codigo is empty)
+        and (filter_form.vars.value.codigoAlternativo is null or filter_form.vars.value.codigoAlternativo is empty)
+        and (filter_form.vars.value.nombre is null or filter_form.vars.value.nombre is empty)
+        and (filter_form.vars.value.grupo is null or filter_form.vars.value.grupo is empty)
+        and (filter_form.vars.value.subgrupo is null or filter_form.vars.value.subgrupo is empty)
+        and (filter_form.vars.value.condicion is null or filter_form.vars.value.condicion is empty)
+        and (filter_form.vars.value.proveedor is null or filter_form.vars.value.proveedor is empty) %}
+            {% set display = 'display: none;' %}
+            {% set headericon = 'glyphicon-chevron-right' %}
+        {% endif %}
 
-    <h4>
-        <a id="filter_form_header" style="cursor: pointer;">
-            <span class="glyphicon {{ headericon }}"></span>
-            Búsqueda
-        </a>
-    </h4>
-    <div id="filter_form_component" style="{{ display }}">
-        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
-            <div class="row">
-                <div class="col-lg-4">{{ form_row(filter_form.codigo) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.codigoAlternativo) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.nombre) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.grupo) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.subgrupo) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.condicion) }}</div>
-                <div class="col-lg-4">{{ form_row(filter_form.proveedor) }}</div>
-            </div>
-            {{ form_widget(filter_form._token) }}
+        <h4>
+            <a id="filter_form_header" style="cursor: pointer;">
+                <span class="glyphicon {{ headericon }}"></span>
+                Búsqueda
+            </a>
+        </h4>
 
-            <div class="filter-actions" style="margin-top: 8px;">
-                <input class="btn btn-success btn-small" style="position: absolute; left: -9999px; width: 1px; height: 1px;"
-                       tabindex="-1" type="submit" value="Filtrar" name="filtrar">
-                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
-                    <span class="glyphicon glyphicon-filter"></span> Filtrar
+        <div id="filter_form_component" style="{{ display }}">
+            <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+                <div class="row">
+                    <div class="col-lg-4">{{ form_row(filter_form.codigo) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.codigoAlternativo) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.nombre) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.grupo) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.subgrupo) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.condicion) }}</div>
+                    <div class="col-lg-4">{{ form_row(filter_form.proveedor) }}</div>
+                </div>
+                {{ form_widget(filter_form._token) }}
+
+                <div class="filter-actions" style="margin-top: 8px;">
+                    <input class="btn btn-success btn-small"
+                           style="position: absolute; left: -9999px; width: 1px; height: 1px;"
+                           tabindex="-1" type="submit" value="Filtrar" name="filtrar">
+                    <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                        <span class="glyphicon glyphicon-filter"></span> Filtrar
+                    </a>
+                    <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                        <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <hr/>
+        {% if is_granted('create', 'Buseta\\BodegaBundle\\Entity\\Producto') %}
+            <div class="btn-group" style="margin-bottom: 8px;">
+                <a class="btn btn-primary" href="{{ path('producto_new') }}">
+                    <span class="glyphicon glyphicon-plus-sign"></span> {{ 'producto.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}
                 </a>
-                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
-                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
-                </a>
             </div>
-        </form>
-    </div>
+        {% endif %}
 
-    <hr/>
-    {% if is_granted('create', 'Buseta\\BodegaBundle\\Entity\\Producto') %}
-    <div class="btn-group" style="margin-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('producto_new') }}">
-            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'producto.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}
-        </a>
-    </div>
-    {% endif %}
+        <div class="paginator row">
+            <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+        </div>
 
-    <div class="paginator row">
-        <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
-    </div>
-
-    <table class="records_list table table-striped table-bordered table-condensed table-hover">
-        <thead>
-        <tr>
-            <th>Código{#{{ knp_pagination_sortable(entities, 'Código', 't.codigo') }}#}</th>
-            <th>Nombre{#{{ knp_pagination_sortable(entities, 'Nombre', 't.nombre') }}#}</th>
-            <th>Proveedor{#{{ knp_pagination_sortable(entities, 'Proveedor', 't.proveedor') }}#}</th>
-            <th>Categoría Producto{#{{ knp_pagination_sortable(entities, 'categoriaProducto', 't.categoriaProducto') }}#}</th>
-            <th>UOM{#{{ knp_pagination_sortable(entities, 'UOM', 't.uom') }}#}</th>
-            <th>Condición{#{{ knp_pagination_sortable(entities, 'Condición', 't.condicion') }}#}</th>
-            <th style="text-align: center">Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
+        <table class="records_list table table-striped table-bordered table-condensed table-hover">
+            <thead>
             <tr>
-                <td>{{ entity.codigo }}</td>
-                <td>{{ entity.nombre }}</td>
-                <td>{{ entity.proveedor }}</td>
-                <td>{{ entity.categoriaProducto }}</td>
-                <td>{{ entity.uom }}</td>
-                <td>{{ entity.condicion }}</td>
-
-                <td style="width: 18% !important; text-align: center;">
-                    {% if is_granted('show', 'Buseta\\BodegaBundle\\Entity\\Producto') %}
-                    <div class="btn-group">
-                        <a class="btn btn-success btn-xs" href="{{ path('producto_show', { 'id': entity.id }) }}">
-                            <span class="glyphicon glyphicon-search"> Mostrar</span>
-                        </a>
-                    </div>
-                    {% endif %}
-                    {% if is_granted('edit', 'Buseta\\BodegaBundle\\Entity\\Producto') %}
-                    <div class="btn-group">
-                        <a class="btn btn-danger btn-xs" href="{{ path('producto_edit', { 'id': entity.id }) }}">
-                            <span class="glyphicon glyphicon-edit"> Editar</span>
-                        </a>
-                    </div>
-                    {% endif %}
-                    {% if is_granted('delete', 'Buseta\\BodegaBundle\\Entity\\Producto') %}
-                    {#<a href="#delete" data-href="{{ path('producto_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
-                        <span class="glyphicon glyphicon-trash"> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</span>
-                    </a>#}
-                    {% endif %}
-                </td>
+                <th>Código{#{{ knp_pagination_sortable(entities, 'Código', 't.codigo') }}#}</th>
+                <th>Nombre{#{{ knp_pagination_sortable(entities, 'Nombre', 't.nombre') }}#}</th>
+                <th>Proveedor{#{{ knp_pagination_sortable(entities, 'Proveedor', 't.proveedor') }}#}</th>
+                <th>Categoría
+                    Producto{#{{ knp_pagination_sortable(entities, 'categoriaProducto', 't.categoriaProducto') }}#}</th>
+                <th>UOM{#{{ knp_pagination_sortable(entities, 'UOM', 't.uom') }}#}</th>
+                <th>Condición{#{{ knp_pagination_sortable(entities, 'Condición', 't.condicion') }}#}</th>
+                <th style="text-align: center">Acciones</th>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaBodegaBundle') }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.codigo }}</td>
+                    <td>{{ entity.nombre }}</td>
+                    <td>{{ entity.proveedor }}</td>
+                    <td>{{ entity.categoriaProducto }}</td>
+                    <td>{{ entity.uom }}</td>
+                    <td>{{ entity.condicion }}</td>
 
-    <div class="paginator row">
-        <div class="col-lg-4"></div>
-        <div class="col-lg-12" style="text-align: center">{{ knp_pagination_render(entities) }}</div>
+                    <td style="width: 18% !important; text-align: center;">
+                        {% if is_granted('show', 'Buseta\\BodegaBundle\\Entity\\Producto') %}
+                            <div class="btn-group">
+                                <a class="btn btn-success btn-xs"
+                                   href="{{ path('producto_show', { 'id': entity.id }) }}">
+                                    <span class="glyphicon glyphicon-search"> Mostrar</span>
+                                </a>
+                            </div>
+                        {% endif %}
+                        {% if is_granted('edit', 'Buseta\\BodegaBundle\\Entity\\Producto') %}
+                            <div class="btn-group">
+                                <a class="btn btn-danger btn-xs"
+                                   href="{{ path('producto_edit', { 'id': entity.id }) }}">
+                                    <span class="glyphicon glyphicon-edit"> Editar</span>
+                                </a>
+                            </div>
+                        {% endif %}
+                        {% if is_granted('delete', 'Buseta\\BodegaBundle\\Entity\\Producto') %}
+                            {#<a href="#delete" data-href="{{ path('producto_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
+                                <span class="glyphicon glyphicon-trash"> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</span>
+                            </a>#}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaBodegaBundle') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="paginator row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-12" style="text-align: center">{{ knp_pagination_render(entities) }}</div>
+        </div>
     </div>
-</div>
 
     <!-- Delete modal -->
-    <div id="modal-danger" class="modal modal-message modal-danger fade" style="display: none;" aria-hidden="true"></div>
+    <div id="modal-danger" data-keyboard="false" data-backdrop="static" class="modal modal-message modal-danger fade"
+         style="display: none;" aria-hidden="true"></div>
 
 {% endblock area_trabajo %}
 
@@ -181,13 +186,13 @@
                     url: Routing.generate('producto_ajax_grupos_subgrupos'),
                     data: data,
                     dataType: 'JSON',
-                    success: function(data) {
+                    success: function (data) {
                         var values = data;
                         var $subgrupo = $('select#buseta_producto_filter_subgrupo');
 
                         $subgrupo.html('<option value="">---Seleccione---</option>');
 
-                        for (var i=0, total = values.length; i < total; i++) {
+                        for (var i = 0, total = values.length; i < total; i++) {
                             $subgrupo.append('<option value="' + values[i].id + '">' + values[i].valor + '</option>');
                         }
                     }

@@ -1,4 +1,5 @@
-<div class="modal fade" id="nuevaTarea" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div data-keyboard="false" data-backdrop="static" class="modal fade" id="nuevaTarea" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content" style="width: 850px;">
             <div class="modal-header">
@@ -6,7 +7,8 @@
                 <h3 class="modal-title" id="myModalLabel">Adicionar Tarea</h3>
             </div>
             <div class="modal-body" style="width: 800px;">
-                <form action="{{ path('tarea_adicional_orden_trabajo_create') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ path('tarea_adicional_orden_trabajo_create') }}" method="post"
+                      enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-4">
                             {{ form_row(form.fechaEstimada) }}
@@ -32,7 +34,6 @@
                     </div>
 
 
-
                     <div class="row">
                         <div class="col-md-4">
                             {{ form_row(form.garantiaTarea) }}
@@ -49,7 +50,8 @@
                     </div>
 
                     <div class="modal-footer">
-                        <a data-dismiss="modal" class="btn btn-primary add_tarea_link" style="margin: 0 0 20px 20px;" href="#">
+                        <a data-dismiss="modal" class="btn btn-primary add_tarea_link" style="margin: 0 0 20px 20px;"
+                           href="#">
                             <span class="fa fa-plus-circle"> Adicionar</span>
                         </a>
                     </div>
