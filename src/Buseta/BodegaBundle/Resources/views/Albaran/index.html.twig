@@ -102,27 +102,31 @@
                     {% endif %}
                     {% if entity.estadodocumento == 'BO' %}
                         {% if is_granted('edit', entity) %}
-                            <div class="btn-group">
+                            <div class="btn-group" style="padding: 2px">
                                 <a class="btn btn-danger btn-xs"
                                    href="{{ path('albarans_albaran_edit', { 'id': entity.id }) }}"><span
-                                            class="glyphicon glyphicon-edit"> Editar</span></a>
+                                            class="glyphicon glyphicon-edit"></span> Editar</a>
                             </div>
                         {% endif %}
                         {% if is_granted('delete', entity) %}
+                        <div class="btn-group" style="padding: 2px">
                             <a href="#delete" data-href="{{ path('albaran_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs">
                                 <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+                        </div>
                         {% endif %}
                     {% else %}
                         {% if is_granted('edit', entity) %}
-                            <div class="btn-group">
+                            <div class="btn-group" style="padding: 2px">
                                 <a class="btn btn-danger btn-xs disabled"
                                    href="{{ path('albarans_albaran_edit', { 'id': entity.id }) }}"><span
-                                            class="glyphicon glyphicon-edit"> Editar</span></a>
+                                            class="glyphicon glyphicon-edit"></span> Editar</a>
                             </div>
                         {% endif %}
                         {% if is_granted('delete', entity) %}
+                    <div class="btn-group" style="padding: 2px">
                             <a href="#delete" data-href="{{ path('albaran_delete', {'id': entity.id}) }}" class="btn btn-danger btn-xs disabled">
                                 <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
+                    </div>
                         {% endif %}
                     {% endif %}
                 </td>

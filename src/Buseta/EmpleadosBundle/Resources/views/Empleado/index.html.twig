@@ -29,15 +29,21 @@
                 <td>{{ entity.nacionalidad }}</td>
                 {# <td>{% if entity.fechaNacimiento %}{{ entity.fechaNacimiento|date('Y-m-d H:i:s') }}{% endif %}</td> #}
                 <td>{{ entity.tipoEmpleado }}</td>
-                <td style="text-align: center;">
-                    <a class="btn btn-success btn-xs" href="{{ path('empleado_show', { 'id': entity.id }) }}">
-                        <span class="glyphicon glyphicon-search"> {{ 'Mostrar' }}</span></a>
-                    <a class="btn btn-danger btn-xs" href="{{ path('empleado_edit', { 'id': entity.id }) }}">
-                        <span class="glyphicon glyphicon-edit"> {{ 'Editar' }}</span></a>
+                <td style="width: 18% !important; text-align: center;">
+                    <div class="btn-group" style="padding: 2px">
+                        <a class="btn btn-success btn-xs" href="{{ path('empleado_show', { 'id': entity.id }) }}">
+                            <span class="glyphicon glyphicon-search"></span> Mostrar</a>
+                    </div>
+                    <div class="btn-group" style="padding: 2px">
+                        <a class="btn btn-danger btn-xs" href="{{ path('empleado_edit', { 'id': entity.id }) }}">
+                            <span class="glyphicon glyphicon-edit"></span> Editar</a>
+                    </div>
                 </td>
             </tr>
         {% else %}
-            <tr><td colspan="5">{{ 'messages.no_results'|trans({}, 'BusetaCoreBundle') }}</td></tr>
+            <tr>
+                <td colspan="5">{{ 'messages.no_results'|trans({}, 'BusetaCoreBundle') }}</td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>

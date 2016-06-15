@@ -13,7 +13,7 @@
         <a class="btn btn-primary" data-toggle="modal" href="#modaldiv">
             <span class="glyphicon glyphicon-plus"></span> Adicionar Ruta</a>
         <button class="btn btn-primary delete-rol">
-            <span class="glyphicon glyphicon-plus"></span> Eliminar Ruta
+            <span class="glyphicon glyphicon-trash"></span> Eliminar Ruta
         </button>
     </div>
     <table class="records_list table table-hover table-striped table-bordered table-condensed">
@@ -31,12 +31,18 @@
                     <input type="checkbox" class="to-delete" id="{{ entity.path }}" {{ block('checkPath') }}></td>
                 <td class="hidden-phone">{{ entity.path }}</td>
                 <td class="hidden-phone">
-                    <button class="btn btn-primary doAdd" title="Editar Roles"
-                            data-path="{{ entity.path }}" {{ block('checkPath') }}>
-                        <span class="glyphicon glyphicon-pencil"></span></button>
-                    <button class="btn btn-primary doRemove" title="Remover Roles"
-                            data-path="{{ entity.path }}" {{ block('checkPath') }}>
-                        <span class="glyphicon glyphicon-trash"></span></button>
+                    <div class="btn-group" style="padding: 2px">
+                        <button class="btn btn-danger btn-xs doAdd" title="Editar Roles"
+                                data-path="{{ entity.path }}" {{ block('checkPath') }}>
+                            <span class="glyphicon glyphicon-edit"></span> Editar
+                        </button>
+                    </div>
+                    <div class="btn-group" style="padding: 2px">
+                        <button class="btn btn-danger btn-xs doRemove" title="Remover Roles"
+                                data-path="{{ entity.path }}" {{ block('checkPath') }}>
+                            <span class="glyphicon glyphicon-trash"></span> Eliminar
+                        </button>
+                    </div>
                 </td>
             </tr>
         {% else %}
@@ -75,8 +81,12 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary doaction">Aceptar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-chevron-left"></span> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary doaction">
+                        <span class="glyphicon glyphicon-save"></span> Aceptar
+                    </button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -101,8 +111,12 @@
                     </fieldset>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary doUpdate" data-new="yes">Aceptar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-chevron-left"></span> Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary doUpdate" data-new="yes">
+                        <span class="glyphicon glyphicon-save"></span> Aceptar
+                    </button>
                 </div>
 
             </div>
@@ -125,7 +139,8 @@
                     var $p = $('<p>Esta acción provocará  cierre de sesión. ¿Desea continuar?</p>');
 
                     //Botones
-                    var $acept = $('<button class="btn btn-primary acept">Aceptar</button>');
+                    var $acept = $('<button class="btn btn-primary acept">' +
+                            '<span class="glyphicon glyphicon-save"></span> Aceptar</button>');
                     $acept.click(function () {
 
                         setTimeout(function () {
@@ -158,7 +173,8 @@
                                 "json"
                         );
                     });
-                    var $cancel = $('<button class="btn btn-primary cancel" data-dismiss="modal">Cancelar</button>');
+                    var $cancel = $('<button class="btn btn-default cancel" data-dismiss="modal">' +
+                            '<span class="glyphicon glyphicon-chevron-left"></span> Cancelar</button>');
                     $cancel.click(function () {
                         $('#confirma').remove();
                     });
@@ -188,7 +204,8 @@
                     var $p = $('<p>Esta acción provocará  cierre de sesión. ¿Desea continuar?</p>');
 
                     //Botones
-                    var $acept = $('<button class="btn btn-primary acept" data-dismiss="modal">Aceptar</button>');
+                    var $acept = $('<button class="btn btn-primary acept" data-dismiss="modal">' +
+                            '<span class="glyphicon glyphicon-save"></span> Aceptar</button>');
                     $acept.click(function () {
 
                         var data = {
@@ -219,7 +236,8 @@
                                 "json"
                         );
                     });
-                    var $cancel = $('<button class="btn btn-primary cancel" data-dismiss="modal">Cancelar</button>');
+                    var $cancel = $('<button class="btn btn-default cancel" data-dismiss="modal">' +
+                            '<span class="glyphicon glyphicon-chevron-left"></span> Cancelar</button>');
                     $cancel.click(function () {
                         $('#confirma').remove();
                     });
@@ -250,7 +268,8 @@
                 var $p = $('<p>Esta acción provocará  cierre de sesión. ¿Desea continuar?</p>');
 
                 //Botones
-                var $acept = $('<button class="btn btn-primary acept" data-dismiss="modal">Aceptar</button>');
+                var $acept = $('<button class="btn btn-primary acept" data-dismiss="modal">' +
+                        '<span class="glyphicon glyphicon-save"></span> Aceptar</button>');
                 $acept.click(function () {
 
                     var data = {
@@ -279,7 +298,8 @@
                             "json"
                     );
                 });
-                var $cancel = $('<button class="btn btn-primary cancel" data-dismiss="modal">Cancelar</button>');
+                var $cancel = $('<button class="btn btn-default cancel" data-dismiss="modal">' +
+                        '<span class="glyphicon glyphicon-chevron-left"></span> Cancelar</button>');
                 $cancel.click(function () {
                     $('#confirma').remove();
                 });
@@ -375,7 +395,8 @@
 
                     //Confirmación
                     $div = $('<div class="confirm"></div>');
-                    var $aceptar = $('<button class="btn btn-primary acept" data-dismiss="modal">Aceptar</button>');
+                    var $aceptar = $('<button class="btn btn-primary acept" data-dismiss="modal">' +
+                            '<span class="glyphicon glyphicon-save"></span> Aceptar</button>');
                     $aceptar.click(function () {
                         $.get(
                                 "{{ path('flush_route') }}",
@@ -392,7 +413,8 @@
                         }, 500);
                     });
 
-                    var $cancelar = $('<button class="btn btn-primary cancel" data-dismiss="modal">Cancelar</button>');
+                    var $cancelar = $('<button class="btn btn-default cancel" data-dismiss="modal">' +
+                            '<span class="glyphicon glyphicon-chevron-left"></span> Cancelar</button>');
 
                     $div.append('<span>Esta Acción provocará cierre de sesión</span>').append($aceptar).append($cancelar);
 

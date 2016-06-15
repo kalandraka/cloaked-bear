@@ -53,9 +53,12 @@
         <form action="{{ delete_form.vars.action }}" method="POST" enctype="multipart/form-data">
             {{ form_errors(delete_form) }}
             <input type="hidden" name="_method" value="DELETE"/>
-            <a class="btn btn-primary" href="{{ path('mantenimientopreventivo_edit', { 'id': entity.id }) }}"> Editar</a>
-            <a class="btn btn-primary" href="{{ path('mantenimientopreventivo') }}"> Listado</a>
-            <button type="submit" class="btn btn-primary">Eliminar</button>
+            <a class="btn btn-primary" href="{{ path('mantenimientopreventivo_edit', { 'id': entity.id }) }}">
+                <i class="fa fa-edit"></i> Editar</a>
+            <a class="btn btn-default" href="{{ path('mantenimientopreventivo') }}">
+                <span class="glyphicon glyphicon-chevron-left"></span> Listado</a>
+            <button type="submit" class="btn btn-danger">
+                <span class="glyphicon glyphicon-trash"></span> Eliminar</button>
             {{ form_rest(delete_form) }}
         </form>
     </div>

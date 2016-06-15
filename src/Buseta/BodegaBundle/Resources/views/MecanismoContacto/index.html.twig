@@ -1,5 +1,7 @@
 <div class="btn-group" style="margin-bottom: 8px;">
-    <a class="btn btn-primary" href="#form_contacto_modal" ><span class="glyphicon glyphicon-plus-sign"></span> {{ 'mecanismo_contacto.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}</a>
+    <a class="btn btn-primary" href="#form_contacto_modal"><span
+                class="glyphicon glyphicon-plus-sign"></span> {{ 'mecanismo_contacto.btn.adicionar'|trans({}, 'BusetaBodegaBundle') }}
+    </a>
 </div>
 
 <div class="row">
@@ -25,9 +27,15 @@
             <td>{{ entity.direccion ? entity.direccion.nombre : '-' }}</td>
             <td>{{ entity.dirEnvio ? '<i class="fa fa-circle text-success"></i>' : '<i class="fa fa-circle-o text-danger"></i>' }}</td>
             <td>{{ entity.activo ? '<i class="fa fa-circle text-success"></i>' : '<i class="fa fa-circle-o text-danger"></i>' }}</td>
-            <td  style="text-align: center;">
-                <a class="btn btn-primary btn-xs" href="#btn_contacto_edit" data-content="{{ entity.id }}"><i class="fa fa-edit"> Editar</i></a>
-                <a class="btn btn-danger btn-xs" href="#btn_contacto_delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>
+            <td style="width: 18% !important; text-align: center;">
+                <div class="btn-group" style="padding: 2px">
+                    <a class="btn btn-danger btn-xs" href="#btn_contacto_edit" data-content="{{ entity.id }}">
+                        <span class="glyphicon glyphicon-edit"></span> Editar</a>
+                </div>
+                <div class="btn-group" style="padding: 2px">
+                    <a class="btn btn-danger btn-xs" href="#btn_contacto_delete" data-content="{{ entity.id }}">
+                        <span class="glyphicon glyphicon-trash"></span> Eliminar</a>
+                </div>
             </td>
         </tr>
     {% endfor %}

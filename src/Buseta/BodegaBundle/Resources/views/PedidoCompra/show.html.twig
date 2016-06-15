@@ -117,14 +117,16 @@
 
     <div class="form-actions">
         {% if entity.estadodocumento == 'BO' %}
-            <a class="btn btn-primary" href="{{ path('pedidocompra_edit', { 'id': entity.id }) }}"> Editar</a>
+            <a class="btn btn-primary" href="{{ path('pedidocompra_edit', { 'id': entity.id }) }}">
+                <i class="fa fa-edit"></i> Editar</a>
         {% endif %}
         {% if entity.estadodocumento == 'PR' %}
             <a class="btn btn-primary" href="{{ path('completarRegistro', { 'id': entity.id }) }}"> Completar Proceso</a>
         {% elseif entity.estadodocumento == 'BO' %}
             <a class="btn btn-primary" href="{{ path('procesarRegistro', { 'id': entity.id }) }}"> Procesar</a>
         {% endif %}
-        <a class="btn btn-primary" href="{{ path('pedidocompra') }}"> Listado</a>
+        <a class="btn btn-default" href="{{ path('pedidocompra') }}">
+            <span class="glyphicon glyphicon-chevron-left"></span> Listado</a>
 
         {% if entity.estadodocumento == 'BO' %}
             <a href="#delete" data-href="{{ path('pedidocompra_delete', {'id': entity.id}) }}" class="btn btn-danger">

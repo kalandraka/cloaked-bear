@@ -91,7 +91,8 @@
     <div class="form-actions">
         {% if entity.estadodocumento == 'BO' %}
             {% if is_granted('edit', entity) %}
-                <a class="btn btn-primary" href="{{ path('salidabodega_edit', { 'id': entity.id }) }}"> Editar</a>
+                <a class="btn btn-primary" href="{{ path('salidabodega_edit', { 'id': entity.id }) }}">
+                    <i class="fa fa-edit"></i> Editar</a>
             {% endif %}
         {% endif %}
         {% if entity.estadodocumento == 'PR' %}
@@ -99,7 +100,8 @@
         {% elseif entity.estadodocumento == 'BO' %}
             <a class="btn btn-primary" href="{{ path('procesarSalidaBodega', { 'id': entity.id }) }}"> Procesar</a>
         {% endif %}
-        <a class="btn btn-primary" href="{{ path('salidabodega') }}"> Listado</a>
+        <a class="btn btn-default" href="{{ path('salidabodega') }}">
+            <span class="glyphicon glyphicon-chevron-left"></span> Listado</a>
 
         {% if entity.estadodocumento == 'BO' %}
             {% if is_granted('delete', entity) %}

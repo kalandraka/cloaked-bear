@@ -28,12 +28,14 @@
             <td>{{ entity.pais }}</td>
             <td>{{ entity.region }}</td>
             <td  style="text-align: center;">
-                <div class="btn-group">
-                    <a class="btn btn-danger btn-xs" href="#btn_direccion_edit" data-content="{{ entity.id }}"><i class="fa fa-edit"> Editar</i></a>
+                <div class="btn-group" style="padding: 2px">
+                    <a class="btn btn-danger btn-xs" href="#btn_direccion_edit" data-content="{{ entity.id }}">
+                        <span class="glyphicon glyphicon-edit"></span> Editar</a>
                 </div>
 
-                <div class="btn-group">
-                    <a class="btn btn-danger btn-xs" href="#btn_direccion_delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>
+                <div class="btn-group" style="padding: 2px">
+                    <a class="btn btn-danger btn-xs" href="#btn_direccion_delete" data-content="{{ entity.id }}">
+                        <span class="glyphicon glyphicon-trash"></span> Eliminar</a>
                 </div>
             </td>
         </tr>

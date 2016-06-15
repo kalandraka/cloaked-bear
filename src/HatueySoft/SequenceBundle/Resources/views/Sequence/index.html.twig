@@ -6,90 +6,95 @@
 
 {% block content %}
 
-<div id="records_list">
-    {% set display = '' %}
-    {% set headericon = 'glyphicon-chevron-down' %}
-    {% if (filter_form.vars.value.name is null or filter_form.vars.value.name is empty) %}
-        {% set display = 'display: none;' %}
-        {% set headericon = 'glyphicon-chevron-right' %}
-    {% endif %}
+    <div id="records_list">
+        {% set display = '' %}
+        {% set headericon = 'glyphicon-chevron-down' %}
+        {% if (filter_form.vars.value.name is null or filter_form.vars.value.name is empty) %}
+            {% set display = 'display: none;' %}
+            {% set headericon = 'glyphicon-chevron-right' %}
+        {% endif %}
 
-    <h4>
-        <a id="filter_form_header" style="cursor: pointer;">
-            <span class="glyphicon {{ headericon }}"></span>
-            Búsqueda
-        </a>
-    </h4>
-    <div id="filter_form_component" style="{{ display }}">
-        <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
-            <div class="row">
-                <div class="col-lg-4">{{ form_row(filter_form.name) }}</div>
-            </div>
-            {{ form_widget(filter_form._token) }}
+        <h4>
+            <a id="filter_form_header" style="cursor: pointer;">
+                <span class="glyphicon {{ headericon }}"></span>
+                Búsqueda
+            </a>
+        </h4>
 
-            <div class="filter-actions" style="margin-top: 8px;">
-                <a id="filter_form_submit_btn" class="btn btn-success btn-small">
-                    <span class="glyphicon glyphicon-filter"></span> Filtrar
-                </a>
-                <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
-                    <span class="glyphicon glyphicon-repeat"></span> Reiniciar
-                </a>
-            </div>
-        </form>
-    </div>
+        <div id="filter_form_component" style="{{ display }}">
+            <form id="filter_form" method="{{ filter_form.vars.method }}" action="{{ filter_form.vars.action }}">
+                <div class="row">
+                    <div class="col-lg-4">{{ form_row(filter_form.name) }}</div>
+                </div>
+                {{ form_widget(filter_form._token) }}
 
-    <hr/>
-    {#<div class="btn-group" style="margin-bottom: 8px;">
-        <a class="btn btn-primary" href="{{ path('secuencia_new') }}">
-            <span class="glyphicon glyphicon-plus-sign"></span> {{ 'secuencia.btn.adicionar'|trans({}, 'HatueySoftSequenceBundle') }}
-        </a>
-    </div>#}
+                <div class="filter-actions" style="margin-top: 8px;">
+                    <a id="filter_form_submit_btn" class="btn btn-success btn-small">
+                        <span class="glyphicon glyphicon-filter"></span> Filtrar
+                    </a>
+                    <a id="filter_form_reset_btn" class="btn btn-danger btn-small">
+                        <span class="glyphicon glyphicon-repeat"></span> Reiniciar
+                    </a>
+                </div>
+            </form>
+        </div>
 
-    <div class="paginator row">
-        <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
-    </div>
+        <hr/>
+        {#<div class="btn-group" style="margin-bottom: 8px;">
+            <a class="btn btn-primary" href="{{ path('secuencia_new') }}">
+                <span class="glyphicon glyphicon-plus-sign"></span> {{ 'secuencia.btn.adicionar'|trans({}, 'HatueySoftSequenceBundle') }}
+            </a>
+        </div>#}
 
-    <table class="records_list table table-striped table-bordered table-condensed table-hover">
-        <thead>
-        <tr>
-            <th>Nombre{#{{ knp_pagination_sortable(entities, 'No.Documento', 't.numero_documento') }}#}</th>
-            <th>Tipo{#{{ knp_pagination_sortable(entities, 'Nombre del Proveedor', 't.tercero') }}#}</th>
-            <th>Prefijo{#{{ knp_pagination_sortable(entities, 'Almacén', 't.almacen') }}#}</th>
-            <th>Sufijo{#{{ knp_pagination_sortable(entities, 'Moneda', 't.moneda') }}#}</th>
-            <th>Activo{#{{ knp_pagination_sortable(entities, 'Activo', 't.activo') }}#}</th>
-            <th style="text-align: center">Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
+        <div class="paginator row">
+            <div class="col-lg-4"><strong>Resultados:</strong> {{ entities.getTotalItemCount }}</div>
+        </div>
+
+        <table class="records_list table table-striped table-bordered table-condensed table-hover">
+            <thead>
             <tr>
-                <td>{{ entity.name }}</td>
-                <td>{{ entity.type }}</td>
-                <td>{{ entity.prefix }}</td>
-                <td>{{ entity.suffix }}</td>
-                <td class="text-center">{{ entity.active ? '<i class="fa fa-circle text-success" title="Sí"></i>' : '<i class="fa fa-circle-o text-danger" title="No"></i>' }}</td>
-                <td style="width: 24% !important; text-align: center;">
-                    <a class="btn btn-success btn-xs"
-                       href="{{ path('sequence_show', { 'id': entity.id }) }}"><span
-                                class="glyphicon glyphicon-search"> Mostrar</span></a>
-                    <a class="btn btn-danger btn-xs"
-                       href="{{ path('sequence_edit', { 'id': entity.id }) }}"><span
-                                class="glyphicon glyphicon-edit"> Editar</span></a>
-                </td>
+                <th>Nombre{#{{ knp_pagination_sortable(entities, 'No.Documento', 't.numero_documento') }}#}</th>
+                <th>Tipo{#{{ knp_pagination_sortable(entities, 'Nombre del Proveedor', 't.tercero') }}#}</th>
+                <th>Prefijo{#{{ knp_pagination_sortable(entities, 'Almacén', 't.almacen') }}#}</th>
+                <th>Sufijo{#{{ knp_pagination_sortable(entities, 'Moneda', 't.moneda') }}#}</th>
+                <th>Activo{#{{ knp_pagination_sortable(entities, 'Activo', 't.activo') }}#}</th>
+                <th style="text-align: center">Acciones</th>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaBodegaBundle') }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.name }}</td>
+                    <td>{{ entity.type }}</td>
+                    <td>{{ entity.prefix }}</td>
+                    <td>{{ entity.suffix }}</td>
+                    <td class="text-center">{{ entity.active ? '<i class="fa fa-circle text-success" title="Sí"></i>' : '<i class="fa fa-circle-o text-danger" title="No"></i>' }}</td>
+                    <td style="width: 24% !important; text-align: center;">
+                        <div class="btn-group" style="padding: 2px">
+                            <a class="btn btn-success btn-xs"
+                               href="{{ path('sequence_show', { 'id': entity.id }) }}"><span
+                                        class="glyphicon glyphicon-search"> Mostrar</span></a>
+                        </div>
+                        <div class="btn-group" style="padding: 2px">
+                            <a class="btn btn-danger btn-xs"
+                               href="{{ path('sequence_edit', { 'id': entity.id }) }}"><span
+                                        class="glyphicon glyphicon-edit"> Editar</span></a>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="12">{{ 'messages.no_results' | trans({}, 'BusetaBodegaBundle') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <div class="paginator row">
-        <div class="col-lg-4"></div>
-        <div class="col-lg-12" style="text-align: center">{{ knp_pagination_render(entities) }}</div>
+        <div class="paginator row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-12" style="text-align: center">{{ knp_pagination_render(entities) }}</div>
+        </div>
     </div>
-</div>
 
 {% endblock %}
 

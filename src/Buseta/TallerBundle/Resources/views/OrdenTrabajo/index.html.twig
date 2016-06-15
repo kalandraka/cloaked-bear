@@ -174,10 +174,10 @@
                     </td>
                     <td style="width: 18% !important; text-align: center; {{ color_fondo|raw }}">
                         {% if is_granted('SHOW', entity) %}
-                            <div class="btn-group">
+                            <div class="btn-group" style="padding: 2px">
                                 <a class="btn btn-success btn-xs"
-                                   href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}"><i
-                                            class="fa fa-search"> Mostrar</i></a>
+                                   href="{{ path('ordentrabajo_show', { 'id': entity.id }) }}">
+                                    <span class="glyphicon glyphicon-search"></span> Mostrar</a>
                             </div>
                         {% endif %}
 
@@ -187,10 +187,10 @@
                             {% else %}
                                 {% set clazz = 'btn btn-danger btn-xs disabled' %}
                             {% endif %}
-                            <div class="btn-group">
+                            <div class="btn-group" style="padding: 2px">
                                 <a class="{{ clazz }}"
-                                   href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}"><i
-                                            class="fa fa-edit"> Editar</i></a>
+                                   href="{{ path('ordentrabajo_edit', { 'id': entity.id }) }}">
+                                    <span class="glyphicon glyphicon-edit"></span> Editar</a>
                             </div>
                         {% endif %}
                     </td>

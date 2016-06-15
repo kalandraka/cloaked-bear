@@ -76,10 +76,10 @@
                 <td>{{ entity.cantidadMovida }}</td>
                 <td>{{ entity.fechaMovimiento | date('d/m/Y h:i a') }}</td>
                 <td style="width: 24% !important; text-align: center;">
-                    <div class="btn-group">
+                    <div class="btn-group" style="padding: 2px">
                         <a class="btn btn-success btn-xs"
                            href="{{ path('bitacoraserial_show', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-search"> Mostrar</span></a>
+                                    class="glyphicon glyphicon-search"></span> Mostrar</a>
                     </div>
                 </td>
             </tr>

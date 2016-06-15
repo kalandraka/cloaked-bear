@@ -1,4 +1,5 @@
-<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST" enctype="multipart/form-data">
+<form id="grupo_buses_form_id" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST"
+      enctype="multipart/form-data">
     {% if form.vars.method == 'PUT' %}
         <input type="hidden" name="_method" value="PUT"/>
     {% endif %}
@@ -22,9 +23,13 @@
     {# buttons group #}
     <div class="row">
         <div class="col-md-4">
-            <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
             <div class="btn-group">
-                <a class="btn btn-primary" href="{{ path('grupobuses') }}"> Cancelar</a>
+                <a class="btn btn-primary" id="save_grupo_buses_form_submit_btn">
+                    <span class="glyphicon glyphicon-save"></span> Aceptar</a>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-default" href="{{ path('grupobuses') }}"><span
+                            class="glyphicon glyphicon-chevron-left"></span> Cancelar</a>
             </div>
         </div>
     </div>

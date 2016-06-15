@@ -17,6 +17,9 @@
         $('#buses_chofer_fechaNacimiento').datetimepicker({
             'format': 'DD/MM/YYYY'
         });
+        $('a#save_chofer_form_submit_btn').click(function () {
+            $('form#chofer_form').submit();
+        });
     </script>
 
 {% endblock %}

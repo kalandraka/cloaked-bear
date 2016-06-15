@@ -21,9 +21,15 @@
             <td>{{ entity.producto ? entity.producto.nombre : '-' }}</td>
             <td>{{ entity.cantidad }}</td>
             <td>{{ entity.seriales }}</td>
-            <td  style="text-align: center;">
-                <a class="btn btn-primary btn-xs" href="#btn_onecprod_edit" data-content="{{ entity.id }}"><i class="fa fa-edit"> Editar</i></a>
-                <a class="btn btn-danger btn-xs" href="#btn_onecprod_delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>
+            <td  style="width: 18% !important; text-align: center;">
+                <div class="btn-group" style="padding: 2px">
+                <a class="btn btn-danger btn-xs" href="#btn_onecprod_edit" data-content="{{ entity.id }}">
+                    <span class="glyphicon glyphicon-edit"></span> Editar</a>
+                </div>
+                <div class="btn-group" style="padding: 2px">
+                    <a class="btn btn-danger btn-xs" href="#btn_onecprod_delete" data-content="{{ entity.id }}">
+                        <span class="glyphicon glyphicon-trash"></span> Eliminar</a>
+                </div>
             </td>
         </tr>
     {% endfor %}

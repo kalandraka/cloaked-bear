@@ -91,18 +91,18 @@
 
                     <td style="width: 18% !important; text-align: center;">
                         {% if is_granted('show', 'Buseta\\BodegaBundle\\Entity\\Producto') %}
-                            <div class="btn-group">
+                            <div class="btn-group" style="padding: 2px">
                                 <a class="btn btn-success btn-xs"
                                    href="{{ path('producto_show', { 'id': entity.id }) }}">
-                                    <span class="glyphicon glyphicon-search"> Mostrar</span>
+                                    <span class="glyphicon glyphicon-search"></span> Mostrar
                                 </a>
                             </div>
                         {% endif %}
                         {% if is_granted('edit', 'Buseta\\BodegaBundle\\Entity\\Producto') %}
-                            <div class="btn-group">
+                            <div class="btn-group" style="padding: 2px">
                                 <a class="btn btn-danger btn-xs"
                                    href="{{ path('producto_edit', { 'id': entity.id }) }}">
-                                    <span class="glyphicon glyphicon-edit"> Editar</span>
+                                    <span class="glyphicon glyphicon-edit"></span> Editar
                                 </a>
                             </div>
                         {% endif %}

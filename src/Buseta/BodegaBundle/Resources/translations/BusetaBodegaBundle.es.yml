@@ -115,7 +115,7 @@ actions:
   delete: Eliminar
   cancel: Cancelar
   back: Volver
-  list: Listar
+  list: Listado
   nuevo: Crear Nuevo
 
 # MOVIMIENTO DE PRODUCTOS

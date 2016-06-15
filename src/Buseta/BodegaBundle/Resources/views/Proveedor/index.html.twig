@@ -72,12 +72,13 @@
                 <td>{{ entity.moneda }}</td>
                 <td>{{ entity.creditoLimite }}</td>
                 <td  style="width: 18% !important; text-align: center;">
-                    <div class="btn-group">
-                        <a class="btn btn-success btn-xs" href="{{ path('proveedor_show', { 'id': entity.id }) }}"><i class="fa fa-search"> Mostrar</i></a>
+                    <div class="btn-group" style="padding: 2px">
+                        <a class="btn btn-success btn-xs" href="{{ path('proveedor_show', { 'id': entity.id }) }}">
+                            <span class="glyphicon glyphicon-search"></span> Mostrar</a>
                     </div>
-
-                    <div class="btn-group">
-                        <a class="btn btn-danger btn-xs" href="{{ path('proveedor_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"> Editar</i></a>
+                    <div class="btn-group" style="padding: 2px">
+                        <a class="btn btn-danger btn-xs" href="{{ path('proveedor_edit', { 'id': entity.id }) }}">
+                            <span class="glyphicon glyphicon-edit"></span> Editar</a>
                     </div>
                 </td>
             </tr>

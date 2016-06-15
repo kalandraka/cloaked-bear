@@ -1,4 +1,5 @@
-<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST" enctype="multipart/form-data">
+<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="POST"
+      enctype="multipart/form-data">
     {% if form.vars.method == 'PUT' %}
         <input type="hidden" name="_method" value="PUT"/>
     {% endif %}
@@ -44,8 +45,11 @@
     {# buttons group #}
     <div class="row">
         <div class="col-md-4">
-            <input class="btn btn-primary" style="height: 34px" type="submit" value="{{ 'actions.save' | trans({}, 'HatueySoftSequenceBundle') }}">
-            <a class="btn btn-default" id="btn_sequence_cancel" href="{{ path('sequence') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-save"></span> {{ 'actions.save' | trans({}, 'HatueySoftSequenceBundle') }}
+            </button>
+            <a class="btn btn-default" id="btn_sequence_cancel" href="{{ path('sequence') }}"><span
+                        class="glyphicon glyphicon-chevron-left"></span>
                 {{ 'actions.cancel' | trans({}, 'HatueySoftSequenceBundle') }}</a>
         </div>
     </div>

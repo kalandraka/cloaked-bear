@@ -55,8 +55,9 @@
     <div class="form-actions">
         <form action="{{ path('proveedor_delete', {'id': entity.proveedorId}) }}" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="_method" value="DELETE"/>
-            <a class="btn btn-primary" href="{{ path('proveedor') }}"> Listado</a>
-            <button type="submit" class="btn btn-primary"> Eliminar</button>
+            <a class="btn btn-default" href="{{ path('proveedor') }}">
+                <span class="glyphicon glyphicon-chevron-left"></span> Listado</a>
+            <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
         </form>
     </div>
 

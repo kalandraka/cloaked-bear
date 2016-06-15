@@ -21,7 +21,9 @@
                     {{ form_widget(form) }}
                 </form>
                 <button type="button" class="btn btn-default"
-                        data-dismiss="modal">{{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</button>
+                        data-dismiss="modal"><span
+                            class="glyphicon glyphicon-chevron-left"></span> {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}
+                </button>
                 <button type="button" class="btn btn-danger"><i
                             class="fa fa-remove"></i> {{ 'actions.confirm' | trans({}, 'BusetaBodegaBundle') }}</button>
             </div>

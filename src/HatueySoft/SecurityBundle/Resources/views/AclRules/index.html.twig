@@ -21,8 +21,11 @@
                 <td>{{ path.label }}</td>
                 <td>{{ path.class }}</td>
                 <td>
-                    <a href="{{ path('aclrules_edit', {'entity':name}) }}" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-pencil"></span> Editar</a>
+                    <div class="btn-group" style="padding: 2px">
+                    <a class="btn btn-danger btn-xs"
+                       href="{{ path('aclrules_edit', {'entity':name}) }}"><span
+                                class="glyphicon glyphicon-edit"></span> Editar</a>
+                    </div>
                     {#<a href="#" class="btn btn-danger">
                         <span class="glyphicon glyphicon-trash"></span> Eliminar</a>#}
                 </td>

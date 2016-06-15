@@ -25,84 +25,84 @@
                         <div class="tab-pane fade in active" id="datos">
                             <table class="table table-striped" style="font-size: 16px;">
                                 <tbody>
-                                    <tr>
-                                        <th>Matrícula</th>
-                                        <td>{{ entity.matricula }}</td>
-                                        <th>Potencia</th>
-                                        <td>{{ entity.potencia }}</td>
-                                    </tr>
+                                <tr>
+                                    <th>Matrícula</th>
+                                    <td>{{ entity.matricula }}</td>
+                                    <th>Potencia</th>
+                                    <td>{{ entity.potencia }}</td>
+                                </tr>
 
-                                    <tr>
-                                        <th>Año</th>
-                                        <td>
-                                            {% if entity.anno == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.anno }}
-                                            {% endif %}
-                                        </td>
-                                        <th>Número Plazas</th>
-                                        <td>{{ entity.numeroplazas }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Número Cilindros</th>
-                                        <td>{{ entity.numerocilindros }}</td>
-                                        <th>Cilindrada</th>
-                                        <td>{{ entity.cilindrada }}</td>
-                                    </tr>
+                                <tr>
+                                    <th>Año</th>
+                                    <td>
+                                        {% if entity.anno == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.anno }}
+                                        {% endif %}
+                                    </td>
+                                    <th>Número Plazas</th>
+                                    <td>{{ entity.numeroplazas }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Número Cilindros</th>
+                                    <td>{{ entity.numerocilindros }}</td>
+                                    <th>Cilindrada</th>
+                                    <td>{{ entity.cilindrada }}</td>
+                                </tr>
 
-                                    <tr>
-                                        <th>Marca Caja de Cambios</th>
-                                        <td>
-                                            {% if entity.marcacajacambio == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.marcacajacambio }}
-                                            {% endif %}
-                                        </td>
-                                        <th>Tipo Caja de Cambios</th>
-                                        <td>
-                                            {% if entity.tipocajacambio == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.tipocajacambio }}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <th>Marca Caja de Cambios</th>
+                                    <td>
+                                        {% if entity.marcacajacambio == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.marcacajacambio }}
+                                        {% endif %}
+                                    </td>
+                                    <th>Tipo Caja de Cambios</th>
+                                    <td>
+                                        {% if entity.tipocajacambio == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.tipocajacambio }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
 
-                                    <tr>
-                                        <th>Kilometraje</th>
-                                        <td>{{ entity.kilometraje }}</td>
-                                        <th>Horas</th>
-                                        <td>{{ entity.horas }}</td>
-                                    </tr>
+                                <tr>
+                                    <th>Kilometraje</th>
+                                    <td>{{ entity.kilometraje }}</td>
+                                    <th>Horas</th>
+                                    <td>{{ entity.horas }}</td>
+                                </tr>
 
-                                    <tr>
-                                        <th>Capacidad de Tanque</th>
-                                        <td>{{ entity.capacidadTanque }}</td>
-                                        <th>Activo</th>
-                                        <td>
-                                            {% if entity.activo == 1 %}
-                                                Sí
-                                            {% else %}
-                                                No
-                                            {% endif %}
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <th>Capacidad de Tanque</th>
+                                    <td>{{ entity.capacidadTanque }}</td>
+                                    <th>Activo</th>
+                                    <td>
+                                        {% if entity.activo == 1 %}
+                                            Sí
+                                        {% else %}
+                                            No
+                                        {% endif %}
+                                    </td>
+                                </tr>
 
-                                    <tr>
-                                        <th>Marca</th>
-                                        <td>{{ entity.marca }}</td>
-                                        <th>Modelo</th>
-                                        <td>{{ entity.modelo }}</td>
-                                    </tr>
+                                <tr>
+                                    <th>Marca</th>
+                                    <td>{{ entity.marca }}</td>
+                                    <th>Modelo</th>
+                                    <td>{{ entity.modelo }}</td>
+                                </tr>
 
-                                    <tr>
-                                        <th>Estilo</th>
-                                        <td>{{ entity.estilo }}</td>
-                                        <th>Color</th>
-                                        <td>{{ entity.color }}</td>
-                                    </tr>
+                                <tr>
+                                    <th>Estilo</th>
+                                    <td>{{ entity.estilo }}</td>
+                                    <th>Color</th>
+                                    <td>{{ entity.color }}</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -111,41 +111,41 @@
                         <div class="tab-pane fade" id="historico">
                             <table class="records_list table table-striped table-bordered table-condensed table-hover">
                                 <thead>
-                                    <tr>
-                                        <th>Grupo</th>
-                                        <th>Subgrupo</th>
-                                        <th>Tarea</th>
-                                        <th>Kilometraje</th>
-                                        <th>Horas</th>
-                                        <th>Fecha Inicio</th>
-                                        <th>Fecha Final</th>
-                                        <th>Estado</th>
-                                    </tr>
+                                <tr>
+                                    <th>Grupo</th>
+                                    <th>Subgrupo</th>
+                                    <th>Tarea</th>
+                                    <th>Kilometraje</th>
+                                    <th>Horas</th>
+                                    <th>Fecha Inicio</th>
+                                    <th>Fecha Final</th>
+                                    <th>Estado</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    {#{% for mpreventivo in mpreventivos %}
-                                        <tr>
-                                            <td>{{ mpreventivo.grupo }}</td>
-                                            <td>{{ mpreventivo.subgrupo }}</td>
-                                            <td>{{ mpreventivo.tarea }}</td>
-                                            <td>{{ mpreventivo.kilometraje }}</td>
-                                            <td>{{ mpreventivo.horas }}</td>
-                                            <td>{%  if mpreventivo.fechaInicio %}{{ mpreventivo.fechaInicio | date('d/m/Y') }}{% endif %}</td>
-                                            <td>{%  if mpreventivo.fechaFinal %}{{ mpreventivo.fechaFinal | date('d/m/Y') }}{% endif %}</td>
-                                            <td style="text-align: center">
-                                                {% set today = "now" | date('d/m/Y') %}
-                                                {% if (today >= mpreventivo.fechaInicio | date('d/m/Y')) and (today <= mpreventivo.fechaFinal | date('d/m/Y')) %}
-                                                    <label class="label label-success">activo</label>
-                                                {% else %}
-                                                    <label class="label label-danger">inactivo</label>
-                                                {% endif %}
-                                            </td>
-                                        </tr>
-                                    {% else %}
-                                        <tr>
-                                            <td colspan="12">No se encontraron registros de mantenimientos preventivos en el sistema.</td>
-                                        </tr>
-                                    {% endfor %}#}
+                                {#{% for mpreventivo in mpreventivos %}
+                                    <tr>
+                                        <td>{{ mpreventivo.grupo }}</td>
+                                        <td>{{ mpreventivo.subgrupo }}</td>
+                                        <td>{{ mpreventivo.tarea }}</td>
+                                        <td>{{ mpreventivo.kilometraje }}</td>
+                                        <td>{{ mpreventivo.horas }}</td>
+                                        <td>{%  if mpreventivo.fechaInicio %}{{ mpreventivo.fechaInicio | date('d/m/Y') }}{% endif %}</td>
+                                        <td>{%  if mpreventivo.fechaFinal %}{{ mpreventivo.fechaFinal | date('d/m/Y') }}{% endif %}</td>
+                                        <td style="text-align: center">
+                                            {% set today = "now" | date('d/m/Y') %}
+                                            {% if (today >= mpreventivo.fechaInicio | date('d/m/Y')) and (today <= mpreventivo.fechaFinal | date('d/m/Y')) %}
+                                                <label class="label label-success">activo</label>
+                                            {% else %}
+                                                <label class="label label-danger">inactivo</label>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="12">No se encontraron registros de mantenimientos preventivos en el sistema.</td>
+                                    </tr>
+                                {% endfor %}#}
                                 </tbody>
                             </table>
                         </div>
@@ -156,8 +156,10 @@
     </div>
 
     <div class="form-actions">
-        <a class="btn btn-primary" href="{{ path('vehiculo_edit', { 'id': entity.id }) }}"> Editar</a>
-        <a class="btn btn-primary" href="{{ path('vehiculo') }}"> Listado</a>
+        <a class="btn btn-primary" href="{{ path('vehiculo_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"></i>
+            Editar</a>
+        <a class="btn btn-default" href="{{ path('vehiculo') }}"><span class="glyphicon glyphicon-chevron-left"></span>
+            Listado</a>
         <a href="#delete" data-href="{{ path('vehiculo_delete', {'id': entity.id}) }}" class="btn btn-danger">
             <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
     </div>

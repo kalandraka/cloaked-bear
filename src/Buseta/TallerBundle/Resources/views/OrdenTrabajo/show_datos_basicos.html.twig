@@ -93,9 +93,11 @@
     <br/>
     <div class="row">
         <div class="col-md-4">
-            <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-save"></span> Aceptar</button>
             <div class="btn-group">
-                <a class="btn btn-primary" href="{{ path('ordentrabajo') }}"> Cancelar</a>
+                <a class="btn btn-default" href="{{ path('ordentrabajo') }}">
+                    <span class="glyphicon glyphicon-chevron-left"></span> Cancelar</a>
             </div>
         </div>
     </div>

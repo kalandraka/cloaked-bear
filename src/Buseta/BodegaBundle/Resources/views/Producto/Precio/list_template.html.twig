@@ -39,7 +39,8 @@
 
             <td style="width: 10%; text-align: center;">
                 {#{% if reporte.diagnostico == null %}#}
-                        <a class="btn btn-danger btn-xs" href="#delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>
+                        <a class="btn btn-danger btn-xs" href="#delete" data-content="{{ entity.id }}">
+                            <span class="glyphicon glyphicon-trash"></span> Eliminar</a>
                     {#{% else %}#}
                         {#<a class="btn btn-danger btn-xs disabled" href="#delete" data-content="{{ entity.id }}"><i class="fa fa-remove"> Eliminar</i></a>#}
                 {#{% endif %}#}

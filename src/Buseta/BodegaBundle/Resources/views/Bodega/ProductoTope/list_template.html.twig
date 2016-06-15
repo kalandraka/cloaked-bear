@@ -43,9 +43,11 @@
 
             <td>{{ entity.prodtope.comentarios }}</td>
 
-            <td class="text-center">
-                <a class="btn btn-primary btn-xs" href="#edit" data-content="{{ entity.prodtope.id }}"><i class="fa fa-edit"> Editar</i></a>
-                <a class="btn btn-danger btn-xs" href="#delete" data-content="{{ entity.prodtope.id }}"><i class="fa fa-remove"> Eliminar</i></a>
+            <td style="width: 24% !important; text-align: center;">
+                <a class="btn btn-danger btn-xs" href="#edit" data-content="{{ entity.prodtope.id }}">
+                    <span class="glyphicon glyphicon-edit"></span> Editar</a>
+                <a class="btn btn-danger btn-xs" href="#delete" data-content="{{ entity.prodtope.id }}">
+                    <span class="glyphicon glyphicon-trash"></span> Eliminar</a>
             </td>
 
         </tr>

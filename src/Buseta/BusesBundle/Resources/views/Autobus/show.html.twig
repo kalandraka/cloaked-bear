@@ -25,362 +25,380 @@
                         <div class="tab-pane fade in active" id="datos">
                             <table class="table table-striped" style="font-size: 16px;">
                                 <tbody>
-                                    <tr>
-                                        <th>Imagen Lateral Izquierda</th>
-                                        <td>
-                                            {%  if entity is defined and entity.imagenLateralI %}
-                                                <img src="{{ asset(entity.imagenLateralI.webPath)}}" alt="Imagen" width="164px" height="92px"/>
-                                            {% else %}
-                                                <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
-                                            {% endif %}
-                                        </td>
-                                        <th>Imagen Lateral Derecha</th>
-                                        <td>
-                                            {%  if entity is defined and entity.imagenLateralD %}
-                                                <img src="{{ asset(entity.imagenLateralD.webPath)}}" alt="Imagen" width="164px" height="92px"/>
-                                            {% else %}
-                                                <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Imagen Frontal</th>
-                                        <td>
-                                            {%  if entity is defined and entity.imagenFrontal %}
-                                                <img src="{{ asset(entity.imagenFrontal.webPath)}}" alt="Imagen" width="164px" height="92px"/>
-                                            {% else %}
-                                                <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
-                                            {% endif %}
-                                        </td>
-                                        <th>Imagen Frontal Interior</th>
-                                        <td>
-                                            {%  if entity is defined and entity.imagenFrontalInterior %}
-                                                <img src="{{ asset(entity.imagenFrontalInterior.webPath)}}" alt="Imagen" width="164px" height="92px"/>
-                                            {% else %}
-                                                <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Imagen Trasera</th>
-                                        <td>
-                                            {%  if entity is defined and entity.imagenTrasera %}
-                                                <img src="{{ asset(entity.imagenTrasera.webPath)}}" alt="Imagen" width="164px" height="92px"/>
-                                            {% else %}
-                                                <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
-                                            {% endif %}
-                                        </td>
-                                        <th>Imagen Trasera Interior</th>
-                                        <td>
-                                            {%  if entity is defined and entity.imagenTraseraInterior %}
-                                                <img src="{{ asset(entity.imagenTraseraInterior.webPath)}}" alt="Imagen" width="164px" height="92px"/>
-                                            {% else %}
-                                                <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}" alt="Imagen por defecto" alt="ImagenDefault" width="164px" height="92px"/>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Matrícula</th>
-                                        <td>{{ entity.matricula }}</td>
-                                        <th>Número Chasis</th>
-                                        <td>{{ entity.numerochasis }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Número Motor</th>
-                                        <td>{{ entity.numeromotor }}</td>
-                                        <th>Peso Tara</th>
-                                        <td>{{ entity.pesotara }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Peso Bruto</th>
-                                        <td>{{ entity.pesobruto }}</td>
-                                        <th>Número Plazas</th>
-                                        <td>{{ entity.numeroplazas }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Número Cilindros</th>
-                                        <td>{{ entity.numerocilindros }}</td>
-                                        <th>Cilindrada</th>
-                                        <td>{{ entity.cilindrada }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Potencia</th>
-                                        <td>{{ entity.potencia }}</td>
-                                        <th>Fecha Ingreso</th>
-                                        <td>{{ entity.fechaingreso|date('d/m/Y') }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Válido Hasta</th>
-                                        <td>{{ entity.validohasta|date('d/m/Y') }}</td>
-                                        <th>Número de Unidad</th>
-                                        <td>
-                                            {% if entity.numerounidad == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.numerounidad }}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Fecha RTV 1</th>
-                                        <td>{{ entity.fechartv1 }}</td>
-                                        <th>Fecha RTV 2</th>
-                                        <td>{{ entity.fechartv2 }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Año</th>
-                                        <td>
-                                            {% if entity.anno == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.anno }}
-                                            {% endif %}
-                                        </td>
-                                        <th>Valor de Unidad</th>
-                                        <td>
-                                            {% if entity.valorunidad == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.valorunidad }}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <th>Imagen Lateral Izquierda</th>
+                                    <td>
+                                        {% if entity is defined and entity.imagenLateralI %}
+                                            <img src="{{ asset(entity.imagenLateralI.webPath) }}" alt="Imagen"
+                                                 width="164px" height="92px"/>
+                                        {% else %}
+                                            <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}"
+                                                 alt="Imagen por defecto" alt="ImagenDefault" width="164px"
+                                                 height="92px"/>
+                                        {% endif %}
+                                    </td>
+                                    <th>Imagen Lateral Derecha</th>
+                                    <td>
+                                        {% if entity is defined and entity.imagenLateralD %}
+                                            <img src="{{ asset(entity.imagenLateralD.webPath) }}" alt="Imagen"
+                                                 width="164px" height="92px"/>
+                                        {% else %}
+                                            <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}"
+                                                 alt="Imagen por defecto" alt="ImagenDefault" width="164px"
+                                                 height="92px"/>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Imagen Frontal</th>
+                                    <td>
+                                        {% if entity is defined and entity.imagenFrontal %}
+                                            <img src="{{ asset(entity.imagenFrontal.webPath) }}" alt="Imagen"
+                                                 width="164px" height="92px"/>
+                                        {% else %}
+                                            <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}"
+                                                 alt="Imagen por defecto" alt="ImagenDefault" width="164px"
+                                                 height="92px"/>
+                                        {% endif %}
+                                    </td>
+                                    <th>Imagen Frontal Interior</th>
+                                    <td>
+                                        {% if entity is defined and entity.imagenFrontalInterior %}
+                                            <img src="{{ asset(entity.imagenFrontalInterior.webPath) }}" alt="Imagen"
+                                                 width="164px" height="92px"/>
+                                        {% else %}
+                                            <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}"
+                                                 alt="Imagen por defecto" alt="ImagenDefault" width="164px"
+                                                 height="92px"/>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Imagen Trasera</th>
+                                    <td>
+                                        {% if entity is defined and entity.imagenTrasera %}
+                                            <img src="{{ asset(entity.imagenTrasera.webPath) }}" alt="Imagen"
+                                                 width="164px" height="92px"/>
+                                        {% else %}
+                                            <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}"
+                                                 alt="Imagen por defecto" alt="ImagenDefault" width="164px"
+                                                 height="92px"/>
+                                        {% endif %}
+                                    </td>
+                                    <th>Imagen Trasera Interior</th>
+                                    <td>
+                                        {% if entity is defined and entity.imagenTraseraInterior %}
+                                            <img src="{{ asset(entity.imagenTraseraInterior.webPath) }}" alt="Imagen"
+                                                 width="164px" height="92px"/>
+                                        {% else %}
+                                            <img src="{{ asset('bundles/busetabuses/images/autobus.jpg') }}"
+                                                 alt="Imagen por defecto" alt="ImagenDefault" width="164px"
+                                                 height="92px"/>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Matrícula</th>
+                                    <td>{{ entity.matricula }}</td>
+                                    <th>Número Chasis</th>
+                                    <td>{{ entity.numerochasis }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Número Motor</th>
+                                    <td>{{ entity.numeromotor }}</td>
+                                    <th>Peso Tara</th>
+                                    <td>{{ entity.pesotara }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Peso Bruto</th>
+                                    <td>{{ entity.pesobruto }}</td>
+                                    <th>Número Plazas</th>
+                                    <td>{{ entity.numeroplazas }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Número Cilindros</th>
+                                    <td>{{ entity.numerocilindros }}</td>
+                                    <th>Cilindrada</th>
+                                    <td>{{ entity.cilindrada }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Potencia</th>
+                                    <td>{{ entity.potencia }}</td>
+                                    <th>Fecha Ingreso</th>
+                                    <td>{{ entity.fechaingreso|date('d/m/Y') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Válido Hasta</th>
+                                    <td>{{ entity.validohasta|date('d/m/Y') }}</td>
+                                    <th>Número de Unidad</th>
+                                    <td>
+                                        {% if entity.numerounidad == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.numerounidad }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Fecha RTV 1</th>
+                                    <td>{{ entity.fechartv1 }}</td>
+                                    <th>Fecha RTV 2</th>
+                                    <td>{{ entity.fechartv2 }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Año</th>
+                                    <td>
+                                        {% if entity.anno == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.anno }}
+                                        {% endif %}
+                                    </td>
+                                    <th>Valor de Unidad</th>
+                                    <td>
+                                        {% if entity.valorunidad == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.valorunidad }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
 
-                                    <tr>
-                                        <th>Marca Caja de Cambios</th>
-                                        <td>
-                                            {% if entity.marcacajacambio == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.marcacajacambio }}
-                                            {% endif %}
-                                        </td>
-                                        <th>Tipo Caja de Cambios</th>
-                                        <td>
-                                            {% if entity.tipocajacambio == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.tipocajacambio }}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <th>Marca Caja de Cambios</th>
+                                    <td>
+                                        {% if entity.marcacajacambio == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.marcacajacambio }}
+                                        {% endif %}
+                                    </td>
+                                    <th>Tipo Caja de Cambios</th>
+                                    <td>
+                                        {% if entity.tipocajacambio == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.tipocajacambio }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
 
-                                    <tr>
-                                        <th>Carter Capacidad en Litros</th>
-                                        <td>
-                                            {% if entity.cartercapacidadlitros == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.cartercapacidadlitros }}
-                                            {% endif %}
-                                        </td>
-                                        <th>Bater&iacute;a 1</th>
-                                        <td>
-                                            {% if entity.bateria1 == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.bateria1 }}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Batería 2</th>
-                                        <td>
-                                            {% if entity.bateria2 == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.bateria2 }}
-                                            {% endif %}
-                                        </td>
-                                        <th></th>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Rampas</th>
-                                        <td>
-                                            {% if entity.rampas == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.rampas }}
-                                            {% endif %}
-                                        </td>
-                                        <th></th>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Barras</th>
-                                        <td>
-                                            {% if entity.barras == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.barras }}
-                                            {% endif %}
-                                        </td>
-                                        <th></th>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Cámaras</th>
-                                        <td>
-                                            {% if entity.camaras == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.camaras }}
-                                            {% endif %}
-                                        </td>
-                                        <th></th>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Lector de Células</th>
-                                        <td>
-                                            {% if entity.lectorcedulas == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.lectorcedulas }}
-                                            {% endif %}
-                                        </td>
-                                        <th></th>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Publicidad</th>
-                                        <td>
-                                            {% if entity.publicidad == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.publicidad }}
-                                            {% endif %}
-                                        </td>
-                                        <th></th>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>GPS</th>
-                                        <td>
-                                            {% if entity.gps == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.gps }}
-                                            {% endif %}
-                                        </td>
-                                        <th></th>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Wifi</th>
-                                        <td>
-                                            {% if entity.wifi == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.wifi }}
-                                            {% endif %}
-                                        </td>
-                                        <th></th>
-                                        <td></td>
-                                    </tr>
+                                <tr>
+                                    <th>Carter Capacidad en Litros</th>
+                                    <td>
+                                        {% if entity.cartercapacidadlitros == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.cartercapacidadlitros }}
+                                        {% endif %}
+                                    </td>
+                                    <th>Bater&iacute;a 1</th>
+                                    <td>
+                                        {% if entity.bateria1 == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.bateria1 }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Batería 2</th>
+                                    <td>
+                                        {% if entity.bateria2 == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.bateria2 }}
+                                        {% endif %}
+                                    </td>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Rampas</th>
+                                    <td>
+                                        {% if entity.rampas == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.rampas }}
+                                        {% endif %}
+                                    </td>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Barras</th>
+                                    <td>
+                                        {% if entity.barras == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.barras }}
+                                        {% endif %}
+                                    </td>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Cámaras</th>
+                                    <td>
+                                        {% if entity.camaras == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.camaras }}
+                                        {% endif %}
+                                    </td>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Lector de Células</th>
+                                    <td>
+                                        {% if entity.lectorcedulas == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.lectorcedulas }}
+                                        {% endif %}
+                                    </td>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Publicidad</th>
+                                    <td>
+                                        {% if entity.publicidad == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.publicidad }}
+                                        {% endif %}
+                                    </td>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>GPS</th>
+                                    <td>
+                                        {% if entity.gps == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.gps }}
+                                        {% endif %}
+                                    </td>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Wifi</th>
+                                    <td>
+                                        {% if entity.wifi == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.wifi }}
+                                        {% endif %}
+                                    </td>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
 
-                                    <tr>
-                                        <th>Filtro de Aceite</th>
-                                        <td>
-                                            {% if entity.filtroaceite == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.filtroaceite.filtroaceite1 }} - {{ entity.filtroaceite.filtroaceite2 }} - {{ entity.filtroaceite.filtroaceite3 }}
-                                            {% endif %}
-                                        </td>
-                                        <th></th>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Filtro de Agua</th>
-                                        <td>
-                                            {% if entity.filtroagua == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.filtroagua.filtroagua1 }} - {{ entity.filtroagua.filtroagua2 }}
-                                            {% endif %}
-                                        </td>
-                                        <th></th>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Filtro de Caja</th>
-                                        <td>
-                                            {% if entity.filtrocaja == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.filtrocaja.filtrocaja1 }} - {{ entity.filtrocaja.filtrocaja2 }}
-                                            {% endif %}
-                                        </td>
-                                        <th></th>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Filtro de Diesel</th>
-                                        <td>
-                                            {% if entity.filtrodiesel == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.filtrodiesel.filtrodiesel1 }} - {{ entity.filtrodiesel.filtrodiesel2 }} - {{ entity.filtrodiesel.filtrodiesel3 }} - {{ entity.filtrodiesel.filtrodiesel4 }}
-                                            {% endif %}
-                                        </td>
-                                        <th></th>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Filtro Hidr&aacute;ulico</th>
-                                        <td>
-                                            {% if entity.filtrohidraulico == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.filtrohidraulico.filtrohidraulico1 }} - {{ entity.filtrohidraulico.filtrohidraulico2 }}
-                                            {% endif %}
-                                        </td>
-                                        <th></th>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Filtro de Transmisi&oacute;n</th>
-                                        <td>
-                                            {% if entity.filtrotransmision == '' %}
-                                                <label style="color: red">No tiene</label>
-                                            {% else %}
-                                                {{ entity.filtrotransmision.filtrotransmision }}
-                                            {% endif %}
-                                        </td>
-                                        <th></th>
-                                        <td></td>
-                                    </tr>
-                                    {#<tr>#}
-                                        {#<th>Archivos adjuntos</th>#}
-                                        {#<td colspan="2">#}
-                                            {#{% for archivo in entity.archivoadjunto %}#}
-                                                {#{% set path = 'files/' ~ archivo.valor %}#}
-                                                {#<a class="bg-warning" href="{{ asset(path) }}"> {{ archivo.valor }} </a>#}
-                                            {#{% else %}#}
-                                                {#<label style="color: red">No tiene</label>#}
-                                            {#{% endfor %}#}
-                                        {#</td>#}
-                                        {#<th></th>#}
-                                        {#<td></td>#}
-                                    {#</tr>#}
-                                    <tr>
-                                        <th>Kilometraje</th>
-                                        <td>{{ entity.kilometraje }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Horas</th>
-                                        <td>{{ entity.horas }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Capacidad de Tanque</th>
-                                        <td>{{ entity.capacidadTanque }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Grupo Buses</th>
-                                        <td>{{ entity.grupobuses }}</td>
-                                    </tr>
+                                <tr>
+                                    <th>Filtro de Aceite</th>
+                                    <td>
+                                        {% if entity.filtroaceite == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.filtroaceite.filtroaceite1 }} - {{ entity.filtroaceite.filtroaceite2 }} - {{ entity.filtroaceite.filtroaceite3 }}
+                                        {% endif %}
+                                    </td>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Filtro de Agua</th>
+                                    <td>
+                                        {% if entity.filtroagua == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.filtroagua.filtroagua1 }} - {{ entity.filtroagua.filtroagua2 }}
+                                        {% endif %}
+                                    </td>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Filtro de Caja</th>
+                                    <td>
+                                        {% if entity.filtrocaja == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.filtrocaja.filtrocaja1 }} - {{ entity.filtrocaja.filtrocaja2 }}
+                                        {% endif %}
+                                    </td>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Filtro de Diesel</th>
+                                    <td>
+                                        {% if entity.filtrodiesel == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.filtrodiesel.filtrodiesel1 }} - {{ entity.filtrodiesel.filtrodiesel2 }} - {{ entity.filtrodiesel.filtrodiesel3 }} - {{ entity.filtrodiesel.filtrodiesel4 }}
+                                        {% endif %}
+                                    </td>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Filtro Hidr&aacute;ulico</th>
+                                    <td>
+                                        {% if entity.filtrohidraulico == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.filtrohidraulico.filtrohidraulico1 }} - {{ entity.filtrohidraulico.filtrohidraulico2 }}
+                                        {% endif %}
+                                    </td>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>Filtro de Transmisi&oacute;n</th>
+                                    <td>
+                                        {% if entity.filtrotransmision == '' %}
+                                            <label style="color: red">No tiene</label>
+                                        {% else %}
+                                            {{ entity.filtrotransmision.filtrotransmision }}
+                                        {% endif %}
+                                    </td>
+                                    <th></th>
+                                    <td></td>
+                                </tr>
+                                {#<tr>#}
+                                {#<th>Archivos adjuntos</th>#}
+                                {#<td colspan="2">#}
+                                {#{% for archivo in entity.archivoadjunto %}#}
+                                {#{% set path = 'files/' ~ archivo.valor %}#}
+                                {#<a class="bg-warning" href="{{ asset(path) }}"> {{ archivo.valor }} </a>#}
+                                {#{% else %}#}
+                                {#<label style="color: red">No tiene</label>#}
+                                {#{% endfor %}#}
+                                {#</td>#}
+                                {#<th></th>#}
+                                {#<td></td>#}
+                                {#</tr>#}
+                                <tr>
+                                    <th>Kilometraje</th>
+                                    <td>{{ entity.kilometraje }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Horas</th>
+                                    <td>{{ entity.horas }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Capacidad de Tanque</th>
+                                    <td>{{ entity.capacidadTanque }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Grupo Buses</th>
+                                    <td>{{ entity.grupobuses }}</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -389,41 +407,41 @@
                         <div class="tab-pane fade" id="historico">
                             <table class="records_list table table-striped table-bordered table-condensed table-hover">
                                 <thead>
-                                    <tr>
-                                        <th>Grupo</th>
-                                        <th>Subgrupo</th>
-                                        <th>Tarea</th>
-                                        <th>Kilometraje</th>
-                                        <th>Horas</th>
-                                        <th>Fecha Inicio</th>
-                                        <th>Fecha Final</th>
-                                        <th>Estado</th>
-                                    </tr>
+                                <tr>
+                                    <th>Grupo</th>
+                                    <th>Subgrupo</th>
+                                    <th>Tarea</th>
+                                    <th>Kilometraje</th>
+                                    <th>Horas</th>
+                                    <th>Fecha Inicio</th>
+                                    <th>Fecha Final</th>
+                                    <th>Estado</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    {#{% for mpreventivo in mpreventivos %}
-                                        <tr>
-                                            <td>{{ mpreventivo.grupo }}</td>
-                                            <td>{{ mpreventivo.subgrupo }}</td>
-                                            <td>{{ mpreventivo.tarea }}</td>
-                                            <td>{{ mpreventivo.kilometraje }}</td>
-                                            <td>{{ mpreventivo.horas }}</td>
-                                            <td>{%  if mpreventivo.fechaInicio %}{{ mpreventivo.fechaInicio | date('d/m/Y') }}{% endif %}</td>
-                                            <td>{%  if mpreventivo.fechaFinal %}{{ mpreventivo.fechaFinal | date('d/m/Y') }}{% endif %}</td>
-                                            <td style="text-align: center">
-                                                {% set today = "now" | date('d/m/Y') %}
-                                                {% if (today >= mpreventivo.fechaInicio | date('d/m/Y')) and (today <= mpreventivo.fechaFinal | date('d/m/Y')) %}
-                                                    <label class="label label-success">activo</label>
-                                                {% else %}
-                                                    <label class="label label-danger">inactivo</label>
-                                                {% endif %}
-                                            </td>
-                                        </tr>
-                                    {% else %}
-                                        <tr>
-                                            <td colspan="12">No se encontraron registros de mantenimientos preventivos en el sistema.</td>
-                                        </tr>
-                                    {% endfor %}#}
+                                {#{% for mpreventivo in mpreventivos %}
+                                    <tr>
+                                        <td>{{ mpreventivo.grupo }}</td>
+                                        <td>{{ mpreventivo.subgrupo }}</td>
+                                        <td>{{ mpreventivo.tarea }}</td>
+                                        <td>{{ mpreventivo.kilometraje }}</td>
+                                        <td>{{ mpreventivo.horas }}</td>
+                                        <td>{%  if mpreventivo.fechaInicio %}{{ mpreventivo.fechaInicio | date('d/m/Y') }}{% endif %}</td>
+                                        <td>{%  if mpreventivo.fechaFinal %}{{ mpreventivo.fechaFinal | date('d/m/Y') }}{% endif %}</td>
+                                        <td style="text-align: center">
+                                            {% set today = "now" | date('d/m/Y') %}
+                                            {% if (today >= mpreventivo.fechaInicio | date('d/m/Y')) and (today <= mpreventivo.fechaFinal | date('d/m/Y')) %}
+                                                <label class="label label-success">activo</label>
+                                            {% else %}
+                                                <label class="label label-danger">inactivo</label>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="12">No se encontraron registros de mantenimientos preventivos en el sistema.</td>
+                                    </tr>
+                                {% endfor %}#}
                                 </tbody>
                             </table>
                         </div>
@@ -434,9 +452,12 @@
     </div>
 
     <div class="form-actions">
-        <a class="btn btn-primary" href="{{ path('busetabuses_autobus_edit', { 'id': entity.id }) }}"> Editar</a>
-        <a class="btn btn-primary" href="{{ path('busetabuses_autobus') }}"> Listado</a>
-        <a href="#delete" data-href="{{ path('busetabuses_autobus_delete', {'id': entity.id}) }}" class="btn btn-danger">
+        <a class="btn btn-primary" href="{{ path('busetabuses_autobus_edit', { 'id': entity.id }) }}"><i
+                    class="fa fa-edit"></i> Editar</a>
+        <a class="btn btn-default" href="{{ path('busetabuses_autobus') }}"><span
+                    class="glyphicon glyphicon-chevron-left"></span> Listado</a>
+        <a href="#delete" data-href="{{ path('busetabuses_autobus_delete', {'id': entity.id}) }}"
+           class="btn btn-danger">
             <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
     </div>
 

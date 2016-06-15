@@ -132,18 +132,18 @@
 
                 <td style="width: 18% !important; text-align: center;">
                     {% if is_granted('SHOW', entity) %}
-                    <div class="btn-group">
+                    <div class="btn-group" style="padding: 2px">
                         <a class="btn btn-success btn-xs"
                            href="{{ path('diagnostico_show', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-search"> Mostrar</span></a>
+                                    class="glyphicon glyphicon-search"></span> Mostrar</a>
                     </div>
                     {% endif %}
 
                     {% if is_granted('EDIT', entity) %}
-                        <div class="btn-group">
+                        <div class="btn-group" style="padding: 2px">
                             <a class="btn btn-danger btn-xs"
-                               href="{{ path('diagnostico_edit', { 'id': entity.id }) }}"><i
-                                        class="fa fa-edit"> Editar</i></a>
+                               href="{{ path('diagnostico_edit', { 'id': entity.id }) }}">
+                                <span class="glyphicon glyphicon-edit"></span> Editar</a>
                         </div>
                     {% endif %}
                 </td>

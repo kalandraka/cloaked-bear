@@ -6,7 +6,7 @@
 
 {% block area_trabajo %}
 
-<form action="{{ path('bodega_update',{'id':entity.id}) }}" method="post" enctype="multipart/form-data" >
+<form id="bodega_form" action="{{ path('bodega_update',{'id':entity.id}) }}" method="post" enctype="multipart/form-data" >
 
     <div class="row show-grid">
         <div class="col-md-4">
@@ -31,10 +31,13 @@
 
     <div class="row show-grid">
         <div class="col-md-4">
-
-            <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
             <div class="btn-group">
-                <a class="btn btn-primary" href="{{ path('bodega') }}"> Cancelar</a>
+                <a class="btn btn-primary" id="save_bodega_form_submit_btn">
+                    <span class="glyphicon glyphicon-save"></span> Aceptar</a>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-default" href="{{ path('bodega') }}">
+                    <span class="glyphicon glyphicon-chevron-left"></span> Cancelar</a>
             </div>
         </div>
     </div>
@@ -43,7 +46,14 @@
 </form>
 
 {% endblock %}
-
+{% block javascripts %}
+    {{ parent() }}
+<script type="text/javascript">
+    $('a#save_bodega_form_submit_btn').click(function () {
+        $('form#bodega_form').submit();
+    });
+</script>
+{% endblock %}
 
 {% block contenido %}
 

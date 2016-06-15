@@ -118,14 +118,16 @@
 
     <div class="form-actions">
         {% if entity.estadodocumento == 'BO' %}
-            <a class="btn btn-primary" href="{{ path('necesidadmaterial_edit', { 'id': entity.id }) }}"> Editar</a>
+            <a class="btn btn-primary" href="{{ path('necesidadmaterial_edit', { 'id': entity.id }) }}">
+                <i class="fa fa-edit"></i> Editar</a>
         {% endif %}
         {% if entity.estadodocumento == 'PR' %}
             <a class="btn btn-primary" href="{{ path('completarNecesidad', { 'id': entity.id }) }}"> Completar Proceso</a>
         {% elseif entity.estadodocumento == 'BO' %}
             <a class="btn btn-primary" href="{{ path('procesarNecesidad', { 'id': entity.id }) }}"> Procesar</a>
         {% endif %}
-        <a class="btn btn-primary" href="{{ path('necesidadmaterial') }}"> Listado</a>
+        <a class="btn btn-default" href="{{ path('necesidadmaterial') }}">
+            <span class="glyphicon glyphicon-chevron-left"></span> Listado</a>
 
         {% if entity.estadodocumento == 'BO' %}
             <a href="#delete" data-href="{{ path('necesidadmaterial_delete', {'id': entity.id}) }}" class="btn btn-danger">

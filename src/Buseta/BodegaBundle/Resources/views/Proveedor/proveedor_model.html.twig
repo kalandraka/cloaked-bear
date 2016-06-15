@@ -1,4 +1,4 @@
-<form id="{{ form.vars.id }}" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="post"
+<form id="proveedor_model_form" name="{{ form.vars.full_name }}" action="{{ form.vars.action }}" method="post"
       enctype="multipart/form-data">
     {{ form_errors(form) }}
     {{ form_row(form._token) }}
@@ -110,12 +110,15 @@
     {# buttons group #}
     <div class="row">
         <div class="col-md-4">
-            <button type="submit" class="btn btn-primary" >Aceptar</button>
-           {#<a class="btn btn-primary" id="btn_proveedor_save" type="submit" href="{{ path('proveedor_create') }}"><span class="glyphicon glyphicon-save"></span>
-                {{ 'actions.save' | trans({}, 'BusetaBodegaBundle') }}</a>#}
-            <a class="btn btn-default" id="btn_proveedor_cancel" href="{{ path('proveedor') }}"><span
-                        class="glyphicon glyphicon-chevron-left"></span>
-                {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+            <div class="btn-group">
+                <a class="btn btn-primary" id="save_proveedor_form_submit_btn">
+                    <span class="glyphicon glyphicon-save"></span> Aceptar</a>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-default" href="{{ path('proveedor') }}">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+            </div>
         </div>
     </div>
 </form>

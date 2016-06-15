@@ -15,8 +15,7 @@
     and (filter_form.vars.value.cliente is null or filter_form.vars.value.cliente is empty)
     and (filter_form.vars.value.institucion is null or filter_form.vars.value.institucion is empty)
     and (filter_form.vars.value.proveedor is null or filter_form.vars.value.proveedor is empty)
-    and (filter_form.vars.value.persona is null or filter_form.vars.value.persona is empty)
-    %}
+    and (filter_form.vars.value.persona is null or filter_form.vars.value.persona is empty) %}
         {% set display = 'display: none;' %}
         {% set headericon = 'glyphicon-chevron-right' %}
     {% endif %}
@@ -42,7 +41,8 @@
             {{ form_widget(filter_form._token) }}
 
             <div class="filter-actions" style="margin-top: 8px;">
-                <input class="btn btn-success btn-small" style="position: absolute; left: -9999px; width: 1px; height: 1px;"
+                <input class="btn btn-success btn-small"
+                       style="position: absolute; left: -9999px; width: 1px; height: 1px;"
                        tabindex="-1" type="submit" value="Filtrar" name="filtrar">
                 <a id="filter_form_submit_btn" class="btn btn-success btn-small">
                     <span class="glyphicon glyphicon-filter"></span> Filtrar
@@ -86,11 +86,17 @@
                 <td>{{ entity.alias }}</td>
                 <td class="text-center">{{ entity.persona ? '<i class="fa fa-circle text-success" title="Sí"></i>' : '<i class="fa fa-circle-o text-danger" title="No"></i>' }}</td>
                 <td class="text-center">{{ entity.proveedor ? '<i class="fa fa-circle text-success" title="Sí"></i>' : '<i class="fa fa-circle-o text-danger" title="No"></i>' }}</td>
-                <td style="text-align: center;">
-                    <a class="btn btn-success btn-xs" href="{{ path('tercero_show', { 'id': entity.id }) }}">
-                        <span class="glyphicon glyphicon-search"> {{ 'actions.show' | trans({}, 'BusetaBodegaBundle') }}</span></a>
-                    <a class="btn btn-danger btn-xs" href="{{ path('tercero_edit', { 'id': entity.id }) }}">
-                        <span class="glyphicon glyphicon-edit"> {{ 'actions.edit' | trans({}, 'BusetaBodegaBundle') }}</span></a>
+                <td style="width: 18% !important; text-align: center;">
+                    <div class="btn-group" style="padding: 2px">
+                        <a class="btn btn-success btn-xs" href="{{ path('tercero_show', { 'id': entity.id }) }}">
+                            <span class="glyphicon glyphicon-search"></span> {{ 'actions.show' | trans({}, 'BusetaBodegaBundle') }}
+                        </a>
+                    </div>
+                    <div class="btn-group" style="padding: 2px">
+                        <a class="btn btn-danger btn-xs" href="{{ path('tercero_edit', { 'id': entity.id }) }}">
+                            <span class="glyphicon glyphicon-edit"></span> {{ 'actions.edit' | trans({}, 'BusetaBodegaBundle') }}
+                        </a>
+                    </div>
                 </td>
             </tr>
         {% else %}

@@ -67,7 +67,8 @@
     <div class="form-actions">
         {% if entity.estado == 'BO' %}
             {% if is_granted('edit', entity) %}
-                <a class="btn btn-primary" href="{{ path('inventariofisico_edit', { 'id': entity.id }) }}"> Editar</a>
+                <a class="btn btn-primary" href="{{ path('inventariofisico_edit', { 'id': entity.id }) }}">
+                    <i class="fa fa-edit"></i> Editar</a>
             {% endif %}
         {% endif %}
         {% if entity.estado == 'PR' %}

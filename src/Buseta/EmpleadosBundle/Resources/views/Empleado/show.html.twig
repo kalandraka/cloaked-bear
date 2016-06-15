@@ -63,8 +63,10 @@
             </table>
 
             <div class="form-actions">
-                <a class="btn btn-primary" href="{{ path('empleado_edit', { 'id': entity.id }) }}"> Editar</a>
-                <a class="btn btn-primary" href="{{ path('empleado') }}"> Listado</a>
+                <a class="btn btn-primary" href="{{ path('empleado_edit', { 'id': entity.id }) }}">
+                    <i class="fa fa-edit"></i> Editar</a>
+                <a class="btn btn-default" href="{{ path('empleado') }}">
+                    <span class="glyphicon glyphicon-chevron-left"></span> Listado</a>
                 <a href="#delete" data-href="{{ path('empleado_delete', {'id': entity.id}) }}" class="btn btn-danger">
                     <span class="glyphicon glyphicon-trash"></span> {{ 'Borrar' }}
                 </a>

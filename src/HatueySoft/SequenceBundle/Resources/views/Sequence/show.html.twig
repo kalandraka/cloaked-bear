@@ -56,7 +56,9 @@
     </table>
 
     <div class="form-actions">
-        <a class="btn btn-primary" href="{{ path('sequence_edit', { 'id': entity.id }) }}"> {{ 'actions.edit' | trans({}, 'HatueySoftSequenceBundle') }}</a>
-        <a class="btn btn-primary" href="{{ path('sequence') }}"> {{ 'actions.back' | trans({}, 'HatueySoftSequenceBundle') }}</a>
+        <a class="btn btn-primary" href="{{ path('sequence_edit', { 'id': entity.id }) }}">
+            <i class="fa fa-edit"></i> {{ 'actions.edit' | trans({}, 'HatueySoftSequenceBundle') }}</a>
+        <a class="btn btn-default" href="{{ path('sequence') }}">
+            <span class="glyphicon glyphicon-chevron-left"></span> Listado</a>
     </div>
 {% endblock %}

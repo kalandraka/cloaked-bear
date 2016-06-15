@@ -6,7 +6,7 @@
 
 {% block area_trabajo %}
 
-    <form action="{{ path('categoria_producto_update',{'id':entity.id}) }}" method="post" enctype="multipart/form-data">
+    <form id="cat_prod_form" action="{{ path('categoria_producto_update',{'id':entity.id}) }}" method="post" enctype="multipart/form-data">
         <div class="row show-grid">
             <div class="col-md-4">
                 {{ form_row(edit_form.valor) }}
@@ -20,10 +20,13 @@
 
         <div class="row show-grid">
             <div class="col-md-4">
-
-                <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
                 <div class="btn-group">
-                    <a class="btn btn-primary" href="{{ path('categoria_producto') }}"> Cancelar</a>
+                    <a class="btn btn-primary" id="save_cat_prod_form_submit_btn">
+                        <span class="glyphicon glyphicon-save"></span> Aceptar</a>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-default" href="{{ path('categoria_producto') }}">
+                        <span class="glyphicon glyphicon-chevron-left"></span> Cancelar</a>
                 </div>
             </div>
         </div>
@@ -33,6 +36,14 @@
 
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $('a#save_cat_prod_form_submit_btn').click(function () {
+            $('form#cat_prod_form').submit();
+        });
+    </script>
+{% endblock %}
 
 {% block contenido %}
 

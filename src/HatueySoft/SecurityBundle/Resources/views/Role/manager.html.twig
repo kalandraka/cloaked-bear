@@ -29,8 +29,8 @@
             <tr>
                 <td class="center"><input type="checkbox" class="to-delete" id="{{ entity }}"></td>
                 <td class="hidden-phone">{{ entity }}</td>
-                <td><a href="#edit" class="btn btn-primary btn-xs" data-content="{{ entity }}"><i
-                                class="fa fa-edit"></i> Edit</a></td>
+                <td><a href="#edit" class="btn btn-danger btn-xs" data-content="{{ entity }}"><span
+                                class="glyphicon glyphicon-edit"></span> Editar</a></td>
             </tr>
         {% else %}
             <tr>
@@ -71,8 +71,10 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary doaction">Aceptar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-chevron-left"></span> Cancelar</button>
+                    <button type="button" class="btn btn-primary doaction">
+                        <span class="glyphicon glyphicon-save"></span> Aceptar</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -113,7 +115,8 @@
 
                 if (role != "") {
 
-                    $aceptar = $('<button class="btn btn-primary">Aceptar</button>');
+                    $aceptar = $('<button class="btn btn-primary">' +
+                            '<span class="glyphicon glyphicon-save"></span> Aceptar</button>');
 
                     $aceptar.click(
                             function () {
@@ -138,7 +141,8 @@
                             }
                     );
 
-                    $cancelar = $('<button class="btn btn-primary" data-dismiss="modal">Cancelar</button>');
+                    $cancelar = $('<button class="btn btn-default" data-dismiss="modal">' +
+                            '<span class="glyphicon glyphicon-chevron-left"></span> Cancelar</button>');
 
                     $(this).addClass('disable');
                     $('#modaldiv').find('h4.modal-title').parent().append('<p class="information">Esta acción provocará el cierre de sesión</p><br/><p class="information">¿Desea Continuar?</p>').append($aceptar).append($cancelar).delay(300);
@@ -175,7 +179,7 @@
                         }
                     ];
 
-                    $ventana = $('<div class="modal fade" id="jModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">Modal title</h4></div><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-default acept">Aceptar</button><button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button></div></div></div></div>');
+                    $ventana = $('<div class="modal fade" id="jModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">Modal title</h4></div><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-primary acept"><span class="glyphicon glyphicon-save"></span> Aceptar</button><button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-chevron-left"></span> Cancelar</button></div></div></div></div>');
                     $($ventana).find('h4.modal-title').text('Información');
                     $($ventana).find('div.modal-body').text('Esta acción provocará el cierre de sesión. ¿Desea Continuar?');
                     var $aceptar = $($ventana).find('button.btn.btn-default.acept');

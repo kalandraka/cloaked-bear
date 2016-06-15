@@ -51,8 +51,10 @@
 
     <div class="row show-grid">
         <div class="col-md-4">
-            <a id="btn_salidabodega_save" class="btn btn-primary" href="#save">{{ 'actions.confirm' | trans({}, 'BusetaBodegaBundle') }}</a>
-            <a class="btn btn-default" href="{{ path('salidabodega') }}"> {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
+            <a id="btn_salidabodega_save" class="btn btn-primary" href="#save">
+                <span class="glyphicon glyphicon-save"></span> {{ 'actions.confirm' | trans({}, 'BusetaBodegaBundle') }}</a>
+            <a class="btn btn-default" href="{{ path('salidabodega') }}">
+                <span class="glyphicon glyphicon-chevron-left"></span> {{ 'actions.cancel' | trans({}, 'BusetaBodegaBundle') }}</a>
         </div>
     </div>
 

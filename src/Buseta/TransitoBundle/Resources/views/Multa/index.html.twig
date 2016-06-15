@@ -107,25 +107,27 @@
                         {{ ('estado.' ~ entity.estado) | trans({}, 'BusetaTransitoBundle') | upper }}</span>
                         </td>
                         <td style="width: 24% !important; text-align: center;">
-                            <div class="btn-group">
+                            <div class="btn-group" style="padding: 2px">
                                 <a class="btn btn-success btn-xs"
                                    href="{{ path('multa_show', { 'id': entity.id }) }}"><span
-                                            class="glyphicon glyphicon-search"> Mostrar</span></a>
+                                            class="glyphicon glyphicon-search"></span> Mostrar</a>
                             </div>
-                            <div class="btn-group">
+                            <div class="btn-group" style="padding: 2px">
                                 <a class="btn btn-primary btn-xs"
                                    href="{{ path('multa_diagram', { 'id': entity.id }) }}"><span
-                                            class="glyphicon glyphicon-picture"> Diagrama</span></a>
+                                            class="glyphicon glyphicon-picture"></span> Diagrama</a>
                             </div>
-                            <div class="btn-group">
+                            <div class="btn-group" style="padding: 2px">
                                 <a class="btn btn-danger btn-xs"
                                    href="{{ path('multa_edit', { 'id': entity.id }) }}"><span
-                                            class="glyphicon glyphicon-edit"> Editar</span></a>
+                                            class="glyphicon glyphicon-edit"></span> Editar</a>
                             </div>
-                            <a href="#delete" data-href="{{ path('multa_delete', {'id': entity.id}) }}"
-                               class="btn btn-danger btn-xs">
-                                <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaTransitoBundle') }}
-                            </a>
+                            <div class="btn-group" style="padding: 2px">
+                                <a href="#delete" data-href="{{ path('multa_delete', {'id': entity.id}) }}"
+                                   class="btn btn-danger btn-xs">
+                                    <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaTransitoBundle') }}
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 {% else %}

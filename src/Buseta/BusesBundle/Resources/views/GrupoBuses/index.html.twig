@@ -78,20 +78,22 @@
                             <div style="width: 50px; height: 30px; background-color: {{ entity.colorTexto }}"></div>
                         </td>
                         <td style="width: 24% !important; text-align: center;">
-                            <div class="btn-group">
+                            <div class="btn-group" style="padding: 2px">
                                 <a class="btn btn-success btn-xs"
                                    href="{{ path('grupobuses_show', { 'id': entity.id }) }}"><span
-                                            class="glyphicon glyphicon-search"> Mostrar</span></a>
+                                            class="glyphicon glyphicon-search"></span> Mostrar</a>
                             </div>
-                            <div class="btn-group">
+                            <div class="btn-group" style="padding: 2px">
                                 <a class="btn btn-danger btn-xs"
                                    href="{{ path('grupobuses_edit', { 'id': entity.id }) }}"><span
-                                            class="glyphicon glyphicon-edit"> Editar</span></a>
+                                            class="glyphicon glyphicon-edit"></span> Editar</a>
                             </div>
+                            <div class="btn-group" style="padding: 2px">
                             <a href="#delete" data-href="{{ path('grupobuses_delete', {'id': entity.id}) }}"
                                class="btn btn-danger btn-xs">
                                 <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}
                             </a>
+                            </div>
                         </td>
                     </tr>
                 {% else %}

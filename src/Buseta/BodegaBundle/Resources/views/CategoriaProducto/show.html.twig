@@ -23,8 +23,10 @@
     </table>
 
     <div class="form-actions">
-        <a class="btn btn-primary" href="{{ path('categoria_producto_edit', { 'id': entity.id }) }}"> Editar</a>
-        <a class="btn btn-primary" href="{{ path('categoria_producto') }}"> Listado</a>
+        <a class="btn btn-primary" href="{{ path('categoria_producto_edit', { 'id': entity.id }) }}">
+            <i class="fa fa-edit"></i> Editar</a>
+        <a class="btn btn-default" href="{{ path('categoria_producto') }}">
+            <span class="glyphicon glyphicon-chevron-left"></span> Listado</a>
         <a href="#delete" data-href="{{ path('categoria_producto_delete', {'id': entity.id}) }}" class="btn btn-danger">
             <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaBodegaBundle') }}</a>
     </div>

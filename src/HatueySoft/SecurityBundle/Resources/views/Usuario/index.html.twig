@@ -6,17 +6,18 @@
 
 {% block content -%}
 
-    <a href="{{ path('security_usuario_new') }}" class="btn btn-primary" style="margin-bottom: 8px;"><span class="glyphicon glyphicon-plus"></span> Adicionar</a>
+    <a href="{{ path('security_usuario_new') }}" class="btn btn-primary" style="margin-bottom: 8px;"><span
+                class="glyphicon glyphicon-plus"></span> Adicionar</a>
 
     <table class="records_list table table-hover table-striped table-bordered table-condensed">
         <thead>
-            <tr>
-                <th>Usuario</th>
-                <th>Email</th>
-                <th>Nombre completo</th>
-                <th>Estado</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th>Usuario</th>
+            <th>Email</th>
+            <th>Nombre completo</th>
+            <th>Estado</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
@@ -26,14 +27,22 @@
                 <td>{{ entity.nombreCompleto | default('-') }}</td>
                 <td>{{ entity.enabled ? '<span class="glyphicon glyphicon-ok" title="Activo"></span>' : '<span class="glyphicon glyphicon-remove" title="Deshabilitado"></span>' }}</td>
                 <td>
-                    <a href="{{ path('security_usuario_show', { 'id': entity.id }) }}" class="btn btn-default btn-sm">
-                        <span class="glyphicon glyphicon-eye-open"></span> Ver</a>
-                    <a href="{{ path('security_usuario_edit', { 'id': entity.id }) }}" class="btn btn-primary btn-sm">
-                        <span class="glyphicon glyphicon-pencil"></span> Editar</a>
+                    <div class="btn-group" style="padding: 2px">
+                        <a href="{{ path('security_usuario_show', { 'id': entity.id }) }}"
+                           class="btn btn-success btn-xs">
+                            <span class="glyphicon glyphicon-search"></span> Mostrar</a>
+                    </div>
+                    <div class="btn-group" style="padding: 2px">
+                        <a href="{{ path('security_usuario_edit', { 'id': entity.id }) }}"
+                           class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-edit"></span> Editar</a>
+                    </div>
                 </td>
             </tr>
         {% else %}
-        <tr><td colspan="8">No se encontraron elementos que mostrar.</td></tr>
+            <tr>
+                <td colspan="8">No se encontraron elementos que mostrar.</td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>

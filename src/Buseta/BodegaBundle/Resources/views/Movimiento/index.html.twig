@@ -86,13 +86,16 @@
                     <span class="label label-{{ badge }}">{{ ('estado.' ~entity.estadodocumento) | trans({}, 'BusetaBodegaBundle') | upper }}</span>
                 </td>
                 <td style="width: 18% !important; text-align: center;">
-                    <div class="btn-group">
+                    <div class="btn-group"  style="padding: 2px">
                         {% if is_granted('show', entity) %}
-                        <a class="btn btn-success btn-xs" href="{{ path('movimiento_show', { 'id': entity.id }) }}"><i
-                                    class="fa fa-search"> Mostrar</i></a>
+                        <a class="btn btn-success btn-xs" href="{{ path('movimiento_show', { 'id': entity.id }) }}">
+                            <span class="glyphicon glyphicon-search"></span> Mostrar</a>
                         {% endif %}
+                    </div>
+                    <div class="btn-group"  style="padding: 2px">
                         {% if is_granted('edit', entity) and entity.estadodocumento == 'BO' %}
-                            <a class="btn btn-primary btn-xs" href="{{ path('movimiento_edit', { 'id': entity.id }) }}"> Editar</a>
+                            <a class="btn btn-danger btn-xs" href="{{ path('movimiento_edit', { 'id': entity.id }) }}">
+                                <span class="glyphicon glyphicon-edit"></span> Editar</a>
                         {% endif %}
                     </div>
                 </td>

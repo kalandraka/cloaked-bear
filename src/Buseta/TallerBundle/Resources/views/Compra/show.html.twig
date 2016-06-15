@@ -127,11 +127,13 @@
     </table>
 
     <div class="btn-group">
-        <a class="btn btn-primary" href="{{ path('compra_edit', { 'id': entity.id }) }}"> Editar</a>
+        <a class="btn btn-primary" href="{{ path('compra_edit', { 'id': entity.id }) }}">
+            <i class="fa fa-edit"></i> Editar</a>
     </div>
 
     <div class="btn-group">
-        <a class="btn btn-primary" href="{{ path('compra') }}"> Listado</a>
+        <a class="btn btn-default" href="{{ path('compra') }}">
+            <span class="glyphicon glyphicon-chevron-left"></span> Listado</a>
     </div>
 
 

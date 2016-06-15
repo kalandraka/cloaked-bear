@@ -6,7 +6,7 @@
 
 {% block area_trabajo %}
 
-    <form action="{{ path('productotope_update',{'id':entity.id}) }}" method="post" enctype="multipart/form-data">
+    <form id="producto_tope_form" action="{{ path('productotope_update',{'id':entity.id}) }}" method="post" enctype="multipart/form-data">
 
         {{ form_errors(edit_form) }}
 
@@ -33,10 +33,13 @@
 
         <div class="row show-grid">
             <div class="col-md-4">
-
-                <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
                 <div class="btn-group">
-                    <a class="btn btn-primary" href="{{ path('productotope') }}"> Cancelar</a>
+                    <a class="btn btn-primary" id="save_producto_tope_form_submit_btn">
+                        <span class="glyphicon glyphicon-save"></span> Aceptar</a>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-default" href="{{ path('productotope') }}">
+                        <span class="glyphicon glyphicon-chevron-left"></span> Cancelar</a>
                 </div>
             </div>
         </div>
@@ -53,13 +56,15 @@
 
 {% block javascripts %}
     {{ parent() }}
-
     <script src="{{ asset('vendors/bootstrap/js/bootstrap-modal.js') }}"></script>
 
         <script type="text/javascript">
             $(document).ready(function () {
                 $('#buseta_bodegabundle_productotope_producto').chosen();
                 $('#buseta_bodegabundle_productotope_almacen').chosen();
+            });
+            $('a#save_producto_tope_form_submit_btn').click(function () {
+                $('form#producto_tope_form').submit();
             });
         </script>
 

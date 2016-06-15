@@ -15,48 +15,52 @@
         </div>
     {% endif %}
 
-    {{ form_start(form) }}
+    <form id="movimiento_form" action="{{ path('movimiento_create') }}" method="post"
+          enctype="multipart/form-data">
 
-    <div class="row show-grid">
-        <div class="col-lg-4">
-            <label>Bodega Origen:</label>
-            {{ form_widget(form.almacenOrigen) }}
-        </div>
+        <div class="row show-grid">
+            <div class="col-lg-4">
+                <label>Bodega Origen:</label>
+                {{ form_widget(form.almacenOrigen) }}
+            </div>
 
-        <div class="col-lg-4">
-            <label>Bodega Destino:</label>
-            {{ form_widget(form.almacenDestino) }}
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            {{ form_row(form.movimientos_productos) }}
-        </div>
-    </div>
-
-
-    <div class="row show-grid">
-        <div class="col-md-4">
-            <div class="btn-group" style="padding-bottom: 8px;">
-                <a id="adicionarMovimiento" data-toggle="modal" data-target="#newMovimiento" class="btn btn-primary"
-                   href="#"><i class="fa fa-plus-circle"></i> Adicionar movimiento</a>
+            <div class="col-lg-4">
+                <label>Bodega Destino:</label>
+                {{ form_widget(form.almacenDestino) }}
             </div>
         </div>
-    </div>
 
-    <div class="row show-grid">
-        <div class="col-lg-4">
-
-            <input class="btn btn-primary" style="height: 34px" type="submit" value="Aceptar">
-
-            <div class="btn-group">
-                <a class="btn btn-primary" href="{{ path('movimiento') }}"> Cancelar</a>
+        <div class="row">
+            <div class="col-lg-12">
+                {{ form_row(form.movimientos_productos) }}
             </div>
         </div>
-    </div>
 
-    {{ form_end(form) }}
+
+        <div class="row show-grid">
+            <div class="col-md-4">
+                <div class="btn-group" style="padding-bottom: 8px;">
+                    <a id="adicionarMovimiento" data-toggle="modal" data-target="#newMovimiento" class="btn btn-primary"
+                       href="#"><i class="fa fa-plus-circle"></i> Adicionar movimiento</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row show-grid">
+            <div class="col-lg-4">
+                <div class="btn-group">
+                    <a class="btn btn-primary" id="save_movimiento_form_submit_btn">
+                        <span class="glyphicon glyphicon-save"></span> Aceptar</a>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-default" href="{{ path('movimiento') }}">
+                        <span class="glyphicon glyphicon-chevron-left"></span> Cancelar</a>
+                </div>
+            </div>
+        </div>
+
+        {{ form_rest(form) }}
+    </form>
 
     <div class="modal" id="form_productos_modal"></div>
 
@@ -68,7 +72,11 @@
 
 {% block javascripts %}
     {{ parent() }}
-
+    <script type="text/javascript">
+        $('a#save_movimiento_form_submit_btn').click(function () {
+            $('form#movimiento_form').submit();
+        });
+    </script>
     <script type="text/javascript">
         var ProductosList = function () {
             this.list = [];
@@ -142,7 +150,7 @@
                     'class="form-control form-control" ' +
                     'style="margin-top: -90px;margin-left: 110%;" ' +
                     'multiple="multiple"></select></div>');
-            var sel_str = 'select#buseta_bodegabundle_mov_prod_seriales_fake'+index;
+            var sel_str = 'select#buseta_bodegabundle_mov_prod_seriales_fake' + index;
             var prod_str = 'input#buseta_bodegabundle_movimiento_movimientos_productos_' +
                     index + '_producto';
             var ser_str = 'input#buseta_bodegabundle_movimiento_movimientos_productos_' +
@@ -152,7 +160,7 @@
             $newFormDiv.append(ser_sel);
             collectionHolder.find('#tbody').append($newFormDiv);
             $(sel_str).chosen();
-            var chosen_str = '#buseta_bodegabundle_mov_prod_seriales_fake'+ index + '_chosen';
+            var chosen_str = '#buseta_bodegabundle_mov_prod_seriales_fake' + index + '_chosen';
             $(ser_str).css({display: 'none'});
             $(chosen_str).css({marginTop: '-90px', marginLeft: '110%'});
             $.ajax({
@@ -168,8 +176,7 @@
                     var realSeriales = $(ser_str).val();
                     selectorElem.html('<option></option>');
                     for (var i = 0, total = values.length; i < total; i++) {
-                        if(realSeriales.contains(values[i].valor))
-                        {
+                        if (realSeriales.contains(values[i].valor)) {
                             var opt = "<option selected=\"selected\" value=\"" + values[i].id + "\">" +
                                     values[i].valor + "</option>";
                         }
@@ -187,7 +194,7 @@
                 var arr_val = $(sel_str).val();
                 var str_val = "";
                 for (var i = 0; i < arr_val.length; i++) {
-                    if(str_val != "")
+                    if (str_val != "")
                         str_val = str_val + ","
                     str_val = str_val + arr_val[i];
                 }

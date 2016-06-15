@@ -27,8 +27,10 @@
     </table>
 
         <div class="form-actions">
-        <a class="btn btn-primary" href="{{ path('listaNegraCombustible_edit', { 'id': entity.id }) }}"> Editar</a>
-        <a class="btn btn-primary" href="{{ path('listaNegraCombustible') }}"> Listado</a>
+        <a class="btn btn-primary" href="{{ path('listaNegraCombustible_edit', { 'id': entity.id }) }}">
+            <i class="fa fa-edit"></i> Editar</a>
+        <a class="btn btn-default" href="{{ path('listaNegraCombustible') }}">
+            <span class="glyphicon glyphicon-chevron-left"></span> Listado</a>
         <a href="#delete" data-href="{{ path('listaNegraCombustible_delete', {'id': entity.id}) }}" class="btn btn-danger">
             <span class="glyphicon glyphicon-trash"></span> {{ 'actions.delete' | trans({}, 'BusetaCombustibleBundle') }}</a>
     </div>

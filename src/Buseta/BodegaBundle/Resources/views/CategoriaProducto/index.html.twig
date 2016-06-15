@@ -64,16 +64,16 @@
                 <td>{{ entity.descripcion }}</td>
 
                 <td style="width: 18% !important; text-align: center;">
-                    <div class="btn-group">
+                    <div class="btn-group" style="padding: 2px">
                         <a class="btn btn-success btn-xs"
                            href="{{ path('categoria_producto_show', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-search"> Mostrar</span></a>
+                                    class="glyphicon glyphicon-search"></span> Mostrar</a>
                     </div>
 
-                    <div class="btn-group">
+                    <div class="btn-group" style="padding: 2px">
                         <a class="btn btn-danger btn-xs"
                            href="{{ path('categoria_producto_edit', { 'id': entity.id }) }}"><span
-                                    class="glyphicon glyphicon-edit"> Editar</span></a>
+                                    class="glyphicon glyphicon-edit"></span> Editar</a>
                     </div>
                 </td>
             </tr>
