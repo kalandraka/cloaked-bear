@@ -504,12 +504,17 @@ VALUES (%d, %d, \'%s\', \'%s\', %d, \'%s\', \'%s\')',
         $registry->setCantidadMovida($bitacoraSerialEventModel->getMovementQty());
         $registry->setFechaMovimiento($bitacoraSerialEventModel->getMovementDate());
         $registry->setTipoMovimiento($bitacoraSerialEventModel->getMovementType());
+        if (FuncionesExtras::movementTypeComparePlus($registry->getTipoMovimiento())) {
+            $registry->setCantidad($registry->getCantidadMovida());
+        } else {
+            $registry->setCantidad(-1 * $registry->getCantidadMovida());
+        }
 
         if ($bitacoraSerialEventModel->getCallback() !== null) {
             call_user_func($bitacoraSerialEventModel->getCallback(), $registry);
         }
 
-        return sprintf('(%d, %d, \'%s\', %d, \'%s\', \'%s\', %s, %s, %s, %s, %s, \'%s\')',
+        return sprintf('(%d, %d, \'%s\', %d, \'%s\', \'%s\', %s, %s, %s, %s, %s, \'%s\', %d)',
             $registry->getAlmacen()->getId(),
             $registry->getProducto()->getId(),
             $registry->getSerial(),
@@ -521,14 +526,15 @@ VALUES (%d, %d, \'%s\', \'%s\', %d, \'%s\', \'%s\')',
             $registry->getMovimientoLinea() !== null ? $registry->getMovimientoLinea()->getId() : 'null',
             $registry->getProduccionLinea() !== null ? sprintf('\'%s\'', $registry->getProduccionLinea()) : 'null',
             $registry->getConsumoInterno() !== null ? sprintf('\'%s\'', $registry->getConsumoInterno()) : 'null',
-            date_format(new \DateTime(), 'Y-m-d H:i:s')
+            date_format(new \DateTime(), 'Y-m-d H:i:s'),
+            $registry->getCantidad()
         );
     }
 
     private function getBitacoraSerialInsertQuery()
     {
         return 'INSERT INTO d_bitacora_serial
-(warehouse_id, product_id, serial, movement_qty, movement_date, movement_type, inoutline_id, inventoryline_id, movementline_id, production_line, internal_consumption_line, created)
+(warehouse_id, product_id, serial, movement_qty, movement_date, movement_type, inoutline_id, inventoryline_id, movementline_id, production_line, internal_consumption_line, created, qty)
 VALUES ';
     }
 }

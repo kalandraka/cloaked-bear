@@ -59,6 +59,11 @@ class ServicioCombustibleType extends AbstractType
             ))
             ->add('marchamo1')
             ->add('marchamo2')
+            ->add('fecha', 'date', array(
+                'required' => true,
+                'format' => 'dd/M/yyyy',
+                'widget' => 'single_text',
+            ))
         ;
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'boletaPreSetData'));
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
@@ -100,30 +105,6 @@ class ServicioCombustibleType extends AbstractType
                 'label' => 'Vehículo',
                 'required' => false,
             ));
-
-            /*$form->add('autobus', 'entity', array(
-                'class' => 'BusetaBusesBundle:Autobus',
-                'query_builder' => function(EntityRepository $repository) use ($fechaActualInicial,$fechaActualFinal) {
-                    $qb = $repository->createQueryBuilder('bus');
-                    $qb
-                        ->where('NOT EXISTS(SELECT ln FROM BusetaCombustibleBundle:ListaNegraCombustible ln INNER JOIN ln.autobus a WHERE a=bus AND ln.fechaInicio<=:fechaActual AND ln.fechaFinal>=:fechaActual )')
-                        ->andWhere('NOT EXISTS(SELECT d FROM BusetaCombustibleBundle:ServicioCombustible d INNER JOIN d.autobus au WHERE au=bus AND d.created>:fechaActualInicial AND d.created<:fechaActualFinal)')
-                        ->orderBy('bus.matricula')
-                        ->setParameter('fechaActual', new \DateTime())
-                        ->setParameter('fechaActualInicial', $fechaActualInicial)
-                        ->setParameter('fechaActualFinal', $fechaActualFinal)
-                    ;
-                    return $qb;
-                },
-
-                'placeholder' => '---Seleccione---',
-                'label' => 'Autobús',
-                'required' => true,
-                'attr' => array(
-                    'class' => 'form-control',
-                )
-            ));*/
-
         });
 
     }

@@ -595,8 +595,8 @@ class SalidaBodegaController extends Controller
         $json = array();
         foreach ($seriales as $serial) {
             $json[] = array(
-                'id' => $serial,
-                'valor' => $serial,
+                'id' => $serial['id'],
+                'valor' => $serial['serial'],
             );
         }
 

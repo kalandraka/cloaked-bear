@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Extras\FuncionesExtras;
 use Buseta\BodegaBundle\Interfaces\DateTimeAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="d_bitacora_almacen")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\BitacoraAlmacenRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class BitacoraAlmacen implements DateTimeAwareInterface
 {
@@ -81,6 +83,13 @@ class BitacoraAlmacen implements DateTimeAwareInterface
      * @ORM\Column(name="movement_qty", type="integer", nullable=true)
      */
     private $cantidadMovida;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="qty", type="integer", nullable=true)
+     */
+    private $cantidad;
 
     /**
      * @var integer
@@ -571,5 +580,41 @@ class BitacoraAlmacen implements DateTimeAwareInterface
     public function getProduccionLinea()
     {
         return $this->produccionLinea;
+    }
+
+    /**
+     * Set cantidad
+     *
+     * @param integer $cantidad
+     *
+     * @return BitacoraAlmacen
+     */
+    public function setCantidad($cantidad)
+    {
+        $this->cantidad = $cantidad;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidad
+     *
+     * @return integer
+     */
+    public function getCantidad()
+    {
+        return $this->cantidad;
+    }
+
+    /**
+     * @ORM\PreFlush()
+     */
+    public function preFlush()
+    {
+        if (FuncionesExtras::movementTypeComparePlus($this->tipoMovimiento)) {
+            $this->cantidad = $this->cantidadMovida;
+        } else {
+            $this->cantidad = -1 * $this->cantidadMovida;
+        }
     }
 }

@@ -113,7 +113,7 @@ class MovimientoController extends Controller
                 return $this->redirect( $this->generateUrl('movimiento_show', array( 'id' => $entity->getId() ) ) );
             } else {
                 $this->get('session')->getFlashBag()->add('danger',
-                    sprintf('Ha ocurrido un error al completar el movimiento: %s', $result));
+                    sprintf('Ha ocurrido un error al completar el movimiento: %s'));
                 return $this->redirect($this->generateUrl('movimiento_show', array('id' => $entity->getId())));
             }
         }

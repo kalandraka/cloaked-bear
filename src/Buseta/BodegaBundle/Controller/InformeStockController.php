@@ -45,19 +45,19 @@ class InformeStockController extends Controller
         $informeStock = $this->createForm(new BusquedaInformeStockType());
 
         $informeStock->handleRequest($request);
-        if ($informeStock->isValid()) {
+        if ($informeStock->isSubmitted() && $informeStock->isValid()) {
             //Se obtienen todas las bitacoras que cumplieron con el filtro de búsqueda
-            $bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->busquedaBitacoraAlmacen($informeStock);
+            //$bitacoras = $em->getRepository('BusetaBodegaBundle:BitacoraAlmacen')->busquedaBitacoraAlmacen($informeStock);
             $almacenes = $em->getRepository('BusetaBodegaBundle:Bodega')->findAll();
 
             $funcionesExtras = new FuncionesExtras();
-            $almacenesArray = $funcionesExtras->generarInformeStock($bitacoras, $em);
-            $almacenesFinal = null;
-            $pos = 0;
+            $almacenesArray = $funcionesExtras->generarInformeStock($informeStock->getData(), $em);
 
+            $almacenesFinal = array();
+            $pos = 0;
             foreach ($almacenes as $almacen) {
                 foreach ($almacenesArray as $almacenArray) {
-                    if ($almacen == $almacenArray['almacen']) {
+                    if ($almacen->getId() == $almacenArray['almacen_id']) {
                         $almacenesFinal[$pos] = $almacen;
                         $pos++;
                         break;
@@ -88,8 +88,8 @@ class InformeStockController extends Controller
         if($request->get('stock') != null) {
             $almacen = $em->getRepository('BusetaBodegaBundle:Bodega')->find($request->get('stock'));
             $filter->setAlmacen($almacen);
-
         }
+
         if($request->get('product') != null) {
             $producto = $em->getRepository('BusetaBodegaBundle:Producto')->find($request->get('product'));
             $filter->setProducto($producto);
@@ -102,13 +102,17 @@ class InformeStockController extends Controller
             )),
         ));
 
+        $fune = new FuncionesExtras();
+
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            $fune = new FuncionesExtras();
-            $entities = $fune->getListaSerialesEntitiesEnAlmacenFilter($em, $filter);
+            $producto = $filter->getProducto();
+            $almacen = $filter->getAlmacen();
+
+            $entities = $fune->getListaSerialesTeoricoEnAlmacen($producto,$almacen, $em);
         } else {
-            $fune = new FuncionesExtras();
-            $entities = $fune->getListaSerialesEntitiesEnAlmacen($producto, $almacen, $em);
+            $entities = $fune->getListaSerialesTeoricoEnAlmacen($producto,$almacen, $em);
+            //$entities = $fune->getListaSerialesEntitiesEnAlmacen($producto, $almacen, $em);
         }
 
         $paginator = $this->get('knp_paginator');

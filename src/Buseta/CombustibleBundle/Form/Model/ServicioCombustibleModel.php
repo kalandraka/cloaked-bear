@@ -5,7 +5,6 @@ namespace Buseta\CombustibleBundle\Form\Model;
 use Buseta\BusesBundle\Entity\Chofer;
 use Buseta\CombustibleBundle\Entity\ConfiguracionCombustible;
 use Buseta\CombustibleBundle\Entity\ServicioCombustible;
-use Buseta\CombustibleBundle\ServicioCombustibleStatus;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Buseta\CombustibleBundle\Validator\Constraints as CombustibleAssert;
@@ -27,19 +26,10 @@ class ServicioCombustibleModel
 
     /**
      * @var ConfiguracionCombustible
+     *
+     * @Assert\NotNull()
      */
     private $combustible;
-
-    /**
-     * @var integer
-     */
-    private $odometro;
-
-    /**
-     * @var string
-     * @Assert\NotBlank()
-     */
-    private $estado;
 
     /**
      * @var integer
@@ -81,42 +71,14 @@ class ServicioCombustibleModel
      */
     private $marchamo2;
 
-
-    /**
-     * ServicioCombustibleModel constructor.
-     */
-    public function __construct()
-    {
-        $this->estado = ServicioCombustibleStatus::SERVICIO_COMBUSTIBLE_STATUS_PROCESS;
-    }
-
     /**
      * @return ServicioCombustible
      *
-     * @deprecated Will be removed
+     * @Assert\Date()
      */
-    public function getEntityData()
-    {
-        $servicioCombustible = new ServicioCombustible();
-        $servicioCombustible->setOdometro($this->getOdometro());
-        $servicioCombustible->setEstado($this->getEstado());
-        $servicioCombustible->setCantidadLibros($this->getCantidadLibros());
-        $servicioCombustible->setBoleta($this->getBoleta());
-        $servicioCombustible->setMarchamo1($this->getMarchamo1());
-        $servicioCombustible->setMarchamo2($this->getMarchamo2());
+    private $fecha;
 
-        if ($this->getCombustible() !== null) {
-            $servicioCombustible->setCombustible($this->getCombustible());
-        }
-        if ($this->getChofer() !== null) {
-            $servicioCombustible->setChofer($this->getChofer()->getChofer());
-        }
-        if ($this->getVehiculo() !== null) {
-            $servicioCombustible->setVehiculo($this->getVehiculo());
-        }
 
-        return $servicioCombustible;
-    }
 
     /**
      * @return int
@@ -237,38 +199,6 @@ class ServicioCombustibleModel
     }
 
     /**
-     * @return mixed
-     */
-    public function getOdometro()
-    {
-        return $this->odometro;
-    }
-
-    /**
-     * @param mixed $odometro
-     */
-    public function setOdometro($odometro)
-    {
-        $this->odometro = $odometro;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEstado()
-    {
-        return $this->estado;
-    }
-
-    /**
-     * @param string $estado
-     */
-    public function setEstado($estado)
-    {
-        $this->estado = $estado;
-    }
-
-    /**
      * @param string $boleta
      */
     public function setBoleta($boleta)
@@ -282,5 +212,21 @@ class ServicioCombustibleModel
     public function getBoleta()
     {
         return $this->boleta;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * @param mixed $fecha
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
     }
 }

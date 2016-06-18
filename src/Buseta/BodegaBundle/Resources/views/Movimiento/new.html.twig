@@ -172,6 +172,7 @@
                 },
                 success: function (data) {
                     var values = $.parseJSON(data);
+                    console.log(values);
                     var selectorElem = $(sel_str);
                     var realSeriales = $(ser_str).val();
                     selectorElem.html('<option></option>');
@@ -191,7 +192,7 @@
             });
 
             $(sel_str).change(function () {
-                var arr_val = $(sel_str).val();
+                var arr_val = $(sel_str).find('option:selected').text();
                 var str_val = "";
                 for (var i = 0; i < arr_val.length; i++) {
                     if (str_val != "")

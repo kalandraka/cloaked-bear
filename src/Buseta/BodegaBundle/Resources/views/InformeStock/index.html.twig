@@ -60,14 +60,16 @@
                                 {% set comprobar = '' %}
 
                                 {% for entity in entities %}
-                                    {% if entity.almacen == almacen %}
+                                    {% if entity.almacen_id == almacen.id %}
                                         <tr>
-                                            <td>{{ entity.producto }}</td>
-                                            <td  style="text-align: center;">{{ entity.cantidad }}</td>
+                                            <td>{{ entity.producto_nombre }}</td>
+                                            <td  style="text-align: center;">{{ entity.cant }}</td>
                                             <td style="width: 24% !important; text-align: center;">
+                                                {% if entity.producto_seriado %}
                                                 <div class="btn-group" style="padding-bottom: 8px;">
-                                                    <a id="mostrarSeriales" data-stock-id="{{ entity.almacen.id }}" data-product-id="{{ entity.producto.id }}" data-toggle="modal" data-target="#showSerials" class="btn btn-primary" href="#"><i class="fa"></i>Ver seriales</a>
+                                                    <a id="mostrarSeriales" data-stock-id="{{ entity.almacen_id }}" data-product-id="{{ entity.producto_id }}" class="btn btn-primary" href="#"><i class="fa"></i>Ver seriales</a>
                                                 </div>
+                                                {% endif %}
                                             </td>
                                         </tr>
 
@@ -164,10 +166,11 @@
         function showSeriales(e) {
             e.preventDefault();
 
-            var stock_id = $(this).data('stock-id');
-            var prod_id_ = $(this).data('product-id');
+            var stock_id = $(this).data('stock-id'),
+                prod_id_ = $(this).data('product-id'),
+                url = Routing.generate('seriales_modal_action', {'product': prod_id_, 'stock': stock_id});
 
-            var url = Routing.generate('seriales_modal_action', {'product': prod_id_, 'stock': stock_id});
+            $('.btn.btn-primary').addClass('disabled');
             if ($(this).hasClass('paginator-link')) {
                 url = $(this).attr('href');
             }
@@ -175,6 +178,7 @@
                     .done(function (response, textStatus, jqXHR) {
                         $('div#form_seriales_modal').replaceWith($(response.view));
                         $('div#form_seriales_modal').modal('show');
+                        $('.btn.btn-primary').removeClass('disabled');
 
                         $('form#buseta_bitserial_filter')
                                 .find('input,select')
