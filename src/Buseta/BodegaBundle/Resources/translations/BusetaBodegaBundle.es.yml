@@ -146,6 +146,8 @@ costo:
     adicionar: Adicionar Costo
   modal:
     title: Adicionar Nuevo Costo
+  list: Listado de Costos
+
 
 # INVENTARIO FÍSICO
 inventariofisico:

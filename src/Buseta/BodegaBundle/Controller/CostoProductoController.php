@@ -356,4 +356,30 @@ class CostoProductoController extends Controller
 
         return new Response('ok', 200);
     }
+
+    /**
+     *
+     * @Route("/modal_list/{producto}", name="producto_costos_modal_list", methods={"GET", "POST"}, options={"expose":true})
+     * @ParamConverter("producto", options={"mapping":{"producto":"id"}})
+     */
+    public function modalListAction(Producto $producto, Request $request)
+    {
+        $entities = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('BusetaBodegaBundle:CostoProducto')
+            ->findAllByProductoId($producto->getId());
+
+        $entities = $this->get('knp_paginator')
+            ->paginate(
+                $entities,
+                $request->query->get('page', 1),
+                10
+            );
+
+        $renderView =  $this->renderView('@BusetaBodega/Producto/Costo/modal_costo.html.twig', array(
+            'entities' => $entities,
+            'producto' => $producto,
+        ));
+
+        return new JsonResponse(array('view' => $renderView), 202);
+    }
 }

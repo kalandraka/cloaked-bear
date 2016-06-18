@@ -341,6 +341,14 @@ var
                 dataType: 'json'
             });
         },
+        _load_costos_modal: function (event) {
+            var producto_id = $('#' + lineas.form_id + '_producto').val();
+            //$('div#form_lineas_modal').addClass('disabled');
+            if (event !== undefined) {
+                event.preventDefault();
+            }
+            costos._load(producto_id, lineas._get_product_data);
+        },
         /**
          * Obtiene por linea los valores para el costo, unidad de medida y actualiza el importe de linea por el producto
          */
@@ -360,18 +368,19 @@ var
                 //Boton para editar el producto seleccionado en una nueva pestaña del sistema
                 if (editar_producto.find('a[data-action="#edit"]').size() === 0) {
                     _producto = $('<a>', {
-                        'href': Routing.generate('productos_producto_edit', {'id': producto_id}),
+                        //'href': Routing.generate('productos_producto_edit', {'id': producto_id}),
                         'target': '_blank',
-                        'class': 'btn btn-primary btn-xs pull-right',
+                        'class': 'form-control btn btn-danger btn-xl',
                         'value': 'Editar',
                         'style': 'margin-bottom: 3px',
                         'data-action':'#edit',
                         'data-content': producto_id,
                         'title': 'Modificar Producto'
-                    });
+                    }).text('Modificar ');
 
-                    span = $('<span>', {'class': 'glyphicon glyphicon-edit'}).text(' Modificar');
+                    span = $('<span>', {'class': 'glyphicon glyphicon-edit'});
                     _producto.append(span);
+                    _producto.on('click', lineas._load_costos_modal);
                     editar_producto.append(_producto);
                 }
 

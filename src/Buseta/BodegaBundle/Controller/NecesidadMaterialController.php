@@ -2,12 +2,14 @@
 
 namespace Buseta\BodegaBundle\Controller;
 
+use Buseta\BodegaBundle\BusetaBodegaBundle;
 use Buseta\BodegaBundle\BusetaBodegaDocumentStatus;
 use Buseta\BodegaBundle\Entity\Albaran;
 use Buseta\BodegaBundle\Entity\AlbaranLinea;
 use Buseta\BodegaBundle\Entity\NecesidadMaterialLinea;
 use Buseta\BodegaBundle\Entity\PedidoCompra;
 use Buseta\BodegaBundle\Entity\PedidoCompraLinea;
+use Buseta\BodegaBundle\Entity\Producto;
 use Buseta\BodegaBundle\Form\Filter\NecesidadMaterialFilter;
 use Buseta\BodegaBundle\Form\Model\Converters\NecesidadMaterialConverter;
 use Buseta\BodegaBundle\Form\Model\Converters\PedidoCompraConverter;
