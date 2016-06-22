@@ -2,6 +2,7 @@
 
 namespace Buseta\BodegaBundle\Entity;
 
+use Buseta\BodegaBundle\Interfaces\DateTimeAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="d_producto_costo")
  * @ORM\Entity(repositoryClass="Buseta\BodegaBundle\Entity\Repository\CostoProductoRepository")
  */
-class CostoProducto
+class CostoProducto implements DateTimeAwareInterface
 {
     /**
      * @var integer
@@ -54,6 +55,20 @@ class CostoProducto
      * @ORM\Column(name="activo", type="boolean", nullable=true)
      */
     private $activo;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime")
+     */
+    private $created;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    private $updated;
 
     /**
      * Get id.
@@ -174,5 +189,53 @@ class CostoProducto
     public function getCodigoAlternativo()
     {
         return $this->codigoAlternativo;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     *
+     * @return CostoProducto
+     */
+    public function setCreated(\DateTime $created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     *
+     * @return CostoProducto
+     */
+    public function setUpdated(\DateTime $updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 }
